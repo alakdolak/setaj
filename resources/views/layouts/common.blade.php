@@ -7,7 +7,7 @@
 
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
 
-<link rel="shortcut icon" type="image/png" href="{{\Illuminate\Support\Facades\URL::asset('layouts/layout/img/logo.png')}}"/>
+<link rel="icon" href="{{\Illuminate\Support\Facades\URL::asset("images/logo.png")}}" sizes="16x16" type="image/png">
 
 
 <!-- BEGIN GLOBAL MANDATORY STYLES -->

@@ -2,110 +2,7 @@
 
 @section('header')
     @parent
-
-    <style>
-        .eachProduct {
-            margin: 50px 12% 0 !important;
-        }
-        .pr_pics {
-            display: flex;
-        }
-        .pr_mainPic {
-            height: 320px;
-            border: 3px solid #acacac;
-            width: 74%;
-        }
-        .pr_otherPics{
-            width: 22%;
-            margin-left: 5%;
-        }
-        .pr_eachOtherPics{
-            height: 70px;
-            border: 3px solid #acacac;
-            margin: 0 0 13px 0;
-        }
-        .pr_eachOtherPics:last-child{
-            margin-bottom: 0;
-        }
-        .shopBtn{
-            color: white;
-            background-color: #68cda5;
-            border-bottom: 5px solid #48c291;
-            box-shadow: 5px 5px 5px;
-            border-radius: 7px;
-            padding: 15px 30px;
-            margin-top: 35px;
-            font-size: 1.75em;
-            font-weight: 500;
-            text-align: center;
-            cursor: pointer;
-        }
-        .shopBtn:hover {
-            background-color: #48c291;
-        }
-        .pr_descript{
-            font-size: 1.3em;
-            font-weight: 500;
-            color: #a4a4a4;
-        }
-        .pr_descriptRow{
-            min-height: 50px;
-            padding: 7px 20px;
-            border-bottom: 2px solid #acacac;
-        }
-        .pr_descriptRow:nth-child(1), .pr_descriptRow:last-child{
-            border-bottom: 0;
-        }
-        .pr_iconesBox {
-            display: flex;
-            align-items: center;
-        }
-        .pr_description {
-            margin-right: 40px;
-            text-align: justify;
-        }
-        .pr_title{
-            background-color: #f26c4f;
-            color: white;
-            font-size: 1.1em;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-        }
-        .pr_salesman{
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-        }
-        .pr_icons{
-            width: 30px;
-            height: 30px;
-            background-size: 100%;
-            background-repeat: no-repeat;
-            margin-left: 10px;
-        }
-        .folderIcon{
-            background-image: url(../images/folder.png);
-        }
-        .movieIcon{
-            background-image: url(../images/movie.png);
-        }
-        .pr_advertiseBox {
-            margin-top: 50px;
-            padding: 0 !important;
-            font-size: 1.3em;
-            font-weight: 500;
-            color: #a4a4a4;
-        }
-        .pr_advertise {
-            margin-right: 40px;
-            text-align: justify;
-            border: 2px solid #a4a4a4;
-            border-radius: 7px;
-            padding: 5px 15px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css")}}">
 
 @stop
 
@@ -143,11 +40,13 @@
                 @if(count($product->pics) > 0)
                     <div style="background-image: url('{{$product->pics[0]}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
                 @else
-                    <div id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif
             </div>
             @if($canBuy)
-                <div onclick="buy()" class="shopBtn">خرید محصول</div>
+                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn">خرید محصول</div>
+            @else
+                <div style="background-color: #ccc !important; cursor: not-allowed" disabled class="shopBtn">خرید محصول</div>
             @endif
         </div>
 
@@ -241,6 +140,50 @@
         @endif
     </div>
 
+    <div id="confirmationModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">آیا مطمئنی میخوای بخری؟</h4>
+                </div>
+                <div class="modal-body">
+                    <p>بعد خرید دهنت سرویس میشه ها. مطمئنی میخوای بخری؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="buy()" type="button" class="btn btn-success" data-dismiss="modal">بله</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="resultModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">نتیجه خرید</h4>
+                </div>
+                <div class="modal-body">
+                    <p>خرید شما با موفقیت انجام شد و با کلیک بر روی دکمه زیر می توانید همه فایل های آموزشی را به طور یکجا دانلود کنید.</p>
+                    <a>دانلود تمام فایل ها به طور یکجا</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">متوجه شدم</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="hidden" id="resultModalBtn" data-toggle="modal" data-target="#resultModal"></button>
 
     <script>
 
@@ -251,39 +194,42 @@
         });
 
         function buy() {
-            $.ajax({
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: '{{route('buyProduct')}}',
-                data: {
-                    id: '{{$product->id}}'
-                },
-                success: function (res) {
 
-                    if(res === "nok1") {
-                        $("#buyErr").empty().append("شما اجازه خرید این محصول را ندارید.");
-                    }
+            $("#resultModalBtn").click();
 
-                    else if(res === "nok2") {
-                        $("#buyErr").empty().append("شما قبلا این محصول را خریداری کرده اید.");
-                    }
+            {{--$.ajax({--}}
+            {{--    type: 'post',--}}
+            {{--    headers: {--}}
+            {{--        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')--}}
+            {{--    },--}}
+            {{--    url: '{{route('buyProduct')}}',--}}
+            {{--    data: {--}}
+            {{--        id: '{{$product->id}}'--}}
+            {{--    },--}}
+            {{--    success: function (res) {--}}
 
-                    else if(res === "nok3") {
-                        $("#buyErr").empty().append("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
-                    }
+            {{--        if(res === "nok1") {--}}
+            {{--            $("#buyErr").empty().append("شما اجازه خرید این محصول را ندارید.");--}}
+            {{--        }--}}
 
-                    else if(res === "nok5") {
-                        $("#buyErr").empty().append("عملیات مورد نظر غیرمجاز است.");
-                    }
+            {{--        else if(res === "nok2") {--}}
+            {{--            $("#buyErr").empty().append("شما قبلا این محصول را خریداری کرده اید.");--}}
+            {{--        }--}}
 
-                    else if(res === "ok") {
-                        document.location.href = '{{route('myProducts')}}';
-                    }
+            {{--        else if(res === "nok3") {--}}
+            {{--            $("#buyErr").empty().append("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");--}}
+            {{--        }--}}
 
-                }
-            });
+            {{--        else if(res === "nok5") {--}}
+            {{--            $("#buyErr").empty().append("عملیات مورد نظر غیرمجاز است.");--}}
+            {{--        }--}}
+
+            {{--        else if(res === "ok") {--}}
+            {{--            document.location.href = '{{route('myProducts')}}';--}}
+            {{--        }--}}
+
+            {{--    }--}}
+            {{--});--}}
         }
 
         $(document).ready(function () {

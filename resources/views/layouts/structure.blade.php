@@ -127,7 +127,7 @@
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="{{route('home')}}">
-                        <img width="80px" src="{{URL::asset('layouts/layout/img/logo.png')}}" alt="logo" class="logo-default" />
+                        <img width="80px" src="{{URL::asset('images/logo.png')}}" alt="logo" class="logo-default" />
                     </a>
                     <div class="menu-toggler sidebar-toggler">
                         <span></span>
