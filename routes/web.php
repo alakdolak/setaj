@@ -148,6 +148,12 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::get('usersReport/{gradeId?}', ['as' => 'usersReport', 'uses' => 'ReportController@usersReport']);
 
+    Route::post('cancelAllSuperActivation', ['as' => 'cancelAllSuperActivation', 'uses' => 'AdminController@cancelAllSuperActivation']);
+
+    Route::post('onAllSuperActivation', ['as' => 'onAllSuperActivation', 'uses' => 'AdminController@onAllSuperActivation']);
+
+
+
     Route::get('userBookmarks/{uId}', ['as' => 'userBookmarks', 'uses' => 'ReportController@userBookmarks']);
 
     Route::post('editMoney', ['as' => 'editMoney', 'uses' => 'AdminController@editMoney']);

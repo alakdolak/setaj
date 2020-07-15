@@ -42,11 +42,11 @@
 }
 .servicesBanner {
     background-image: url(../images/servicesBanner.png);
-    background-color: #dee787;
+    background-color: rgb(155, 193, 60);
 }
 .productsBanner {
     background-image: url(../images/productsBanner.png);
-    background-color: #9ddcf9;
+    background-color: rgb(51, 163, 220);
 }
 .bannerText {
     font-size: 3em;

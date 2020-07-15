@@ -12,6 +12,7 @@ use App\models\SchoolStudent;
 use App\models\Tag;
 use App\models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use PHPExcel;
@@ -395,6 +396,30 @@ class AdminController extends Controller {
             $user->save();
 
             return Redirect::route("usersReport", ["gradeId" => $user->grade_id]);
+        }
+
+    }
+
+    public function cancelAllSuperActivation() {
+
+        if(isset($_POST["gradeId"])) {
+
+            $gradeId = makeValidInput($_POST["gradeId"]);
+            DB::update("update users set super_active = false where grade_id = " . $gradeId);
+            echo "ok";
+            return;
+        }
+
+    }
+
+    public function onAllSuperActivation() {
+
+        if(isset($_POST["gradeId"])) {
+
+            $gradeId = makeValidInput($_POST["gradeId"]);
+            DB::update("update users set super_active = true where grade_id = " . $gradeId);
+            echo "ok";
+            return;
         }
 
     }

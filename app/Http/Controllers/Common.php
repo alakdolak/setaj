@@ -132,10 +132,14 @@ function getToday() {
 
 function siteTime() {
 
+    if(\Illuminate\Support\Facades\Auth::check() &&
+        \Illuminate\Support\Facades\Auth::user()->super_active)
+        return true;
+
     include_once 'jdate.php';
     $w = jdate("w");
 
-    if($w == 3 || $w == 5 || $w == 6 || $w == 1 || $w == 2) {
+    if($w == 5 || $w == 6) {
 
         $time = getToday()["time"];
 

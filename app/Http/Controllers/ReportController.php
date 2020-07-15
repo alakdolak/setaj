@@ -47,7 +47,7 @@ class ReportController extends Controller {
             " and pb.user_id = u.id and pb.status = false and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0"
         );
 
-        return view("report.unDoneProjectsReport", ["projects" => $projects]);
+        return view("report.unDoneProjectsReport", ["projects" => $projects, 'gradeId' => $gradeId]);
     }
 
     public function productsReport($gradeId = -1) {

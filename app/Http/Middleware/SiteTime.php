@@ -20,8 +20,8 @@ class SiteTime {
     public function handle($request, Closure $next) {
 
 
-//        if(Auth::user()->level == getValueInfo('studentLevel') && !siteTime())
-//            return Redirect::route("home");
+        if(Auth::user()->level == getValueInfo('studentLevel') && !siteTime())
+            return Redirect::route("home");
 
         return $next($request);
     }
