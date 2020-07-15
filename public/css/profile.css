@@ -23,10 +23,12 @@
     right: 0%;
 }
 .userPic {
-    width: 230px;
-    height: 230px;
+    width: 200px;
+    height: 200px;
+    background-size: cover;
     border-radius: 50%;
     padding: 15px;
+    margin: 13px;
 }
 .lanternPng {
     width: 150px;

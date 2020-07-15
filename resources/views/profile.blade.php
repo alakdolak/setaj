@@ -31,7 +31,11 @@
             <div class="userPageBodyTopBar">
                 <div class="profileRightImg">
                     <div class="profileImg framePng">
-                        <div class="profileImg userPic"></div>
+                        @if(\Illuminate\Support\Facades\Auth::user()->pic != null && file_exists(__DIR__ . '/../../public/userPics/' . \Illuminate\Support\Facades\Auth::user()->pic))
+                            <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("userPics/" . \Illuminate\Support\Facades\Auth::user()->pic)}}')" class="profileImg userPic"></div>
+                        @else
+                            <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("userPics/defaultPic.png")}}')" class="profileImg userPic"></div>
+                        @endif
                     </div>
                     <div class="profileImg lanternPng"></div>
                 </div>
@@ -257,11 +261,15 @@
                                 </div>
                             </div>
                             <div style="padding: 15px 15px 0 15px;font-size: 1.1em;font-weight: 600;text-align: center;">
-                                <div style="line-height: 30px">هر 20 سکه معادل یک ستاره می باشد</div>
+                                <?php
+                                    $per = \App\models\ConfigModel::first()->change_rate;
+                                    $total = floor(\Illuminate\Support\Facades\Auth::user()->money / $per) + \Illuminate\Support\Facades\Auth::user()->stars;
+                                ?>
+                                <div style="line-height: 30px">هر {{$per}} سکه معادل یک ستاره می باشد</div>
                                 <div style="display: flex;align-items: center;justify-content: space-around;line-height: 30px;">
                                     <div>بنابراین امتیاز فعلی شما برابر است با:</div>
                                     <div>
-                                        <span>5</span>
+                                        <span>{{$total}}</span>
                                         <img src="{{URL::asset('images/star.png')}}">
                                     </div>
                                 </div>
