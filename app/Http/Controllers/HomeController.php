@@ -441,12 +441,14 @@ class HomeController extends Controller {
 
         $project->attach = $pics;
 
+
         if($project->price == 0)
             $project->price = "رایگان";
         else
             $project->price = number_format($project->price);
 
-        $bookmark = (Bookmark::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('projectMode'))->count() > 0);
+        $bookmark = true;
+//        $bookmark = (Bookmark::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('projectMode'))->count() > 0);
         $like = (Likes::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('projectMode'))->count() > 0);
         $canBuy = true;
         $date = getToday()["date"];

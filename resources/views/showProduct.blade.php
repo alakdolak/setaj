@@ -197,41 +197,39 @@
 
         function buy() {
 
-            $("#resultModalBtn").click();
+            $.ajax({
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                url: '{{route('buyProduct')}}',
+                data: {
+                    id: '{{$product->id}}'
+                },
+                success: function (res) {
 
-            {{--$.ajax({--}}
-            {{--    type: 'post',--}}
-            {{--    headers: {--}}
-            {{--        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')--}}
-            {{--    },--}}
-            {{--    url: '{{route('buyProduct')}}',--}}
-            {{--    data: {--}}
-            {{--        id: '{{$product->id}}'--}}
-            {{--    },--}}
-            {{--    success: function (res) {--}}
+                    if(res === "nok1") {
+                        $("#buyErr").empty().append("شما اجازه خرید این محصول را ندارید.");
+                    }
 
-            {{--        if(res === "nok1") {--}}
-            {{--            $("#buyErr").empty().append("شما اجازه خرید این محصول را ندارید.");--}}
-            {{--        }--}}
+                    else if(res === "nok2") {
+                        $("#buyErr").empty().append("شما قبلا این محصول را خریداری کرده اید.");
+                    }
 
-            {{--        else if(res === "nok2") {--}}
-            {{--            $("#buyErr").empty().append("شما قبلا این محصول را خریداری کرده اید.");--}}
-            {{--        }--}}
+                    else if(res === "nok3") {
+                        $("#buyErr").empty().append("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
+                    }
 
-            {{--        else if(res === "nok3") {--}}
-            {{--            $("#buyErr").empty().append("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");--}}
-            {{--        }--}}
+                    else if(res === "nok5") {
+                        $("#buyErr").empty().append("عملیات مورد نظر غیرمجاز است.");
+                    }
 
-            {{--        else if(res === "nok5") {--}}
-            {{--            $("#buyErr").empty().append("عملیات مورد نظر غیرمجاز است.");--}}
-            {{--        }--}}
+                    else if(res === "ok") {
+                        $("#resultModalBtn").click();
+                    }
 
-            {{--        else if(res === "ok") {--}}
-            {{--            document.location.href = '{{route('myProducts')}}';--}}
-            {{--        }--}}
-
-            {{--    }--}}
-            {{--});--}}
+                }
+            });
         }
 
         $(document).ready(function () {
