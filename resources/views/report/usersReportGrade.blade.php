@@ -16,9 +16,9 @@
 
 @section('content')
 
-    <div class="col-md-12" style="margin-top: 100px">
+    <div class="col-sm-12" style="margin-top: 100px">
 
-        <center>
+        <div>
 
             <button onclick="addItem()" class="btn btn-success">افزودن کاربر</button>
             <button onclick="cancelAllSuperActivation()" class="btn btn-success">لغو کردن دسترسی فراتر همه دانش آموزان</button>
@@ -73,7 +73,7 @@
                     </tr>
                 @endforeach
             </table>
-        </center>
+        </div>
 
     </div>
 

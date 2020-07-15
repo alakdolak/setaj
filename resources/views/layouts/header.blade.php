@@ -8,7 +8,7 @@
 
     <div class="headerNav">
         <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="headerNavbar">معرفی پروژه‌ها</div>
-        <div onclick="document.location.href = '{{route('showAllServices')}}'" class="headerNavbar">پروژه‌های خدماتی</div>
+        <div onclick="document.location.href = '{{route('showAllServices')}}'" class="headerNavbar">پروژه‌های همیاری</div>
         <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="headerNavbar">معرفی محصولات</div>
 
         <div class="headerNavbar">

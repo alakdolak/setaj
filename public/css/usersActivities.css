@@ -1,11 +1,9 @@
 body {
     /*min-width: 0;*/
     margin: 0;
-    font-size: medium;
     font-family: 'IRANSansWeb';
-    background-color: #f8f8f8;
+    background-color: #ffffff;
     color: #2c2c2c;
-    min-width: 1024px
 }
 
 .userProfileDetailsMainDiv .mainDivHeaderText {

@@ -120,14 +120,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12" style="direction: rtl">
+            <div class="col-sm-12" style="direction: rtl">
                 <div class="portlet light bordered">
-                    <center class="portlet-body">
+                    <div class="portlet-body">
 
                         @if(count($items) == 0)
                             <p>محتوایی در این بخش وجود ندارد</p>
                         @else
-                            <center>
+                            <div>
                                 @foreach($items as $item)
                                     <div style="margin: 20px">
                                         <p>{{$item->name}}</p>
@@ -137,7 +137,7 @@
                                         </div>
                                     </div>
                                 @endforeach
-                            </center>
+                            </div>
                         @endif
 
                         <form method="post" action="{{route('addGrade')}}">
@@ -152,7 +152,7 @@
                                 <p style="margin-top: 10px">{{$err}}</p>
                             </div>
                         </form>
-                    </center>
+                    </div>
                 </div>
             </div>
 

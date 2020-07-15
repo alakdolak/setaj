@@ -9,17 +9,17 @@
 
     <div class="page-content">
 
-        <center class="page-head">
-            <center>
+        <div class="page-head">
+            <div>
                 <h1>سوالات رایج</h1>
-            </center>
-        </center>
+            </div>
+        </div>
 
 
         <div class="faq-page faq-content-1" style="direction: rtl">
             <div class="faq-content-container">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                         <?php $i = 0; ?>
                         @foreach($categories as $category)
                             @if($i % 3 == 0)
@@ -47,7 +47,7 @@
                         @endforeach
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                         <?php $i = 0; ?>
                         @foreach($categories as $category)
                             @if($i % 3 == 1)
@@ -75,7 +75,7 @@
                         @endforeach
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                         <?php $i = 0; ?>
                         @foreach($categories as $category)
                             @if($i % 3 == 2)

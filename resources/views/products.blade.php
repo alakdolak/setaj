@@ -11,9 +11,10 @@
     <div class="banner">
         <div class="bannerGrayBox"></div>
         <div class="bannerBorderBox bannerLightBlueBox"></div>
-        <div class="bannerMainBox productsBanner">
-            <div class="bannerText">معرفی محصولات</div>
-        </div>
+        <div class="bannerMainBox productsBanner"></div>
+{{--        <div class="bannerMainBox productsBanner">--}}
+{{--            <div class="bannerText">معرفی محصولات</div>--}}
+{{--        </div>--}}
     </div>
 
 @stop
@@ -40,11 +41,11 @@
 
             @if($allow)
 
-                <div class="shopEachRow col-lg-12" style="margin-top: 20px">
+                <div class="shopEachRow col-sm-12" style="margin-top: 20px">
 
-                    <div class="shopEachRow shopEachRowTitle col-lg-12">محصولات هفته ی {{$arr[$i]}}</div>
+                    <div class="shopEachRow shopEachRowTitle col-sm-12">محصولات هفته ی {{$arr[$i]}}</div>
 
-                    <div style="margin-top: 20px" class="shopEachRow col-lg-12">
+                    <div style="margin-top: 20px" class="shopEachRow col-sm-12">
 
                         @foreach($products as $product)
 
@@ -52,7 +53,7 @@
                                 @continue
                             @endif
 
-                            <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{route('showProduct', ['id' => $product->id])}}'" class="myItem shopOneBox col-lg-3 col-xs-6">
+                            <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{route('showProduct', ['id' => $product->id])}}'" class="myItem shopOneBox col-sm-3 col-xs-6">
                                 <div class="sh_mainBox">
                                     <div style="background-image: url('{{$product->pic}}')" class="sh_mainPic"></div>
                                     <div class="sh_descript">
@@ -78,11 +79,11 @@
 
                                 @if($product->canBuy)
                                     <div class="sh_ownerBox">
-                                        <div>اثر: {{$product->owner}}</div>
+                                        <div>تولیدکننده: {{$product->owner}}</div>
                                     </div>
                                 @else
                                     <div class="sh_ownerBox_finish">
-                                        <div>اثر: {{$product->owner}}</div>
+                                        <div>تولیدکننده: {{$product->owner}}</div>
                                     </div>
                                 @endif
                             </div>

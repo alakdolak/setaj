@@ -24,8 +24,6 @@
 }
 .shopBtn{
     color: white;
-    background-color: #68cda5;
-    border-bottom: 5px solid #48c291;
     box-shadow: 5px 5px 5px;
     border-radius: 7px;
     padding: 15px 30px;
@@ -35,8 +33,27 @@
     text-align: center;
     cursor: pointer;
 }
-.shopBtn:hover {
+.shopDownloadBtn {
+    background-color: #68cda5;
+    border-bottom: 5px solid #48c291;
+}
+.shopDownloadBtn:hover {
     background-color: #48c291;
+}
+.downloadBtn {
+    background-color: #ffc20e;
+    border-bottom: 5px solid #ff7700;
+}
+.downloadBtn:hover {
+    background-color: #ff7700;
+}
+.doneBtn {
+    background-color: #ff5555;
+    border-bottom: 5px solid #ff0000;
+}
+.doneBtn:hover {
+    background-color: #ff0000;
+    cursor: context-menu;
 }
 .pr_descript{
     font-size: 1.3em;

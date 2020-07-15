@@ -25,7 +25,7 @@
 
 @section('content')
 
-    <center style="margin-top: 100px">
+    <div style="margin-top: 100px">
 
         <div style="margin: 20px">
             <button onclick="addProject()" class="btn btn-primary">افزودن پروژه جدید</button>
@@ -140,7 +140,7 @@
             </div>
         </div>
 
-    </center>
+    </div>
 
     <div id="myAddModal" class="modal">
 
@@ -148,7 +148,7 @@
             {{ csrf_field() }}
             <div class="modal-content" style="width: 75% !important;">
 
-                <center>
+                <div>
 
                     <h5 style="padding-right: 5%;">نام پروژه</h5>
                     <input type="text" name="name" required maxlength="100">
@@ -207,7 +207,7 @@
                     <h5 style="padding-right: 5%;">فایل های آموزش پروژه(اختیاری)</h5>
                     <input type="file" name="attach" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
 
-                </center>
+                </div>
 
                 <div style="margin-top: 20px">
                     <input type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
@@ -221,7 +221,7 @@
 
         <div class="modal-content">
 
-            <center>
+            <div>
 
                 <h5 style="padding-right: 5%;">تگ ها</h5>
                 <select id="tagId">
@@ -229,7 +229,7 @@
                         <option value="{{$tag->id}}">{{$tag->name}}</option>
                     @endforeach
                 </select>
-            </center>
+            </div>
 
             <div style="margin-top: 20px">
                 <input onclick="addNewTag()" type="submit" value="افزودن تگ" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
@@ -243,7 +243,7 @@
 
         <div class="modal-content">
 
-            <center>
+            <div>
 
                 <h5 style="padding-right: 5%;">پایه های تحصیلی</h5>
                 <select id="gradeId">
@@ -251,7 +251,7 @@
                         <option value="{{$grade->id}}">{{$grade->name}}</option>
                     @endforeach
                 </select>
-            </center>
+            </div>
 
             <div style="margin-top: 20px">
                 <input onclick="addNewGrade()" type="submit" value="افزودن پایه تحصیلی" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">

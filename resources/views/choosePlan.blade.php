@@ -14,7 +14,7 @@
             <div class="planeText">معرفی پروژه‌ها</div>
         </div>
         <div onclick="document.location.href = '{{route('showAllServices')}}'" class="planes Services">
-            <div class="planeText">پروژه‌های خدماتی</div>
+            <div class="planeText">پروژه‌های همیاری</div>
         </div>
         <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="planes Products">
             <div class="planeText">معرفی محصولات</div>

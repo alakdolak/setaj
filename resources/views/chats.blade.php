@@ -21,7 +21,7 @@
 
 @section('content')
 
-    <center class="col-xs-12" style="margin-top: 100px">
+    <div class="col-xs-12" style="margin-top: 100px">
 
         @if(count($chats) == 0)
 
@@ -37,6 +37,6 @@
 
         @endif
 
-    </center>
+    </div>
 
 @stop

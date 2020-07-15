@@ -28,9 +28,9 @@
         </div>
         <div class="mainBodyUserProfile">
             <div class="mainDivContainerProfilePage row">
-                <div class="col-lg-12" style="margin-top: 40px; padding: 0 !important;">
+                <div class="col-sm" style="margin-top: 40px; padding: 0 !important;">
                     <div style="padding: 0 25px 0 0 !important;" class="userProfileActivitiesDetailsMainDiv col-xs-8">
-                        <div style="padding: 0 !important;" class="userProfilePostsFiltrationContainer col-lg-12">
+                        <div style="padding: 0 !important;" class="userProfilePostsFiltrationContainer col-sm-12">
                             <div class="userProfilePostsFiltration">
                                 <span onclick="showMyProjects(this)" class="onClick">پروژه‌های من</span>
                                 <span onclick="showMyProducts(this)">محصولات من</span>
@@ -38,7 +38,7 @@
                                 <span onclick="showMyCarts(this)">خریدهای من</span>
                             </div>
                         </div>
-                        <div style="padding: 0 !important;" class="userProfileActivitiesMainDiv userActivitiesPhotos col-lg-12">
+                        <div style="padding: 0 !important;" class="userProfileActivitiesMainDiv userActivitiesPhotos col-sm-12">
                             <div class="userProfilePhotosAndVideos">
                                 <div class="photosAndVideosMainDiv" id="myProjects">
                                     @foreach($myProjects as $buy)

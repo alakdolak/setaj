@@ -130,7 +130,7 @@
 
 @section('content')
 
-    <center style="margin-top: 100px">
+    <div style="margin-top: 100px">
 
         <div style="margin: 20px">
             <button onclick="addProduct()" class="btn btn-primary">افزودن محصول جدید</button>
@@ -220,17 +220,17 @@
             </div>
         </div>
 
-    </center>
+    </div>
 
     <div id="preModal" class="modal">
 
         <div class="modal-content" style="height: 300px">
-            <center>
+            <div>
 
                 <h5 style="padding-right: 5%;">نام کاربری/کد ملی صاحب محصول</h5>
                 <input type="text" id="username" name="username" required>
 
-            </center>
+            </div>
 
             <div style="margin-top: 20px">
                 <input onclick="getDetail()" type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
@@ -246,7 +246,7 @@
             {{ csrf_field() }}
             <div class="modal-content" style="width: 75% !important;">
 
-                <center>
+                <div>
 
                     <input type="hidden" name="username" id="hiddenUsername">
 
@@ -274,7 +274,7 @@
                     <h5 style="padding-right: 5%;">تبلیغات محصول(اختیاری)</h5>
                     <input type="file" name="trailer" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
 
-                </center>
+                </div>
 
                 <div style="margin-top: 20px">
                     <input type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">

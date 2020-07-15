@@ -36,7 +36,7 @@
         <style>
 
             @media (min-width: 1200px) {
-                .col-lg-3 {
+                .col-sm-3 {
                     float: right;
                 }
             }

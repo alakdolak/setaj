@@ -23,7 +23,7 @@
 
 @section('content')
 
-    <div class="col-md-12" style="margin-top: 100px">
+    <div class="col-sm-12" style="margin-top: 100px">
 
         <div class="row" style="margin-bottom: 5%;">
             <div class="col-xs-12" style="margin-top: 5px; direction: rtl">
@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <center>
+        <div>
 
             <table style="margin-top: 20px">
                 <tr>
@@ -93,7 +93,7 @@
                     <?php $i++; ?>
                 @endforeach
             </table>
-        </center>
+        </div>
 
     </div>
 

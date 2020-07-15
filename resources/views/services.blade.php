@@ -10,9 +10,10 @@
     <div class="banner">
         <div class="bannerGrayBox"></div>
         <div class="bannerBorderBox bannerLightGreenBox"></div>
-        <div class="bannerMainBox servicesBanner">
-            <div class="bannerText">پروژه های خدماتی</div>
-        </div>
+        <div class="bannerMainBox servicesBanner"></div>
+{{--        <div class="bannerMainBox servicesBanner">--}}
+{{--            <div class="bannerText">پروژه های خدماتی</div>--}}
+{{--        </div>--}}
     </div>
 
 @stop
@@ -23,7 +24,7 @@
         $arr = ["اول", "دوم", "سوم", "چهارم", "پنجم", "ششم", "هفتم", "هشتم", "نهم", "دهم"]
     ?>
 
-    <div class="shopBox row" style="margin-top: 100px !important;">
+    <div class="shopBox row" style="margin-top: 250px !important;">
 
         @for($i = 9; $i >= 0; $i--)
 
@@ -38,11 +39,11 @@
             @endforeach
 
             @if($allow)
-                <div class="shopEachRow col-lg-12" style="margin-top: 20px">
+                <div class="shopEachRow col-sm-12" style="margin-top: 20px">
 
-                    <div class="shopEachRow shopEachRowTitle col-lg-12">پروژه های خدماتی هفته ی {{$arr[$i]}}</div>
+                    <div class="shopEachRow shopEachRowTitle col-sm-12">پروژه های همیاری هفته ی {{$arr[$i]}}</div>
 
-                    <div style="margin-top: 20px" class="shopEachRow col-lg-12">
+                    <div style="margin-top: 20px" class="shopEachRow col-sm-12">
 
                         @foreach($services as $service)
 
@@ -50,7 +51,7 @@
                                 @continue
                             @endif
 
-                            <div onclick="document.location.href = '{{route('showService', ['id' => $service->id])}}'" class="shopOneBox col-lg-3 col-xs-6">
+                            <div onclick="document.location.href = '{{route('showService', ['id' => $service->id])}}'" class="shopOneBox col-sm-3 col-xs-6">
                                 <div class="sh_mainBox">
                                     <div style="background-image: url('{{$service->pic}}')" class="sh_mainPic"></div>
                                     <div class="sh_descript">
@@ -61,19 +62,20 @@
                                             <div class="priceText">ستاره ی دریافتی: {{$service->star}}</div>
                                         </div>
 
-                                        <div class="sh_descriptRow sh_title">ظرفیت: {{$service->capacity}}</div>
-
+                                        <div class="sh_descriptRow sh_priceBox">
+                                            <div class="priceIcons capacityIcon"></div>
+                                            <div class="priceText">موجودی: {{$service->capacity}}</div>
+                                        </div>
                                     </div>
-
                                 </div>
 
                                 @if($service->canBuy)
                                     <div class="sh_ownerBox">
-                                        <div style="font-size: 0.9em">سفارش دهنده: مدرسه سراج</div>
+                                        <div style="font-size: 0.9em">سفارش مدرسه سراج</div>
                                     </div>
                                 @else
                                     <div class="sh_ownerBox_finish">
-                                        <div style="font-size: 0.9em">سفارش دهنده: مدرسه سراج</div>
+                                        <div style="font-size: 0.9em">سفارش مدرسه سراج</div>
                                     </div>
                                 @endif
 

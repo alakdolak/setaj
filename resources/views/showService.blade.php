@@ -20,7 +20,7 @@
 
 @section('content')
 
-{{--    <center class="row" style="margin-top: 100px">--}}
+{{--    <div class="row" style="margin-top: 100px">--}}
 
 {{--        <div class="bookmarkDivTotal">--}}
 {{--            <p onclick="bookmark()" class="zoomable bookmarkDiv" onmouseenter="$(this).css('background-color', 'rgb(199, 200, 206)')" onmouseleave="$(this).css('background-color', 'transparent')" style="cursor: pointer; float: left; margin-left: 30px; border: 1px solid #202121; height: 34px; padding: 0 23px; line-height: 30px; background-color: transparent; border-radius: 30px !important;">--}}
@@ -58,35 +58,35 @@
 
 {{--        @foreach($service->attach as $pic)--}}
 {{--            @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")--}}
-{{--                <center class="col-xs-12">--}}
+{{--                <div class="col-xs-12">--}}
 {{--                    <img style="width: 250px; margin: 10px; float: right" src="{{$pic["path"]}}">--}}
-{{--                </center>--}}
+{{--                </div>--}}
 {{--            @elseif($pic["type"] == "mp4")--}}
-{{--                <center class="col-xs-12">--}}
+{{--                <div class="col-xs-12">--}}
 {{--                    <video width="320" height="240" controls>--}}
 {{--                        <source src="{{$pic["path"]}}" type="video/mp4">--}}
 {{--                        مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.--}}
 {{--                    </video>--}}
-{{--                </center>--}}
+{{--                </div>--}}
 {{--            @elseif($pic["type"] == "mp3")--}}
-{{--                <center class="col-xs-12">--}}
+{{--                <div class="col-xs-12">--}}
 {{--                    <audio controls>--}}
 {{--                        <source src="{{$pic["path"]}}" type="audio/mpeg">--}}
 {{--                        مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.--}}
 {{--                    </audio>--}}
-{{--                </center>--}}
+{{--                </div>--}}
 {{--            @elseif($pic["type"] == "pdf")--}}
-{{--                <center class="col-xs-12">--}}
+{{--                <div class="col-xs-12">--}}
 {{--                    <embed src="{{$pic["path"]}}" width="800px" height="800px" />--}}
-{{--                </center>--}}
+{{--                </div>--}}
 {{--            @else--}}
-{{--                <center class="col-xs-12">--}}
+{{--                <div class="col-xs-12">--}}
 {{--                    <a href="{{$pic["path"]}}" download>دانلود فایل</a>--}}
-{{--                </center>--}}
+{{--                </div>--}}
 {{--            @endif--}}
 {{--        @endforeach--}}
 
-{{--    </center>--}}
+{{--    </div>--}}
 <article class="c-product js-product">
     <section class="c-product__info">
         <div class="c-product__headline">

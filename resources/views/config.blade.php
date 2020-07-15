@@ -19,7 +19,7 @@
 
 @section('content')
 
-    <center style="margin-top: 200px">
+    <div style="margin-top: 200px">
 
         <form method="post" action="{{route('doConfig')}}">
 
@@ -60,5 +60,5 @@
             </div>
         </form>
 
-    </center>
+    </div>
 @stop

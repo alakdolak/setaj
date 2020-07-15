@@ -1,7 +1,7 @@
 /*the css of filters*/
 
 .filterBorder {
-    margin: 100px 12% 25px;
+    margin: 250px 12% 25px;
     text-align: center;
     border-right: 35px solid #f37053;
     border-left: 35px solid #f37053;
@@ -96,6 +96,14 @@
     height: 30px;
     background-size: 100%;
     background-repeat: no-repeat;
+}
+
+.categoryIcon {
+    background-image: url(../images/category.png);
+}
+
+.capacityIcon {
+    background-image: url(../images/capacity.png);
 }
 
 .priceText {

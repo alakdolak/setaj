@@ -132,7 +132,7 @@
 
             @foreach($categories as $category)
 
-                <div style="direction: rtl" class="col-lg-6">
+                <div style="direction: rtl" class="col-sm-6">
                     <div class="portlet light portlet-fit ">
                         <div class="portlet-body">
                             <div class="mt-element-list">
@@ -193,19 +193,19 @@
             <h2 style="padding-right: 5%;">افزودن سوال جدید</h2>
 
             <div id="editor" style="margin-top: 30px">
-                <center><h3>متن سوال</h3></center>
+                <div><h3>متن سوال</h3></div>
                 <textarea id="editor1" cols="80" name="question" required></textarea>
             </div>
 
             <div style="margin-top: 30px">
-                <center><h3>متن جواب</h3></center>
+                <div><h3>متن جواب</h3></div>
                 <textarea id="editor2" cols="80" name="answer" required></textarea>
             </div>
 
-            <center style="margin-top: 20px">
+            <div style="margin-top: 20px">
                 <input type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
                 <input type="button" value="انصراف" class="btn green"  style="margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('myModal').style.display = 'none'">
-            </center>
+            </div>
         </div>
     </form>
 </div>

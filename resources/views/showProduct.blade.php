@@ -9,7 +9,7 @@
 @section("content")
 
     <div class="eachProduct row">
-        <div class="pr_descript col-lg-7 col-xs-12">
+        <div class="pr_descript col-sm-7 col-xs-12">
             <div class="pr_descriptRow pr_title">{{$product->name}}</div>
             <div class="pr_descriptRow pr_salesman">فروشنده: {{$product->owner}}</div>
             <div class="pr_descriptRow pr_iconesBox">
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-5 col-xs-12" style="padding-right: 0 !important;">
+        <div class="col-sm-5 col-xs-12" style="padding-right: 0 !important;">
             <div class="pr_pics">
                 <div class="pr_otherPics">
                     @foreach($product->pics as $pic)
@@ -44,7 +44,9 @@
                 @endif
             </div>
             @if($canBuy)
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn">خرید محصول</div>
+                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
+                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn downloadBtn">دریافت محصول</div>
+                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn doneBtn">تمام شد</div>
             @else
                 <div style="background-color: #ccc !important; cursor: not-allowed" disabled class="shopBtn">خرید محصول</div>
             @endif
@@ -52,7 +54,7 @@
 
         @if(count($product->attach) > 0)
 
-            <div class="pr_advertiseBox col-lg-12">
+            <div class="pr_advertiseBox col-sm-12">
                 <div class="pr_iconesBox">
                     <div class="pr_icons coinIcon"></div>
                     <div>فایل های آموزشی:</div>
@@ -61,31 +63,31 @@
 
                     @foreach($product->attach as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <img style="width: 250px; margin: 10px; float: right" src="{{$pic["path"]}}">
-                            </center>
+                            </div>
                         @elseif($pic["type"] == "mp4")
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <video width="320" height="240" controls>
                                     <source src="{{$pic["path"]}}" type="video/mp4">
                                     مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </video>
-                            </center>
+                            </div>
                         @elseif($pic["type"] == "mp3")
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <audio controls>
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
                                     مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </audio>
-                            </center>
+                            </div>
                         @elseif($pic["type"] == "pdf")
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <embed src="{{$pic["path"]}}" width="800px" height="800px" />
-                            </center>
+                            </div>
                         @else
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <a href="{{$pic["path"]}}" download>دانلود فایل</a>
-                            </center>
+                            </div>
                         @endif
                     @endforeach
 
@@ -97,7 +99,7 @@
 
         @if(count($product->trailer) > 0)
 
-            <div class="pr_advertiseBox col-lg-12">
+            <div class="pr_advertiseBox col-sm-12">
                 <div class="pr_iconesBox">
                     <div class="pr_icons coinIcon"></div>
                     <div>تبلیغات:</div>
@@ -106,31 +108,31 @@
 
                     @foreach($product->trailer as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <img style="width: 250px; margin: 10px; float: right" src="{{$pic["path"]}}">
-                            </center>
+                            </div>
                         @elseif($pic["type"] == "mp4")
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <video width="320" height="240" controls>
                                     <source src="{{$pic["path"]}}" type="video/mp4">
                                     مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </video>
-                            </center>
+                            </div>
                         @elseif($pic["type"] == "mp3")
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <audio controls>
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
                                     مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </audio>
-                            </center>
+                            </div>
                         @elseif($pic["type"] == "pdf")
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <embed src="{{$pic["path"]}}" width="800px" height="800px" />
-                            </center>
+                            </div>
                         @else
-                            <center class="col-xs-12">
+                            <div class="col-xs-12">
                                 <a href="{{$pic["path"]}}" download>دانلود فایل</a>
-                            </center>
+                            </div>
                         @endif
                     @endforeach
 
