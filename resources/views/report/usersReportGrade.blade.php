@@ -21,6 +21,8 @@
         <center>
 
             <button onclick="addItem()" class="btn btn-success">افزودن کاربر</button>
+            <button onclick="cancelAllSuperActivation()" class="btn btn-success">لغو کردن دسترسی فراتر همه دانش آموزان</button>
+            <button onclick="onAllSuperActivation()" class="btn btn-success">روشن کردن دسترسی فراتر همه دانش آموزان</button>
 
             <table style="margin-top: 20px">
                 <tr>
@@ -111,6 +113,50 @@
     </div>
 
     <script>
+
+        function cancelAllSuperActivation() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                url: '{{route('cancelAllSuperActivation')}}',
+                data: {
+                    gradeId: '{{$gradeId}}'
+                },
+                success: function (res) {
+                    if(res === "ok")
+                        document.location.reload();
+                }
+            });
+
+        }
+
+        function onAllSuperActivation() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                url: '{{route('onAllSuperActivation')}}',
+                data: {
+                    gradeId: '{{$gradeId}}'
+                },
+                success: function (res) {
+                    if(res === "ok")
+                        document.location.reload();
+                }
+            });
+
+        }
 
         function toggleSuperStatus(id) {
 

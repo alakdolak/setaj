@@ -140,7 +140,11 @@
                         <div data-url="{{$pic}}" style="background-image: url('{{$pic}}'); background-size: contain; cursor:pointer;" class="pr_eachOtherPics"></div>
                     @endforeach
                 </div>
-                <div style="background-image: url('{{$product->pics[0]}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
+                @if(count($product->pics) > 0)
+                    <div style="background-image: url('{{$product->pics[0]}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
+                @else
+                    <div id="pr_mainPic" class="pr_mainPic"></div>
+                @endif
             </div>
             @if($canBuy)
                 <div onclick="buy()" class="shopBtn">خرید محصول</div>
