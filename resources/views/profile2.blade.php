@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="{{URL::asset('css/abbreviations.css')}}">
     <link rel="stylesheet" href="{{URL::asset('css/profile.css')}}">
 
-
-
 @stop
 
 @section("content")
@@ -17,33 +15,22 @@
 
         <div class="userProfilePageCoverImg">
             <div class="userPageBodyTopBar">
-                <div class="profileRightImg">
-                    <div class="profileImg framePng">
-                        <div class="profileImg userPic"></div>
-                    </div>
-                    <div class="profileImg lanternPng"></div>
-                </div>
-                <div class="profileLeftImg">
-                    <div class="profileImg bagPng"></div>
-                    <div class="profileImg binPng"></div>
-                </div>
-{{--                <div class="circleBase profilePicUserProfile"></div>--}}
-{{--                <div class="userProfileInfo">--}}
-{{--                    <div>{{\Illuminate\Support\Facades\Auth::user()->first_name . ' ' . \Illuminate\Support\Facades\Auth::user()->last_name}}</div>--}}
+                <div class="circleBase profilePicUserProfile"></div>
+                <div class="userProfileInfo">
+                    <div>{{\Illuminate\Support\Facades\Auth::user()->first_name . ' ' . \Illuminate\Support\Facades\Auth::user()->last_name}}</div>
 
-{{--                    <div>{{\Illuminate\Support\Facades\DB::select("select name from grade where id = " . \Illuminate\Support\Facades\Auth::user()->grade_id)[0]->name}}--}}
-{{--                        --}}{{--                        <span>1396/10/04</span>--}}
-{{--                    </div>--}}
-{{--                    <div>دوره تحصیلی</div>--}}
-{{--                </div>--}}
+                    <div>{{\Illuminate\Support\Facades\DB::select("select name from grade where id = " . \Illuminate\Support\Facades\Auth::user()->grade_id)[0]->name}}
+                        {{--                        <span>1396/10/04</span>--}}
+                    </div>
+                    <div>دوره تحصیلی</div>
+                </div>
             </div>
-        </div>
         </div>
         <div class="mainBodyUserProfile">
             <div class="mainDivContainerProfilePage row">
                 <div class="col-lg-12" style="margin-top: 40px; padding: 0 !important;">
-                    <div style="padding: 0 40px 0 0 !important;" class="userProfileActivitiesDetailsMainDiv col-xs-8">
-                        <div style="padding: 0 !important; text-align: center;" class="userProfilePostsFiltrationContainer col-lg-12">
+                    <div style="padding: 0 25px 0 0 !important;" class="userProfileActivitiesDetailsMainDiv col-xs-8">
+                        <div style="padding: 0 !important;" class="userProfilePostsFiltrationContainer col-lg-12">
                             <div class="userProfilePostsFiltration">
                                 <span onclick="showMyProjects(this)" class="onClick">پروژه‌های من</span>
                                 <span onclick="showMyProducts(this)">محصولات من</span>
@@ -144,7 +131,7 @@
                         <div class="mainDivHeaderText">
                             <h3>مشخصات کاربر</h3>
                         </div>
-                        <div style="width: 100%; height: 100px;">
+                        <div>
                             <div class="personalFields col-xs-6">
                                 نام
                             </div>
@@ -172,15 +159,12 @@
                                     <img src="{{URL::asset('images/star.png')}}">
                                     <span>{{\Illuminate\Support\Facades\Auth::user()->stars}}</span>
                                 </div>
-                            </div>
-                            <div style="padding: 15px;font-size: 1.1em;font-weight: 600;text-align: center;">
-                                <div>هر 20 سکه معادل یک ستاره می باشد</div>
-                                <div style="display: flex;align-items: center;justify-content: space-around;">
-                                    <div>بنابراین امتیاز فعلی شما برابر است با:</div>
+                                <div>
                                     <div>
-                                        <span>5</span>
+                                        <img src="{{URL::asset('images/coin.png')}}">
                                         <img src="{{URL::asset('images/star.png')}}">
                                     </div>
+                                    <span>{{ \App\models\ConfigModel::first()->rev_change_rate * \Illuminate\Support\Facades\Auth::user()->money + \Illuminate\Support\Facades\Auth::user()->stars}}</span>
                                 </div>
                             </div>
                         </div>

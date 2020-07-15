@@ -1,15 +1,52 @@
-.bag {
-    background-image: url(../images/bag.png);
+.profileRightImg {
+    position: absolute;
+    width: 400px;
+    height: 250px;
+    right: 13%;
 }
-
-.frame {
+.profileLeftImg {
+    position: absolute;
+    width: 450px;
+    height: 250px;
+    left: 13%;
+}
+.profileImg {
+    position: absolute;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.framePng {
+    width: 230px;
+    height: 230px;
     background-image: url(../images/frame.png);
+    top: 0;
+    right: 0%;
 }
-
-.lantern {
+.userPic {
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    padding: 15px;
+}
+.lanternPng {
+    width: 150px;
+    height: 175px;
     background-image: url(../images/lantern.png);
+    bottom: 0;
+    left: 0;
 }
-
-.bin {
+.bagPng {
+    width: 200px;
+    height: 185px;
+    background-image: url(../images/bag.png);
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+}
+.binPng {
+    width: 290px;
+    height: 220px;
     background-image: url(../images/bin.png);
+    bottom: 0;
+    left: 0;
 }
