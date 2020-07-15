@@ -5,6 +5,7 @@
 
     <link rel="stylesheet" href="{{URL::asset('css/usersActivities.css')}}">
     <link rel="stylesheet" href="{{URL::asset('css/abbreviations.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/profile.css')}}">
 
 @stop
 
@@ -61,12 +62,6 @@
                             </div>
                             <div class="personalFieldsContents col-xs-6">{{\Illuminate\Support\Facades\Auth::user()->username}}</div>
                         </div>
-
-                    </div>
-                    <div class="userProfileMedalsMainDiv rightColBoxes">
-                        <div class="mainDivHeaderText">
-                            <h3>اعتبارهای من</h3>
-                        </div>
                         <div class="medalsMainBox">
                             <div>
                                 <img src="{{URL::asset('images/coin.png')}}">
@@ -85,7 +80,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="userProfileActivitiesMainDiv userActivitiesPhotos col-sm-8 col-xs-12">
@@ -183,7 +177,6 @@
         <script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
 
         <script>
-
             autosize(document.getElementsByClassName("inputBoxInputSearch"));
             autosize(document.getElementsByClassName("inputBoxInputAnswer"));
             autosize(document.getElementsByClassName("inputBoxInputComment"));

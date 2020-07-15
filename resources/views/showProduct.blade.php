@@ -145,17 +145,6 @@
             @if($canBuy)
                 <div onclick="buy()" class="shopBtn">خرید محصول</div>
             @endif
-            <div class="eachProduct row">
-
-                <div class="col-lg-4 col-xs-12">
-
-                    <div class="pr_pics">
-                        <div class="pr_mainPic"></div>
-                        <div class="pr_otherPics"></div>
-                    </div>
-                    <div class="shopBtn"></div>
-                    </div>
-            </div>
         </div>
 
         @if(count($product->attach) > 0)
