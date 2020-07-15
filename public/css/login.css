@@ -1,0 +1,104 @@
+.loginBody {
+    width: 300px;
+    height: 50vh;
+    background-color: white;
+    padding: 25px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 12px;
+    border-bottom: 12px solid #04C582;
+ }
+
+.loginTitle {
+    width: 100%;
+    margin: 0 0 25px;
+    padding: 0 0 15px 0;
+    border-bottom: 2px solid #f9f9f9;
+    display: flex;
+    justify-content: center;
+}
+
+.loginTitleImg {
+    width: 75%;
+    height: 90px;
+    background-image: url(../images/login.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.loginInputDiv {
+    background-color: #f9f9f9;
+    height: 30px;
+    padding: 5px 5px 5px 15px;
+    border-top: 4px solid #e9e9e9;
+    border-right: 4px solid #e9e9e9;
+    border-radius: 5px;
+    margin: 0 0 20px 0;
+}
+
+.loginInput {
+    width: 80%;
+    background-color: #f9f9f9;
+    border: none;
+    height: 30px;
+    float: left;
+    padding: 5px 10px;
+}
+
+.loginIconDiv {
+    width: 15%;
+    height: 30px;
+    float: right;
+    border-left: 1.5px solid #e9e9e9;
+    padding-left: 5px;
+}
+
+.loginIcon {
+    width: 100%;
+    line-height: 30px;
+    font-size: 1.35em;
+    text-align: center;
+    color: #04C582;
+}
+
+.rememberMe {
+    display: inline-block;
+    font-size: 0.7em;
+    font-weight: 500;
+    color: #cecece;
+    margin: 0 25px 0px 0;
+}
+
+.loginBtnDiv {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.loginBtn {
+    width: 50%;
+    background-color: #04C582;
+    padding: 5px 20px;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: white;
+    height: 30px;
+    line-height: 25px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.loginDownArrow {
+    position: relative;
+    font-size: 4.5em;
+}
+
+.loginDownArrowIcon {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translate(-50%);
+}

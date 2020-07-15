@@ -1,0 +1,53 @@
+.choosePlane {
+    height: 400px;
+    margin-top: 85px;
+    background-color: #f9f9f9;
+    padding: 0 12%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.planes {
+    width: 325px;
+    height: 325px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.planes:hover {
+    font-size: 1.7em;
+}
+
+.projects {
+    background-image: url(../images/projects.png);
+}
+
+.projects:hover {
+    opacity: 0.85;
+}
+
+.Services {
+    background-image: url(../images/Services.png);
+}
+
+.Services:hover {
+    opacity: 0.85;
+}
+
+.Products {
+    background-image: url(../images/Products.png);
+}
+
+.Products:hover {
+    opacity: 0.85;
+}
+
+.planeText {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 1.5em;
+    font-weight: 500;
+    color: white;
+}

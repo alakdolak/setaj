@@ -1,0 +1,58 @@
+.banner {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.bannerGrayBox {
+    width: 83%;
+    height: 200px;
+    background-color: #f2f2f2;
+    position: absolute;
+    z-index: 1;
+}
+.bannerBorderBox {
+    width: 78%;
+    height: 210px;
+    position: absolute;
+    top: 30px;
+    z-index: 10;
+}
+.bannerLightRedBox {
+    background-color: #f8aba6;
+}
+.bannerLightBlueBox {
+    background-color: #9ddcf9;
+}
+.bannerLightGreenBox {
+    background-color: #dee787;
+}
+.bannerMainBox {
+    width: 76%;
+    height: 220px;
+    position: absolute;
+    top: 40px;
+    z-index: 20;
+    background-size: 64%;
+    background-repeat: no-repeat;
+}
+.projectsBanner {
+    background-image: url(../images/projectsBanner.png);
+    background-color: #f15b47;
+}
+.servicesBanner {
+    background-image: url(../images/servicesBanner.png);
+    background-color: #dee787;
+}
+.productsBanner {
+    background-image: url(../images/productsBanner.png);
+    background-color: #9ddcf9;
+}
+.bannerText {
+    font-size: 3em;
+    font-weight: 700;
+    color: white;
+    position: absolute;
+    bottom: 20%;
+    right: 10%;
+}

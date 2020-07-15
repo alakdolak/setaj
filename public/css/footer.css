@@ -1,0 +1,75 @@
+.footer {
+    width: 100%;
+    padding: 15px;
+    padding-right: 12%;
+    padding-left: 12%;
+    margin-top: 50px;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footerDescript {
+    color: #909090;
+}
+
+.footerSlogan {
+    text-align: justify;
+}
+
+.footerLinksDiv {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.footerLinks {
+    display: flex;
+    align-items: center;
+}
+
+.footerLogo {
+    width: 35px;
+    height: 35px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.rules {
+    background-image: url(../images/rules.png);
+}
+
+.contactUs {
+    background-image: url(../images/contactUs.png);
+}
+
+.FAQ {
+    background-image: url(../images/FAQ.png);
+}
+
+.footerLogoText {
+    margin-right: 4px;
+}
+
+.serajDescript {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.serajLogo {
+    width: 50px;
+    height: 50px;
+    background-image: url(../images/serajLogo.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.address {
+    width: 300px;
+    height: 50px;
+    background-image: url(../images/address.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin-left: 10px;
+}

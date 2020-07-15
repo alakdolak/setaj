@@ -1,0 +1,37 @@
+body{
+    font-family: IRANSans;
+    direction: rtl;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.blur {
+    filter: blur(3px);
+}
+
+::placeholder {
+    font-family: "B Yekan";
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #cecece;
+}
+
+/*the icones*/
+.coinIcon {
+    background-image: url(../images/coin.png);
+}
+.starIcon {
+    background-image: url(../images/star.png);
+}

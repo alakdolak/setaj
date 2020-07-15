@@ -1,0 +1,70 @@
+.homeBodyDiv{
+    height: 100%;
+}
+
+.homePic {
+    width: 100%;
+    height: -webkit-fill-available;
+    background-image: url(../images/home.png);
+    background-position: top;
+    position: relative;
+}
+.nextEvent {
+    background-color: #fec53a;
+    padding: 5px 20px 2px;
+    border-radius: 10px;
+    border-top: 2px solid yellow;
+    border-bottom: 4px solid #fe9210;
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translate(-50%, 10px);
+    box-shadow: 0px 6px 10px darkgoldenrod;
+}
+.nextEventLogoDiv {
+    float: right;
+    width: 52px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fe9210;
+}
+.nextEventLogo {
+    background-image: url(../images/clock.png);
+    background-size: 100%;
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+}
+.nextEventTextDiv {
+    margin-right: 20px;
+    display: inline-block;
+}
+.nextEventText {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #fe9210;
+}
+.nextEventTime {
+    font-size: 1.25em;
+    color: white;
+}
+.homeLoginBtn {
+    background-color: white;
+    position: absolute;
+    bottom: 85px;
+    left: 50%;
+    transform: translate(-50%, 10px);
+    box-shadow: 0px 6px 10px darkgoldenrod;
+    padding: 7px;
+    border-radius: 10px;
+    border-bottom: 4px solid lightgrey;
+    cursor: pointer;
+}
+.homeLoginBtnText {
+    background-color: #fec53a;
+    border-radius: 5px;
+    border-bottom: 3px solid #fe9210;
+    padding: 10px 35px;
+    font-size: 1.2em;
+    font-weight: 700;
+}

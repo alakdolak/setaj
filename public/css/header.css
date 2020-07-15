@@ -1,0 +1,143 @@
+.header {
+    height: 110px;
+    background-color: #ffc20e;
+    border-bottom: 10px solid #f2f2f2;
+    padding: 0 12%;
+    position: relative;
+}
+
+.logoDiv {
+    position: relative;
+    width: 300px;
+    height: 100px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.logoPic {
+    width: 100px;
+    height: 125px;
+    background-image: url(../images/logo.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 7%;
+}
+
+.logoText {
+    width: 185px;
+    height: 75px;
+    margin-right: 110px;
+    background-image: url(../images/logoText.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 7px;
+}
+
+.headerNav {
+    position: absolute;
+    left: 12%;
+    bottom: 15px;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.headerNavbar {
+    display: inline-block;
+    cursor: pointer;
+    margin: 0 10px;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.headerNavbar:hover {
+    padding-bottom: 5px;
+    border-bottom: 2px solid #ffd568;
+}
+
+.headerNavbar:nth-child(4):hover {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+/*the css of profle Icon*/
+ .profileIconBox {
+     padding: 3px;
+     border: 1px solid #ffd568;
+     border-radius: 50%;
+     background-color: #ffd568;
+ }
+.profileIcon {
+    width: 35px;
+    height: 35px;
+    background-image: url(../images/profile.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.profilePopUp {
+    position: absolute;
+    width: 175px;
+    padding: 10px 15px;
+    background-color: #f2f2f2;
+    border: 5px solid #c5c5c5;
+    border-radius: 7px;
+    z-index: 1000000001 !important;
+    margin-top: 20px;
+    left: -20px;
+    cursor: context-menu;
+}
+.rightArrowIcon {
+    position: absolute;
+    top: -20px;
+    left: 20%;
+    transform: rotate(180deg);
+    font-size: 2.5em;
+    color: #c5c5c5;
+}
+.profileRowPopUp {
+    color: #656868;
+    padding: 5px 0;
+    border-bottom: 1.5px solid #c5c5c5;
+    text-align: right;
+    font-weight: 600;
+}
+.profilePopUpIconBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.profilePopUpIcon {
+    width: 22px;
+    height: 22px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.profileName{
+    font-weight: 600;
+    color: #404040 !important;
+}
+.profileLogOIBox {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 0;
+    color: #404040;
+    cursor: pointer;
+}
+.logIcon {
+    width: 15px;
+    height: 17px;
+    background-image: url(../images/rightArrow.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.loginIcon {
+    transform: rotate(180deg);
+}
+.logOIText {
+    font-size: 0.8em;
+    font-weight: 500;
+}
