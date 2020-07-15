@@ -14,6 +14,8 @@
         <meta name="_token" content="{{ csrf_token() }}"/>
         <link href="{{URL::asset('css/myFont.css')}}" rel="stylesheet">
 
+        <link rel="icon" href="{{\Illuminate\Support\Facades\URL::asset("images/logo.png")}}" sizes="16x16" type="image/png">
+
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/header.css")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/footer.css")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/general.css")}}">
