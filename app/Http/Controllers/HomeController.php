@@ -203,7 +203,14 @@ class HomeController extends Controller {
 
 
     public function login() {
-        return view('home');
+
+        $x = -1;
+
+        if(!siteTime()) {
+            $x = getReminderToNextTime();
+        }
+
+        return view('home', ["reminder" => $x]);
     }
 
     public function logout() {

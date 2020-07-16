@@ -156,7 +156,7 @@ function siteTime() {
         else
             $time = (int)$time;
 
-        if($time >= 800 && $time <= 1900)
+        if($time >= 900 && $time <= 2100)
             return true;
 
     }
@@ -177,32 +177,32 @@ function getReminderToNextTime() {
         $time = (int)$time;
 
     if($w < 3) {
-        if($time < 800) {
+        if($time < 900) {
             $out["day"] = 3 - $w;
-            $out["time"] = floor((800 - $time) / 100);
+            $out["time"] = floor((900 - $time) / 100);
         }
         else {
             $out["day"] = 3 - $w - 1;
-            $out["time"] = 24 - floor(($time - 800) / 100);
+            $out["time"] = 24 - floor(($time - 900) / 100);
         }
     }
     else if($w < 5) {
-        if($time < 800) {
+        if($time < 900) {
             $out["day"] = 5 - $w;
-            $out["time"] = floor((800 - $time) / 100);
+            $out["time"] = floor((900 - $time) / 100);
         }
         else {
             $out["day"] = 5 - $w - 1;
-            $out["time"] = 24 - floor(($time - 800) / 100);
+            $out["time"] = 24 - floor(($time - 900) / 100);
         }
     }
     else if($w == 5) {
         $out["day"] = 0;
-        $out["time"] = 24 - floor(($time - 800) / 100);
+        $out["time"] = 24 - floor(($time - 900) / 100);
     }
     else if($w == 6) {
         $out["day"] = 3;
-        $out["time"] = 24 - floor(($time - 800) / 100);
+        $out["time"] = 24 - floor(($time - 900) / 100);
     }
 
     return $out;
