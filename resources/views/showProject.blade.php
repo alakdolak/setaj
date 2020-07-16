@@ -104,10 +104,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">آیا مطمئنی میخوای بخری؟</h4>
+                    <h4 class="modal-title">انتخاب پروژه</h4>
                 </div>
                 <div class="modal-body">
-                    <p>بعد خرید دهنت سرویس میشه ها. مطمئنی میخوای بخری؟</p>
+                    <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
                 </div>
                 <div class="modal-footer">
                     <button onclick="buy()" type="button" class="btn btn-success" data-dismiss="modal">بله</button>
@@ -129,7 +129,9 @@
                     <h4 class="modal-title">نتیجه خرید</h4>
                 </div>
                 <div class="modal-body">
-                    <p>خرید شما با موفقیت انجام شد و با کلیک بر روی دکمه زیر می توانید همه فایل های آموزشی را به طور یکجا دانلود کنید.</p>
+                    <p>این پروژه با موفقیت برای شما انتخاب شد.</p>
+                    <p>بزودی معام راهنما برای انجام این پروژه با شما تماس خواهد گرفت.</p>
+                    <p><span>موفق باشی</span><span>&#128522;</span></p>
                     <a>دانلود تمام فایل ها به طور یکجا</a>
                 </div>
                 <div class="modal-footer">
