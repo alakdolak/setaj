@@ -31,9 +31,14 @@ Route::group(['middleware' => ['notLogin']], function () {
 
 });
 
+
 Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
     Route::get('logout', ['as' => 'logout', 'uses' => 'HomeController@logout']);
+
+});
+
+Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
     Route::get('choosePlan', ['as' => 'choosePlan', 'uses' => 'HomeController@choosePlan']);
 

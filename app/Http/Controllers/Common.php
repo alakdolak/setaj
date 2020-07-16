@@ -197,12 +197,25 @@ function getReminderToNextTime() {
         }
     }
     else if($w == 5) {
+
         $out["day"] = 0;
-        $out["time"] = 24 - floor(($time - 900) / 100);
+
+        if($time > 2100) {
+            $out["time"] = 24 - floor(($time - 900) / 100);
+        }
+        else {
+            $out["time"] = floor((900 -$time) / 100);
+        }
     }
     else if($w == 6) {
-        $out["day"] = 3;
-        $out["time"] = 24 - floor(($time - 900) / 100);
+        if($time > 2100) {
+            $out["day"] = 3;
+            $out["time"] = 24 - floor(($time - 900) / 100);
+        }
+        else {
+            $out["day"] = 0;
+            $out["time"] = floor((900 - $time) / 100);
+        }
     }
 
     return $out;
