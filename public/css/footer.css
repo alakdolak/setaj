@@ -7,8 +7,8 @@
     background-color: #f9f9f9;
     display: flex;
     justify-content: space-between;
-    position: absolute;
-    top: 100%;
+    /*position: absolute;*/
+    /*top: 100%;*/
 }
 
 .footerDescript {

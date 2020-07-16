@@ -42,3 +42,20 @@ body{
 .calenderIcon {
     background-image: url(../images/calender.png);
 }
+
+/*the css of modals*/
+.modal-footer {
+    text-align: left !important;
+}
+.modal-footer {
+    text-align: left !important;
+}
+.btn-success {
+    float: left !important;
+}
+.modal-header .close {
+    float: left;
+}
+.modal-body > p {
+    margin-bottom: 0 !important;
+}

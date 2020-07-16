@@ -7,9 +7,9 @@
     </div>
 
     <div class="headerNav">
-        <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="headerNavbar">معرفی پروژه‌ها</div>
+        <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="headerNavbar">انتخاب پروژه‌ها</div>
         <div onclick="document.location.href = '{{route('showAllServices')}}'" class="headerNavbar">پروژه‌های همیاری</div>
-        <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="headerNavbar">معرفی محصولات</div>
+        <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="headerNavbar">خرید محصولات</div>
 
         <div class="headerNavbar">
             <div onclick="if($('#profilePopUp').hasClass('hidden')) { $('#profilePopUp').removeClass('hidden'); } else $('#profilePopUp').addClass('hidden');" class="profileIconBox">

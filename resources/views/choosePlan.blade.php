@@ -9,15 +9,21 @@
 
 @section("content")
 
-    <div class="choosePlane">
-        <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="planes projects">
-            <div class="planeText">معرفی پروژه‌ها</div>
+    <div class="choosePlane row">
+        <div class="col-xs-4">
+            <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="planes projects">
+                <div class="planeText">انتخاب پروژه‌ها</div>
+            </div>
         </div>
-        <div onclick="document.location.href = '{{route('showAllServices')}}'" class="planes Services">
-            <div class="planeText">پروژه‌های همیاری</div>
+        <div class="col-xs-4">
+            <div onclick="document.location.href = '{{route('showAllServices')}}'" class="planes Services">
+                <div class="planeText">پروژه‌های همیاری</div>
+            </div>
         </div>
-        <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="planes Products">
-            <div class="planeText">معرفی محصولات</div>
+        <div class="col-xs-4">
+            <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="planes Products">
+                <div class="planeText">خرید محصولات</div>
+            </div>
         </div>
     </div>
 

@@ -21,7 +21,7 @@
         $arr = ["اول", "دوم", "سوم", "چهارم", "پنجم", "ششم", "هفتم", "هشتم", "نهم", "دهم"]
     ?>
 
-    <div class="shopBox row" style="margin-top: 250px !important;">
+    <div class="shopBox row">
 
         @for($i = 9; $i >= 0; $i--)
 
@@ -36,11 +36,11 @@
             @endforeach
 
             @if($allow)
-                <div class="shopEachRow col-sm-12" style="margin-top: 20px">
+                <div class="shopEachRow col-sm-12">
 
                     <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-sm-12"></div>
 
-                    <div style="margin-top: 20px" class="shopEachRow col-sm-12">
+                    <div class="shopEachRow col-sm-12">
 
                         @foreach($services as $service)
 

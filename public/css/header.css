@@ -61,6 +61,7 @@
 .headerNavbar:nth-child(4):hover {
     padding-bottom: 0;
     border-bottom: 0;
+    margin-left: 0 !important;
 }
 
 /*the css of profle Icon*/

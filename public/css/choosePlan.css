@@ -1,6 +1,6 @@
 .choosePlane {
     height: 400px;
-    margin-top: 85px;
+    margin: 85px 0 15px 0 !important;
     background-color: #f9f9f9;
     padding: 0 12%;
     display: flex;
@@ -9,15 +9,15 @@
 }
 
 .planes {
-    width: 325px;
-    height: 325px;
-    background-size: 100%;
+    padding-top: 100%;
+    background-size: contain;
     background-repeat: no-repeat;
     cursor: pointer;
+    position: relative;
 }
 
 .planes:hover {
-    font-size: 1.7em;
+    font-size: 1.5em;
 }
 
 .projects {
@@ -45,9 +45,11 @@
 }
 
 .planeText {
+    width: 100%;
     text-align: center;
-    margin-top: 25px;
-    font-size: 1.5em;
+    font-size: 2em;
     font-weight: 500;
     color: white;
+    position: absolute;
+    top: 25px;
 }
