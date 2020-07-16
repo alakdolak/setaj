@@ -4,19 +4,22 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/v4-shims.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="icon" href="{{\Illuminate\Support\Facades\URL::asset("images/logo.png")}}" sizes="16x16" type="image/png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/general.css")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/general.css?v=2.1")}}">
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/myFont.css")}}">
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/home.css")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/home.css?v=2.1")}}">
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/login.css")}}">
+
 </head>
 <body>
+
 <div class="homeBodyDiv">
-    <div class="homePic">
+    <div class="homePic screenMode">
 
         @if($reminder != -1)
             <div class="nextEvent">
@@ -45,7 +48,7 @@
         @endif
 
     </div>
-{{--    onmouseleave="hideLogin()"--}}
+    {{--    onmouseleave="hideLogin()"--}}
     <div class="loginBody hidden">
         <div class="loginTitle">
             <div class="loginTitleImg"></div>
@@ -83,44 +86,47 @@
             <i class="fa fa-lock fa-sort-desc loginDownArrowIcon" aria-hidden="true"></i>
         </div>
     </div>
+
+    <div class="homePhonePic phoneMode"></div>
 </div>
 
-    <script>
 
-        function handleEnter(e) {
+<script>
 
-            if(e.keyCode == 13) {
-                $("#loginForm").submit();
-            }
+    function handleEnter(e) {
 
+        if(e.keyCode == 13) {
+            $("#loginForm").submit();
         }
 
-        function showLogin() {
-            $(".homePic").addClass("blur");
-            $(".loginBody").removeClass("hidden");
-        }
-        function hideLogin() {
-            $(".homePic").removeClass("blur");
-            $(".loginBody").addClass("hidden");
-        }
+    }
 
-        $(document).ready(function () {
+    function showLogin() {
+        $(".homePic").addClass("blur");
+        $(".loginBody").removeClass("hidden");
+    }
+    function hideLogin() {
+        $(".homePic").removeClass("blur");
+        $(".loginBody").addClass("hidden");
+    }
 
-            setTimeout(function () {
-                document.location.reload();
-            }, 1000 * 60 * 5);
+    $(document).ready(function () {
 
-            @if(isset($loginErr))
-                $("#loginErr").append('{{$loginErr}}');
-                showLogin();
-            @endif
+        setTimeout(function () {
+            document.location.reload();
+        }, 1000 * 60 * 5);
 
-            $(".loginBtn").on("click", function () {
-                $("#loginForm").submit();
-            });
+        @if(isset($loginErr))
+        $("#loginErr").append('{{$loginErr}}');
+        showLogin();
+        @endif
 
+        $(".loginBtn").on("click", function () {
+            $("#loginForm").submit();
         });
 
-    </script>
+    });
+
+</script>
 </body>
 </html>
