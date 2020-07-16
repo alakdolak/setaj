@@ -35,7 +35,7 @@
                     @endforeach
                 </div>
                 @if(count($service->pics) > 0)
-                    <div style="background-image: url('{{$product->pics[0]}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{$service->pics[0]}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
                 @else
                     <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif

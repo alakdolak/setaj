@@ -65,7 +65,7 @@
                     <div class="loginIconDiv">
                         <i class="fa fa-lock loginIcon" aria-hidden="true"></i>
                     </div>
-                    <input class="loginInput" name="password" type="password" placeholder="رمز عبور">
+                    <input onkeyup="handleEnter(event)" class="loginInput" name="password" type="password" placeholder="رمز عبور">
                 </div>
                 <div class="relative">
                     <input name="remember" class="absolute" type="checkbox">
@@ -86,6 +86,14 @@
 </div>
 
     <script>
+
+        function handleEnter(e) {
+
+            if(e.keyCode == 13) {
+                $("#loginForm").submit();
+            }
+
+        }
 
         function showLogin() {
             $(".homePic").addClass("blur");
