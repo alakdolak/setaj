@@ -92,13 +92,14 @@
 }
 
 .loginDownArrow {
-    position: relative;
-    font-size: 4.5em;
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 6.5em;
 }
 
 .loginDownArrowIcon {
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translate(-50%);
+    line-height: 0;
+    color: #04C582;
 }

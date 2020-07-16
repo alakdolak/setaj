@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2020 at 09:29 AM
+-- Generation Time: Jul 16, 2020 at 09:39 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -338,7 +338,8 @@ INSERT INTO `project` (`id`, `title`, `description`, `price`, `created_at`, `upd
 (9, 'dsa', '<p>sda</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>zx</p>\r\n', 2000, '2020-07-10 13:28:14', '2020-07-12 07:32:53', '13990412', '13990425', 0, -1),
 (11, 'تست بعدی', '<p>شسیشس</p>\r\n\r\n<p>ظطزطظ</p>\r\n\r\n<p>ضس</p>\r\n', 400, '2020-07-11 04:47:47', '2020-07-11 04:47:47', '13990420', '13990428', 0, -1),
 (12, 'ccvx', '<p>dasdqw</p>\r\n', 0, '2020-07-14 08:15:40', '2020-07-14 08:15:40', '13990422', '13990431', 0, -1),
-(13, 'تست ظرفیت', '<p>asdwq</p>\r\n', 0, '2020-07-14 08:40:58', '2020-07-14 08:40:58', '13990423', '13990426', 0, 1);
+(13, 'تست ظرفیت', '<p>asdwq</p>\r\n', 0, '2020-07-14 08:40:58', '2020-07-14 08:40:58', '13990423', '13990426', 0, 1),
+(14, 'تست ویدیو', '<p>تست ویدیو</p>\r\n', 100, '2020-07-16 03:07:11', '2020-07-16 03:07:11', '13990425', '13990431', 0, -1);
 
 -- --------------------------------------------------------
 
@@ -362,7 +363,8 @@ INSERT INTO `project_attach` (`id`, `name`, `project_id`) VALUES
 (3, '1594459067dena.pdf', 11),
 (4, '1594459067test.xlsx', 11),
 (5, '1594459067قیمه.png', 11),
-(6, '1594459067گزارش پیشرفت.docx', 11);
+(6, '1594459067گزارش پیشرفت.docx', 11),
+(7, '15948850311-make.mp4', 14);
 
 -- --------------------------------------------------------
 
@@ -414,7 +416,8 @@ INSERT INTO `project_grade` (`id`, `project_id`, `grade_id`) VALUES
 (7, 5, 3),
 (8, 12, 5),
 (9, 12, 4),
-(10, 13, 4);
+(10, 13, 4),
+(11, 14, 4);
 
 -- --------------------------------------------------------
 
@@ -470,6 +473,7 @@ INSERT INTO `project_tag` (`id`, `tag_id`, `project_id`) VALUES
 (7, 3, 9),
 (1, 1, 11),
 (8, 1, 12),
+(10, 1, 13),
 (9, 3, 13);
 
 -- --------------------------------------------------------
@@ -586,9 +590,10 @@ CREATE TABLE `tag` (
 --
 
 INSERT INTO `tag` (`id`, `name`) VALUES
-(1, 'یک'),
-(2, 'دو'),
-(3, 'سه');
+(1, 'آموزشی'),
+(2, 'سرگرمی'),
+(3, 'هنری'),
+(5, 'ورزشی');
 
 -- --------------------------------------------------------
 
@@ -636,22 +641,27 @@ CREATE TABLE `users` (
   `money` int(11) NOT NULL DEFAULT '0',
   `grade_id` int(11) DEFAULT NULL,
   `stars` int(11) NOT NULL DEFAULT '0',
-  `super_active` tinyint(1) NOT NULL DEFAULT '0'
+  `super_active` tinyint(1) NOT NULL DEFAULT '0',
+  `pic` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `first_name`, `last_name`, `nid`, `level`, `updated_at`, `remember_token`, `phone_num`, `status`, `created_at`, `money`, `grade_id`, `stars`, `super_active`) VALUES
-(1, 'admin', '$2y$10$OOQJFnUhp0GkNmOi7FWwOui0oLUe2UtqKroGVIDVcCJygb8gpoQb6', 'محمد', 'قانع', '0018914372', 3, '2020-07-14 13:48:09', 'bMZ99un3zMP1OMyNpzdnrEVRV6CJjKduEzI1eFePMv8LHsboq8kHbYqxOYmv', '09214915905', 1, '', 2340, 4, 18, 0),
-(2, 'ahmad', '$2y$10$YIuKpCu6TIRyKcImSinoQuk3zVV.Tm2c7GiooTLAgXLxvAIe4LA/i', 'احمد', 'رضایی', '0020033081', 1, '2020-07-14 17:21:55', 'aLwOEfNrwenBMSqsfGmaJxMvtBLWxI1PRSY6NCyuVR3TIIseHVHvSULNXtoz', '09121593106', 1, '2020-07-10 10:38:50', 800, 4, 5, 1),
-(3, 'hosein', '$2y$10$YIuKpCu6TIRyKcImSinoQuk3zVV.Tm2c7GiooTLAgXLxvAIe4LA/i', 'حسین', 'نوری', '0074804451', 1, '2020-07-14 17:24:52', 'JPZn4N1nJsn04WKwyyLvaPd0UQVrq4LQNU5tpRDTBeVokwi2HEUKKfaNRJsB', '09356602828', 1, '2020-07-10 10:38:50', 300, 4, 3, 0),
-(4, 'hasan', '$2y$10$YIuKpCu6TIRyKcImSinoQuk3zVV.Tm2c7GiooTLAgXLxvAIe4LA/i', 'حسن', 'سلامت', '3861338301', 1, '2020-07-10 11:03:36', 'c3UmuiOqmTjcI8tLCEtnNYSpDctAJTB4KfQFXat58JQao5W5E3FdupUwPLZm', '09124793481', 1, '2020-07-10 10:38:50', 200, 4, 2, 0),
-(5, 'zahra', '$2y$10$od8LAB68TK30Pc4LiEqnfOF1jEu2aVNGnQXn.VEJZk/Y9V/eBFhZS', 'محمد', 'قانع', '0018914373', 1, '2020-07-14 18:17:32', NULL, '', 1, '2020-07-14 18:17:32', 200, 5, 2, 0),
-(6, 'sara', '$2y$10$wkF4ZypkrEQY6GhaPvbS/OJ8q6zW/cKeqK5DfGnq54kuPVy5HBEbS', 'احمد', 'رضایی', '0020033087', 1, '2020-07-14 18:17:32', NULL, '', 1, '2020-07-14 18:17:32', 200, 5, 2, 0),
-(7, 'sharab', '$2y$10$ds7lyPpCxcGWZ0o.SOQgOeLOSGjGLopfS3YzX3Qjf8EbDwnp06PKe', 'حسین', 'نوری', '0074804456', 1, '2020-07-14 18:17:32', NULL, '', 1, '2020-07-14 18:17:32', 200, 5, 2, 0),
-(8, 'rima', '$2y$10$lgWGtt8NXwkM75OMlVvFiO2ZO2.7oG7yCQcvKD8OYU.Ub3yJuw0QK', 'حسن', 'سلامت', '3861338300', 1, '2020-07-14 18:17:32', NULL, '', 1, '2020-07-14 18:17:32', 200, 5, 2, 0);
+INSERT INTO `users` (`id`, `username`, `password`, `first_name`, `last_name`, `nid`, `level`, `updated_at`, `remember_token`, `phone_num`, `status`, `created_at`, `money`, `grade_id`, `stars`, `super_active`, `pic`) VALUES
+(1, 'admin', '$2y$10$OOQJFnUhp0GkNmOi7FWwOui0oLUe2UtqKroGVIDVcCJygb8gpoQb6', 'محمد', 'قانع', '0018914372', 3, '2020-07-14 13:48:09', 'd5PEMAVzJN2IXI8OPGH3Z22islNHL4AjsMmdUoMY8y5HqRjLuyUAKirg4apJ', '09214915905', 1, '', 2340, 4, 18, 0, NULL),
+(2, 'ahmad', '$2y$10$YIuKpCu6TIRyKcImSinoQuk3zVV.Tm2c7GiooTLAgXLxvAIe4LA/i', 'احمد', 'رضایی', '0020033081', 1, '2020-07-14 17:21:55', 'aLwOEfNrwenBMSqsfGmaJxMvtBLWxI1PRSY6NCyuVR3TIIseHVHvSULNXtoz', '09121593106', 1, '2020-07-10 10:38:50', 800, 4, 5, 0, NULL),
+(3, 'hosein', '$2y$10$YIuKpCu6TIRyKcImSinoQuk3zVV.Tm2c7GiooTLAgXLxvAIe4LA/i', 'حسین', 'نوری', '0074804451', 1, '2020-07-14 17:24:52', 'JPZn4N1nJsn04WKwyyLvaPd0UQVrq4LQNU5tpRDTBeVokwi2HEUKKfaNRJsB', '09356602828', 1, '2020-07-10 10:38:50', 300, 4, 3, 0, NULL),
+(4, 'hasan', '$2y$10$YIuKpCu6TIRyKcImSinoQuk3zVV.Tm2c7GiooTLAgXLxvAIe4LA/i', 'حسن', 'سلامت', '3861338301', 1, '2020-07-10 11:03:36', 'c3UmuiOqmTjcI8tLCEtnNYSpDctAJTB4KfQFXat58JQao5W5E3FdupUwPLZm', '09124793481', 1, '2020-07-10 10:38:50', 200, 4, 2, 0, NULL),
+(5, 'zahra2', '$2y$10$od8LAB68TK30Pc4LiEqnfOF1jEu2aVNGnQXn.VEJZk/Y9V/eBFhZS', 'محمد', 'قانع', '0018914375', 1, '2020-07-14 18:17:32', NULL, '', 1, '2020-07-14 18:17:32', 200, 5, 2, 0, NULL),
+(6, 'sara2', '$2y$10$wkF4ZypkrEQY6GhaPvbS/OJ8q6zW/cKeqK5DfGnq54kuPVy5HBEbS', 'احمد', 'رضایی', '0020033082', 1, '2020-07-14 18:17:32', NULL, '', 1, '2020-07-14 18:17:32', 200, 5, 2, 0, NULL),
+(7, 'sharab2', '$2y$10$ds7lyPpCxcGWZ0o.SOQgOeLOSGjGLopfS3YzX3Qjf8EbDwnp06PKe', 'حسین', 'نوری', '0074804459', 1, '2020-07-14 18:17:32', NULL, '', 1, '2020-07-14 18:17:32', 200, 5, 2, 0, NULL),
+(8, 'rima2', '$2y$10$lgWGtt8NXwkM75OMlVvFiO2ZO2.7oG7yCQcvKD8OYU.Ub3yJuw0QK', 'حسن', 'سلامت', '3861338322', 1, '2020-07-14 18:17:32', NULL, '', 1, '2020-07-14 18:17:32', 200, 5, 2, 0, NULL),
+(10, 'zahra', '$2y$10$YIuKpCu6TIRyKcImSinoQuk3zVV.Tm2c7GiooTLAgXLxvAIe4LA/i', 'محمد', 'قانع', '0018914373', 1, '2020-07-15 17:45:03', 'EPnbMIqsj4ksVzJS4yht0yfBmDaTxriEC0GFRr2mtbi6Mk5X6mSx5M2rZBgZ', '', 1, '2020-07-15 17:45:03', 200, 6, 2, 1, '1.jpg'),
+(11, 'sara', '$2y$10$8pnBaMeXc.rVhGEgLOJfqugFhbSsB5acZWsf8BU1HbQ477ZLhXpTS', 'احمد', 'رضایی', '0020033087', 1, '2020-07-15 17:45:03', NULL, '', 1, '2020-07-15 17:45:03', 200, 6, 2, 0, '2.jpg'),
+(12, 'sharab', '$2y$10$Mj0uUIzKvHcLuC3kOeTFM.3rQFDh/ZbEtLwTa78p0chYIvFJe/6Dq', 'حسین', 'نوری', '0074804456', 1, '2020-07-15 17:45:03', NULL, '', 1, '2020-07-15 17:45:03', 200, 6, 2, 0, '3.jpg'),
+(13, 'rima', '$2y$10$yJICWKVtxZDcGSQuMHGIZOZCV5zze4Bl5uF5NksKO.wrTVNaBun3W', 'حسن', 'سلامت', '3861338300', 1, '2020-07-15 17:45:03', NULL, '', 1, '2020-07-15 17:45:03', 200, 6, 2, 0, '4.jpg');
 
 --
 -- Indexes for dumped tables
@@ -921,13 +931,13 @@ ALTER TABLE `product_trailer`
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `project_attach`
 --
 ALTER TABLE `project_attach`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `project_buyers`
@@ -939,7 +949,7 @@ ALTER TABLE `project_buyers`
 -- AUTO_INCREMENT for table `project_grade`
 --
 ALTER TABLE `project_grade`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `project_pic`
@@ -951,7 +961,7 @@ ALTER TABLE `project_pic`
 -- AUTO_INCREMENT for table `project_tag`
 --
 ALTER TABLE `project_tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `service`
@@ -981,7 +991,7 @@ ALTER TABLE `service_pic`
 -- AUTO_INCREMENT for table `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `transactions`
@@ -993,7 +1003,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
