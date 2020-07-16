@@ -37,12 +37,11 @@
             @endforeach
 
             @if($allow)
-
-                <div class="weekContainer shopEachRow col-sm-12" style="margin-top: 20px">
+                <div class="weekContainer shopEachRow col-sm-12">
 
                     <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-sm-12"></div>
 
-                    <div style="margin-top: 20px" class="shopEachRow col-sm-12">
+                    <div class="shopEachRow col-sm-12">
 
                         @foreach($products as $product)
 

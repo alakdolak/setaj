@@ -31,13 +31,13 @@
             <div class="pr_pics">
                 <div class="pr_otherPics">
                     @foreach($service->pics as $pic)
-                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}'); background-size: contain; cursor:pointer;" class="pr_eachOtherPics"></div>
+                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>
                     @endforeach
                 </div>
                 @if(count($service->pics) > 0)
-                    <div style="background-image: url('{{$service->pics[0]}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{$service->pics[0]}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @else
-                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif
             </div>
             @if($canBuy)
