@@ -36,7 +36,7 @@
             @endforeach
 
             @if($allow)
-                <div class="shopEachRow col-sm-12">
+                <div class="shopEachRow col-sm-12" style="margin-top: 200px">
 
                     <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-sm-12"></div>
 
