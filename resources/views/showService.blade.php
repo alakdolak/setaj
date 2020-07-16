@@ -56,7 +56,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">انتخاب پروژه</h4>
+                    <h4 class="modal-title">انتخاب پروژه همیاری</h4>
                 </div>
                 <div class="modal-body">
                     <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
@@ -78,10 +78,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">نتیجه خرید</h4>
+                    <h4 class="modal-title">این پروژه با موفقیت برای شما انتخاب شد</h4>
                 </div>
                 <div class="modal-body">
-                    <p>این پروژه با موفقیت برای شما انتخاب شد.</p>
                     <p>بزودی معلم راهنما برای انجام این پروژه با شما تماس خواهد گرفت.</p>
                     <p><span>موفق باشی</span><span>&#128522;</span></p>
                 </div>
