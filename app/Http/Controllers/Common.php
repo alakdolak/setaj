@@ -168,7 +168,7 @@ function getReminderToNextTime() {
 
     $w = jdate("w");
 
-    $out = ["day" => 0, "hour" => 0];
+    $out = ["day" => 0, "time" => 0];
     $time = getToday()["time"];
 
     if($time[0] == "0")
@@ -195,6 +195,14 @@ function getReminderToNextTime() {
             $out["day"] = 5 - $w - 1;
             $out["time"] = 24 - floor(($time - 800) / 100);
         }
+    }
+    else if($w == 5) {
+        $out["day"] = 0;
+        $out["time"] = 24 - floor(($time - 800) / 100);
+    }
+    else if($w == 6) {
+        $out["day"] = 3;
+        $out["time"] = 24 - floor(($time - 800) / 100);
     }
 
     return $out;

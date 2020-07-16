@@ -256,7 +256,18 @@ class AdminController extends Controller {
 
             $tmp = new User();
             $tmp->first_name = explode(" ", $user[0])[0];
-            $tmp->last_name = explode(" ", $user[0])[1];
+            $sss = explode(" ", $user[0]);
+            $reminder = "";
+            $first = true;
+
+            for($i = 1; $i < count($sss); $i++) {
+                if($first)
+                    $reminder .= $sss[$i];
+                else
+                    $reminder .= ' ' . $sss[$i];
+            }
+
+            $tmp->last_name = $reminder;
             $tmp->level = getValueInfo("studentLevel");
             $tmp->money = $config->initial_point;
             $tmp->stars = $config->initial_star;
