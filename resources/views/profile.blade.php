@@ -12,6 +12,9 @@
         .userActivitiesPhotos {
             padding: 20px 0 !important;
         }
+        .sh_mainPic {
+            height: 210px !important;
+        }
         .sh_descript{
             font-size: 1em !important;
         }

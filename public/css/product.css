@@ -45,7 +45,9 @@
     border-bottom: 5px solid #ff7700;
 }
 .downloadBtn:hover {
+    color: white !important;
     background-color: #ff7700;
+    text-decoration: none !important;
 }
 .doneBtn {
     background-color: #ff5555;
