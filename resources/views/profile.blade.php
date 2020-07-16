@@ -42,7 +42,7 @@
             <div class="userPageBodyTopBar">
                 <div class="profileRightImg">
                     <div class="profileImg framePng">
-                        @if(\Illuminate\Support\Facades\Auth::user()->pic != null && file_exists(__DIR__ . '/../../public/userPics/' . \Illuminate\Support\Facades\Auth::user()->pic))
+                        @if(\Illuminate\Support\Facades\Auth::user()->pic != null && file_exists(__DIR__ . '/../../../public/userPics/' . \Illuminate\Support\Facades\Auth::user()->pic))
                             <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("userPics/" . \Illuminate\Support\Facades\Auth::user()->pic)}}')" class="profileImg userPic"></div>
                         @else
                             <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("userPics/defaultPic.png")}}')" class="profileImg userPic"></div>

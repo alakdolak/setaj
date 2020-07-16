@@ -89,6 +89,11 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
 Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
+
+    Route::get("admin", function () {
+        return view('adminProfile');
+    });
+
     Route::get('config', ['as' => 'config', 'uses' => 'AdminController@config']);
 
     Route::post('doConfig', ['as' => 'doConfig', 'uses' => 'AdminController@doConfig']);

@@ -242,10 +242,10 @@ class AdminController extends Controller {
 
         foreach ($users as $user) {
 
-            if(count($user) != 6)
+            if(count($user) != 4)
                 continue;
 
-            if(User::whereNid($user[4])->count() > 0 || !_custom_check_national_code($user[4]))
+            if(User::whereNid($user[1])->count() > 0 || !_custom_check_national_code($user[1]))
                 continue;
 
             $gradeTmp = Grade::whereId($gradeId);
@@ -255,18 +255,18 @@ class AdminController extends Controller {
             $config = ConfigModel::first();
 
             $tmp = new User();
-            $tmp->first_name = $user[0];
-            $tmp->last_name = $user[1];
+            $tmp->first_name = explode(" ", $user[0])[0];
+            $tmp->last_name = explode(" ", $user[0])[1];
             $tmp->level = getValueInfo("studentLevel");
             $tmp->money = $config->initial_point;
             $tmp->stars = $config->initial_star;
 
             $tmp->username = $user[2];
-            $tmp->password = Hash::make($user[3]);
+            $tmp->password = Hash::make($user[1]);
             $tmp->status = true;
-            $tmp->nid = $user[4];
+            $tmp->nid = $user[1];
             $tmp->grade_id = $gradeId;
-            $tmp->pic = $user[5];
+            $tmp->pic = $user[3];
 
             try {
                 $tmp->save();
@@ -304,23 +304,21 @@ class AdminController extends Controller {
                     $lastRow = $workSheet->getHighestRow();
                     $cols = $workSheet->getHighestColumn();
 
-                    if ($cols < 'G') {
+                    if ($cols < 'D') {
                         unlink($path);
                         $err = "تعداد ستون های فایل شما معتبر نمی باشد";
                     }
                     else {
 
-                        for ($row = 2; $row <= $lastRow; $row++) {
+                        for ($row = 1; $row <= $lastRow; $row++) {
 
-                            if($workSheet->getCell('B' . $row)->getValue() == "")
+                            if($workSheet->getCell('A' . $row)->getValue() == "")
                                 break;
 
-                            $users[$row - 2][0] = $workSheet->getCell('B' . $row)->getValue();
-                            $users[$row - 2][1] = $workSheet->getCell('C' . $row)->getValue();
-                            $users[$row - 2][2] = $workSheet->getCell('D' . $row)->getValue();
-                            $users[$row - 2][3] = $workSheet->getCell('E' . $row)->getValue();
-                            $users[$row - 2][4] = $workSheet->getCell('F' . $row)->getValue();
-                            $users[$row - 2][5] = $workSheet->getCell('G' . $row)->getValue();
+                            $users[$row - 1][0] = $workSheet->getCell('A' . $row)->getValue();
+                            $users[$row - 1][1] = $workSheet->getCell('B' . $row)->getValue();
+                            $users[$row - 1][2] = $workSheet->getCell('C' . $row)->getValue();
+                            $users[$row - 1][3] = $workSheet->getCell('D' . $row)->getValue();
                         }
 
                         unlink($path);
