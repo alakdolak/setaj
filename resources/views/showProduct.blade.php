@@ -149,7 +149,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">آیا مطمئنی میخوای بخری؟</h4>
+                    <h4 class="modal-title">آیا از انتخاب این پروژه مطمنید؟</h4>
                 </div>
                 <div class="modal-body">
                     <p>بعد خرید دهنت سرویس میشه ها. مطمئنی میخوای بخری؟</p>
