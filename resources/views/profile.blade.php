@@ -15,7 +15,15 @@
         .sh_descript{
             font-size: 1em !important;
         }
-
+        .shopOneBox:nth-child(1){
+            padding: 0 0 0 20px !important;
+        }
+        .shopOneBox:nth-child(2){
+            padding: 0 10px !important;
+        }
+        .shopOneBox:nth-child(3){
+            padding: 0 20px 0 0 !important;
+        }
         .col-sm-4 {
             float: right;
         }
@@ -63,29 +71,27 @@
                             <div class="userProfilePostsFiltration">
                                 <span onclick="showMyProjects(this)" class="onClick">پروژه‌های من</span>
                                 <span onclick="showMyProducts(this)">محصولات من</span>
-                                <span onclick="showMyServices(this)">خدمات من</span>
+                                <span onclick="showMyServices(this)">همیاری‌های من</span>
                                 <span onclick="showMyCarts(this)">خریدهای من</span>
                             </div>
                         </div>
 
                         <div class="userProfileActivitiesMainDiv userActivitiesPhotos col-sm-12">
-
                             <div class="photosAndVideosMainDiv" id="myProjects">
-
                                 @foreach($myProjects as $buy)
-                                    <div onclick="document.location.href = '{{route('showProject', ['id' => $buy->id])}}'" style="padding: 0 20px 0 0 !important;" class="shopOneBox col-sm-4 col-xs-6">
+                                    <div onclick="document.location.href = '{{route('showProject', ['id' => $buy->id])}}'" class="shopOneBox col-sm-4 col-xs-6">
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
                                             <div class="sh_descript">
                                                 <div class="sh_descriptRow sh_title">{{$buy->title}}</div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
-                                                    <div class="priceIcons starIcon"></div>
-                                                    <div class="priceText">هزینه پروژه: {{$buy->price}} سکه</div>
+                                                    <div class="priceIcons coinIcon"></div>
+                                                    <div class="priceText">قیمت: {{$buy->price}} سکه</div>
                                                 </div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
-                                                    <div class="priceIcons capacityIcon"></div>
+                                                    <div class="priceIcons statusIcon"></div>
                                                     @if($buy->status)
                                                         <div class="priceText">وضعیت: تمام شده</div>
                                                     @else
@@ -94,8 +100,8 @@
                                                 </div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
-                                                    <div class="priceIcons capacityIcon"></div>
-                                                    <div class="priceText">تاریخ پذیرش پروژه: {{$buy->date}}</div>
+                                                    <div class="priceIcons calenderIcon"></div>
+                                                    <div class="priceText" style="font-size: 0.9em">تاریخ پذیرش پروژه: {{$buy->date}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -105,12 +111,11 @@
                                         </div>
                                     </div>
                                 @endforeach
-
                             </div>
 
                             <div class="photosAndVideosMainDiv display-none" id="myProducts">
                                 @foreach($myProducts as $buy)
-                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-sm-4 col-xs-6" style="padding: 0 20px 0 0 !important;">
+                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-sm-4 col-xs-6">
 
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
@@ -118,8 +123,8 @@
                                                 <div class="sh_descriptRow sh_title">{{$buy->name}}</div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
-                                                    <div class="priceIcons starIcon"></div>
-                                                    <div class="priceText">قیمت کالا: {{$buy->price}} سکه</div>
+                                                    <div class="priceIcons coinIcon"></div>
+                                                    <div class="priceText">قیمت: {{$buy->price}} سکه</div>
                                                 </div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
@@ -128,8 +133,8 @@
                                                 </div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
-                                                    <div class="priceIcons capacityIcon"></div>
-                                                    <div class="priceText">تاریخ ورود محصول به بازار: {{$buy->date}}</div>
+                                                    <div class="priceIcons calenderIcon"></div>
+                                                    <div class="priceText" style="font-size: 0.9em">تاریخ ورود محصول به بازار: {{$buy->date}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -148,8 +153,7 @@
 
                             <div class="photosAndVideosMainDiv display-none" id="myServices">
                                 @foreach($myServices as $service)
-
-                                    <div onclick="document.location.href = '{{route("showService", ["id" => $service->id])}}'" class="shopOneBox col-sm-4 col-xs-6" style="padding: 0 20px 0 0 !important;">
+                                    <div onclick="document.location.href = '{{route("showService", ["id" => $service->id])}}'" class="shopOneBox col-sm-4 col-xs-6">
 
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$service->pic}}')" class="sh_mainPic"></div>
@@ -162,7 +166,7 @@
                                                 </div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
-                                                    <div class="priceIcons capacityIcon"></div>
+                                                    <div class="priceIcons statusIcon"></div>
                                                     @if($service->status)
                                                         <div class="priceText">وضعیت: تمام شده</div>
                                                     @else
@@ -178,21 +182,20 @@
                                                         <div class="priceText">تعداد ستاره اخذ شده: - </div>
                                                     @endif
                                                 </div>
+                                            </div>
 
-                                                <div class="sh_ownerBox_finish">
-                                                    <div style="font-size: 0.9em">سفارش مدرسه سراج</div>
-                                                </div>
+                                            <div class="sh_ownerBox_finish">
+                                                <div style="font-size: 0.9em">سفارش مدرسه سراج</div>
                                             </div>
                                         </div>
 
                                     </div>
-
                                 @endforeach
                             </div>
+
                             <div class="photosAndVideosMainDiv display-none" id="myCarts">
                                 @foreach($myBuys as $buy)
-
-                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-sm-4 col-xs-6" style="padding: 0 20px 0 0 !important;">
+                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-sm-4 col-xs-6">
 
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
@@ -200,33 +203,31 @@
                                                 <div class="sh_descriptRow sh_title">{{$buy->name}}</div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
-                                                    <div class="priceIcons starIcon"></div>
-                                                    <div class="priceText">هزینه محصول: {{$buy->price}} </div>
+                                                    <div class="priceIcons coinIcon"></div>
+                                                    <div class="priceText">قیمت: {{$buy->price}} </div>
                                                 </div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
                                                     <div class="priceIcons starIcon"></div>
-                                                    <div class="priceText">ستاره دریافتی پس از خرید محصول: {{$buy->star}} </div>
+                                                    <div class="priceText">ستاره دریافتی: {{$buy->star}} </div>
                                                 </div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
-                                                    <div class="priceIcons capacityIcon"></div>
+                                                    <div class="priceIcons statusIcon"></div>
                                                     @if($buy->status)
                                                         <div class="priceText">وضعیت: مرسوله به دست خریدار رسیده است.</div>
                                                     @else
-                                                        <div class="priceText">وضعیت: مرسوله به دست خریدار نرسیده است.(کد پیگیری شما {{$buy->follow_code}} می باشد.</div>
+                                                        <div class="priceText" style="font-size: 0.9em">وضعیت: مرسوله به دست خریدار نرسیده است.(کد پیگیری شما {{$buy->follow_code}} می باشد.</div>
                                                     @endif
                                                 </div>
+                                            </div>
 
-
-                                                <div class="sh_ownerBox_finish">
-                                                    <div style="font-size: 0.9em">فروشنده: {{$buy->seller}}</div>
-                                                </div>
+                                            <div class="sh_ownerBox_finish">
+                                                <div style="font-size: 0.9em">فروشنده: {{$buy->seller}}</div>
                                             </div>
                                         </div>
 
                                     </div>
-
                                 @endforeach
                             </div>
                         </div>
