@@ -21,7 +21,7 @@
 
             <div class="pr_descriptRow">
                 <div class="pr_iconesBox">
-                    <div class="pr_icons coinIcon"></div>
+                    <div class="pr_icons folderIcon"></div>
                     <div>توضیحات:</div>
                 </div>
                 <div class="pr_description">
@@ -53,7 +53,7 @@
 
             <div class="pr_advertiseBox col-sm-12">
                 <div class="pr_iconesBox">
-                    <div class="pr_icons coinIcon"></div>
+                    <div class="pr_icons movieIcon"></div>
                     <div>فایل های آموزشی:</div>
                 </div>
                 <div class="pr_advertise row">
@@ -61,7 +61,7 @@
                     @foreach($project->attach as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
                             <div class="col-xs-12">
-                                <img style="width: 250px; margin: 10px; float: right" src="{{$pic["path"]}}">
+                                <img style="width: 100%;" src="{{$pic["path"]}}">
                             </div>
                         @elseif($pic["type"] == "mp4")
                             <div class="col-xs-12">
@@ -72,7 +72,7 @@
                             </div>
                         @elseif($pic["type"] == "mp3")
                             <div class="col-xs-12">
-                                <audio controls>
+                                <audio controls style="width: 100%;">
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
                                     مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </audio>

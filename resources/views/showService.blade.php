@@ -19,7 +19,7 @@
             </div>
             <div class="pr_descriptRow">
                 <div class="pr_iconesBox">
-                    <div class="pr_icons coinIcon"></div>
+                    <div class="pr_icons folderIcon"></div>
                     <div>توضیحات:</div>
                 </div>
                 <div class="pr_description">

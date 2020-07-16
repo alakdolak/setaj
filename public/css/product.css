@@ -44,7 +44,7 @@
     background-color: #ffc20e;
     border-bottom: 5px solid #ff7700;
 }
-.downloadBtn:hover {
+.downloadBtn:hover, .downloadBtn:visited, .downloadBtn:active {
     color: white !important;
     background-color: #ff7700;
     text-decoration: none !important;
