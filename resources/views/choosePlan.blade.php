@@ -16,12 +16,12 @@
             </div>
         </div>
         <div class="col-xs-4">
-            <div onclick="document.location.href = '{{route('showAllServices')}}'" class="planes Services">
+            <div onclick="document.location.href = '{{route('showAllServices')}}'" class="planes services">
                 <div class="planeText">پروژه‌های همیاری</div>
             </div>
         </div>
         <div class="col-xs-4">
-            <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="planes Products">
+            <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="planes products">
                 <div class="planeText">خرید محصولات</div>
             </div>
         </div>

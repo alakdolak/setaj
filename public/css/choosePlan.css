@@ -28,19 +28,19 @@
     opacity: 0.85;
 }
 
-.Services {
-    background-image: url(../images/Services.png);
+.services {
+    background-image: url(../images/services.png);
 }
 
-.Services:hover {
+.services:hover {
     opacity: 0.85;
 }
 
-.Products {
-    background-image: url(../images/Products.png);
+.products {
+    background-image: url(../images/products.png);
 }
 
-.Products:hover {
+.products:hover {
     opacity: 0.85;
 }
 
