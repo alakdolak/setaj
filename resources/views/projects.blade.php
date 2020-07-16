@@ -11,9 +11,6 @@
         <div class="bannerGrayBox"></div>
         <div class="bannerBorderBox bannerLightRedBox"></div>
         <div class="bannerMainBox projectsBanner"></div>
-{{--        <div class="bannerMainBox projectsBanner">--}}
-{{--            <div class="bannerText">انتخاب پروژه‌ها</div>--}}
-{{--        </div>--}}
     </div>
 
 @stop
@@ -41,8 +38,7 @@
             @if($allow)
                 <div class="shopEachRow col-sm-12" style="margin-top: 20px">
 
-                    <div class="shopEachRow shopEachRowTitle week1 col-sm-12"></div>
-{{--                    <div class="shopEachRow shopEachRowTitle col-sm-12">پروژه های هفته ی {{$arr[$i]}}</div>--}}
+                    <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-sm-12"></div>
 
                     <div style="margin-top: 20px" class="shopEachRow col-sm-12">
 
@@ -67,9 +63,17 @@
                                         </div>
                                         <div class="sh_descriptRow sh_priceBox">
                                             <div class="priceIcons categoryIcon"></div>
-                                            @foreach($project->tags as $tag)
-                                                <div class="priceText">دسته: {{$tag->name}}</div>
-                                            @endforeach
+                                            <div class="priceText">دسته:
+                                                <?php $k = 0; ?>
+                                                @foreach($project->tags as $tag)
+                                                    @if($k == count($project->tags) - 1)
+                                                        {{$tag->name}}
+                                                    @else
+                                                        {{$tag->name}} و
+                                                    @endif
+                                                <?php $k++; ?>
+                                                @endforeach
+                                            </div>
                                         </div>
 
                                     </div>
