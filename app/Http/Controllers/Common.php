@@ -38,6 +38,14 @@ function _custom_check_national_code($code) {
     return false;
 }
 
+function getCustomDate($timestamp) {
+
+    include_once 'jdate.php';
+    $x = strtotime($timestamp);
+    return jstrftime('%d %B', $x);
+
+}
+
 function MiladyToShamsi($time, $date = ""){
 
     include_once 'jdate.php';

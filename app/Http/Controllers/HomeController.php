@@ -65,7 +65,7 @@ class HomeController extends Controller {
 
         foreach ($myBuys as $myBuy) {
 
-            $myBuy->date = MiladyToShamsi('', explode('-', explode(' ', $myBuy->created_at)[0]));
+            $myBuy->date = getCustomDate($myBuy->created_at);
 
             $tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $myBuy->project_id);
 
@@ -99,7 +99,7 @@ class HomeController extends Controller {
 
         foreach ($myProducts as $myBuy) {
 
-            $myBuy->date = MiladyToShamsi('', explode('-', explode(' ', $myBuy->created_at)[0]));
+            $myBuy->date = getCustomDate($myBuy->created_at);
 
             $tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $myBuy->project_id);
 
@@ -142,7 +142,7 @@ class HomeController extends Controller {
 
         foreach ($myProjects as $myProject) {
 
-            $myProject->date = MiladyToShamsi('', explode('-', explode(' ', $myProject->created_at)[0]));
+            $myProject->date = getCustomDate($myProject->created_at);
 
             $tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $myProject->id);
 
