@@ -349,9 +349,9 @@ class HomeController extends Controller {
         $grade = Auth::user()->grade_id;
         $date = getToday()["date"];
 
-        $projects = DB::select('select id, title, description, price, capacity, start_reg from project where ' .
+        $projects = DB::select('select id, title, description, price, capacity, start_reg, end_reg from project where ' .
             '(select count(*) from project_grade where project_id = project.id and grade_id = ' . $grade . ' ) > 0' .
-            ' and start_reg <= ' . $date . ' and end_reg >= ' . $date . ' and hide = false order by id desc');
+            ' and hide = false order by id desc');
 
         foreach ($projects as $project) {
 
@@ -373,6 +373,11 @@ class HomeController extends Controller {
                 $project->canBuy = true;
             else
                 $project->canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
+
+            if($project->canBuy) {
+                if($project->start_reg > $date || $project->end_reg < $date)
+                    $project->canBuy = false;
+            }
 
             $project->likes = Likes::whereItemId($project->id)->whereMode(getValueInfo('projectMode'))->count();
             $project->tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $project->id);
