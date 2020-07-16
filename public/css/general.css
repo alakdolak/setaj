@@ -35,3 +35,9 @@ body{
 .starIcon {
     background-image: url(../images/star.png);
 }
+.statusIcon {
+    background-image: url(../images/status.png);
+}
+.calenderIcon {
+    background-image: url(../images/calender.png);
+}
