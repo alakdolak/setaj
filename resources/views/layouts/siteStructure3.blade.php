@@ -71,6 +71,28 @@
 
     <script>
 
+        function checkBanners() {
+
+            $(".weekContainer").removeClass("hidden").each(function () {
+
+                var allow = false;
+
+                $(this).find(".myItem").each(function () {
+
+                    if(allow)
+                        return;
+
+                    if(!$(this).hasClass("hidden"))
+                        allow = true;
+
+                });
+
+                if(!allow)
+                    $(this).addClass("hidden");
+            });
+
+        }
+
         $(document).ready(function () {
 
             $(".tagFilter").on('click', function () {
@@ -97,7 +119,7 @@
                     else {
                         $(".myItem").addClass("hidden");
                     }
-                    return;
+                    return checkBanners();
                 }
 
                 $(".myItem").addClass("hidden").each(function () {
@@ -107,6 +129,8 @@
                     }
 
                 });
+
+                checkBanners();
 
             });
 
