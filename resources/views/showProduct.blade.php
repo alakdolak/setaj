@@ -149,7 +149,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">آیا از انتخاب این پروژه مطمنید؟</h4>
+                    <h4 class="modal-title">آیا مطمئنی میخوای بخری؟</h4>
                 </div>
                 <div class="modal-body">
                     <p>بعد خرید دهنت سرویس میشه ها. مطمئنی میخوای بخری؟</p>
@@ -197,39 +197,41 @@
 
         function buy() {
 
-            $.ajax({
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: '{{route('buyProduct')}}',
-                data: {
-                    id: '{{$product->id}}'
-                },
-                success: function (res) {
+            $("#resultModalBtn").click();
 
-                    if(res === "nok1") {
-                        $("#buyErr").empty().append("شما اجازه خرید این محصول را ندارید.");
-                    }
+            {{--$.ajax({--}}
+            {{--    type: 'post',--}}
+            {{--    headers: {--}}
+            {{--        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')--}}
+            {{--    },--}}
+            {{--    url: '{{route('buyProduct')}}',--}}
+            {{--    data: {--}}
+            {{--        id: '{{$product->id}}'--}}
+            {{--    },--}}
+            {{--    success: function (res) {--}}
 
-                    else if(res === "nok2") {
-                        $("#buyErr").empty().append("شما قبلا این محصول را خریداری کرده اید.");
-                    }
+            {{--        if(res === "nok1") {--}}
+            {{--            $("#buyErr").empty().append("شما اجازه خرید این محصول را ندارید.");--}}
+            {{--        }--}}
 
-                    else if(res === "nok3") {
-                        $("#buyErr").empty().append("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
-                    }
+            {{--        else if(res === "nok2") {--}}
+            {{--            $("#buyErr").empty().append("شما قبلا این محصول را خریداری کرده اید.");--}}
+            {{--        }--}}
 
-                    else if(res === "nok5") {
-                        $("#buyErr").empty().append("عملیات مورد نظر غیرمجاز است.");
-                    }
+            {{--        else if(res === "nok3") {--}}
+            {{--            $("#buyErr").empty().append("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");--}}
+            {{--        }--}}
 
-                    else if(res === "ok") {
-                        $("#resultModalBtn").click();
-                    }
+            {{--        else if(res === "nok5") {--}}
+            {{--            $("#buyErr").empty().append("عملیات مورد نظر غیرمجاز است.");--}}
+            {{--        }--}}
 
-                }
-            });
+            {{--        else if(res === "ok") {--}}
+            {{--            document.location.href = '{{route('myProducts')}}';--}}
+            {{--        }--}}
+
+            {{--    }--}}
+            {{--});--}}
         }
 
         $(document).ready(function () {

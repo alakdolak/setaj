@@ -19,13 +19,13 @@
     z-index: 10;
 }
 .bannerLightRedBox {
-    background-color: #f8aba6;
+    background-color: #ffdfd2;
 }
 .bannerLightBlueBox {
-    background-color: #E8C8F3;
+    background-color: #c9f6ff;
 }
-.bannerLightGreenBox {
-    background-color: #ECC6FF;
+.bannerLightPinkBox {
+    background-color: #e6defb;
 }
 .bannerMainBox {
     width: 76%;

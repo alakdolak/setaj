@@ -41,7 +41,8 @@
             @if($allow)
                 <div class="shopEachRow col-sm-12" style="margin-top: 20px">
 
-                    <div class="shopEachRow shopEachRowTitle col-sm-12">پروژه های هفته ی {{$arr[$i]}}</div>
+                    <div class="shopEachRow shopEachRowTitle week1 col-sm-12"></div>
+{{--                    <div class="shopEachRow shopEachRowTitle col-sm-12">پروژه های هفته ی {{$arr[$i]}}</div>--}}
 
                     <div style="margin-top: 20px" class="shopEachRow col-sm-12">
 

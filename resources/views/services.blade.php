@@ -9,7 +9,7 @@
 
     <div class="banner">
         <div class="bannerGrayBox"></div>
-        <div class="bannerBorderBox bannerLightGreenBox"></div>
+        <div class="bannerBorderBox bannerLightPinkBox"></div>
         <div class="bannerMainBox servicesBanner"></div>
 {{--        <div class="bannerMainBox servicesBanner">--}}
 {{--            <div class="bannerText">پروژه های خدماتی</div>--}}

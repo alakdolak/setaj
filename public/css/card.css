@@ -42,8 +42,31 @@
 }
 
 .shopEachRowTitle {
-    font-size: 2em;
-    font-weight: 700;
+    height: 88px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    /*font-size: 2em;*/
+    /*font-weight: 700;*/
+}
+
+.week1 {
+    background-image: url(../images/week1.jpg);
+}
+
+.week2 {
+    background-image: url(../images/week2.jpg);
+}
+
+.week3 {
+    background-image: url(../images/week3.jpg);
+}
+
+.week4 {
+    background-image: url(../images/week4.jpg);
+}
+
+.week5 {
+    background-image: url(../images/week5.jpg);
 }
 
 .shopOneBox {
