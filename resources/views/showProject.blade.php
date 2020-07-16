@@ -1,95 +1,157 @@
-@extends('layouts.siteStructure')
+@extends('layouts.siteStructure2')
 
 @section('header')
     @parent
-
-    <style>
-
-        #bookmark:hover:before {
-            content: "\e005" !important;
-        }
-
-        .zoomable:hover {
-            transform: scale(1.1);
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css")}}">
 
 @stop
 
-@section('content')
+@section("content")
 
-    <div class="row" style="margin-top: 100px">
+    <div class="eachProduct row">
+        <div class="pr_descript col-sm-7 col-xs-12">
+            <div class="pr_descriptRow pr_title">{{$project->title}}</div>
 
-        <div class="bookmarkDivTotal">
-            <p onclick="bookmark()" class="zoomable bookmarkDiv" onmouseenter="$(this).css('background-color', 'rgb(199, 200, 206)')" onmouseleave="$(this).css('background-color', 'transparent')" style="cursor: pointer; float: left; margin-left: 30px; border: 1px solid #202121; height: 34px; padding: 0 23px; line-height: 30px; background-color: transparent; border-radius: 30px !important;">
-                <span>نشان کن</span>
-                <span id="bookmark" class="glyphicon {{($bookmark) ? "glyphicon-heart" : "glyphicon-heart-empty"}}" style="margin-right: 4px; cursor: pointer; font-family: 'Glyphicons Halflings' !important;"></span>
-            </p>
+            <div class="pr_descriptRow pr_salesman">سفارش مدرسه سراج</div>
 
-            <p onclick="like()" class="zoomable bookmarkDiv" onmouseenter="$(this).css('background-color', 'rgb(199, 200, 206)')" onmouseleave="$(this).css('background-color', 'transparent')" style="cursor: pointer; float: left; margin-left: 30px; border: 1px solid #202121; height: 34px; padding: 0 23px; line-height: 30px; background-color: transparent; border-radius: 30px !important;">
-                <span>لایک کن</span>
-                <span id="like" class="glyphicon {{($like) ? "glyphicon-heart" : "glyphicon-heart-empty"}}" style="margin-right: 4px; cursor: pointer; font-family: 'Glyphicons Halflings' !important;"></span>
-            </p>
+            <div class="pr_descriptRow pr_iconesBox">
+                <div class="pr_icons coinIcon"></div>
+                <div>قیمت: {{$project->price}} سکه</div>
+            </div>
 
+            <div class="pr_descriptRow">
+                <div class="pr_iconesBox">
+                    <div class="pr_icons coinIcon"></div>
+                    <div>توضیحات:</div>
+                </div>
+                <div class="pr_description">
+                    <div>{!! $project->description !!}</div>
+                </div>
+            </div>
         </div>
-
-        <h3>{{$project->title}}</h3>
-
-        <div>
-            {!! html_entity_decode($project->description) !!}
-        </div>
-
-        <p>هزینه: {{$project->price}} سکه</p>
-
-        @if($canBuy)
-            <button onclick="buy()" class="btn btn-success">خرید پروژه</button>
-
-            <p style="margin-top: 10px" id="buyErr"></p>
-        @endif
-
-        @foreach($project->pics as $pic)
-            <img style="width: 250px; margin: 10px; float: right" src="{{$pic}}">
-        @endforeach
-
-        <div style="clear: both"></div>
-        <h1>فایل های آموزشی</h1>
-
-        @foreach($project->attach as $pic)
-            @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
-                <div class="col-xs-12">
-                    <img style="width: 250px; margin: 10px; float: right" src="{{$pic["path"]}}">
+        <div class="col-sm-5 col-xs-12" style="padding-right: 0 !important;">
+            <div class="pr_pics">
+                <div class="pr_otherPics">
+                    @foreach($project->pics as $pic)
+                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}'); background-size: contain; cursor:pointer;" class="pr_eachOtherPics"></div>
+                    @endforeach
                 </div>
-            @elseif($pic["type"] == "mp4")
-                <div class="col-xs-12">
-                    <video width="320" height="240" controls>
-                        <source src="{{$pic["path"]}}" type="video/mp4">
-                        مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
-                    </video>
-                </div>
-            @elseif($pic["type"] == "mp3")
-                <div class="col-xs-12">
-                    <audio controls>
-                        <source src="{{$pic["path"]}}" type="audio/mpeg">
-                        مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
-                    </audio>
-                </div>
-            @elseif($pic["type"] == "pdf")
-                <div class="col-xs-12">
-                    <embed src="{{$pic["path"]}}" width="800px" height="800px" />
-                </div>
+                @if(count($project->pics) > 0)
+                    <div style="background-image: url('{{$project->pics[0]}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
+                @else
+                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}'); background-size: contain;" id="pr_mainPic" class="pr_mainPic"></div>
+                @endif
+            </div>
+            @if($canBuy)
+                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
+                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn downloadBtn">دریافت محصول</div>
+                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn doneBtn">تمام شد</div>
             @else
-                <div class="col-xs-12">
-                    <a href="{{$pic["path"]}}" download>دانلود فایل</a>
-                </div>
+                <div style="background-color: #ccc !important; cursor: not-allowed" disabled class="shopBtn">خرید محصول</div>
             @endif
-        @endforeach
+        </div>
+
+        @if(count($project->attach) > 0)
+
+            <div class="pr_advertiseBox col-sm-12">
+                <div class="pr_iconesBox">
+                    <div class="pr_icons coinIcon"></div>
+                    <div>فایل های آموزشی:</div>
+                </div>
+                <div class="pr_advertise row">
+
+                    @foreach($project->attach as $pic)
+                        @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
+                            <div class="col-xs-12">
+                                <img style="width: 250px; margin: 10px; float: right" src="{{$pic["path"]}}">
+                            </div>
+                        @elseif($pic["type"] == "mp4")
+                            <div class="col-xs-12">
+                                <video width="320" height="240" controls>
+                                    <source src="{{$pic["path"]}}" type="video/mp4">
+                                    مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
+                                </video>
+                            </div>
+                        @elseif($pic["type"] == "mp3")
+                            <div class="col-xs-12">
+                                <audio controls>
+                                    <source src="{{$pic["path"]}}" type="audio/mpeg">
+                                    مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
+                                </audio>
+                            </div>
+                        @elseif($pic["type"] == "pdf")
+                            <div class="col-xs-12">
+                                <embed src="{{$pic["path"]}}" width="800px" height="800px" />
+                            </div>
+                        @else
+                            <div class="col-xs-12">
+                                <a href="{{$pic["path"]}}" download>دانلود فایل</a>
+                            </div>
+                        @endif
+                    @endforeach
+
+                </div>
+            </div>
+
+        @endif
 
     </div>
 
+    <div id="confirmationModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">آیا مطمئنی میخوای بخری؟</h4>
+                </div>
+                <div class="modal-body">
+                    <p>بعد خرید دهنت سرویس میشه ها. مطمئنی میخوای بخری؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="buy()" type="button" class="btn btn-success" data-dismiss="modal">بله</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="resultModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">نتیجه خرید</h4>
+                </div>
+                <div class="modal-body">
+                    <p>خرید شما با موفقیت انجام شد و با کلیک بر روی دکمه زیر می توانید همه فایل های آموزشی را به طور یکجا دانلود کنید.</p>
+                    <a>دانلود تمام فایل ها به طور یکجا</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">متوجه شدم</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="hidden" id="resultModalBtn" data-toggle="modal" data-target="#resultModal"></button>
+
     <script>
 
+        $(".thumb-wrapper").on('click', function () {
+
+            $("#my_gallery").removeClass('remodal-is-closed').addClass('remodal-is-opened');
+
+        });
+
         function buy() {
+
             $.ajax({
                 type: 'post',
                 headers: {
@@ -113,21 +175,27 @@
                         $("#buyErr").empty().append("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
                     }
 
-                    else if(res === "nok4") {
-                        $("#buyErr").empty().append("مهلت خریداری این محصول به پایان رسیده است.");
-                    }
-
                     else if(res === "nok5") {
                         $("#buyErr").empty().append("عملیات مورد نظر غیرمجاز است.");
                     }
 
                     else if(res === "ok") {
-                        document.location.href = '{{route('myProjects')}}';
+                        $("#resultModalBtn").click();
                     }
 
                 }
             });
         }
+
+        $(document).ready(function () {
+
+            $(".pr_eachOtherPics").on("click", function () {
+
+                $("#pr_mainPic").css("background-image", "url('" + $(this).attr('data-url') + "')").css("background-size", "contain");
+
+            });
+
+        });
 
         function bookmark() {
 
@@ -148,6 +216,7 @@
                         $("#bookmark").removeClass('glyphicon-heart').addClass('glyphicon-heart-empty');
                 }
             });
+
         }
 
         function like() {
@@ -173,5 +242,4 @@
         }
 
     </script>
-
 @stop

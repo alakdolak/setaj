@@ -242,7 +242,7 @@ class AdminController extends Controller {
 
         foreach ($users as $user) {
 
-            if(count($user) != 5)
+            if(count($user) != 6)
                 continue;
 
             if(User::whereNid($user[4])->count() > 0 || !_custom_check_national_code($user[4]))
@@ -266,6 +266,7 @@ class AdminController extends Controller {
             $tmp->status = true;
             $tmp->nid = $user[4];
             $tmp->grade_id = $gradeId;
+            $tmp->pic = $user[5];
 
             try {
                 $tmp->save();
@@ -303,7 +304,7 @@ class AdminController extends Controller {
                     $lastRow = $workSheet->getHighestRow();
                     $cols = $workSheet->getHighestColumn();
 
-                    if ($cols < 'F') {
+                    if ($cols < 'G') {
                         unlink($path);
                         $err = "تعداد ستون های فایل شما معتبر نمی باشد";
                     }
@@ -319,6 +320,7 @@ class AdminController extends Controller {
                             $users[$row - 2][2] = $workSheet->getCell('D' . $row)->getValue();
                             $users[$row - 2][3] = $workSheet->getCell('E' . $row)->getValue();
                             $users[$row - 2][4] = $workSheet->getCell('F' . $row)->getValue();
+                            $users[$row - 2][5] = $workSheet->getCell('G' . $row)->getValue();
                         }
 
                         unlink($path);

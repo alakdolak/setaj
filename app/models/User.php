@@ -15,6 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $username
  * @property string $password
  * @property string $nid
+ * @property string $pic
  * @property boolean $status
  * @property boolean $super_active
  * @property integer $grade_id
