@@ -17,6 +17,7 @@ use App\models\ProjectGrade;
 use App\models\ProjectPic;
 use App\models\ProjectTag;
 use App\models\Service;
+use App\models\ServiceAttach;
 use App\models\ServiceBuyer;
 use App\models\ServiceGrade;
 use App\models\ServicePic;
@@ -446,6 +447,50 @@ class OperatorController extends Controller {
 
                     }
                 }
+
+
+                if(isset($_FILES["attach"]) && !empty($_FILES["attach"]["name"])) {
+
+                    $file = Input::file('attach');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/servicePic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ServiceAttach();
+                            $tmp->service_id = $service->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+
             }
             catch (\Exception $x) {
                 dd($x);
@@ -891,6 +936,13 @@ class OperatorController extends Controller {
             if($p != null) {
 
                 $pics = ServicePic::whereServiceId($p->id)->get();
+
+                foreach ($pics as $pic) {
+                    if (file_exists(__DIR__ . '/../../../public/servicePic/' . $pic->name))
+                        unlink(__DIR__ . '/../../../public/servicePic/' . $pic->name);
+                }
+
+                $pics = ServiceAttach::whereServiceId($p->id)->get();
 
                 foreach ($pics as $pic) {
                     if (file_exists(__DIR__ . '/../../../public/servicePic/' . $pic->name))

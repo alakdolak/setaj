@@ -274,6 +274,9 @@
                     <h5 style="padding-right: 5%;">تصاویر خدمت(اختیاری)</h5>
                     <input type="file" name="file" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
 
+                    <h5 style="padding-right: 5%;">فایل های آموزشی خدمت(اختیاری)</h5>
+                    <input type="file" name="attach" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
+
                 </div>
 
                 <div style="margin-top: 20px">

@@ -20,6 +20,7 @@ use App\models\ProjectBuyers;
 use App\models\ProjectGrade;
 use App\models\ProjectPic;
 use App\models\Service;
+use App\models\ServiceAttach;
 use App\models\ServiceBuyer;
 use App\models\ServiceGrade;
 use App\models\ServicePic;
@@ -331,6 +332,27 @@ class HomeController extends Controller {
         }
 
         $service->pics = $pics;
+
+
+        $tmpPics = ServiceAttach::whereServiceId($service->id)->get();
+        $pics = [];
+
+        foreach ($tmpPics as $tmpPic) {
+
+
+            $type = explode(".", $tmpPic->name);
+            $type = $type[count($type) - 1];
+
+            if(file_exists(__DIR__ . '/../../../public/servicePic/' . $tmpPic->name))
+                $pics[count($pics)] = [
+                    "path" => URL::asset('servicePic/' . $tmpPic->name),
+                    "type" => $type
+                ];
+
+
+        }
+
+        $service->attaches = $pics;
 
         $bookmark = true;
 //        $bookmark = (Bookmark::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('serviceMode'))->count() > 0);

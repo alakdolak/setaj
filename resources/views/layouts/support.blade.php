@@ -50,7 +50,7 @@ foreach ($msgs as $msg) {
         </div>
 
         <div class="composer">
-            <pre class="send-button glyphicon glyphicon-send"></pre>
+            <pre onclick="sendMsg()" class="send-button glyphicon glyphicon-send"></pre>
             <textarea id="textInput" placeholder="سوال خود را بنویسید."></textarea>
         </div>
 
