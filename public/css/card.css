@@ -24,7 +24,7 @@
 .filterTag:hover {
     border-bottom: 2px solid #9fa4a6;
 }
-.filterTag:nth-child(4) {
+.filterTag:last-child {
     border-left: 0;
 }
 .selectedTag {

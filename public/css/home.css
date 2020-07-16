@@ -6,7 +6,11 @@
     width: 100%;
     height: -webkit-fill-available;
     background-image: url(../images/home.png);
-    background-position: top;
+    /*background-image: url(../images/homePage.png);*/
+    background-color: #FFC20E;
+    /* background-size: 100%; */
+    background-repeat: no-repeat;
+    background-position: center;
     position: relative;
 }
 .nextEvent {
@@ -51,9 +55,9 @@
 .homeLoginBtn {
     background-color: white;
     position: absolute;
-    bottom: 85px;
+    bottom: 10%;
     left: 50%;
-    transform: translate(-50%, 10px);
+    transform: translate(-50%);
     box-shadow: 0px 6px 10px darkgoldenrod;
     padding: 7px;
     border-radius: 10px;

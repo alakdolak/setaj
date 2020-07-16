@@ -52,7 +52,6 @@
         </div>
 
         <form id="loginForm" action="{{route('doLogin')}}" method="post">
-
             {{csrf_field()}}
             <div>
                 <div class="loginInputDiv">
@@ -78,10 +77,11 @@
             <div style="text-align: center;">
                 <p id="loginErr"></p>
             </div>
-            <div class="loginDownArrow">
-                <i class="fa fa-lock fa-sort-desc loginIcon loginDownArrowIcon" aria-hidden="true"></i>
-            </div>
         </form>
+
+        <div class="loginDownArrow">
+            <i class="fa fa-lock fa-sort-desc loginDownArrowIcon" aria-hidden="true"></i>
+        </div>
     </div>
 </div>
 
