@@ -11,9 +11,6 @@
         <div class="bannerGrayBox"></div>
         <div class="bannerBorderBox bannerLightPinkBox"></div>
         <div class="bannerMainBox servicesBanner"></div>
-{{--        <div class="bannerMainBox servicesBanner">--}}
-{{--            <div class="bannerText">پروژه های خدماتی</div>--}}
-{{--        </div>--}}
     </div>
 
 @stop
@@ -41,7 +38,7 @@
             @if($allow)
                 <div class="shopEachRow col-sm-12" style="margin-top: 20px">
 
-                    <div class="shopEachRow shopEachRowTitle col-sm-12">پروژه های همیاری هفته ی {{$arr[$i]}}</div>
+                    <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-sm-12"></div>
 
                     <div style="margin-top: 20px" class="shopEachRow col-sm-12">
 

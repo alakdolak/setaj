@@ -12,9 +12,6 @@
         <div class="bannerGrayBox"></div>
         <div class="bannerBorderBox bannerLightBlueBox"></div>
         <div class="bannerMainBox productsBanner"></div>
-{{--        <div class="bannerMainBox productsBanner">--}}
-{{--            <div class="bannerText">معرفی محصولات</div>--}}
-{{--        </div>--}}
     </div>
 
 @stop
@@ -43,7 +40,7 @@
 
                 <div class="shopEachRow col-sm-12" style="margin-top: 20px">
 
-                    <div class="shopEachRow shopEachRowTitle col-sm-12">محصولات هفته ی {{$arr[$i]}}</div>
+                    <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-sm-12"></div>
 
                     <div style="margin-top: 20px" class="shopEachRow col-sm-12">
 
