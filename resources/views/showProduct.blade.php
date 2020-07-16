@@ -110,8 +110,8 @@
                                 <img style="width: 250px; margin: 10px; float: right" src="{{$pic["path"]}}">
                             </div>
                         @elseif($pic["type"] == "mp4")
-                            <div class="col-xs-12">
-                                <video width="320" height="240" controls>
+                            <div class="col-xs-12" style="padding: 15px">
+                                <video style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="video/mp4">
                                     مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </video>
@@ -147,10 +147,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">خرید محصول</h4>
+                    <h4 class="modal-title">آیا از خرید این محصول مطمئنید؟!</h4>
                 </div>
                 <div class="modal-body">
-                    <p>آیا از خرید این محصول مطمئنید؟!</p>
                     <p>وضعیت شما پس از خرید این محصول به شرح زیر است:</p>
                     <p>تعداد ستاره های فعلی شما {{\Illuminate\Support\Facades\Auth::user()->stars}}  است که با توجه به خرید این محصول به {{\Illuminate\Support\Facades\Auth::user()->stars + $product->star}}  ارتقا پیدا خواهد کرد.</p>
                     <p>تعداد خریدهای باقی مانده:{{$myReminder}}</p>
@@ -172,10 +171,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">نتیجه خرید</h4>
+                    <h4 class="modal-title">خرید شما با موفقیت ثبت شد</h4>
                 </div>
                 <div class="modal-body">
-                    <p>خرید شما با موفقیت ثبت شد.</p>
                     <p>بزودی محصول شما به دستتان خواهد رسید.</p>
                     <p><span>متشکر از مشارکت شما</span><span>&#128522;</span></p>
                 </div>
