@@ -45,10 +45,8 @@
             </div>
             @if($canBuy)
                 <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn downloadBtn">دریافت محصول</div>
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn doneBtn">تمام شد</div>
             @else
-                <div style="background-color: #ccc !important; cursor: not-allowed" disabled class="shopBtn">خرید محصول</div>
+                <div class="shopBtn doneBtn">تمام شد</div>
             @endif
         </div>
 
@@ -149,10 +147,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">آیا مطمئنی میخوای بخری؟</h4>
+                    <h4 class="modal-title">خرید محصول</h4>
                 </div>
                 <div class="modal-body">
-                    <p>بعد خرید دهنت سرویس میشه ها. مطمئنی میخوای بخری؟</p>
+                    <p>آیا از خرید این محصول مطمئنید؟!</p>
+                    <p>وضعیت شما پس از خرید این محصول به شرح زیر است:</p>
+                    <p>تعداد ستاره های فعلی شما {{\Illuminate\Support\Facades\Auth::user()->stars}}  است که با توجه به خرید این محصول به {{\Illuminate\Support\Facades\Auth::user()->stars + $product->star}}  ارتقا پیدا خواهد کرد.</p>
+                    <p>تعداد خریدهای باقی مانده:{{$myReminder}}</p>
                 </div>
                 <div class="modal-footer">
                     <button onclick="buy()" type="button" class="btn btn-success" data-dismiss="modal">بله</button>
@@ -174,8 +175,9 @@
                     <h4 class="modal-title">نتیجه خرید</h4>
                 </div>
                 <div class="modal-body">
-                    <p>خرید شما با موفقیت انجام شد و با کلیک بر روی دکمه زیر می توانید همه فایل های آموزشی را به طور یکجا دانلود کنید.</p>
-                    <a>دانلود تمام فایل ها به طور یکجا</a>
+                    <p>خرید شما با موفقیت ثبت شد.</p>
+                    <p>بزودی محصول شما به دستتان خواهد رسید.</p>
+                    <p><span>متشکر از مشارکت شما</span><span>&#128522;</span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">متوجه شدم</button>

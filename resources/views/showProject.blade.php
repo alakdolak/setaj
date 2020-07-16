@@ -43,11 +43,9 @@
                 @endif
             </div>
             @if($canBuy)
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn downloadBtn">دریافت محصول</div>
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn doneBtn">تمام شد</div>
+                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب و دریافت پروژه</div>
             @else
-                <div style="background-color: #ccc !important; cursor: not-allowed" disabled class="shopBtn">خرید محصول</div>
+                <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دریافت پروژه</a>
             @endif
         </div>
 
@@ -131,8 +129,9 @@
                 <div class="modal-body">
                     <p>این پروژه با موفقیت برای شما انتخاب شد.</p>
                     <p>بزودی معام راهنما برای انجام این پروژه با شما تماس خواهد گرفت.</p>
+                    <p>برای دسترسی به تمام فایل های آموزشی این پروژه می توانید با کلیک بر روی لینک زیر آن ها را دانلود کنید.</p>
                     <p><span>موفق باشی</span><span>&#128522;</span></p>
-                    <a>دانلود تمام فایل ها به طور یکجا</a>
+                    <a download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}">دانلود تمام فایل ها به طور یکجا</a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">متوجه شدم</button>

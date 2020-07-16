@@ -68,6 +68,8 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
 
 
+    Route::get("downloadAllProjectAttaches/{pId}", ["as" => "downloadAllProjectAttaches", "uses" => "HomeController@downloadAllProjectAttaches"]);
+
     Route::post('convertStarToCoin', ['as' => 'convertStarToCoin', 'uses' => 'HomeController@convertStarToCoin']);
 
 

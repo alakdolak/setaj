@@ -135,7 +135,11 @@
                                         </div>
 
                                         <div class="sh_ownerBox_finish">
-                                            <div style="font-size: 0.9em">خریدار: {{$buy->buyer}}</div>
+                                            @if($buy->buyer == "هنوز به فروش نرسیده است.")
+                                                <div style="font-size: 0.9em">{{$buy->buyer}}</div>
+                                            @else
+                                                <div style="font-size: 0.9em">خریدار: {{$buy->buyer}}</div>
+                                            @endif
                                         </div>
 
                                     </div>
@@ -263,7 +267,7 @@
                             <div style="padding: 15px 15px 0 15px;font-size: 1.1em;font-weight: 600;text-align: center;">
                                 <?php
                                     $per = \App\models\ConfigModel::first()->change_rate;
-                                    $total = floor(\Illuminate\Support\Facades\Auth::user()->money / $per) + \Illuminate\Support\Facades\Auth::user()->stars;
+                                    $total = floor((\Illuminate\Support\Facades\Auth::user()->money - 2000) / $per) + \Illuminate\Support\Facades\Auth::user()->stars;
                                 ?>
                                 <div style="line-height: 30px">هر {{$per}} سکه معادل یک ستاره می باشد</div>
                                 <div style="display: flex;align-items: center;justify-content: space-around;line-height: 30px;">

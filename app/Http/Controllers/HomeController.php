@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
+use ZipArchive;
 
 class HomeController extends Controller {
 
@@ -603,11 +604,13 @@ class HomeController extends Controller {
 
         $canBuy = true;
 
-        if(Transaction::whereUserId(Auth::user()->id)->whereProductId($id)->count() > 0)
+        $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
+
+        if(Transaction::whereProductId($id)->count() > 0)
             $canBuy = false;
 
         return view('showProduct', ['bookmark' => $bookmark, 'canBuy' => $canBuy,
-            'product' => $product, 'like' => $like]);
+            'product' => $product, 'like' => $like, 'myReminder' => $myReminder]);
     }
 
 
@@ -1051,6 +1054,35 @@ class HomeController extends Controller {
 
     public function contactUs() {
         return view("contactUs");
+    }
+
+
+    public function downloadAllProjectAttaches($pId) {
+
+        $zip = new ZipArchive();
+
+        $DelFilePath = time() . ".zip";
+
+        if ($zip->open(__DIR__ . '/../../../public/tmp/' . $DelFilePath, ZIPARCHIVE::CREATE) != TRUE) {
+            dd ("Could not open archive");
+        }
+
+        $attaches = ProjectAttach::whereProjectId($pId)->get();
+
+        foreach ($attaches as $attach) {
+            $zip->addFile(__DIR__ . '/../../../public/projectPic/' . $attach->name, $attach->name);
+        }
+
+        $zip->close();
+
+        header("Content-type: application/zip");
+        header("Content-Disposition: attachment; filename= files.zip");
+        header("Content-length: " . filesize(__DIR__ . '/../../../public/tmp/' . $DelFilePath));
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        readfile(__DIR__ . '/../../../public/tmp/' . $DelFilePath);
+        unlink(__DIR__ . '/../../../public/tmp/' . $DelFilePath);
+        exit();
     }
 
 }
