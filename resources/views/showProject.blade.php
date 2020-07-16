@@ -16,7 +16,11 @@
 
             <div class="pr_descriptRow pr_iconesBox">
                 <div class="pr_icons coinIcon"></div>
-                <div>قیمت: {{$project->price}} سکه</div>
+                @if($project->price == "رایگان")
+                    <div>قیمت: {{$project->price}}</div>
+                @else
+                    <div>قیمت: {{$project->price}} سکه</div>
+                @endif
             </div>
 
             <div class="pr_descriptRow">

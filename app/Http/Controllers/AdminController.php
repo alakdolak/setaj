@@ -245,8 +245,8 @@ class AdminController extends Controller {
             if(count($user) != 4)
                 continue;
 
-            if(User::whereNid($user[1])->count() > 0 || !_custom_check_national_code($user[1]))
-                continue;
+//            if(User::whereNid($user[1])->count() > 0 || !_custom_check_national_code($user[1]))
+//                continue;
 
             $gradeTmp = Grade::whereId($gradeId);
             if($gradeTmp == null)
@@ -261,8 +261,10 @@ class AdminController extends Controller {
             $first = true;
 
             for($i = 1; $i < count($sss); $i++) {
-                if($first)
+                if($first) {
                     $reminder .= $sss[$i];
+                    $first = false;
+                }
                 else
                     $reminder .= ' ' . $sss[$i];
             }
