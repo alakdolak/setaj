@@ -61,7 +61,7 @@
 
                                         <div class="sh_descriptRow sh_priceBox">
                                             <div class="priceIcons capacityIcon"></div>
-                                            <div class="priceText">موجودی: {{$service->capacity}}</div>
+                                            <div class="priceText">موجودی: {{$service->reminder}}</div>
                                         </div>
                                     </div>
                                 </div>
