@@ -50,7 +50,7 @@
                         <select onchange="filter(this.value)">
                             <option value="-1">همه</option>
                             @foreach($grades as $grade)
-                                <option value="{{$grade->id}}">{{$grade->name}}</option>
+                                <option value="{{$grade->name}}">{{$grade->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -81,7 +81,13 @@
                             <tbody>
                                 <?php $i = 1; ?>
                                 @foreach($projects as $itr)
-                                    <tr class="myTr tr_{{$itr->grade_id}}" id="tr_{{$itr->id}}">
+
+                                    <?php $str = '-'; ?>
+                                    @foreach($itr->grades as $grade)
+                                        <?php $str .= $grade->name . '-'; ?>
+                                    @endforeach
+
+                                    <tr class="myTr" data-grades="{{$str}}" id="tr_{{$itr->id}}">
                                         <td>{{$i}}</td>
                                         <td>{{$itr->title}}</td>
 
@@ -365,8 +371,13 @@
                 $(".myTr").removeClass('hidden');
             }
             else {
-                $(".myTr").addClass('hidden');
-                $(".tr_" + id).removeClass('hidden');
+                $(".myTr").addClass('hidden').each(function () {
+
+                    if($(this).attr("data-grades").includes('-' +  id + '-'))
+                        $(this).removeClass("hidden");
+
+                });
+
             }
 
         }

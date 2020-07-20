@@ -167,7 +167,6 @@
                                 <th scope="col" style="width:450px !important">توضیح</th>
                                 <th scope="col">تعداد ستاره ها</th>
                                 <th scope="col">تاریخ تعریف خدمت</th>
-                                <th class="bigTd" scope="col">خریدار</th>
                                 <th scope="col">وضعیت نمایش</th>
                                 <th scope="col">عملیات</th>
                             </tr>
@@ -197,27 +196,6 @@
                                     <td>{!! html_entity_decode($itr->description) !!}</td>
                                     <td>{{$itr->star}}</td>
                                     <td>{{$itr->date}}</td>
-                                    <td class="bigTd">
-                                        @if($itr->buyers == null)
-                                            هنوز خریداری نشده است.
-                                        @else
-                                            @foreach($itr->buyers as $buyer)
-                                                <div style="padding: 4px; margin: 4px; border: 1px dotted black; border-radius: 7px;">
-                                                    <p>{{$buyer["name"]}}</p>
-                                                    <p>
-                                                        <span>وضعیت انجام: </span><span>&nbsp;</span><span>{{($buyer["status"]) ? "انجام شده" : "انجام نشده"}}</span>
-                                                    </p>
-                                                    @if($buyer["status"])
-                                                        <p>
-                                                            <span>تعداد ستاره های داده شده: </span><span>&nbsp;</span><span>{{$buyer["star"]}}</span>
-                                                        </p>
-                                                    @else
-                                                        <button onclick="confirmJob('{{$itr->star}}', '{{$buyer["id"]}}', '{{$itr->id}}')" class="btn btn-default">تاییده انجام کار</button>
-                                                    @endif
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    </td>
                                     <td>{{$itr->hide}}</td>
                                     <td>
                                         <button onclick="removeService('{{$itr->id}}')" class="btn btn-danger" data-toggle="tooltip" title="حذف">
@@ -228,8 +206,8 @@
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
                                         </button>
 
-                                        <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
-
+                                        <button style="margin: 10px" class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
+                                        <a style="margin: 10px" target="_blank" href="{{route('serviceBuyers', ['id' => $itr->id])}}" class="btn btn-success">مشاهده خریداران</a>
                                     </td>
                                 </tr>
                                 <?php $i += 1; ?>
@@ -286,6 +264,23 @@
             </div>
         </form>
     </div>
+
+    <div id="buyersModal" class="modal">
+
+        <div class="modal-content">
+
+            <div>
+
+
+            </div>
+
+            <div style="margin-top: 20px">
+                <input type="button" value="بستن" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('buyersModal').style.display = 'none'">
+            </div>
+        </div>
+
+    </div>
+
 
     <div id="myGradeModal" class="modal">
 

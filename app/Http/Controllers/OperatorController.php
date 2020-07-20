@@ -82,29 +82,8 @@ class OperatorController extends Controller {
             else
                 $service->pic = URL::asset('servicePic/' . $tmpPic->name);
 
-            $service->date = MiladyToShamsi('', explode('-', explode(' ', $service->created_at)[0]));
-
-            $t = ServiceBuyer::whereServiceId($service->id)->get();
-
             $service->hide = (!$service->hide) ? "آشکار" : "مخفی";
-
-            if($t == null)
-                $service->buyers = null;
-            else {
-
-                $tmp = [];
-
-                foreach ($t as $itr) {
-                    $u = User::whereId($itr->user_id);
-                    $tmp[count($tmp)] =
-                        ["name" => $u->first_name . ' ' . $u->last_name,
-                        "id" => $u->id,
-                        "status" => $itr->status,
-                        "star" => $itr->star];
-                }
-
-                $service->buyers = $tmp;
-            }
+            $service->date = MiladyToShamsi('', explode('-', explode(' ', $service->created_at)[0]));
         }
 
         return view('operator.services', ['services' => $services,

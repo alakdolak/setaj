@@ -176,17 +176,7 @@ function getReminderToNextTime() {
     else
         $time = (int)$time;
 
-    if($w < 3) {
-        if($time < 900) {
-            $out["day"] = 3 - $w;
-            $out["time"] = floor((900 - $time) / 100);
-        }
-        else {
-            $out["day"] = 3 - $w - 1;
-            $out["time"] = 24 - floor(($time - 900) / 100);
-        }
-    }
-    else if($w < 5) {
+    if($w < 5) {
         if($time < 900) {
             $out["day"] = 5 - $w;
             $out["time"] = floor((900 - $time) / 100);

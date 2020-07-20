@@ -43,11 +43,31 @@ class ReportController extends Controller {
             return view('report.usersReport', ['grades' => Grade::all(),
                 "path" => route("unDoneProjectsReport")]);
 
-        $projects = DB::select("select p.title, concat(u.first_name, ' ', u.last_name) as name from project_buyers pb, project p, users u where p.id = pb.project_id" .
-            " and pb.user_id = u.id and pb.status = false and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0"
+        $projects = DB::select("select p.title, concat(u.first_name, ' ', u.last_name) as name, pb.id, pb.created_at from project_buyers pb, project p, users u where p.id = pb.project_id" .
+            " and pb.user_id = u.id and pb.status = false and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 order by pb.created_at desc"
         );
 
-        return view("report.unDoneProjectsReport", ["projects" => $projects, 'gradeId' => $gradeId]);
+        $allTitles = [];
+
+        foreach ($projects as $project) {
+            $project->Bdate = getCustomDate($project->created_at);
+            $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));;
+
+            $allowAdd = true;
+
+            foreach ($allTitles as $title) {
+                if($project->title == $title) {
+                    $allowAdd = false;
+                    break;
+                }
+            }
+
+            if($allowAdd)
+                $allTitles[count($allTitles)] = $project->title;
+        }
+
+        return view("report.unDoneProjectsReport", ["projects" => $projects,
+            'gradeId' => $gradeId, 'allTitles' => $allTitles]);
     }
 
     public function productsReport($gradeId = -1) {
@@ -109,6 +129,31 @@ class ReportController extends Controller {
 
     }
 
+    public function serviceBuyers($id) {
+
+        $t = ServiceBuyer::whereServiceId($id)->get();
+
+        if($t == null)
+            $buyers = null;
+        else {
+
+            $tmp = [];
+
+            foreach ($t as $itr) {
+                $u = User::whereId($itr->user_id);
+                $tmp[count($tmp)] =
+                    ["name" => $u->first_name . ' ' . $u->last_name,
+                        "id" => $u->id,
+                        "status" => $itr->status,
+                        "star" => $itr->star];
+            }
+
+            $buyers = $tmp;
+        }
+
+        return view('report.serviceBuyers', ['buyers' => $buyers]);
+
+    }
 
     public function userBuys($uId) {
 

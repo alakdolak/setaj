@@ -7,6 +7,7 @@ use App\models\ConfigModel;
 use App\models\FAQCategory;
 use App\models\Grade;
 use App\models\PointConfig;
+use App\models\ProjectBuyers;
 use App\models\RedundantInfo1;
 use App\models\SchoolStudent;
 use App\models\Tag;
@@ -291,6 +292,21 @@ class AdminController extends Controller {
         }
 
         return $errs;
+    }
+
+    public function deleteBuyProject() {
+
+        if(isset($_POST["id"])) {
+
+            try {
+                ProjectBuyers::destroy(makeValidInput($_POST["id"]));
+                echo "ok";
+                return;
+            }
+            catch (\Exception $x) {}
+        }
+
+        echo "nok";
     }
 
 
