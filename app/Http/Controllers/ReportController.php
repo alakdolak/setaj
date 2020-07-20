@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\models\Grade;
 use App\models\ProjectBuyers;
+use App\models\Service;
 use App\models\ServiceBuyer;
 use App\models\Transaction;
 use App\models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class ReportController extends Controller {
 
@@ -35,6 +37,12 @@ class ReportController extends Controller {
         }
 
         return view('report.usersReportGrade', ['users' => $students, 'gradeId' => $gradeId]);
+    }
+
+    public function operators() {
+
+        $students = User::whereLevel(getValueInfo('operatorLevel'))->get();
+        return view('report.operatorReport', ['users' => $students]);
     }
 
     public function unDoneProjectsReport($gradeId = -1) {
@@ -131,6 +139,10 @@ class ReportController extends Controller {
 
     public function serviceBuyers($id) {
 
+        $service = Service::whereId($id);
+        if($service == null)
+            return Redirect::route("admin");
+
         $t = ServiceBuyer::whereServiceId($id)->get();
 
         if($t == null)
@@ -151,7 +163,7 @@ class ReportController extends Controller {
             $buyers = $tmp;
         }
 
-        return view('report.serviceBuyers', ['buyers' => $buyers]);
+        return view('report.serviceBuyers', ['buyers' => $buyers, "star" => $service->star, 'id' => $id]);
 
     }
 

@@ -235,6 +235,15 @@
                                 </a>
                             </li>
 
+
+                            <li class="nav-item  ">
+                                <a href="{{route('operators')}}" class="nav-link nav-toggle">
+                                    <i class="icon-diamond"></i>
+                                    <span class="title">معلمین راهنما</span>
+                                    <span class="arrow"></span>
+                                </a>
+                            </li>
+
                             <li class="nav-item  ">
                                 <a href="{{route('projects')}}" class="nav-link nav-toggle">
                                     <i class="icon-diamond"></i>

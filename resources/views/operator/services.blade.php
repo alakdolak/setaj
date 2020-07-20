@@ -193,7 +193,7 @@
 
                                     <td>{{$itr->capacity}}</td>
                                     <td><img width="100px" src="{{$itr->pic}}"></td>
-                                    <td>{!! html_entity_decode($itr->description) !!}</td>
+                                    <td>...</td>
                                     <td>{{$itr->star}}</td>
                                     <td>{{$itr->date}}</td>
                                     <td>{{$itr->hide}}</td>
@@ -264,23 +264,6 @@
             </div>
         </form>
     </div>
-
-    <div id="buyersModal" class="modal">
-
-        <div class="modal-content">
-
-            <div>
-
-
-            </div>
-
-            <div style="margin-top: 20px">
-                <input type="button" value="بستن" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('buyersModal').style.display = 'none'">
-            </div>
-        </div>
-
-    </div>
-
 
     <div id="myGradeModal" class="modal">
 
@@ -391,21 +374,6 @@
         }
 
         var userId, serviceId;
-
-        function confirmJob(star, uId, sId) {
-
-            userId = uId;
-            serviceId = sId;
-
-            var newElem = "";
-            for(i = star; i >= 0; i--) {
-                newElem += "<option value='" + i + "'>" + i + "</option>";
-            }
-
-            $("#starOptions").empty().append(newElem);
-
-            document.getElementById('myConfirmModal').style.display = 'block';
-        }
 
         CKEDITOR.replace('editor1');
 

@@ -154,6 +154,10 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::post('addUsers/{gradeId}', ['as' => 'addUsers', 'uses' => 'AdminController@addUsers']);
 
+    Route::post('addOperators', ['as' => 'addOperators', 'uses' => 'AdminController@addOperators']);
+
+
+
     Route::post('deleteBuyProject', ['as' => 'deleteBuyProject', 'uses' => 'AdminController@deleteBuyProject']);
 });
 
@@ -223,6 +227,8 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
 
     Route::get("serviceBuyers/{id}", ['as' => 'serviceBuyers', 'uses' => 'ReportController@serviceBuyers']);
+
+    Route::get("operators", ["as" => "operators", 'uses' => "ReportController@operators"]);
 
 
     Route::get("msgs/{chatId}", ["as" => "msgs", "uses" => "OperatorController@msgs"]);

@@ -107,7 +107,7 @@
                                         <td>{{$itr->startReg}}</td>
                                         <td>{{$itr->endReg}}</td>
                                         <td><img width="100px" src="{{$itr->pic}}"></td>
-                                        <td>{!! html_entity_decode($itr->description) !!}</td>
+                                        <td>...</td>
                                         <td>{{$itr->price}}</td>
                                         <td>{{$itr->date}}</td>
                                         <td>{{$itr->buyers}}</td>

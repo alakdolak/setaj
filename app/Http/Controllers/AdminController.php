@@ -237,7 +237,7 @@ class AdminController extends Controller {
         return Redirect::route('grades');
     }
 
-    public function doAddUsers($users, $gradeId) {
+    public function doAddUsers($users, $gradeId, $mode) {
 
         $errs = '';
 
@@ -271,7 +271,7 @@ class AdminController extends Controller {
             }
 
             $tmp->last_name = $reminder;
-            $tmp->level = getValueInfo("studentLevel");
+            $tmp->level = $mode;
             $tmp->money = $config->initial_point;
             $tmp->stars = $config->initial_star;
 
@@ -352,7 +352,7 @@ class AdminController extends Controller {
 
                         unlink($path);
 
-                        $err = $this->doAddUsers($users, $gradeId);
+                        $err = $this->doAddUsers($users, $gradeId, getValueInfo('studentLevel'));
                         if(empty($err)) {
                             return Redirect::route('usersReport', ['gradeId' => $gradeId]);
                         }
@@ -369,6 +369,67 @@ class AdminController extends Controller {
 
         return view('registrationResult', ['err' => $err, 'gradeId' => $gradeId]);
     }
+
+    public function addOperators() {
+
+        $err = "";
+
+        if(isset($_FILES["file"])) {
+
+            $file = $_FILES["file"]["name"];
+
+            if(!empty($file)) {
+
+                $path = __DIR__ . '/../../../public/tmp/' . $file;
+
+                $err = uploadCheck($path, "file", "اکسل ثبت نام گروهی", 20000000, "xlsx");
+
+                if (empty($err)) {
+                    upload($path, "file", "اکسل ثبت نام گروهی");
+                    $excelReader = PHPExcel_IOFactory::createReaderForFile($path);
+                    $excelObj = $excelReader->load($path);
+                    $workSheet = $excelObj->getSheet(0);
+                    $users = array();
+                    $lastRow = $workSheet->getHighestRow();
+                    $cols = $workSheet->getHighestColumn();
+
+                    if ($cols < 'D') {
+                        unlink($path);
+                        $err = "تعداد ستون های فایل شما معتبر نمی باشد";
+                    }
+                    else {
+
+                        for ($row = 1; $row <= $lastRow; $row++) {
+
+                            if($workSheet->getCell('A' . $row)->getValue() == "")
+                                break;
+
+                            $users[$row - 1][0] = $workSheet->getCell('A' . $row)->getValue();
+                            $users[$row - 1][1] = $workSheet->getCell('B' . $row)->getValue();
+                            $users[$row - 1][2] = $workSheet->getCell('C' . $row)->getValue();
+                            $users[$row - 1][3] = $workSheet->getCell('D' . $row)->getValue();
+                        }
+
+                        unlink($path);
+
+                        $err = $this->doAddUsers($users, Grade::first()->id, getValueInfo('operatorLevel'));
+                        if(empty($err)) {
+                            return Redirect::route('operators');
+                        }
+                        else {
+                            $err = "بجز موارد زیر سایر دانش آموزان اضافه شدند." . "<br/>" . $err;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(empty($err))
+            $err = "لطفا فایل اکسل مورد نیاز را آپلود نمایید";
+
+        dd($err);
+    }
+
 
     public function toggleSuperStatusUser() {
 

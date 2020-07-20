@@ -54,10 +54,8 @@ class HomeController extends Controller {
 
     public function profile() {
 
-//        if(Auth::user()->level == getValueInfo('adminLevel') ||
-//            Auth::user()->level == getValueInfo('operatorLevel')
-//        )
-//            return view('adminProfile');
+        if(Auth::user()->level == getValueInfo('operatorLevel'))
+            return view('adminProfile');
 
         $myBuys = DB::select("select p.id, t.status, p.name, concat(u.first_name, ' ', u.last_name) as seller, " .
             "pb.project_id, p.price, p.star, t.follow_code, t.created_at from transactions t, product p, project_buyers pb, users u where " .

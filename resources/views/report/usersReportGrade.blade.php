@@ -16,7 +16,7 @@
 
 @section('content')
 
-    <div class="col-sm-12" style="margin-top: 100px">
+    <center class="col-sm-12" style="margin-top: 100px">
 
         <div>
 
@@ -75,7 +75,7 @@
             </table>
         </div>
 
-    </div>
+    </center>
 
     <div id="myAddModal" class="modal">
         <form action="{{route('addUsers', ['gradeId' => $gradeId])}}" method="post" enctype="multipart/form-data">
