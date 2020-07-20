@@ -942,6 +942,495 @@ class OperatorController extends Controller {
 
 
 
+    public function editProject($id) {
+
+        $project = Project::whereId($id);
+
+        if($project == null)
+            return Redirect::route('admin');
+
+        $project->start_reg = convertStringToDate($project->start_reg);
+        $project->end_reg = convertStringToDate($project->end_reg);
+
+        return view('operator.editProject', ['project' => $project]);
+    }
+
+    public function doEditProject($id) {
+
+        $project = Project::whereId($id);
+
+        if($project == null)
+            return Redirect::route('admin');
+
+
+        if(isset($_POST["name"]) && isset($_POST["description"])
+            && isset($_POST["price"]) && isset($_POST["capacity"])
+            && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
+        ) {
+
+            $project->title = makeValidInput($_POST["name"]);
+            $project->description = $_POST["description"];
+            $project->capacity = makeValidInput($_POST["capacity"]);
+            $project->price = makeValidInput($_POST["price"]);
+            $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
+            $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
+
+            try {
+
+                $project->save();
+
+                if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])) {
+
+
+                    $pics = ProjectPic::whereProjectId($project->id)->get();
+                    foreach ($pics as $pic) {
+
+                        if (file_exists(__DIR__ . '/../../../public/projectPic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/projectPic/' . $pic->name);
+
+                        $pic->delete();
+                    }
+
+                    $file = Input::file('file');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/projectPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ProjectPic();
+                            $tmp->project_id = $project->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+
+                if(isset($_FILES["attach"]) && !empty($_FILES["attach"]["name"])) {
+
+                    $pics = ProjectAttach::whereProjectId($project->id)->get();
+                    foreach ($pics as $pic) {
+
+                        if (file_exists(__DIR__ . '/../../../public/projectPic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/projectPic/' . $pic->name);
+
+                        $pic->delete();
+                    }
+
+
+                    $file = Input::file('attach');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/projectPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ProjectAttach();
+                            $tmp->project_id = $project->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+
+        }
+
+        return Redirect::route('projects');
+
+
+    }
+
+
+
+    public function editService($id) {
+
+        $service = Service::whereId($id);
+
+        if($service == null)
+            return Redirect::route('admin');
+
+        return view('operator.editService', ['service' => $service]);
+    }
+
+    public function doEditService($id) {
+
+        if(isset($_POST["name"]) && isset($_POST["description"])
+            && isset($_POST["star"]) && isset($_POST["capacity"])
+        ) {
+
+            $service = Service::whereId($id);
+
+            if($service == null)
+                return Redirect::route('admin');
+
+            $service->title = makeValidInput($_POST["name"]);
+            $service->description = $_POST["description"];
+            $service->star = makeValidInput($_POST["star"]);
+            $service->capacity = makeValidInput($_POST["capacity"]);
+
+            try {
+
+                $service->save();
+
+                if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])) {
+
+                    $pics = ServicePic::whereServiceId($service->id)->get();
+
+                    foreach ($pics as $pic) {
+                        if (file_exists(__DIR__ . '/../../../public/servicePic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/servicePic/' . $pic->name);
+                        $pic->delete();
+                    }
+
+                    $file = Input::file('file');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/servicePic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ServicePic();
+                            $tmp->service_id = $service->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+
+
+                if(isset($_FILES["attach"]) && !empty($_FILES["attach"]["name"])) {
+
+                    $pics = ServiceAttach::whereServiceId($service->id)->get();
+
+                    foreach ($pics as $pic) {
+                        if (file_exists(__DIR__ . '/../../../public/servicePic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/servicePic/' . $pic->name);
+                        $pic->delete();
+                    }
+
+                    $file = Input::file('attach');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/servicePic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ServiceAttach();
+                            $tmp->service_id = $service->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+
+        }
+
+        return Redirect::route("services");
+
+    }
+
+
+    public function editProduct($id) {
+
+        $product = Product::whereId($id);
+
+        if($product == null)
+            return Redirect::route('admin');
+
+        return view('operator.editProduct', ['product' => $product]);
+
+    }
+
+    public function doEditProduct($id) {
+
+        if(isset($_POST["name"]) && isset($_POST["description"])
+            && isset($_POST["price"]) && isset($_POST["star"])
+        ) {
+
+            $product = Product::whereId($id);
+
+            if($product == null) {
+                return Redirect::route("admin");
+            }
+
+            $product->name = makeValidInput($_POST["name"]);
+            $product->description = $_POST["description"];
+            $product->price = makeValidInput($_POST["price"]);
+            $product->star = makeValidInput($_POST["star"]);
+
+            try {
+
+                $product->save();
+
+                if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])) {
+
+                    $pics = ProductPic::whereProductId($product->id)->get();
+
+                    foreach ($pics as $pic) {
+                        if (file_exists(__DIR__ . '/../../../public/productPic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/productPic/' . $pic->name);
+                        $pic->delete();
+                    }
+
+                    $file = Input::file('file');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/productPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ProductPic();
+                            $tmp->product_id = $product->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+
+                if(isset($_FILES["attach"]) && !empty($_FILES["attach"]["name"])) {
+
+                    $pics = ProductAttach::whereProductId($product->id)->get();
+
+                    foreach ($pics as $pic) {
+                        if (file_exists(__DIR__ . '/../../../public/productPic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/productPic/' . $pic->name);
+                        $pic->delete();
+                    }
+
+                    $file = Input::file('attach');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/productPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ProductAttach();
+                            $tmp->product_id = $product->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+
+                if(isset($_FILES["trailer"]) && !empty($_FILES["trailer"]["name"])) {
+
+                    $pics = ProductTrailer::whereProductId($product->id)->get();
+
+                    foreach ($pics as $pic) {
+                        if (file_exists(__DIR__ . '/../../../public/productPic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/productPic/' . $pic->name);
+                        $pic->delete();
+                    }
+
+                    $file = Input::file('trailer');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/productPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ProductTrailer();
+                            $tmp->product_id = $product->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+
+        }
+
+        return Redirect::route('products');
+
+    }
+
 
     public function getOpenProject() {
 

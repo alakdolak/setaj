@@ -128,9 +128,9 @@
                                                 <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
                                             </button>
 
-                                            <button onclick="editProject('{{$itr->id}}', '{{$itr->title}}', '{{$itr->price}}', '{{$itr->grade_id}}', '{{$itr->startReg}}', '{{$itr->endReg}}')" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
+                                            <a target="_blank" href="{{route('editProject', ['id' => $itr->id])}}" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
                                                 <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
-                                            </button>
+                                            </a>
 
                                             <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
 

@@ -202,9 +202,9 @@
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
                                         </button>
 
-                                        <button onclick="" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
+                                        <a target="_blank" href="{{route('editService', ['id' => $itr->id])}}" onclick="" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
-                                        </button>
+                                        </a>
 
                                         <button style="margin: 10px" class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
                                         <a style="margin: 10px" target="_blank" href="{{route('serviceBuyers', ['id' => $itr->id])}}" class="btn btn-success">مشاهده خریداران</a>

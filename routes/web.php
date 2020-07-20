@@ -187,7 +187,11 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::post('addService', ['as' => 'addService', 'uses' => 'OperatorController@addService']);
 
-    Route::post('editService', ['as' => 'editService', 'uses' => 'OperatorController@editService']);
+
+    Route::get('editService/{id}', ['as' => 'editService', 'uses' => 'OperatorController@editService']);
+
+    Route::post('doEditService/{id}', ['as' => 'doEditService', 'uses' => 'OperatorController@doEditService']);
+
 
     Route::post('doneService', ['as' => 'doneService', 'uses' => 'OperatorController@doneService']);
 
@@ -196,9 +200,9 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::post('addProject', ['as' => 'addProject', 'uses' => 'OperatorController@addProject']);
 
-    Route::get('editProject', ['as' => 'editProject', 'uses' => 'OperatorController@editProject']);
+    Route::get('editProject/{id}', ['as' => 'editProject', 'uses' => 'OperatorController@editProject']);
 
-    Route::post('doEditProject', ['as' => 'doEditProject', 'uses' => 'OperatorController@doEditProject']);
+    Route::post('doEditProject/{id}', ['as' => 'doEditProject', 'uses' => 'OperatorController@doEditProject']);
 
     Route::post('deleteProject', ['as' => 'deleteProject', 'uses' => 'OperatorController@deleteProject']);
 
@@ -245,7 +249,12 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
     Route::post('addProduct', ['as' => 'addProduct', 'uses' => 'OperatorController@addProduct']);
 
-    Route::post('editProduct', ['as' => 'editProduct', 'uses' => 'OperatorController@editProduct']);
+
+    Route::get('editProduct/{id}', ['as' => 'editProduct', 'uses' => 'OperatorController@editProduct']);
+
+    Route::get('doEditProduct/{id}', ['as' => 'doEditProduct', 'uses' => 'OperatorController@doEditProduct']);
+
+
 
     Route::post('deleteProduct', ['as' => 'deleteProduct', 'uses' => 'OperatorController@deleteProduct']);
 
