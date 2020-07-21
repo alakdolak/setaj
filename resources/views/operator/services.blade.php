@@ -167,7 +167,6 @@
                                 <th scope="col" style="width:450px !important">توضیح</th>
                                 <th scope="col">تعداد ستاره ها</th>
                                 <th scope="col">تاریخ تعریف خدمت</th>
-                                <th class="bigTd" scope="col">خریدار</th>
                                 <th scope="col">وضعیت نمایش</th>
                                 <th scope="col">عملیات</th>
                             </tr>
@@ -194,42 +193,21 @@
 
                                     <td>{{$itr->capacity}}</td>
                                     <td><img width="100px" src="{{$itr->pic}}"></td>
-                                    <td>{!! html_entity_decode($itr->description) !!}</td>
+                                    <td>...</td>
                                     <td>{{$itr->star}}</td>
                                     <td>{{$itr->date}}</td>
-                                    <td class="bigTd">
-                                        @if($itr->buyers == null)
-                                            هنوز خریداری نشده است.
-                                        @else
-                                            @foreach($itr->buyers as $buyer)
-                                                <div style="padding: 4px; margin: 4px; border: 1px dotted black; border-radius: 7px;">
-                                                    <p>{{$buyer["name"]}}</p>
-                                                    <p>
-                                                        <span>وضعیت انجام: </span><span>&nbsp;</span><span>{{($buyer["status"]) ? "انجام شده" : "انجام نشده"}}</span>
-                                                    </p>
-                                                    @if($buyer["status"])
-                                                        <p>
-                                                            <span>تعداد ستاره های داده شده: </span><span>&nbsp;</span><span>{{$buyer["star"]}}</span>
-                                                        </p>
-                                                    @else
-                                                        <button onclick="confirmJob('{{$itr->star}}', '{{$buyer["id"]}}', '{{$itr->id}}')" class="btn btn-default">تاییده انجام کار</button>
-                                                    @endif
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    </td>
                                     <td>{{$itr->hide}}</td>
                                     <td>
                                         <button onclick="removeService('{{$itr->id}}')" class="btn btn-danger" data-toggle="tooltip" title="حذف">
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
                                         </button>
 
-                                        <button onclick="" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
+                                        <a target="_blank" href="{{route('editService', ['id' => $itr->id])}}" onclick="" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
-                                        </button>
+                                        </a>
 
-                                        <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
-
+                                        <button style="margin: 10px" class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
+                                        <a style="margin: 10px" target="_blank" href="{{route('serviceBuyers', ['id' => $itr->id])}}" class="btn btn-success">مشاهده خریداران</a>
                                     </td>
                                 </tr>
                                 <?php $i += 1; ?>
@@ -396,21 +374,6 @@
         }
 
         var userId, serviceId;
-
-        function confirmJob(star, uId, sId) {
-
-            userId = uId;
-            serviceId = sId;
-
-            var newElem = "";
-            for(i = star; i >= 0; i--) {
-                newElem += "<option value='" + i + "'>" + i + "</option>";
-            }
-
-            $("#starOptions").empty().append(newElem);
-
-            document.getElementById('myConfirmModal').style.display = 'block';
-        }
 
         CKEDITOR.replace('editor1');
 

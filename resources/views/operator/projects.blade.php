@@ -50,7 +50,7 @@
                         <select onchange="filter(this.value)">
                             <option value="-1">همه</option>
                             @foreach($grades as $grade)
-                                <option value="{{$grade->id}}">{{$grade->name}}</option>
+                                <option value="{{$grade->name}}">{{$grade->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -60,78 +60,84 @@
                         <table class="table table-striped table-bordered table-hover">
 
                             <thead>
-                                <tr>
-                                    <th scope="col">ردیف</th>
-                                    <th scope="col">نام</th>
-                                    <th scope="col">پایه تحصیلی</th>
-                                    <th scope="col">ظرفیت</th>
-                                    <th scope="col">تاریخ شروع امکان خرید</th>
-                                    <th scope="col">تاریخ پایان امکان خرید</th>
-                                    <td scope="col">تصویر</td>
-                                    <th scope="col" style="width:450px !important">توضیح</th>
-                                    <th scope="col">هزینه پروژه</th>
-                                    <th scope="col">تاریخ تعریف پروژه</th>
-                                    <th scope="col">نفرات خریدار پروژه</th>
-                                    <th scope="col">تگ ها</th>
-                                    <th scope="col">وضعیت نمایش</th>
-                                    <th scope="col">عملیات</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">ردیف</th>
+                                <th scope="col">نام</th>
+                                <th scope="col">پایه تحصیلی</th>
+                                <th scope="col">ظرفیت</th>
+                                <th scope="col">تاریخ شروع امکان خرید</th>
+                                <th scope="col">تاریخ پایان امکان خرید</th>
+                                <td scope="col">تصویر</td>
+                                <th scope="col" style="width:450px !important">توضیح</th>
+                                <th scope="col">هزینه پروژه</th>
+                                <th scope="col">تاریخ تعریف پروژه</th>
+                                <th scope="col">نفرات خریدار پروژه</th>
+                                <th scope="col">تگ ها</th>
+                                <th scope="col">وضعیت نمایش</th>
+                                <th scope="col">عملیات</th>
+                            </tr>
                             </thead>
 
                             <tbody>
-                                <?php $i = 1; ?>
-                                @foreach($projects as $itr)
-                                    <tr class="myTr tr_{{$itr->grade_id}}" id="tr_{{$itr->id}}">
-                                        <td>{{$i}}</td>
-                                        <td>{{$itr->title}}</td>
+                            <?php $i = 1; ?>
+                            @foreach($projects as $itr)
 
-                                        <td>
-                                            @foreach($itr->grades as $grade)
-                                                <button id="grade_{{$grade->id}}" onclick="removeGrade('{{$grade->id}}')" style="margin: 4px" class="btn btn-info">
-                                                    <span>{{$grade->name}}</span>
-                                                    <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-remove"></span>
-                                                </button>
-                                            @endforeach
-                                            <div style="margin-top: 10px">
-                                                <button onclick="showGrades('{{$itr->id}}')" class="btn btn-default">افزودن پایه تحصیلی جدید</button>
-                                            </div>
-                                        </td>
-
-                                        <td>{{$itr->capacity}}</td>
-                                        <td>{{$itr->startReg}}</td>
-                                        <td>{{$itr->endReg}}</td>
-                                        <td><img width="100px" src="{{$itr->pic}}"></td>
-                                        <td>{!! html_entity_decode($itr->description) !!}</td>
-                                        <td>{{$itr->price}}</td>
-                                        <td>{{$itr->date}}</td>
-                                        <td>{{$itr->buyers}}</td>
-                                        <td>
-                                            @foreach($itr->tags as $tag)
-                                                <button id="tag_{{$tag->id}}" onclick="removeTag('{{$tag->id}}')" style="margin: 4px" class="btn btn-info">
-                                                    <span>{{$tag->name}}</span>
-                                                    <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-remove"></span>
-                                                </button>
-                                            @endforeach
-                                            <div style="margin-top: 10px">
-                                                <button onclick="showTags('{{$itr->id}}')" class="btn btn-default">افزودن تگ جدید</button>
-                                            </div>
-                                        </td>
-                                        <td>{{$itr->hide}}</td>
-                                        <td>
-                                            <button onclick="removeProject('{{$itr->id}}')" class="btn btn-danger" data-toggle="tooltip" title="حذف">
-                                                <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
-                                            </button>
-
-                                            <button onclick="editProject('{{$itr->id}}', '{{$itr->title}}', '{{$itr->price}}', '{{$itr->grade_id}}', '{{$itr->startReg}}', '{{$itr->endReg}}')" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
-                                                <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
-                                            </button>
-
-                                            <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
-
-                                        </td>
-                                    </tr>
-                                    <?php $i += 1; ?>
+                                <?php $str = '-'; ?>
+                                @foreach($itr->grades as $grade)
+                                    <?php $str .= $grade->name . '-'; ?>
                                 @endforeach
+
+                                <tr class="myTr" data-grades="{{$str}}" id="tr_{{$itr->id}}">
+                                    <td>{{$i}}</td>
+                                    <td>{{$itr->title}}</td>
+
+                                    <td>
+                                        @foreach($itr->grades as $grade)
+                                            <button id="grade_{{$grade->id}}" onclick="removeGrade('{{$grade->id}}')" style="margin: 4px" class="btn btn-info">
+                                                <span>{{$grade->name}}</span>
+                                                <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        @endforeach
+                                        <div style="margin-top: 10px">
+                                            <button onclick="showGrades('{{$itr->id}}')" class="btn btn-default">افزودن پایه تحصیلی جدید</button>
+                                        </div>
+                                    </td>
+
+                                    <td>{{$itr->capacity}}</td>
+                                    <td>{{$itr->startReg}}</td>
+                                    <td>{{$itr->endReg}}</td>
+                                    <td><img width="100px" src="{{$itr->pic}}"></td>
+                                    <td>...</td>
+                                    <td>{{$itr->price}}</td>
+                                    <td>{{$itr->date}}</td>
+                                    <td>{{$itr->buyers}}</td>
+                                    <td>
+                                        @foreach($itr->tags as $tag)
+                                            <button id="tag_{{$tag->id}}" onclick="removeTag('{{$tag->id}}')" style="margin: 4px" class="btn btn-info">
+                                                <span>{{$tag->name}}</span>
+                                                <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        @endforeach
+                                        <div style="margin-top: 10px">
+                                            <button onclick="showTags('{{$itr->id}}')" class="btn btn-default">افزودن تگ جدید</button>
+                                        </div>
+                                    </td>
+                                    <td>{{$itr->hide}}</td>
+                                    <td>
+                                        <button onclick="removeProject('{{$itr->id}}')" class="btn btn-danger" data-toggle="tooltip" title="حذف">
+                                            <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
+                                        </button>
+
+                                        <a target="_blank" href="{{route('editProject', ['id' => $itr->id])}}" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
+                                            <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
+                                        </a>
+
+                                        <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
+
+                                    </td>
+                                </tr>
+                                <?php $i += 1; ?>
+                            @endforeach
                             </tbody>
 
                         </table>
@@ -365,8 +371,13 @@
                 $(".myTr").removeClass('hidden');
             }
             else {
-                $(".myTr").addClass('hidden');
-                $(".tr_" + id).removeClass('hidden');
+                $(".myTr").addClass('hidden').each(function () {
+
+                    if($(this).attr("data-grades").includes('-' +  id + '-'))
+                        $(this).removeClass("hidden");
+
+                });
+
             }
 
         }
