@@ -8,8 +8,9 @@
     width: 74%;
     padding-top: 72%;
     border: 3px solid #acacac;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
 }
 .pr_otherPics{
     width: 22%;
@@ -19,8 +20,9 @@
     padding-top: 69%;
     border: 3px solid #acacac;
     margin: 0 0 13px 0;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
 }
 .pr_eachOtherPics:last-child{
@@ -62,6 +64,7 @@
     cursor: context-menu;
 }
 .pr_descript{
+    padding-left: 0 !important;
     font-size: 1.3em;
     font-weight: 500;
     color: #a4a4a4;
@@ -134,5 +137,12 @@
 @media only screen and (max-width:992px) {
     .eachProduct {
         margin: 50px 5% 0 !important;
+    }
+}
+
+
+@media only screen and (max-width:768px) {
+    .pr_pics {
+        margin: 5% 0 0;
     }
 }

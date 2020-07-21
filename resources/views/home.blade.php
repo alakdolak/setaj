@@ -19,35 +19,37 @@
 <body>
 
 <div class="homeBodyDiv">
-    <div class="homePic screenMode">
 
-        @if($reminder != -1)
-            <div class="nextEvent">
-                <div class="nextEventLogoDiv">
-                    <div class="nextEventLogo"></div>
-                </div>
-                <div class="nextEventTextDiv">
-                    <div class="nextEventText">شروع برنامه‌ی بعدی:</div>
-                    <div class="nextEventTime">{{$reminder["day"]}} روز - {{$reminder["time"]}} ساعت</div>
-                </div>
-            </div>
-        @endif
+{{--    <div class="homePic screenMode"></div>--}}
+    <div class="homePic"></div>
 
-        @if(\Illuminate\Support\Facades\Auth::check())
-            <div class="homeLoginBtn" onclick="document.location.href = '{{route('choosePlan')}}'">
-                <div class="homeLoginBtnText">
-                    ورود به ســــــایت
-                </div>
+    @if($reminder != -1)
+        <div class="nextEvent">
+            <div class="nextEventLogoDiv">
+                <div class="nextEventLogo"></div>
             </div>
-        @else
-            <div class="homeLoginBtn" onclick="showLogin()">
-                <div class="homeLoginBtnText">
-                    ورود به ســــــایت
-                </div>
+            <div class="nextEventTextDiv">
+                <div class="nextEventText">شروع برنامه‌ی بعدی:</div>
+                <div class="nextEventTime">{{$reminder["day"]}} روز - {{$reminder["time"]}} ساعت</div>
             </div>
-        @endif
+        </div>
+    @endif
 
-    </div>
+    @if(\Illuminate\Support\Facades\Auth::check())
+        <div class="homeLoginBtn" onclick="document.location.href = '{{route('choosePlan')}}'">
+            <div class="homeLoginBtnText">
+                ورود به ســــــایت
+            </div>
+        </div>
+    @else
+        <div class="homeLoginBtn" onclick="showLogin()">
+            <div class="homeLoginBtnText">
+                ورود به ســــــایت
+            </div>
+        </div>
+    @endif
+
+{{--    </div>--}}
     {{--    onmouseleave="hideLogin()"--}}
     <div class="loginBody hidden">
         <div class="loginTitle">
@@ -87,7 +89,7 @@
         </div>
     </div>
 
-    <div class="homePhonePic phoneMode"></div>
+{{--    <div class="homePhonePic phoneMode"></div>--}}
 </div>
 
 
