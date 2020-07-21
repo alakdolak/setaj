@@ -50,7 +50,7 @@
                         <select onchange="filter(this.value)">
                             <option value="-1">همه</option>
                             @foreach($grades as $grade)
-                                <option value="{{$grade->name}}">{{$grade->name}}</option>
+                                <option value="{{$grade->id}}">{{$grade->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -81,13 +81,7 @@
                             <tbody>
                                 <?php $i = 1; ?>
                                 @foreach($projects as $itr)
-
-                                    <?php $str = '-'; ?>
-                                    @foreach($itr->grades as $grade)
-                                        <?php $str .= $grade->name . '-'; ?>
-                                    @endforeach
-
-                                    <tr class="myTr" data-grades="{{$str}}" id="tr_{{$itr->id}}">
+                                    <tr class="myTr tr_{{$itr->grade_id}}" id="tr_{{$itr->id}}">
                                         <td>{{$i}}</td>
                                         <td>{{$itr->title}}</td>
 
@@ -107,7 +101,7 @@
                                         <td>{{$itr->startReg}}</td>
                                         <td>{{$itr->endReg}}</td>
                                         <td><img width="100px" src="{{$itr->pic}}"></td>
-                                        <td>...</td>
+                                        <td>{!! html_entity_decode($itr->description) !!}</td>
                                         <td>{{$itr->price}}</td>
                                         <td>{{$itr->date}}</td>
                                         <td>{{$itr->buyers}}</td>
@@ -128,9 +122,9 @@
                                                 <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
                                             </button>
 
-                                            <a target="_blank" href="{{route('editProject', ['id' => $itr->id])}}" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
+                                            <button onclick="editProject('{{$itr->id}}', '{{$itr->title}}', '{{$itr->price}}', '{{$itr->grade_id}}', '{{$itr->startReg}}', '{{$itr->endReg}}')" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
                                                 <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
-                                            </a>
+                                            </button>
 
                                             <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
 
@@ -371,13 +365,8 @@
                 $(".myTr").removeClass('hidden');
             }
             else {
-                $(".myTr").addClass('hidden').each(function () {
-
-                    if($(this).attr("data-grades").includes('-' +  id + '-'))
-                        $(this).removeClass("hidden");
-
-                });
-
+                $(".myTr").addClass('hidden');
+                $(".tr_" + id).removeClass('hidden');
             }
 
         }

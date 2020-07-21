@@ -79,20 +79,20 @@
 
 .homePic {
     width: 100%;
-    height: -webkit-fill-available;
+    height: 100%;
     background-image: url(../images/home.png);
     /*background-image: url(../images/homePage.png);*/
     background-color: #FFC20E;
-    /* background-size: 100%; */
+     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
     position: relative;
 }
 
 .homePhonePic {
-    height: -webkit-fill-available;
-    background-image: url(../images/homePhone.jpg);
-    background-size: contain;
+    height: 100%;
+    background-image: url(../images/homePhone.png);
+    background-size: 75%;
     background-color: #f65656;
     background-repeat: no-repeat;
     background-position: center;

@@ -1,11 +1,21 @@
+.advertiseBannerBox {
+    margin: 5% 0;
+    /*padding: 0 12%;*/
+}
+.advertiseBanner {
+    width: 100%;
+    padding-top: 31%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(../images/advertise1.jpg);
+    /*background-image: url(../images/advertise2.jpg);*/
+}
+
 .choosePlane {
-    height: 400px;
-    margin: 85px 0 15px 0 !important;
+    margin: 0 !important;
     background-color: #f9f9f9;
-    padding: 0 12%;
+    padding: 5% 12%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .planes {
@@ -22,6 +32,7 @@
 
 .projects {
     background-image: url(../images/projects.png);
+    background-position: center;
 }
 
 .projects:hover {
@@ -30,6 +41,7 @@
 
 .services {
     background-image: url(../images/services.png);
+    background-position: center;
 }
 
 .services:hover {
@@ -38,6 +50,7 @@
 
 .products {
     background-image: url(../images/products.png);
+    background-position: center;
 }
 
 .products:hover {
@@ -53,3 +66,69 @@
     position: absolute;
     top: 25px;
 }
+
+
+@media only screen and (max-width:1200px) {
+    .choosePlane {
+        padding: 5% 10%;
+    }
+    .planeText {
+        font-size: 1.75em;
+        top: 15px;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+    .choosePlane {
+        padding: 5%;
+    }
+    .planeText {
+        font-size: 1.5em;
+    }
+}
+
+
+@media only screen and (max-width:768px) {
+    .choosePlane {
+        display: block;
+    }
+
+    .planes {
+        padding-top: 30.2%;
+    }
+
+    .planeText {
+        top: 50%;
+        padding-right: 50px;
+        text-align: right;
+        font-size: 2.1em;
+    }
+    .projects {
+        border-top: 7px solid #f8aba6;
+        border-bottom: 7px solid #f8aba6;
+        background-image: url(../images/projectsBanner2.png);
+    }
+    .services {
+        margin: 20px 0;
+        border-top: 7px solid #dee787;
+        border-bottom: 7px solid #dee787;
+        background-image: url(../images/servicesBanner2.png);
+    }
+    .products {
+        border-top: 7px solid #9ddcf9;
+        border-bottom: 7px solid #9ddcf9;
+        background-image: url(../images/productsBanner2.png);
+    }
+}
+
+
+@media only screen and (max-width:480px) {
+    .planeText {
+        top: 45%;
+        padding-right: 15px;
+        text-align: right;
+        font-size: 1.25em;
+    }
+}
+

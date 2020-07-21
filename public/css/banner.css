@@ -1,5 +1,5 @@
 .banner {
-    padding-top: 25%;
+    padding-top: 26%;
     display: flex;
     justify-content: center;
     position: relative;
@@ -49,11 +49,55 @@
     background-image: url(../images/productsBanner.jpg);
     /*background-color: rgb(51, 163, 220);*/
 }
-/*.bannerText {*/
-/*    font-size: 3em;*/
-/*    font-weight: 700;*/
-/*    color: white;*/
-/*    position: absolute;*/
-/*    bottom: 20%;*/
-/*    right: 10%;*/
-/*}*/
+
+
+@media only screen and (max-width:1200px) {
+    .banner {
+        padding-top: 27.5%;
+    }
+    .bannerGrayBox {
+        width: 87%;
+    }
+    .bannerBorderBox {
+        width: 82%;
+    }
+    .bannerMainBox {
+        width: 80%;
+        padding-top: 25%;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+    .banner {
+        padding-top: 32%;
+    }
+    .bannerGrayBox {
+        width: 97%;
+    }
+    .bannerBorderBox {
+        width: 92%;
+        padding-top: 23%;
+    }
+    .bannerMainBox {
+        width: 90%;
+        padding-top: 28%;
+    }
+}
+
+
+@media only screen and (max-width:768px) {
+    .banner {
+        padding-top: 35%;
+    }
+}
+
+
+@media only screen and (max-width:480px) {
+    .banner {
+        padding-top: 37%;
+    }
+}
+
+
+

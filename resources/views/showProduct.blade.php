@@ -98,7 +98,7 @@
         @if(count($product->trailer) > 0)
 
             <div class="pr_advertiseBox col-sm-12">
-                <div class="pr_iconesBox">
+                <div class="pr_iconesBox" style="margin-bottom: 15px">
                     <div class="pr_icons coinIcon"></div>
                     <div>تبلیغات:</div>
                 </div>

@@ -1,14 +1,10 @@
 .footer {
     width: 100%;
-    padding: 15px;
-    padding-right: 12%;
-    padding-left: 12%;
-    margin-top: 50px;
+    padding: 15px 12%;
+    margin-top: 5%;
     background-color: #f9f9f9;
     display: flex;
     justify-content: space-between;
-    /*position: absolute;*/
-    /*top: 100%;*/
 }
 
 .footerDescript {
@@ -50,7 +46,11 @@
 }
 
 .footerLogoText {
-    margin-right: 4px;
+    margin: 0 5px;
+}
+
+.footerLogoText:last-child {
+    margin-left: 0;
 }
 
 .serajDescript {
@@ -74,4 +74,43 @@
     background-size: 100%;
     background-repeat: no-repeat;
     margin-left: 10px;
+}
+
+
+@media only screen and (max-width:1200px) {
+    .footer {
+        font-size: 0.9em;
+        padding: 15px 10%;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+    .footer {
+        font-size: 0.85em;
+        padding: 15px 5%;
+    }
+
+    .footerLogo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .serajLogo {
+        width: 45px;
+        height: 45px;
+    }
+    .address {
+        width: 250px;
+        height: 40px;
+        margin-left: 5px;
+    }
+}
+
+
+@media only screen and (max-width:768px) {
+    /*موقتا اینجوره*/
+    .serajDescript {
+        display: contents;
+    }
 }

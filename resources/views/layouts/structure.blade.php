@@ -151,6 +151,28 @@
                                 <span class="badge badge-default">2</span>
 {{--                                <span class="badge badge-default"> {{count($baskets) + count($warningProducts) + count($criticalProducts)}} </span>--}}
                             </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
+
+{{--                                        @foreach($baskets as $basket)--}}
+{{--                                            <li>--}}
+{{--                                                <a href="{{route('unConfirmedOrders')}}">--}}
+{{--                                                    <span class="time">{{MiladyToShamsi('', explode('-', explode(' ', $basket->created_at)[0]))}}</span>--}}
+{{--                                                    <span class="details">--}}
+{{--                                                        <span class="label label-sm label-icon label-success" style="font-size: 0.9em">--}}
+{{--                                                            <i class="fa fa-bell-o"></i>--}}
+{{--                                                            سفارش جدید--}}
+{{--                                                        </span>--}}
+{{--                                                        {{$basket->name}}--}}
+{{--                                                    </span>--}}
+{{--                                                </a>--}}
+{{--                                            </li>--}}
+{{--                                        @endforeach--}}
+
+                                    </ul>
+                                </li>
+                            </ul>
                         </li>
                         <!-- END NOTIFICATION DROPDOWN -->
 
@@ -182,9 +204,7 @@
                             </div>
                         </li>
 
-                        @if(\Illuminate\Support\Facades\Auth::user()->level == getValueInfo("adminLevel"))
-
-                            <li class="nav-item">
+                        <li class="nav-item">
 
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-basket"></i>
@@ -209,68 +229,31 @@
 
                         </li>
 
-                            <li class="nav-item">
+                        <li class="nav-item">
 
-                                <a href="{{route('config')}}" class="nav-link nav-toggle">
-                                    <i class="icon-settings"></i>
-                                    <span class="title">پیکربندی</span>
-                                    <span class="arrow open"></span>
-                                </a>
+                            <a href="{{route('config')}}" class="nav-link nav-toggle">
+                                <i class="icon-settings"></i>
+                                <span class="title">پیکربندی</span>
+                                <span class="arrow open"></span>
+                            </a>
 
-                            </li>
+                        </li>
 
-                            <li class="nav-item  ">
-                                <a href="{{route('grades')}}" class="nav-link nav-toggle">
-                                    <i class="icon-diamond"></i>
-                                    <span class="title">پایه های تحصیلی</span>
-                                    <span class="arrow"></span>
-                                </a>
-                            </li>
+                        <li class="nav-item  ">
+                            <a href="{{route('grades')}}" class="nav-link nav-toggle">
+                                <i class="icon-diamond"></i>
+                                <span class="title">پایه های تحصیلی</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
 
-                            <li class="nav-item  ">
-                                <a href="{{route('tags')}}" class="nav-link nav-toggle">
-                                    <i class="icon-diamond"></i>
-                                    <span class="title">تگ ها</span>
-                                    <span class="arrow"></span>
-                                </a>
-                            </li>
-
-
-                            <li class="nav-item  ">
-                                <a href="{{route('operators')}}" class="nav-link nav-toggle">
-                                    <i class="icon-diamond"></i>
-                                    <span class="title">معلمین راهنما</span>
-                                    <span class="arrow"></span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item  ">
-                                <a href="{{route('projects')}}" class="nav-link nav-toggle">
-                                    <i class="icon-diamond"></i>
-                                    <span class="title">پروژه ها</span>
-                                    <span class="arrow"></span>
-                                </a>
-                            </li>
-
-
-                            <li class="nav-item  ">
-                                <a href="{{route('services')}}" class="nav-link nav-toggle">
-                                    <i class="icon-diamond"></i>
-                                    <span class="title">خدمات</span>
-                                    <span class="arrow"></span>
-                                </a>
-                            </li>
-
-
-                            <li class="nav-item  ">
-                                <a href="{{route('chats')}}" class="nav-link nav-toggle">
-                                    <i class="icon-diamond"></i>
-                                    <span class="title">پیام ها</span>
-                                    <span class="arrow"></span>
-                                </a>
-                            </li>
-
-                        @endif
+                        <li class="nav-item  ">
+                            <a href="{{route('tags')}}" class="nav-link nav-toggle">
+                                <i class="icon-diamond"></i>
+                                <span class="title">تگ ها</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
 
                         <li class="nav-item  ">
                             <a href="{{route('products')}}" class="nav-link nav-toggle">
@@ -280,6 +263,29 @@
                             </a>
                         </li>
 
+                        <li class="nav-item  ">
+                            <a href="{{route('projects')}}" class="nav-link nav-toggle">
+                                <i class="icon-diamond"></i>
+                                <span class="title">پروژه ها</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item  ">
+                            <a href="{{route('services')}}" class="nav-link nav-toggle">
+                                <i class="icon-diamond"></i>
+                                <span class="title">خدمات</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item  ">
+                            <a href="{{route('chats')}}" class="nav-link nav-toggle">
+                                <i class="icon-diamond"></i>
+                                <span class="title">پیام ها</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
 
@@ -291,13 +297,11 @@
 
                             <ul class="sub-menu" style="display: none;">
 
-                                @if(\Illuminate\Support\Facades\Auth::user()->level == getValueInfo("adminLevel"))
-                                    <li class="nav-item  ">
-                                        <a href="{{route('usersReport')}}" class="nav-link">
-                                            <span class="title">کاربران</span>
-                                        </a>
-                                    </li>
-                                @endif
+                                <li class="nav-item  ">
+                                    <a href="{{route('usersReport')}}" class="nav-link">
+                                        <span class="title">کاربران</span>
+                                    </a>
+                                </li>
 
                                 <li class="nav-item  ">
                                     <a href="{{route('unDoneProjectsReport')}}" class="nav-link">

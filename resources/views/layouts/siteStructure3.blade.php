@@ -33,15 +33,6 @@
 
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/chatbox.css")}}">
 
-        <style>
-
-            @media (min-width: 1200px) {
-                .col-sm-3 {
-                    float: right;
-                }
-            }
-
-        </style>
     @show
 </head>
 

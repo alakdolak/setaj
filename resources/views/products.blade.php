@@ -37,11 +37,11 @@
             @endforeach
 
             @if($allow)
-                <div class="weekContainer shopEachRow col-sm-12">
+                <div class="weekContainer shopEachRow col-xs-12">
 
-                    <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-sm-12"></div>
+                    <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-xs-12"></div>
 
-                    <div class="shopEachRow col-sm-12">
+                    <div class="shopEachRow col-xs-12">
 
                         @foreach($products as $product)
 
@@ -49,7 +49,7 @@
                                 @continue
                             @endif
 
-                            <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{route('showProduct', ['id' => $product->id])}}'" class="myItem shopOneBox col-sm-3 col-xs-6">
+                            <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{route('showProduct', ['id' => $product->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
                                 <div class="sh_mainBox">
                                     <div style="background-image: url('{{$product->pic}}')" class="sh_mainPic"></div>
                                     <div class="sh_descript">

@@ -1,7 +1,7 @@
 /*the css of filters*/
 
 .filterBorder {
-    margin: 55px 12% 0;
+    margin: 6% 12% 0;
     text-align: center;
     border-right: 35px solid #f37053;
     border-left: 35px solid #f37053;
@@ -16,8 +16,8 @@
     font-weight: 600;
 }
 .filterTag {
-    width: 10%;
-    padding: 10px 0;
+    width: 12%;
+    padding: 10px 5px;
     border-left: 1px solid #9fa4a6;
     cursor: pointer;
 }
@@ -31,6 +31,57 @@
     color: #f37053;
     border-bottom: 2px solid #f37053 !important;
 }
+
+
+@media only screen and (max-width:1200px) {
+    .filterBorder {
+        margin: 6% 10% 0;
+    }
+    .filterTag {
+        width: 14%;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+    .filterBorder {
+        margin: 6% 5% 0;
+        border-right: 30px solid #f37053;
+        border-left: 30px solid #f37053;
+    }
+    .filterBox {
+        border-right: 30px solid #9fa4a6;
+        border-left: 30px solid #9fa4a6;
+    }
+    .filterTag {
+        width: 16%;
+    }
+}
+
+
+@media only screen and (max-width:768px) {
+    .filterBorder {
+        border-right: 15px solid #f37053;
+        border-left: 15px solid #f37053;
+    }
+    .filterBox {
+        font-size: 1em;
+        border-right: 15px solid #9fa4a6;
+        border-left: 15px solid #9fa4a6;
+    }
+    .filterTag {
+        width: 20%;
+    }
+}
+
+
+@media only screen and (max-width:480px) {
+    .filterBox {
+        font-size: 0.9em;
+    }
+}
+
+
 
 /*the css of shopping Box*/
 .shopBox {
@@ -46,7 +97,7 @@
     padding-top: 7.75%;
     background-size: contain;
     background-repeat: no-repeat;
-    margin: 50px 0 35px;
+    margin: 7% 0;
     /*font-size: 2em;*/
     /*font-weight: 700;*/
 }
@@ -73,6 +124,8 @@
 
 .shopOneBox {
     cursor: pointer;
+    margin: 0 0 30px;
+    float: right !important;
 }
 
 .sh_mainBox {
@@ -148,4 +201,40 @@
     border-right: 35px solid #04c582;
     display: flex;
     align-items: center;
+}
+
+
+@media only screen and (max-width:1200px) {
+    .shopBox {
+        margin: 0 10% !important;
+    }
+    .sh_ownerBox_finish {
+        font-size: 1.15em;
+        padding: 5px 5px;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+    .shopBox {
+        margin: 0 5% !important;
+    }
+    .sh_ownerBox_finish {
+        font-size: 1.2em;
+        padding: 5px 20px;
+    }
+}
+
+
+@media only screen and (max-width:768px) {
+    .sh_ownerBox_finish {
+        padding: 5px 15px;
+    }
+}
+
+
+@media only screen and (max-width:480px) {
+    .shopOneBox {
+        width: 100% !important;
+    }
 }

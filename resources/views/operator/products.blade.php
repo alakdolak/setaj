@@ -113,8 +113,17 @@
             text-align: right;
         }
 
+        .calendar {
+            z-index: 1000000000000 !important;
+        }
+
     </style>
 
+    <script src = {{URL::asset("js/calendar.js") }}></script>
+    <script src = {{URL::asset("js/calendar-setup.js") }}></script>
+    <script src = {{URL::asset("js/calendar-fa.js") }}></script>
+    <script src = {{URL::asset("js/jalali.js") }}></script>
+    <link rel="stylesheet" href = {{URL::asset("css/calendar-green.css") }}>
     <script src="//cdn.ckeditor.com/4.10.1/full/ckeditor.js"></script>
 
 @stop
@@ -193,9 +202,9 @@
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
                                         </button>
 
-                                        <a target="_blank" href="{{route('editProduct', ['id' => $itr->id])}}" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
+                                        <button class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
-                                        </a>
+                                        </button>
 
                                         <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
 
