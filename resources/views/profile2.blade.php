@@ -4,7 +4,7 @@
     @parent
 
     <link rel="stylesheet" href="{{URL::asset('css/usersActivities.css')}}">
-    <link rel="stylesheet" href="{{URL::asset('css/abbreviations.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/abbreviations.css?v=1.3')}}">
     <link rel="stylesheet" href="{{URL::asset('css/profile.css')}}">
 
 @stop

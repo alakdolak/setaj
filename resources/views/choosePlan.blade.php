@@ -4,7 +4,7 @@
 @section("header")
 
     @parent
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/choosePlan.css")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/choosePlan.css?v=1.3")}}">
 @stop
 
 @section("content")
