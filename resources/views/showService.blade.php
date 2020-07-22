@@ -2,7 +2,7 @@
 
 @section('header')
     @parent
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.3")}}">
 
 @stop
 

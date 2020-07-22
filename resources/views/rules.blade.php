@@ -4,7 +4,7 @@
 @section("header")
     @parent
 
-    <link rel="stylesheet" href="{{URL::asset('css/rules.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/rules.css?v=1.3')}}">
 
 @stop
 
