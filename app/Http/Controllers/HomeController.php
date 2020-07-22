@@ -690,6 +690,8 @@ class HomeController extends Controller {
         $canBuy = true;
 
         $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
+        if($myReminder <= 0)
+            $canBuy = false;
 
         if(Transaction::whereProductId($id)->count() > 0)
             $canBuy = false;
