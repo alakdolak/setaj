@@ -969,6 +969,12 @@ class HomeController extends Controller {
                 $user->stars += $product->star;
                 $user->save();
 
+                $tmpUser = User::whereId($product->user_id);
+                if($tmpUser != null) {
+                    $tmpUser->money += $product->price;
+                    $user->save();
+                }
+
                 echo "ok";
                 return;
             }
