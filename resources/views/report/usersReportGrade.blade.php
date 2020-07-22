@@ -16,7 +16,7 @@
 
 @section('content')
 
-    <div class="col-sm-12" style="margin-top: 100px">
+    <center class="col-sm-12" style="margin-top: 100px">
 
         <div>
 
@@ -63,7 +63,7 @@
                             @endif
 
                             <button onclick="editMoney('{{$user->id}}', '{{$user->money}}', '{{$user->stars}}')" class="btn btn-info col-xs-6">ویرایش سکه/ستاره کاربر</button>
-{{--                            <button onclick="document.location.href = '{{route('userBookmarks', ['uId' => $user->id])}}'" class="btn btn-info col-xs-6">اقلام مورد علاقه کاربر</button>--}}
+                            {{--                            <button onclick="document.location.href = '{{route('userBookmarks', ['uId' => $user->id])}}'" class="btn btn-info col-xs-6">اقلام مورد علاقه کاربر</button>--}}
 
                             <button onclick="document.location.href = '{{route('userBuys', ['uId' => $user->id])}}'" class="btn btn-basic col-xs-6">اقلام خریداری شده کاربر</button>
                             <button onclick="document.location.href = '{{route('userServices', ['uId' => $user->id])}}'" class="btn btn-default col-xs-6">خدمات انجام شده</button>
@@ -75,7 +75,7 @@
             </table>
         </div>
 
-    </div>
+    </center>
 
     <div id="myAddModal" class="modal">
         <form action="{{route('addUsers', ['gradeId' => $gradeId])}}" method="post" enctype="multipart/form-data">

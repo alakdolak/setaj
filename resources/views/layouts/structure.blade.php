@@ -119,90 +119,70 @@
 </head>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white" style="direction: rtl">
-    <div class="page-wrapper">
-        <!-- BEGIN HEADER -->
-        <div class="page-header navbar navbar-fixed-top">
-            <!-- BEGIN HEADER INNER -->
-            <div class="page-header-inner ">
-                <!-- BEGIN LOGO -->
-                <div class="page-logo">
-                    <a href="{{route('home')}}">
-                        <img width="80px" src="{{URL::asset('images/logo.png')}}" alt="logo" class="logo-default" />
-                    </a>
-                    <div class="menu-toggler sidebar-toggler">
-                        <span></span>
-                    </div>
-                </div>
-
-                <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span></span>
+<div class="page-wrapper">
+    <!-- BEGIN HEADER -->
+    <div class="page-header navbar navbar-fixed-top">
+        <!-- BEGIN HEADER INNER -->
+        <div class="page-header-inner ">
+            <!-- BEGIN LOGO -->
+            <div class="page-logo">
+                <a href="{{route('home')}}">
+                    <img width="80px" src="{{URL::asset('images/logo.png')}}" alt="logo" class="logo-default" />
                 </a>
-
-                <div class="top-menu">
-                    <ul class="nav navbar-nav pull-left">
-
-                        <?php
-
-                        ?>
-
-                        <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
-                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <i class="icon-bell"></i>
-                                <span class="badge badge-default">2</span>
-{{--                                <span class="badge badge-default"> {{count($baskets) + count($warningProducts) + count($criticalProducts)}} </span>--}}
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
-
-{{--                                        @foreach($baskets as $basket)--}}
-{{--                                            <li>--}}
-{{--                                                <a href="{{route('unConfirmedOrders')}}">--}}
-{{--                                                    <span class="time">{{MiladyToShamsi('', explode('-', explode(' ', $basket->created_at)[0]))}}</span>--}}
-{{--                                                    <span class="details">--}}
-{{--                                                        <span class="label label-sm label-icon label-success" style="font-size: 0.9em">--}}
-{{--                                                            <i class="fa fa-bell-o"></i>--}}
-{{--                                                            سفارش جدید--}}
-{{--                                                        </span>--}}
-{{--                                                        {{$basket->name}}--}}
-{{--                                                    </span>--}}
-{{--                                                </a>--}}
-{{--                                            </li>--}}
-{{--                                        @endforeach--}}
-
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- END NOTIFICATION DROPDOWN -->
-
-
-                        <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                        <li class="dropdown dropdown-quick-sidebar-toggler">
-                            <a href="{{route('logout')}}" class="dropdown-toggle">
-                                <i class="icon-logout"></i>
-                            </a>
-                        </li>
-                        <!-- END QUICK SIDEBAR TOGGLER -->
-                    </ul>
+                <div class="menu-toggler sidebar-toggler">
+                    <span></span>
                 </div>
+            </div>
 
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                <span></span>
+            </a>
+
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-left">
+
+                    <?php
+
+                    ?>
+
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <i class="icon-bell"></i>
+                            <span class="badge badge-default">2</span>
+                            {{--                                <span class="badge badge-default"> {{count($baskets) + count($warningProducts) + count($criticalProducts)}} </span>--}}
+                        </a>
+                    </li>
+                    <!-- END NOTIFICATION DROPDOWN -->
+
+
+                    <!-- BEGIN QUICK SIDEBAR TOGGLER -->
+                    <li class="dropdown dropdown-quick-sidebar-toggler">
+                        <a href="{{route('logout')}}" class="dropdown-toggle">
+                            <i class="icon-logout"></i>
+                        </a>
+                    </li>
+                    <!-- END QUICK SIDEBAR TOGGLER -->
+                </ul>
             </div>
 
         </div>
 
-        <div class="clearfix"> </div>
+    </div>
 
-        <div class="page-container">
+    <div class="clearfix"> </div>
 
-            <div class="page-sidebar-wrapper">
-                <div class="page-sidebar navbar-collapse collapse" style="display: block !important;">
-                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
-                        <li class="sidebar-toggler-wrapper hide">
-                            <div class="sidebar-toggler">
-                                <span></span>
-                            </div>
-                        </li>
+    <div class="page-container">
+
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse" style="display: block !important;">
+                <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                    <li class="sidebar-toggler-wrapper hide">
+                        <div class="sidebar-toggler">
+                            <span></span>
+                        </div>
+                    </li>
+
+                    @if(\Illuminate\Support\Facades\Auth::user()->level == getValueInfo("adminLevel"))
 
                         <li class="nav-item">
 
@@ -255,10 +235,11 @@
                             </a>
                         </li>
 
+
                         <li class="nav-item  ">
-                            <a href="{{route('products')}}" class="nav-link nav-toggle">
+                            <a href="{{route('operators')}}" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
-                                <span class="title">محصولات</span>
+                                <span class="title">معلمین راهنما</span>
                                 <span class="arrow"></span>
                             </a>
                         </li>
@@ -271,6 +252,7 @@
                             </a>
                         </li>
 
+
                         <li class="nav-item  ">
                             <a href="{{route('services')}}" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
@@ -278,6 +260,7 @@
                                 <span class="arrow"></span>
                             </a>
                         </li>
+
 
                         <li class="nav-item  ">
                             <a href="{{route('chats')}}" class="nav-link nav-toggle">
@@ -287,61 +270,74 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                    @endif
 
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-basket"></i>
-                                <span class="title">گزارشات</span>
-                                <span class="arrow open"></span>
-                            </a>
+                    <li class="nav-item  ">
+                        <a href="{{route('products')}}" class="nav-link nav-toggle">
+                            <i class="icon-diamond"></i>
+                            <span class="title">محصولات</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
 
-                            <ul class="sub-menu" style="display: none;">
 
+                    <li class="nav-item">
+
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <i class="icon-basket"></i>
+                            <span class="title">گزارشات</span>
+                            <span class="arrow open"></span>
+                        </a>
+
+                        <ul class="sub-menu" style="display: none;">
+
+                            @if(\Illuminate\Support\Facades\Auth::user()->level == getValueInfo("adminLevel"))
                                 <li class="nav-item  ">
                                     <a href="{{route('usersReport')}}" class="nav-link">
                                         <span class="title">کاربران</span>
                                     </a>
                                 </li>
+                            @endif
 
-                                <li class="nav-item  ">
-                                    <a href="{{route('unDoneProjectsReport')}}" class="nav-link">
-                                        <span class="title">پروژه های ناتمام</span>
-                                    </a>
-                                </li>
+                            <li class="nav-item  ">
+                                <a href="{{route('unDoneProjectsReport')}}" class="nav-link">
+                                    <span class="title">پروژه های ناتمام</span>
+                                </a>
+                            </li>
 
-                                <li class="nav-item  ">
-                                    <a href="{{route('productsReport')}}" class="nav-link">
-                                        <span class="title">رصد بازار خرید و فروش</span>
-                                    </a>
-                                </li>
+                            <li class="nav-item  ">
+                                <a href="{{route('productsReport')}}" class="nav-link">
+                                    <span class="title">رصد بازار خرید و فروش</span>
+                                </a>
+                            </li>
 
-                                <li class="nav-item  ">
-                                    <a href="{{route('productProjectReport')}}" class="nav-link">
-                                        <span class="title">پروژه/کالا/خدمت گزارش</span>
-                                    </a>
-                                </li>
+                            <li class="nav-item  ">
+                                <a href="{{route('productProjectReport')}}" class="nav-link">
+                                    <span class="title">پروژه/کالا/خدمت گزارش</span>
+                                </a>
+                            </li>
 
-                            </ul>
-                        </li>
+                        </ul>
+                    </li>
 
-                    </ul>
+                </ul>
 
-                </div>
             </div>
-
-            <div style="margin-top: -80px; padding: 20px; width: 80% !important; float: left" class="page-content-wrapper">
-                @yield('content')
-            </div>
-
         </div>
+
+        <div style="margin-top: -80px; padding: 20px; width: 80% !important; float: left" class="page-content-wrapper">
+            @yield('content')
+        </div>
+
     </div>
+</div>
 
 
-    <div class="quick-nav-overlay"></div>
+<div class="quick-nav-overlay"></div>
 
-    @include('layouts.jsLibraries')
+@include('layouts.jsLibraries')
 
-    @yield('moreJS')
+@yield('moreJS')
 </body>
 
 </html>
