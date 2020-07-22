@@ -154,7 +154,7 @@
             {{ csrf_field() }}
             <div class="modal-content" style="width: 75% !important;">
 
-                <div>
+                <center>
 
                     <h5 style="padding-right: 5%;">نام پروژه</h5>
                     <input type="text" name="name" required maxlength="100">
@@ -213,7 +213,7 @@
                     <h5 style="padding-right: 5%;">فایل های آموزش پروژه(اختیاری)</h5>
                     <input type="file" name="attach" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
 
-                </div>
+                </center>
 
                 <div style="margin-top: 20px">
                     <input type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">

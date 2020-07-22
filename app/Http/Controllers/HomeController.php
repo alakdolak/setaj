@@ -37,6 +37,8 @@ use ZipArchive;
 
 class HomeController extends Controller {
 
+    private $siteStart = "13990426";
+
     public function home() {
 
         $x = -1;
@@ -267,13 +269,30 @@ class HomeController extends Controller {
             ' and hide = false order by id desc');
 
         $today = getToday()["date"];
+        $mainDiff = findDiffWithSiteStart();
 
         foreach ($services as $service) {
 
             $date = MiladyToShamsi('', explode('-', explode(' ', $service->created_at)[0]));
             $date = convertDateToString2($date, "-");
 
-            $service->week = floor(($today - $date) / 7.0);
+            $diff = 0;
+
+            if ($today != $date) {
+
+                for ($i = 1; $i <= 63; $i++) {
+                    if (
+                        ($i == 1 && $date == getPast("- " . $i . ' day')) ||
+                        ($i > 1 && $date == getPast("- " . $i . ' days'))
+                    ) {
+                        $diff = $i;
+                        break;
+                    }
+                }
+            }
+
+            $service->week = floor(($mainDiff - $diff) / 7);
+
 
             $tmpPic = ServicePic::whereServiceId($service->id)->first();
 
@@ -380,9 +399,26 @@ class HomeController extends Controller {
             '(select count(*) from project_grade where project_id = project.id and grade_id = ' . $grade . ' ) > 0' .
             ' and hide = false order by id desc');
 
+        $mainDiff = findDiffWithSiteStart();
+
         foreach ($projects as $project) {
 
-            $project->week = floor(($date - $project->start_reg) / 7.0);
+            $diff = 0;
+
+            if ($date != $project->start_reg) {
+
+                for ($i = 1; $i <= 63; $i++) {
+                    if (
+                        ($i == 1 && $project->start_reg == getPast("- " . $i . ' day')) ||
+                        ($i > 1 && $project->start_reg == getPast("- " . $i . ' days'))
+                    ) {
+                        $diff = $i;
+                        break;
+                    }
+                }
+            }
+
+            $project->week = floor(($mainDiff - $diff) / 7);
 
             $tmpPic = ProjectPic::whereProjectId($project->id)->first();
 
@@ -519,12 +555,29 @@ class HomeController extends Controller {
             ' from product p, users u where ' .
             'p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
 
+        $mainDiff = findDiffWithSiteStart();
+
         foreach ($products as $product) {
 
             $date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
             $date = convertDateToString2($date, "-");
 
-            $product->week = floor(($today - $date) / 7.0);
+            $diff = 0;
+
+            if ($today != $date) {
+
+                for ($i = 1; $i <= 63; $i++) {
+                    if (
+                        ($i == 1 && $date == getPast("- " . $i . ' day')) ||
+                        ($i > 1 && $date == getPast("- " . $i . ' days'))
+                    ) {
+                        $diff = $i;
+                        break;
+                    }
+                }
+            }
+
+            $product->week = floor(($mainDiff - $diff) / 7);
 
             $tmpPic = ProductPic::whereProductId($product->id)->first();
 

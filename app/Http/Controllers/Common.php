@@ -277,3 +277,15 @@ function convertDateToString2($date, $delimeter) {
 function convertStringToTime($time) {
     return $time[0] . $time[1] . ":" . $time[2] . $time[3];
 }
+
+function findDiffWithSiteStart() {
+
+    for($i = 2; $i <= 63; $i++) {
+
+        if("13990424" == getPast("- " . $i . ' days')) {
+            return $i;
+        }
+    }
+
+    return -1;
+}
