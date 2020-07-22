@@ -61,7 +61,7 @@ class HomeController extends Controller {
 
         $myBuys = DB::select("select p.id, t.status, p.name, concat(u.first_name, ' ', u.last_name) as seller, " .
             "pb.project_id, p.price, p.star, t.follow_code, t.created_at from transactions t, product p, project_buyers pb, users u where " .
-            " u.id = pb.user_id and pb.project_id = p.project_id and " .
+            " u.id = pb.user_id and pb.project_id = p.project_id and p.user_id = u.id and " .
             " t.product_id = p.id and t.user_id = " . Auth::user()->id);
 
         foreach ($myBuys as $myBuy) {
@@ -579,6 +579,7 @@ class HomeController extends Controller {
             }
 
             $product->week = floor(($mainDiff - $diff) / 7);
+            $product->week--;
 
             $tmpPic = ProductPic::whereProductId($product->id)->first();
 
@@ -691,7 +692,7 @@ class HomeController extends Controller {
         $canBuy = true;
 
         $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
-        if($myReminder <= 0)
+        if($myReminder < 0)
             $canBuy = false;
 
         if(Transaction::whereProductId($id)->count() > 0)
@@ -967,6 +968,12 @@ class HomeController extends Controller {
                 $user->money -= $product->price;
                 $user->stars += $product->star;
                 $user->save();
+
+                $tmpUser = User::whereId($product->user_id);
+                if($tmpUser != null) {
+                    $tmpUser->money += $product->price;
+                    $user->save();
+                }
 
                 echo "ok";
                 return;
