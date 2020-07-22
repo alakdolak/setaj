@@ -66,7 +66,7 @@
                     @foreach($product->attach as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
                             <div class="col-xs-12">
-                                <img style="width: 100%; float: right" src="{{$pic["path"]}}">
+                                <img style="width: 100%;" src="{{$pic["path"]}}">
                             </div>
                         @elseif($pic["type"] == "mp4")
                             <div class="col-xs-12" style="padding: 15px !important;">
@@ -111,7 +111,7 @@
                     @foreach($product->trailer as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
                             <div class="col-xs-12">
-                                <img style="width: 250px; margin: 10px; float: right" src="{{$pic["path"]}}">
+                                <img style="width: 100%; float: right" src="{{$pic["path"]}}">
                             </div>
                         @elseif($pic["type"] == "mp4")
                             <div class="col-xs-12" style="padding: 15px">
