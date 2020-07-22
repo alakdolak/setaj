@@ -252,7 +252,7 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
     Route::get('editProduct/{id}', ['as' => 'editProduct', 'uses' => 'OperatorController@editProduct']);
 
-    Route::get('doEditProduct/{id}', ['as' => 'doEditProduct', 'uses' => 'OperatorController@doEditProduct']);
+    Route::post('doEditProduct/{id}', ['as' => 'doEditProduct', 'uses' => 'OperatorController@doEditProduct']);
 
 
 

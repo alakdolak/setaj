@@ -218,7 +218,7 @@
         <div class="modal-content" style="height: 300px">
             <div>
 
-                <h5 style="padding-right: 5%;">نام کاربری/کد ملی صاحب محصول</h5>
+                <h5 style="padding-right: 5%;">کد ملی صاحب محصول</h5>
                 <input type="text" id="username" name="username" required>
 
             </div>
@@ -300,7 +300,7 @@
             var username = $("#username").val();
 
             if(username.length === 0) {
-                alert("لطفا نام کاربری/کد ملی دانش آموز مورد نظر خود را وارد نمایید.");
+                alert("لطفا کد ملی دانش آموز مورد نظر خود را وارد نمایید.");
                 return;
             }
 
