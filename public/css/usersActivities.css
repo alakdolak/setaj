@@ -15,17 +15,16 @@ body {
     flex-direction: column;
 }
 
-.personalFields {
+.personalFieldsBox {
     text-align: right;
     direction: rtl;
     float: right;
-    padding-bottom: 2px;
+    padding-left: 0 !important;
     color: #FFC20E;
 }
 
-.personalFieldsContents {
-    text-align: right;
-    padding-bottom: 2px;
+.personalFields {
+    padding: 2px 0;
 }
 
 .userProfilePageCoverImg {
@@ -1377,9 +1376,9 @@ body {
         font-size: 17px;
     }
 
-    .userProfileDetailsMainDiv {
-        padding: 0 5px;
-    }
+    /*.userProfileDetailsMainDiv {*/
+    /*    padding: 0 5px;*/
+    /*}*/
 
     /*main bar*/
 
