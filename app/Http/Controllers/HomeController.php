@@ -61,7 +61,7 @@ class HomeController extends Controller {
 
         $myBuys = DB::select("select p.id, t.status, p.name, concat(u.first_name, ' ', u.last_name) as seller, " .
             "pb.project_id, p.price, p.star, t.follow_code, t.created_at from transactions t, product p, project_buyers pb, users u where " .
-            " u.id = pb.user_id and pb.project_id = p.project_id and " .
+            " u.id = pb.user_id and pb.project_id = p.project_id and p.user_id = u.id and " .
             " t.product_id = p.id and t.user_id = " . Auth::user()->id);
 
         foreach ($myBuys as $myBuy) {
