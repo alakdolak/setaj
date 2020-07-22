@@ -122,7 +122,7 @@
                             </div>
                         @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg")
                             <div class="col-xs-12">
-                                <audio controls>
+                                <audio style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
                                     مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </audio>
