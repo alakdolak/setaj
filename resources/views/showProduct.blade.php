@@ -161,6 +161,7 @@
                 <div class="modal-footer">
                     <button onclick="buy()" type="button" class="btn btn-success" data-dismiss="modal">بله</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                    <div class="alert alert-warning" role="alert">شما اجازه خرید این محصول را ندارید.</div>
                 </div>
             </div>
 
