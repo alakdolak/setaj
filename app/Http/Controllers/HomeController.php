@@ -579,6 +579,7 @@ class HomeController extends Controller {
             }
 
             $product->week = floor(($mainDiff - $diff) / 7);
+            $product->week--;
 
             $tmpPic = ProductPic::whereProductId($product->id)->first();
 
@@ -691,7 +692,7 @@ class HomeController extends Controller {
         $canBuy = true;
 
         $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
-        if($myReminder <= 0)
+        if($myReminder < 0)
             $canBuy = false;
 
         if(Transaction::whereProductId($id)->count() > 0)
