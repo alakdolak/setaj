@@ -123,7 +123,7 @@ body{
 }
 
 /*in Screen*/
-@media only screen and (max-width:480px) {
+@media only screen and (max-width:767px) {
     .screenMode {
         display: none !important;
         width: 0;
@@ -137,7 +137,7 @@ body{
 
 
 /*in Phone*/
-@media only screen and (min-width: 480px) {
+@media only screen and (min-width: 767px) {
     .phoneMode {
         display: none !important;
         width: 0;

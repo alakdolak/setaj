@@ -5,6 +5,7 @@
     background-color: #f9f9f9;
     display: flex;
     justify-content: space-between;
+    position: relative;
 }
 
 .footerDescript {
@@ -77,6 +78,24 @@
 }
 
 
+.phoneDescript {
+    width: 400px;
+    height: 20px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.serajName {
+    background-image: url(../images/serajName.png);
+}
+
+.serajInsta {
+    background-image: url(../images/instaID.png);
+}
+
+
+
 @media only screen and (max-width:1200px) {
     .footer {
         font-size: 0.9em;
@@ -109,8 +128,31 @@
 
 
 @media only screen and (max-width:768px) {
-    /*موقتا اینجوره*/
+    .footer {
+        margin-top: 10%;
+        justify-content: center;
+    }
+
+    .footerDescript {
+        margin: 20px 0 0px;
+    }
+
     .serajDescript {
-        display: contents;
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translate(-50%);
+    }
+    .serajLogo {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+
+@media only screen and (max-width:480px) {
+    .phoneDescript {
+        width: 350px;
+        height: 20px;
     }
 }
