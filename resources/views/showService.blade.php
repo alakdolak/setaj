@@ -40,10 +40,14 @@
                     <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif
             </div>
-            @if($canBuy)
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب و دریافت پروژه</div>
+            @if($oldBuy)
+                <div class="shopBtn doneBtn">شما این خدمت را قبلا پذیرفته اید</div>
             @else
-                <div class="shopBtn doneBtn">تمام شد</div>
+                @if($canBuy)
+                    <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب و دریافت پروژه</div>
+                @else
+                    <div class="shopBtn doneBtn">تمام شد</div>
+                @endif
             @endif
         </div>
 
