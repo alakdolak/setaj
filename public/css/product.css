@@ -8,7 +8,7 @@
     width: 74%;
     padding-top: 72%;
     border: 3px solid #acacac;
-    background-size: cover;
+    background-size: cover !important;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -20,7 +20,7 @@
     padding-top: 69%;
     border: 3px solid #acacac;
     margin: 0 0 13px 0;
-    background-size: cover;
+    background-size: cover !important;
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;

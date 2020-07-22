@@ -56,35 +56,35 @@
 
         @if(count($product->attach) > 0)
 
-            <div class="pr_advertiseBox col-sm-12">
+            <div class="pr_advertiseBox col-xs-12">
                 <div class="pr_iconesBox">
                     <div class="pr_icons movieIcon"></div>
                     <div>فایل های آموزشی:</div>
                 </div>
-                <div class="pr_advertise row">
+                <div class="pr_advertise  col-xs-12">
 
                     @foreach($product->attach as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
                             <div class="col-xs-12">
-                                <img style="width: 250px; margin: 10px; float: right" src="{{$pic["path"]}}">
+                                <img style="width: 100%; float: right" src="{{$pic["path"]}}">
                             </div>
                         @elseif($pic["type"] == "mp4")
-                            <div class="col-xs-12">
-                                <video width="320" height="240" controls>
+                            <div class="col-xs-12" style="padding: 15px !important;">
+                                <video style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="video/mp4">
                                     مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </video>
                             </div>
                         @elseif($pic["type"] == "mp3")
                             <div class="col-xs-12">
-                                <audio controls>
+                                <audio style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
                                     مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </audio>
                             </div>
                         @elseif($pic["type"] == "pdf")
                             <div class="col-xs-12">
-                                <embed src="{{$pic["path"]}}" width="800px" height="800px" />
+                                <embed style="width: 100%" src="{{$pic["path"]}}" height="800px" />
                             </div>
                         @else
                             <div class="col-xs-12">
@@ -101,12 +101,12 @@
 
         @if(count($product->trailer) > 0)
 
-            <div class="pr_advertiseBox col-sm-12">
+            <div class="pr_advertiseBox  col-xs-12">
                 <div class="pr_iconesBox" style="margin-bottom: 15px">
                     <div class="pr_icons coinIcon"></div>
                     <div>تبلیغات:</div>
                 </div>
-                <div class="pr_advertise row">
+                <div class="pr_advertise  col-xs-12">
 
                     @foreach($product->trailer as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")

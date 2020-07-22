@@ -243,3 +243,24 @@
         font-size: 0.9em;
     }
 }
+
+
+@media only screen and (max-width:380px) {
+    .header {
+        height: 115px;
+    }
+
+    .logoDiv {
+        width: 250px;
+        height: 70px;
+    }
+    .logoPic {
+        width: 250px;
+        height: 70px;
+    }
+
+    .headerNavbar {
+        font-size: 0.75em;
+        margin: 0 5px;
+    }
+}

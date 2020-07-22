@@ -64,7 +64,7 @@
             <div class="mainDivContainerProfilePage row">
                 <div class="col-sm-12" style="margin-top: 40px; padding: 0 !important;">
                     <div class="userProfileDetailsMainDiv rightColBoxes col-md-4 col-xs-12">
-                        <div class="col-md-12 col-xs-6" style="float: right;">
+                        <div class="profileDescript col-md-12 col-xs-6" style="float: right;">
                             <div class="mainDivHeaderText">
                                 <h3>مشخصات کاربر</h3>
                             </div>
@@ -86,7 +86,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-12 col-xs-6">
+                        <div class="profileDescript col-md-12 col-xs-6">
                             <div class="medalsMainBox">
                                 <div>
                                     <img src="{{URL::asset('images/coin.png')}}">
