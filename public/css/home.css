@@ -1,6 +1,8 @@
+.homeBody{
+    background-color: #FFC20E;
+}
 .homeBodyDiv{
     height: 100%;
-    background-color: #FFC20E;
 }
 
 .homePic {
@@ -17,17 +19,8 @@
     transform: translate(-50%, -50%);
 }
 
-/*.homePhonePic {*/
-/*    height: 100%;*/
-/*    background-image: url(../images/homePhone.png);*/
-/*    background-size: 75%;*/
-/*    background-color: #f65656;*/
-/*    background-repeat: no-repeat;*/
-/*    background-position: center;*/
-/*    position: relative;*/
-/*}*/
-
 .nextEvent {
+    width: 210px;
     background-color: #fec53a;
     padding: 5px 20px 2px;
     border-radius: 10px;
@@ -73,12 +66,14 @@
 }
 
 .homeLoginBtn {
+    width: 236px;
+    text-align: center;
     background-color: white;
     position: absolute;
     bottom: 9%;
     left: 50%;
     transform: translate(-50%);
-    box-shadow: 0px 6px 10px darkgoldenrod;
+    box-shadow: 0 6px 10px darkgoldenrod;
     padding: 7px;
     border-radius: 10px;
     border-bottom: 4px solid lightgrey;
@@ -111,14 +106,25 @@
 
 @media only screen and (max-width:768px) {
     .homePic {
-        width: 80%;
+        width: 100%;
+        height: 65%;
+        background-image: url(../images/homePhone.jpg);
+        top: 5px;
+        transform: translate(-50%);
+    }
+
+    .nextEvent {
+        top: unset;
+        bottom: 20%;
+    }
+
+    .homeLoginBtn {
+        bottom: 5%;
     }
 }
 
 
 @media only screen and (max-width:480px) {
-    .homePic {
-        width: 85%;
-    }
+
 }
 

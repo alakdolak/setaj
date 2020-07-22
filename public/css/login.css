@@ -3,7 +3,7 @@
     background-color: white;
     padding: 25px;
     position: absolute;
-    top: 45%;
+    bottom: -5%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 12px;
@@ -102,3 +102,11 @@
     line-height: 0;
     color: #04C582;
 }
+
+
+@media only screen and (max-width:350px) {
+    .loginBody {
+        width: 240px;
+    }
+}
+

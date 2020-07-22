@@ -12,9 +12,10 @@
         <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="headerNavbar">خرید محصولات</div>
 
         <div class="headerNavbar">
-            <div onclick="if($('#profilePopUp').hasClass('hidden')) { $('#profilePopUp').removeClass('hidden'); } else $('#profilePopUp').addClass('hidden');" class="profileIconBox">
+            <div onclick="if($('#profilePopUp').hasClass('hidden')) { $('#profilePopUp').removeClass('hidden'); } else $('#profilePopUp').addClass('hidden');" class="profileIconBox screenMode">
                 <div class="profileIcon"></div>
             </div>
+            <div onclick="if($('#profilePopUp').hasClass('hidden')) { $('#profilePopUp').removeClass('hidden'); } else $('#profilePopUp').addClass('hidden');" class="phoneMode">پروفایل</div>
             <div id="profilePopUp" class="profilePopUp hidden">
                 <i class="fa fa-sort-desc rightArrowIcon"></i>
                 <div class="profileRowPopUp profileName">{{\Illuminate\Support\Facades\Auth::user()->first_name . ' ' . \Illuminate\Support\Facades\Auth::user()->last_name}}</div>

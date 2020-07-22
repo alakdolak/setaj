@@ -18,39 +18,40 @@
 </head>
 <body>
 
-<div class="homeBodyDiv">
+<div class="homeBody">
 
-{{--    <div class="homePic screenMode"></div>--}}
-    <div class="homePic"></div>
+    <div class="homeBodyDiv">
 
-    @if($reminder != -1)
-        <div class="nextEvent">
-            <div class="nextEventLogoDiv">
-                <div class="nextEventLogo"></div>
-            </div>
-            <div class="nextEventTextDiv">
-                <div class="nextEventText">شروع برنامه‌ی بعدی:</div>
-                <div class="nextEventTime">{{$reminder["day"]}} روز - {{$reminder["time"]}} ساعت</div>
-            </div>
-        </div>
-    @endif
+        <div class="homePic"></div>
 
-    @if(\Illuminate\Support\Facades\Auth::check())
-        <div class="homeLoginBtn" onclick="document.location.href = '{{route('choosePlan')}}'">
-            <div class="homeLoginBtnText">
-                ورود به ســــــایت
+        @if($reminder != -1)
+            <div class="nextEvent">
+                <div class="nextEventLogoDiv">
+                    <div class="nextEventLogo"></div>
+                </div>
+                <div class="nextEventTextDiv">
+                    <div class="nextEventText">شروع برنامه‌ی بعدی:</div>
+                    <div class="nextEventTime">{{$reminder["day"]}} روز - {{$reminder["time"]}} ساعت</div>
+                </div>
             </div>
-        </div>
-    @else
-        <div class="homeLoginBtn" onclick="showLogin()">
-            <div class="homeLoginBtnText">
-                ورود به ســــــایت
-            </div>
-        </div>
-    @endif
+        @endif
 
-{{--    </div>--}}
-    {{--    onmouseleave="hideLogin()"--}}
+        @if(\Illuminate\Support\Facades\Auth::check())
+            <div class="homeLoginBtn" onclick="document.location.href = '{{route('choosePlan')}}'">
+                <div class="homeLoginBtnText">
+                    ورود به ســــــایت
+                </div>
+            </div>
+        @else
+            <div class="homeLoginBtn" onclick="showLogin()">
+                <div class="homeLoginBtnText">
+                    ورود به ســــــایت
+                </div>
+            </div>
+        @endif
+
+    </div>
+
     <div class="loginBody hidden">
         <div class="loginTitle">
             <div class="loginTitleImg"></div>
@@ -89,7 +90,6 @@
         </div>
     </div>
 
-{{--    <div class="homePhonePic phoneMode"></div>--}}
 </div>
 
 
@@ -104,11 +104,11 @@
     }
 
     function showLogin() {
-        $(".homePic").addClass("blur");
+        $(".homeBodyDiv").addClass("blur");
         $(".loginBody").removeClass("hidden");
     }
     function hideLogin() {
-        $(".homePic").removeClass("blur");
+        $(".homeBodyDiv").removeClass("blur");
         $(".loginBody").addClass("hidden");
     }
 

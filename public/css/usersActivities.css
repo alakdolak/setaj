@@ -30,7 +30,7 @@ body {
 
 .userProfilePageCoverImg {
     background-color: #f2f2f2;
-    height: 300px;
+    /*height: 300px;*/
 }
 
 .mainBodyUserProfile {
@@ -1273,14 +1273,14 @@ body {
         padding: 0;
     }
 
-    .userProfileDetailsMainDiv {
-        padding: 0 0 0 10px;
-    }
+    /*.userProfileDetailsMainDiv {*/
+    /*    padding: 0 0 0 10px;*/
+    /*}*/
 
-    .userProfilePostsFiltrationContainer .userProfilePostsFiltration > span {
-        margin: 0 1%;
-        font-size: 12px;
-    }
+    /*.userProfilePostsFiltrationContainer .userProfilePostsFiltration > span {*/
+    /*    margin: 0 1%;*/
+    /*    font-size: 12px;*/
+    /*}*/
 
     .mainDivContainerProfilePage {
         padding: 0 10px;
@@ -1470,16 +1470,18 @@ body {
         padding: 0;
     }
 
-    .userProfilePostsFiltrationContainer .userProfilePostsFiltration {
-        overflow-x: auto;
-        white-space: nowrap;
-        scrollbar-width: none;
-        justify-content: right;
-    }
+    /*.userProfilePostsFiltrationContainer .userProfilePostsFiltration {*/
+    /*    overflow-x: auto;*/
+    /*    white-space: nowrap;*/
+    /*    scrollbar-width: none;*/
+    /*    justify-content: right;*/
+    /*}*/
 
-    .userProfilePostsFiltrationContainer .userProfilePostsFiltration > span {
-        width: auto;
-    }
+    /*.userProfilePostsFiltrationContainer .userProfilePostsFiltration > span {*/
+    /*    width: auto;*/
+    /*    font-size: 0.75em;*/
+    /*    font-weight: 600;*/
+    /*}*/
 
     .userPostsPage .userProfilePostsSearchContainer > span {
         font-size: 12px;
