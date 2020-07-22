@@ -1,14 +1,16 @@
+/*header of prifile page*/
+
 .profileRightImg {
     position: absolute;
     width: 400px;
     height: 250px;
-    right: 13%;
+    right: 12.5%;
 }
 .profileLeftImg {
     position: absolute;
     width: 450px;
     height: 250px;
-    left: 13%;
+    left: 12.5%;
 }
 .profileImg {
     position: absolute;
@@ -52,3 +54,163 @@
     bottom: 0;
     left: 0;
 }
+
+
+@media only screen and (max-width:1200px) {
+    .userPageBodyTopBar {
+        padding: 25px 10%;
+    }
+    .profileRightImg {
+        right: 10.5%;
+    }
+    .profileLeftImg {
+        left: 10.5%;
+    }
+    .lanternPng {
+        display: none;
+    }
+
+
+    .mainDivContainerProfilePage {
+        margin: 10px 10%;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+    .userPageBodyTopBar {
+        padding: 25px 5%;
+    }
+    .profileRightImg {
+        right: 5.5%;
+    }
+    .profileLeftImg {
+        left: 5.5%;
+    }
+
+
+    .mainDivContainerProfilePage {
+        margin: 10px 5%;
+    }
+}
+
+
+@media only screen and (max-width:768px) {
+    .userPageBodyTopBar {
+        height: 285px;
+    }
+    .profileRightImg {
+        width: 125px;
+        height: 225px;
+    }
+    .profileLeftImg {
+        width: 405px;
+        height: 225px;
+    }
+    .framePng {
+        display: none;
+    }
+    .lanternPng {
+        width: 125px;
+        height: 145px;
+        left: unset;
+        right: 0;
+        display: block;
+    }
+    .bagPng {
+        width: 175px;
+        height: 165px;
+    }
+    .binPng {
+        width: 265px;
+        height: 202px;
+    }
+}
+
+/*داریم سایز این اینجا فقط */
+@media only screen and (max-width:600px) {
+    .profileRightImg {
+        display: none;
+    }
+    .profileLeftImg {
+        left: 50%;
+        transform: translate(-50%);
+    }
+}
+
+
+@media only screen and (max-width:480px) {
+    .profileRightImg {
+        display: none;
+    }
+    .profileLeftImg {
+        width: 385px;
+        left: 50%;
+        transform: translate(-50%);
+    }
+    .bagPng {
+        width: 175px;
+        height: 165px;
+    }
+    .binPng {
+        width: 265px;
+        height: 202px;
+    }
+}
+
+/*end of header of prifile page*/
+
+/*body of prifile page*/
+
+.pointDescript {
+    padding: 15px 0 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-align: center;
+}
+/*اسمش موقته*/
+.userProfileActivitiesDetailsMainDiv {
+    padding: 0 30px 0 0 !important;
+}
+
+.userProfilePostsFiltrationContainer .userProfilePostsFiltration > span {
+    /*width: auto;*/
+    font-size: 0.75em;
+    font-weight: 600;
+}
+
+.rightColBoxes {
+    float: right;
+}
+
+
+@media only screen and (max-width:1200px) {
+    .mainDivContainerProfilePage {
+        margin: 10px 10%;
+    }
+    .pointDescript {
+        font-size: 0.95em;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+    .mainDivContainerProfilePage {
+        margin: 10px 5%;
+    }
+    .userProfileActivitiesDetailsMainDiv {
+        padding: 30px 0 0 !important;
+    }
+}
+
+
+@media only screen and (max-width:768px) {
+
+}
+
+
+@media only screen and (max-width:480px) {
+
+}
+
+/*end of body of prifile page*/
