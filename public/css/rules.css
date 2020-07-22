@@ -1,0 +1,50 @@
+.rulesDiv {
+    margin: 5% 12% 0;
+    padding: 5px 10px;
+    text-align: justify;
+}
+.rulesPic {
+    width: 100%;
+    padding-top: 25%;
+    background-image: url(../images/rulesPic.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.rulesDoc {
+    width: 100%;
+}
+
+.rulesTitle {
+    font-size: 2em;
+    font-weight: 600;
+    color: red;
+    padding: 15px 0;
+}
+
+.rulesSubTitle {
+    font-size: 1.5em;
+    font-weight: 600;
+    padding: 10px 30px;
+}
+
+.rulesText {
+    font-weight: 600;
+    padding: 5px 50px;
+    line-height: 25px;
+}
+
+
+@media only screen and (max-width:1200px) {
+    .rulesDiv {
+        margin: 30px 10% 0;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+    .rulesDiv {
+        margin: 30px 5% 0;
+    }
+}
