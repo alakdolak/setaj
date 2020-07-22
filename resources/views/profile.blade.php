@@ -64,28 +64,29 @@
             <div class="mainDivContainerProfilePage row">
                 <div class="col-sm-12" style="margin-top: 40px; padding: 0 !important;">
                     <div class="userProfileDetailsMainDiv rightColBoxes col-md-4 col-xs-12">
-                        <div class="mainDivHeaderText">
-                            <h3>مشخصات کاربر</h3>
+                        <div class="col-md-12 col-xs-6" style="float: right;">
+                            <div class="mainDivHeaderText">
+                                <h3>مشخصات کاربر</h3>
+                            </div>
+                            <div style="width: 100%; height: 100px;">
+
+                                <div class="personalFieldsBox col-xs-6">
+                                    <div class="personalFields">نام</div>
+                                    <div class="personalFields">نام خانوادگی</div>
+                                    <div class="personalFields">کدملی</div>
+                                    <div class="personalFields">نام کاربری</div>
+                                </div>
+
+                                <div class="col-xs-6">
+                                    <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->first_name}}</div>
+                                    <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->last_name}}</div>
+                                    <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->nid}}</div>
+                                    <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->username}}</div>
+                                </div>
+
+                            </div>
                         </div>
-                        <div style="width: 100%; height: 100px;">
-                            <div class="personalFields col-xs-6">
-                                نام
-                            </div>
-                            <div class="personalFieldsContents col-xs-6">{{\Illuminate\Support\Facades\Auth::user()->first_name}}</div>
-                            <div class="personalFields col-xs-6">
-                                نام خانوادگی
-                            </div>
-                            <div class="personalFieldsContents col-xs-6">{{\Illuminate\Support\Facades\Auth::user()->last_name}}</div>
-                            <div class="personalFields col-xs-6">
-                                کدملی
-                            </div>
-                            <div class="personalFieldsContents col-xs-6">{{\Illuminate\Support\Facades\Auth::user()->nid}}</div>
-                            <div class="personalFields col-xs-6">
-                                نام کاربری
-                            </div>
-                            <div class="personalFieldsContents col-xs-6">{{\Illuminate\Support\Facades\Auth::user()->username}}</div>
-                        </div>
-                        <div>
+                        <div class="col-md-12 col-xs-6">
                             <div class="medalsMainBox">
                                 <div>
                                     <img src="{{URL::asset('images/coin.png')}}">
@@ -102,11 +103,11 @@
                                 $total = floor((\Illuminate\Support\Facades\Auth::user()->money - 2000) / $per) + \Illuminate\Support\Facades\Auth::user()->stars;
                                 ?>
                                 <div style="line-height: 30px">هر {{$per}} سکه معادل یک ستاره می باشد</div>
-                                <div style="display: flex;align-items: center;justify-content: space-around;line-height: 30px;">
-                                    <div>بنابراین امتیاز فعلی شما برابر است با:</div>
-                                    <div>
-                                        <span>{{$total}}</span>
+                                <div style="display: flex;align-items: center;justify-content: space-evenly;line-height: 30px;">
+                                    <div>بنابراین امتیاز فعلی شما:</div>
+                                    <div style="display: flex; align-items: center">
                                         <img src="{{URL::asset('images/star.png')}}">
+                                        <span class="pointNumber">{{$total}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +127,7 @@
 
                             <div class="photosAndVideosMainDiv" id="myProjects">
                                 @foreach($myProjects as $buy)
-                                    <div onclick="document.location.href = '{{route('showProject', ['id' => $buy->id])}}'" class="shopOneBox col-md-6 col-sm-4 col-xs-6">
+                                    <div onclick="document.location.href = '{{route('showProject', ['id' => $buy->id])}}'" class="shopOneBox col-lg-4 col-xs-6">
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
                                             <div class="sh_descript">
@@ -162,7 +163,7 @@
 
                             <div class="photosAndVideosMainDiv display-none" id="myProducts">
                                 @foreach($myProducts as $buy)
-                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-md-6 col-sm-4 col-xs-6">
+                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-lg-4 col-xs-6">
 
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
@@ -200,7 +201,7 @@
 
                             <div class="photosAndVideosMainDiv display-none" id="myServices">
                                 @foreach($myServices as $service)
-                                    <div onclick="document.location.href = '{{route("showService", ["id" => $service->id])}}'" class="shopOneBox col-md-6 col-sm-4 col-xs-6">
+                                    <div onclick="document.location.href = '{{route("showService", ["id" => $service->id])}}'" class="shopOneBox col-lg-4 col-xs-6">
 
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$service->pic}}')" class="sh_mainPic"></div>
@@ -242,7 +243,7 @@
 
                             <div class="photosAndVideosMainDiv display-none" id="myCarts">
                                 @foreach($myBuys as $buy)
-                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-md-6 col-sm-4 col-xs-6">
+                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-lg-4 col-xs-6">
 
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
