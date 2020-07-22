@@ -40,10 +40,14 @@
                     <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif
             </div>
-            @if($canBuy)
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب و دریافت پروژه</div>
+            @if($oldBuy)
+                <div class="shopBtn doneBtn">شما این خدمت را قبلا پذیرفته اید</div>
             @else
-                <div class="shopBtn doneBtn">تمام شد</div>
+                @if($canBuy)
+                    <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب و دریافت پروژه</div>
+                @else
+                    <div class="shopBtn doneBtn">تمام شد</div>
+                @endif
             @endif
         </div>
 
@@ -161,19 +165,19 @@
                 success: function (res) {
 
                     if(res === "nok1") {
-                        $("#buyErr").empty().append("شما اجازه خرید این محصول را ندارید.");
+                        alert("شما اجازه خرید این محصول را ندارید.");
                     }
 
                     else if(res === "nok2") {
-                        $("#buyErr").empty().append("شما قبلا این محصول را خریداری کرده اید.");
+                        alert("شما قبلا این محصول را خریداری کرده اید.");
                     }
 
                     else if(res === "nok3") {
-                        $("#buyErr").empty().append("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
+                        alert("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
                     }
 
                     else if(res === "nok5") {
-                        $("#buyErr").empty().append("عملیات مورد نظر غیرمجاز است.");
+                        alert("عملیات مورد نظر غیرمجاز است.");
                     }
 
                     else if(res === "ok") {

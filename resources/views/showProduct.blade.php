@@ -43,10 +43,14 @@
                     <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif
             </div>
-            @if($canBuy)
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
+            @if($product->user_id == \Illuminate\Support\Facades\Auth::user()->id)
+                <div class="shopBtn doneBtn">شما قادر به خرید محصول خود نیستید</div>
             @else
-                <div class="shopBtn doneBtn">تمام شد</div>
+                @if($canBuy)
+                    <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
+                @else
+                    <div class="shopBtn doneBtn">تمام شد</div>
+                @endif
             @endif
         </div>
 
@@ -197,41 +201,43 @@
 
         function buy() {
 
-            $("#resultModalBtn").click();
+            $.ajax({
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                url: '{{route('buyProduct')}}',
+                data: {
+                    id: '{{$product->id}}'
+                },
+                success: function (res) {
 
-            {{--$.ajax({--}}
-            {{--    type: 'post',--}}
-            {{--    headers: {--}}
-            {{--        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')--}}
-            {{--    },--}}
-            {{--    url: '{{route('buyProduct')}}',--}}
-            {{--    data: {--}}
-            {{--        id: '{{$product->id}}'--}}
-            {{--    },--}}
-            {{--    success: function (res) {--}}
+                    if(res === "nok1") {
+                        alert("شما اجازه خرید این محصول را ندارید.");
+                    }
 
-            {{--        if(res === "nok1") {--}}
-            {{--            $("#buyErr").empty().append("شما اجازه خرید این محصول را ندارید.");--}}
-            {{--        }--}}
+                    if(res === "nok7") {
+                        alert("تعداد خرید های پیشین شما اجازه این عملیات را نمی دهد.");
+                    }
 
-            {{--        else if(res === "nok2") {--}}
-            {{--            $("#buyErr").empty().append("شما قبلا این محصول را خریداری کرده اید.");--}}
-            {{--        }--}}
+                    else if(res === "nok2") {
+                        alert("شما قبلا این محصول را خریداری کرده اید.");
+                    }
 
-            {{--        else if(res === "nok3") {--}}
-            {{--            $("#buyErr").empty().append("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");--}}
-            {{--        }--}}
+                    else if(res === "nok3") {
+                        alert("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
+                    }
 
-            {{--        else if(res === "nok5") {--}}
-            {{--            $("#buyErr").empty().append("عملیات مورد نظر غیرمجاز است.");--}}
-            {{--        }--}}
+                    else if(res === "nok5") {
+                        alert("عملیات مورد نظر غیرمجاز است.");
+                    }
 
-            {{--        else if(res === "ok") {--}}
-            {{--            document.location.href = '{{route('myProducts')}}';--}}
-            {{--        }--}}
+                    else if(res === "ok") {
+                        $("#resultModalBtn").click();
+                    }
 
-            {{--    }--}}
-            {{--});--}}
+                }
+            });
         }
 
         $(document).ready(function () {

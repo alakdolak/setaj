@@ -377,15 +377,16 @@ class HomeController extends Controller {
         $like = (Likes::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('serviceMode'))->count() > 0);
 
         $canBuy = true;
+        $oldBuy = ServiceBuyer::whereServiceId($id)->whereUserId(Auth::user()->id)->count();
 
         if(
             ($service->capacity != -1 && ServiceBuyer::whereServiceId($id)->count() == $service->capacity) ||
-            ServiceBuyer::whereServiceId($id)->whereUserId(Auth::user()->id)->count() > 0
+            $oldBuy > 0
         )
             $canBuy = false;
 
         return view('showService', ['bookmark' => $bookmark, 'canBuy' => $canBuy,
-            'service' => $service, 'like' => $like]);
+            'service' => $service, 'like' => $like, 'oldBuy' => $oldBuy]);
     }
 
 
@@ -690,6 +691,8 @@ class HomeController extends Controller {
         $canBuy = true;
 
         $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
+        if($myReminder <= 0)
+            $canBuy = false;
 
         if(Transaction::whereProductId($id)->count() > 0)
             $canBuy = false;
