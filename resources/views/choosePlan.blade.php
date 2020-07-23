@@ -13,6 +13,7 @@
         <div class="advertiseBannerBox">
             <div class="advertiseBanner"></div>
         </div>
+
         <div class="choosePlane row">
             <div class="col-sm-4 col-xs-12">
                 <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="planes projects">
@@ -29,6 +30,14 @@
                     <div class="planeText">خرید محصولات</div>
                 </div>
             </div>
+        </div>
+
+        <div class="otherAdvertise">
+            <div class="twoAdvBox">
+                <div class="otherAdv leftAdv"></div>
+                <div class="otherAdv rightAdv"></div>
+            </div>
+            <div class="horizontalAdv"></div>
         </div>
     </div>
 

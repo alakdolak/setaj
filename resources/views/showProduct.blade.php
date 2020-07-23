@@ -75,7 +75,7 @@
                                     مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </video>
                             </div>
-                        @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg")
+                        @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg" || $pic["type"] == "m4a" || $pic["type"] == "aac")
                             <div class="col-xs-12">
                                 <audio style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
@@ -120,7 +120,7 @@
                                     مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </video>
                             </div>
-                        @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg")
+                        @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg" || $pic["type"] == "m4a" || $pic["type"] == "aac")
                             <div class="col-xs-12">
                                 <audio style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
