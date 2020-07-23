@@ -86,7 +86,7 @@ class ReportController extends Controller {
 
         $products = DB::select("select concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
             "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
-            "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and " .
+            "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
             "t.user_id = u1.id"
         );
 
