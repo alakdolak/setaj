@@ -287,26 +287,6 @@
 
     </div>
 
-    <div id="myConfirmModal" class="modal">
-
-
-        <div class="modal-content">
-
-            <div>
-
-                <h5 style="padding-right: 5%;">تعداد ستاره مدنظر</h5>
-                <select id="starOptions"></select>
-
-            </div>
-
-            <div style="margin-top: 20px">
-                <input onclick="done()" type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
-                <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('myConfirmModal').style.display = 'none'">
-            </div>
-        </div>
-
-    </div>
-
 
     <script>
 
@@ -379,29 +359,6 @@
 
         function addService() {
             document.getElementById('myAddModal').style.display = 'block';
-        }
-
-        function done() {
-
-            $.ajax({
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: '{{route('doneService')}}',
-                data: {
-                    id: serviceId,
-                    star: $("#starOptions").val(),
-                    user_id: userId
-                },
-                success: function (res) {
-                    if(res == "ok") {
-                        alert("عملیات مورد نظر با موفقیت انجام پذیرفت.");
-                        document.getElementById('myConfirmModal').style.display = 'none';
-                    }
-                }
-            });
-
         }
 
         function removeService(id) {
