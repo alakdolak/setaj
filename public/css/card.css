@@ -77,7 +77,26 @@
 
 @media only screen and (max-width:480px) {
     .filterBox {
-        font-size: 0.9em;
+        font-size: 0.82em;
+    }
+    .filterBorder {
+        margin: 7% 5% 0;
+    }
+    .filterTag {
+        padding: 10px 5px;
+    }
+}
+
+
+@media only screen and (max-width:380px) {
+    .filterBox {
+        font-size: 0.7em;
+    }
+    .filterBorder {
+        margin: 10% 5% 0;
+    }
+    .filterTag {
+        padding: 10px 1px;
     }
 }
 
@@ -180,10 +199,11 @@
 }
 
 .sh_ownerBox_finish {
-    font-size: 1.2em;
+    font-size: 0.85em;
     font-weight: 500;
     height: 35px;
-    padding: 5px 20px;
+    padding: 5px;
+    /*padding: 5px 20px;*/
     color: white;
     background-color: #a1a1a1;
     border-right: 35px solid #f26c4f;
@@ -192,10 +212,11 @@
 }
 
 .sh_ownerBox {
-    font-size: 1.2em;
+    font-size: 0.85em;
     font-weight: 500;
     height: 35px;
-    padding: 5px 20px;
+    padding: 5px;
+    /*padding: 5px 20px;*/
     color: white;
     background-color: #a1a1a1;
     border-right: 35px solid #04c582;

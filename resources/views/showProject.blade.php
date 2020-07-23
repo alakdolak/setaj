@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-5 col-xs-12" style="padding-right: 0 !important;">
+        <div class="pr_picsBox col-sm-5 col-xs-12">
             <div class="pr_pics">
                 <div class="pr_otherPics">
                     @foreach($project->pics as $pic)
@@ -55,35 +55,35 @@
 
         @if(count($project->attach) > 0)
 
-            <div class="pr_advertiseBox col-sm-12">
+            <div class="pr_advertiseBox col-xs-12">
                 <div class="pr_iconesBox" style="margin-bottom: 15px">
                     <div class="pr_icons movieIcon"></div>
                     <div>فایل های آموزشی:</div>
                 </div>
-                <div class="pr_advertise row">
+                <div class="pr_advertise col-xs-12">
 
                     @foreach($project->attach as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
                             <div class="col-xs-12">
                                 <img style="width: 100%;" src="{{$pic["path"]}}">
                             </div>
-                        @elseif($pic["type"] == "mp4")
+                        @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v")
                             <div class="col-xs-12" style="padding: 15px !important;">
                                 <video style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="video/mp4">
                                     مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </video>
                             </div>
-                        @elseif($pic["type"] == "mp3")
+                        @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg" || $pic["type"] == "m4a" || $pic["type"] == "aac")
                             <div class="col-xs-12">
-                                <audio controls style="width: 100%;">
+                                <audio style="width: 100%;" controls>
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
                                     مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </audio>
                             </div>
                         @elseif($pic["type"] == "pdf")
                             <div class="col-xs-12">
-                                <embed src="{{$pic["path"]}}" width="800px" height="800px" />
+                                <embed style="width: 100%" src="{{$pic["path"]}}" height="800px" />
                             </div>
                         @else
                             <div class="col-xs-12">

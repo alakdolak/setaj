@@ -67,6 +67,41 @@
     top: 25px;
 }
 
+.otherAdvertise {
+    padding: 5% 12% 0;
+    margin: 0 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.twoAdvBox {
+    display: flex;
+    justify-content: space-between;
+}
+
+.otherAdv {
+    width: 48%;
+    padding-top: 31%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.leftAdv {
+    background-image: url(../images/leftAdv.jpg);
+}
+.rightAdv {
+    background-image: url(../images/rightAdv.jpg);
+}
+.horizontalAdv {
+    padding-top: 16%;
+    margin: 3% 0;
+    background-image: url(../images/horizontalAdv.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 
 @media only screen and (max-width:1200px) {
     .choosePlane {
@@ -75,6 +110,9 @@
     .planeText {
         font-size: 1.75em;
         top: 15px;
+    }
+    .otherAdvertise {
+        padding: 5% 10% 0;
     }
 }
 
@@ -85,6 +123,9 @@
     }
     .planeText {
         font-size: 1.5em;
+    }
+    .otherAdvertise {
+        padding: 5% 5% 0;
     }
 }
 

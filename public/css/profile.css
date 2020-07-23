@@ -144,17 +144,34 @@
         display: none;
     }
     .profileLeftImg {
-        width: 385px;
+        width: 355px;
         left: 50%;
         transform: translate(-50%);
     }
     .bagPng {
-        width: 175px;
-        height: 165px;
+        width: 150px;
+        height: 145px;
     }
     .binPng {
-        width: 265px;
-        height: 202px;
+        width: 240px;
+        height: 182px;
+    }
+}
+
+
+@media only screen and (max-width:380px) {
+    .userPageBodyTopBar {
+        height: 265px;
+    }
+    .profileLeftImg {
+        width: 250px;
+    }
+    .bagPng {
+        display: none;
+    }
+    .binPng {
+        width: 245px;
+        height: 185px;
     }
 }
 
@@ -214,8 +231,20 @@
 
 
 @media only screen and (max-width:480px) {
-    .pointDescript {
-        font-size: 0.67em;
+    .profileDescript {
+        width: 100%;
+    }
+    .medalsMainBox {
+        border-bottom: 1.5px solid #c5c5c5;
+    }
+}
+
+
+@media only screen and (max-width:380px) {
+    .userProfilePostsFiltrationContainer .userProfilePostsFiltration > span {
+        margin: 0 5px;
+        font-size: 0.5em;
+        font-weight: 600;
     }
 }
 
