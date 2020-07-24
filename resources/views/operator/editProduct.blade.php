@@ -2,6 +2,9 @@
 
 @section('header')
     @parent
+
+    <script src="//cdn.ckeditor.com/4.10.1/full/ckeditor.js"></script>
+
 @stop
 
 
@@ -47,4 +50,9 @@
 
     </form>
 
+    <script>
+
+        CKEDITOR.replace('editor1');
+
+    </script>
 @stop

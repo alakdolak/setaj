@@ -52,7 +52,7 @@ class ReportController extends Controller {
                 "path" => route("unDoneProjectsReport")]);
 
         $projects = DB::select("select p.title, concat(u.first_name, ' ', u.last_name) as name, pb.id, pb.created_at from project_buyers pb, project p, users u where p.id = pb.project_id" .
-            " and pb.user_id = u.id and pb.status = false and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 order by pb.created_at desc"
+            " and pb.user_id = u.id and pb.status = false and u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 order by pb.created_at desc"
         );
 
         $allTitles = [];
