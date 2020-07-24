@@ -41,6 +41,47 @@
     @include("layouts.header")
     @yield("banner")
 
+    @if(\Illuminate\Support\Facades\Auth::user()->level != getValueInfo('studentLevel'))
+        <center>
+
+            @if($grade != 3)
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default">اول</button>
+            @else
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">اول</button>
+            @endif
+
+            @if($grade != 4)
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default">دوم</button>
+            @else
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">دوم</button>
+            @endif
+
+            @if($grade != 5)
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default">سوم</button>
+            @else
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">سوم</button>
+            @endif
+
+            @if($grade != 6)
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default">چهارم</button>
+            @else
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">چهارم</button>
+            @endif
+
+            @if($grade != 7)
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default">پنجم</button>
+            @else
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">پنجم</button>
+            @endif
+
+            @if($grade != 8)
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default">ششم</button>
+            @else
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">ششم</button>
+            @endif
+
+        </center>
+    @endif
 
     @if(isset($tags))
         <div class="filterBorder">

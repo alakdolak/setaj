@@ -314,7 +314,7 @@ class HomeController extends Controller {
             $service->reminder = $service->capacity - ServiceBuyer::whereServiceId($service->id)->count();
         }
 
-        return view('services', ['services' => $services]);
+        return view('services', ['services' => $services, 'grade' => $grade]);
     }
 
     public function showService($id) {
@@ -460,7 +460,7 @@ class HomeController extends Controller {
             $project->tagStr = $str;
         }
 
-        return view('projects', ['projects' => $projects, 'tags' => Tag::all()]);
+        return view('projects', ['projects' => $projects, 'tags' => Tag::all(), 'grade' => $grade]);
     }
 
     public function showProject($id) {
@@ -619,7 +619,7 @@ class HomeController extends Controller {
             $product->canBuy = (Transaction::whereProductId($product->id)->count() == 0);
         }
 
-        return view('products', ['products' => $products, 'tags' => Tag::all()]);
+        return view('products', ['products' => $products, 'tags' => Tag::all(), 'grade' => $grade]);
 
     }
 
