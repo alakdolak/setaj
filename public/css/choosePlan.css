@@ -7,7 +7,8 @@
     padding-top: 31%;
     background-size: contain;
     background-repeat: no-repeat;
-    background-image: url(../images/advertise1.jpg);
+    background-image: url(../images/mainAdvertise.jpg);
+    /*background-image: url(../images/advertise1.jpg);*/
     /*background-image: url(../images/advertise2.jpg);*/
 }
 
