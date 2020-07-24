@@ -87,7 +87,7 @@ class ReportController extends Controller {
         $products = DB::select("select concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
             "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
             "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
-            "t.user_id = u1.id"
+            "t.user_id = u1.id and u1.grade_id = " . $gradeId
         );
 
         foreach ($products as $product) {
@@ -118,12 +118,12 @@ class ReportController extends Controller {
 
     public function userServices($uId) {
 
-        $services = DB::select("select s.title, sb.status, sb.star from " .
+        $services = DB::select("select s.id, s.star as mainStars, s.title, sb.status, sb.star from " .
             "service_buyer sb, service s where s.id = sb.service_id and " .
             "sb.user_id = " . $uId
         );
 
-        return view("report.userServices", ["services" => $services]);
+        return view("report.userServices", ["services" => $services, 'uId' => $uId]);
     }
 
     public function userProjects($uId) {
@@ -170,8 +170,8 @@ class ReportController extends Controller {
     public function userBuys($uId) {
 
         $products = DB::select("select p.name, concat(u.first_name, ' ', u.last_name) as seller, p.price from " .
-            "project_buyers pb, transactions t, product p, users u where p.project_id = pb.project_id and " .
-            " t.user_id = " . $uId . " and pb.user_id = u.id"
+            "transactions t, product p, users u where p.user_id = u.id and " .
+            " t.user_id = " . $uId . " and t.product_id = p.id"
         );
 
         return view("report.userProducts", ["products" => $products]);
