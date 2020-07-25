@@ -53,6 +53,8 @@
 
     <script>
 
+        var serviceId, userId;
+
         function done() {
 
             $.ajax({

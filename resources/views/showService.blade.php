@@ -126,7 +126,6 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">این پروژه با موفقیت برای شما انتخاب شد</h4>
                 </div>
                 <div class="modal-body">
@@ -134,7 +133,7 @@
                     <p><span>موفق باشی</span><span>&#128522;</span></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">متوجه شدم</button>
+                    <button onclick="document.location.reload()" type="button" class="btn btn-danger">متوجه شدم</button>
                 </div>
             </div>
 

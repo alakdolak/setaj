@@ -56,12 +56,12 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
 
 
-    Route::get('showAllServices', ['as' => 'showAllServices', 'uses' => 'HomeController@showAllServices']);
+    Route::get('showAllServices/{grade?}', ['as' => 'showAllServices', 'uses' => 'HomeController@showAllServices']);
 
     Route::get('showService/{id}', ['as' => 'showService', 'uses' => 'HomeController@showService']);
 
 
-    Route::get('showAllProjects', ['as' => 'showAllProjects', 'uses' => 'HomeController@showAllProjects']);
+    Route::get('showAllProjects/{grade?}', ['as' => 'showAllProjects', 'uses' => 'HomeController@showAllProjects']);
 
     Route::get('showProject/{id}', ['as' => 'showProject', 'uses' => 'HomeController@showProject']);
 
@@ -69,7 +69,7 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
     Route::get('showProduct/{id}', ['as' => 'showProduct', 'uses' => 'HomeController@showProduct']);
 
-    Route::get('showAllProducts', ['as' => 'showAllProducts', 'uses' => 'HomeController@showAllProducts']);
+    Route::get('showAllProducts/{grade?}', ['as' => 'showAllProducts', 'uses' => 'HomeController@showAllProducts']);
 
 
 

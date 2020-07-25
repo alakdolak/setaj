@@ -260,9 +260,13 @@ class HomeController extends Controller {
 
 
 
-    public function showAllServices() {
+    public function showAllServices($grade = -1) {
 
-        $grade = Auth::user()->grade_id;
+        if($grade != -1 && Auth::user()->level == getValueInfo("studentLevel"))
+            return Redirect::route("choosePlan");
+
+        if($grade == -1)
+            $grade = Auth::user()->grade_id;
 
         $services = DB::select('select id, title, description, star, capacity, created_at from service where ' .
             '(select count(*) from service_grade where service_id = service.id and grade_id = ' . $grade . ' ) > 0'.
@@ -310,7 +314,7 @@ class HomeController extends Controller {
             $service->reminder = $service->capacity - ServiceBuyer::whereServiceId($service->id)->count();
         }
 
-        return view('services', ['services' => $services]);
+        return view('services', ['services' => $services, 'grade' => $grade]);
     }
 
     public function showService($id) {
@@ -391,9 +395,14 @@ class HomeController extends Controller {
 
 
 
-    public function showAllProjects() {
+    public function showAllProjects($grade = -1) {
 
-        $grade = Auth::user()->grade_id;
+        if($grade != -1 && Auth::user()->level == getValueInfo("studentLevel"))
+            return Redirect::route("choosePlan");
+
+        if($grade == -1)
+            $grade = Auth::user()->grade_id;
+
         $date = getToday()["date"];
 
         $projects = DB::select('select id, title, description, price, capacity, start_reg, end_reg from project where ' .
@@ -451,7 +460,7 @@ class HomeController extends Controller {
             $project->tagStr = $str;
         }
 
-        return view('projects', ['projects' => $projects, 'tags' => Tag::all()]);
+        return view('projects', ['projects' => $projects, 'tags' => Tag::all(), 'grade' => $grade]);
     }
 
     public function showProject($id) {
@@ -546,9 +555,13 @@ class HomeController extends Controller {
 
 
 
-    public function showAllProducts() {
+    public function showAllProducts($grade = -1) {
 
-        $grade = Auth::user()->grade_id;
+        if($grade != -1 && Auth::user()->level == getValueInfo("studentLevel"))
+            return Redirect::route("choosePlan");
+
+        if($grade == -1)
+            $grade = Auth::user()->grade_id;
 
         $today = getToday()["date"];
         $products = DB::select('select p.id, name, description, price, star, project_id, ' .
@@ -606,7 +619,7 @@ class HomeController extends Controller {
             $product->canBuy = (Transaction::whereProductId($product->id)->count() == 0);
         }
 
-        return view('products', ['products' => $products, 'tags' => Tag::all()]);
+        return view('products', ['products' => $products, 'tags' => Tag::all(), 'grade' => $grade]);
 
     }
 

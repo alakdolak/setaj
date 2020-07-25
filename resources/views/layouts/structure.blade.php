@@ -291,13 +291,13 @@
 
                         <ul class="sub-menu" style="display: none;">
 
-                            @if(\Illuminate\Support\Facades\Auth::user()->level == getValueInfo("adminLevel"))
+{{--                            @if(\Illuminate\Support\Facades\Auth::user()->level == getValueInfo("adminLevel"))--}}
                                 <li class="nav-item  ">
                                     <a href="{{route('usersReport')}}" class="nav-link">
                                         <span class="title">کاربران</span>
                                     </a>
                                 </li>
-                            @endif
+{{--                            @endif--}}
 
                             <li class="nav-item  ">
                                 <a href="{{route('unDoneProjectsReport')}}" class="nav-link">
