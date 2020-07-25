@@ -4,7 +4,7 @@
 @section("header")
 
     @parent
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/choosePlan.css?v=1.4")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/choosePlan.css?v=1.5")}}">
 
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/swiper.css?v=1.1")}}">
 {{--    <script src = {{URL::asset("js/swiper.min.js") }}></script>--}}
@@ -66,6 +66,10 @@
         var swiper = new Swiper('.swiper-container', {
             slidesPerGroup: 1,
             loop: true,
+            autoplay: {
+                delay: 5000,
+                // disableOnInteraction: false,
+            },
             loopFillGroupWithBlank: true,
             navigation: {
                 nextEl: '.swiper-button-next',

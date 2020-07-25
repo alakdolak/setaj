@@ -418,10 +418,4 @@ button.swiper-pagination-bullet {
     .swiper-button {
         font-size: 1.5em;
     }
-    .swiper-button-next {
-        right: 5px;
-    }
-    .swiper-button-prev {
-        left: 5px;
-    }
 }
