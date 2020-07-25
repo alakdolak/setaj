@@ -1,15 +1,18 @@
-.advertiseBannerBox {
-    margin: 5% 0;
-    /*padding: 0 12%;*/
-}
 .advertiseBanner {
     width: 100%;
     padding-top: 31%;
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
+}
+.advertiseBanner1 {
     background-image: url(../images/mainAdvertise.jpg);
-    /*background-image: url(../images/advertise1.jpg);*/
-    /*background-image: url(../images/advertise2.jpg);*/
+}
+.advertiseBanner2 {
+    background-image: url(../images/advertise1.jpg);
+}
+.advertiseBanner3 {
+    background-image: url(../images/advertise2.jpg);
 }
 
 .choosePlane {
