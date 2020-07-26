@@ -196,7 +196,7 @@
 
             $(".pr_eachOtherPics").on("click", function () {
 
-                $("#pr_mainPic").css("background-image", "url('" + $(this).attr('data-url') + "')").css("background-size", "contain");
+                $("#pr_mainPic").css("background-image", "url('" + $(this).attr('data-url') + "')");
 
             });
 
