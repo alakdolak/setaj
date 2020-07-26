@@ -71,7 +71,7 @@
                                 <th scope="col" style="width:450px !important">توضیح</th>
                                 <th scope="col">هزینه پروژه</th>
                                 <th scope="col">تاریخ تعریف پروژه</th>
-                                <th scope="col">نفرات خریدار پروژه</th>
+                                <th scope="col">تعداد نفرات خریدار پروژه</th>
                                 <th scope="col">تگ ها</th>
                                 <th scope="col">وضعیت نمایش</th>
                                 <th scope="col">عملیات</th>

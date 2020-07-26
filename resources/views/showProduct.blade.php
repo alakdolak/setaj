@@ -20,15 +20,17 @@
                 <div class="pr_icons starIcon"></div>
                 <div>ستاره ی دریافتی: {{$product->star}}</div>
             </div>
-            <div class="pr_descriptRow">
-                <div class="pr_iconesBox">
-                    <div class="pr_icons folderIcon"></div>
-                    <div>توضیحات:</div>
+            @if(!empty($product->description))
+                <div class="pr_descriptRow">
+                    <div class="pr_iconesBox">
+                        <div class="pr_icons folderIcon"></div>
+                        <div>توضیحات:</div>
+                    </div>
+                    <div class="pr_description">
+                        <div>{!! $product->description !!}</div>
+                    </div>
                 </div>
-                <div class="pr_description">
-                    <div>{!! $product->description !!}</div>
-                </div>
-            </div>
+            @endif
         </div>
         <div class="pr_picsBox col-sm-5 col-xs-12">
             <div class="pr_pics">

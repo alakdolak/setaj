@@ -168,6 +168,9 @@ class HomeController extends Controller {
                 $myProject->pic = URL::asset('projectPic/defaultPic.jpg');
             else
                 $myProject->pic = URL::asset('projectPic/' . $tmpPic->name);
+
+            if($myProject->price == 0)
+                $myProject->price = "رایگان";
         }
 
 

@@ -143,7 +143,7 @@ class OperatorController extends Controller {
 
             $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));
 
-            $t = ProjectBuyers::whereProjectId($project->id)->select('user_id')->get();
+            $project->buyers = ProjectBuyers::whereProjectId($project->id)->count();
 
             if($project->price == 0)
                 $project->price = "رایگان";
@@ -159,28 +159,6 @@ class OperatorController extends Controller {
             $project->hide = (!$project->hide) ? "آشکار" : "مخفی";
 
             $project->tags = DB::select("select t.name, p.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $project->id);
-
-            if($t == null || count($t) == 0)
-                $project->buyers = "هنوز خریداری نشده است.";
-            else {
-
-                $str = "";
-                $first = true;
-
-                foreach ($t as $itr) {
-                    $u = User::whereId($itr->user_id);
-                    if($first) {
-                        $str .= $u->first_name . ' ' . $u->last_name;
-                        $first = false;
-                    }
-                    else {
-                        $str .= " - " . $u->first_name . ' ' . $u->last_name;
-                    }
-                }
-
-
-                $project->buyers = $str;
-            }
 
         }
 
