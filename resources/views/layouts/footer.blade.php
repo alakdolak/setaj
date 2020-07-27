@@ -9,13 +9,11 @@
             </div>
             <div class="footerLinks">
                 <div class="footerLogo contactUs"></div>
-                <div onclick="" class="footerLogoText">تماس با ما</div>
-{{--                <div onclick="document.location.href = '{{route('contactUs')}}'" class="footerLogoText">تماس با ما</div>--}}
+                <div onclick="document.location.href = '{{route('contactUs')}}'" class="footerLogoText">تماس با ما</div>
             </div>
             <div class="footerLinks">
                 <div class="footerLogo FAQ"></div>
-                <div onclick="" class="footerLogoText">پرسش و پاسخ متداول</div>
-{{--                <div onclick="document.location.href = '{{route('faq')}}'" class="footerLogoText">پرسش و پاسخ متداول</div>--}}
+                <div onclick="document.location.href = '{{route('faq')}}'" class="footerLogoText">پرسش و پاسخ متداول</div>
             </div>
         </div>
         <div class="phoneDescript serajInsta phoneMode"></div>

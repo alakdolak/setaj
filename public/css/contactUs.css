@@ -1,0 +1,89 @@
+.contactUsBody {
+    padding: 5% 12% 0;
+    margin: 0 !important;
+    color: white;
+}
+.cU_descriptRow {
+    margin: 0 0 30px;
+}
+.cU_descript {
+    min-height: 223.5px;
+    background-color: #0c203a;
+    opacity: 0.75;
+    border-radius: 10px;
+    position: relative;
+    margin-top: 30px;
+}
+.cU_iconBox {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 50%;
+    background-color: #2ae0bb;
+}
+.cU_icon {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    font-size: 2em;
+    line-height: 60px !important;
+}
+.cU_textBox {
+    padding: 50px 20px 40px;
+    line-height: 30px;
+    font-weight: 500;
+    font-size: 1.5em;
+}
+.cU_textTitle {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.cU_text {
+    /*font-size: 1.2em;*/
+}
+.cu_link {
+    display: block;
+    font-size: 1.2em;
+}
+
+
+@media only screen and (max-width:1200px) {
+    .contactUsBody {
+        padding: 5% 10% 0;
+    }
+    .cU_textBox {
+        font-size: 1.3em;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+    .contactUsBody {
+        padding: 5% 5% 0;
+    }
+    .cU_textBox {
+        font-size: 1.1em;
+    }
+}
+
+
+@media only screen and (max-width:768px) {
+    .cU_descriptRow {
+        margin: 0;
+    }
+    .cU_descript{
+        margin: 30px 0 30px;
+    }
+}
+
+
+@media only screen and (max-width:480px) {
+
+}
+
+
+@media only screen and (max-width:380px) {
+
+}

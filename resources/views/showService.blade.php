@@ -15,7 +15,7 @@
 
             <div class="pr_descriptRow pr_iconesBox">
                 <div class="pr_icons starIcon"></div>
-                <div>ستاره ی دریافتی: {{$service->star}}</div>
+                <div>حداکثر ستاره‌ی دریافتی: {{$service->star}}</div>
             </div>
             <div class="pr_descriptRow">
                 <div class="pr_iconesBox">
@@ -44,7 +44,7 @@
                 <div class="shopBtn doneBtn">قبلا پذیرفته اید</div>
             @else
                 @if($canBuy)
-                    <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب و دریافت پروژه</div>
+                    <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب همیاری و دریافت آموزش</div>
                 @else
                     <div class="shopBtn doneBtn">شما امکان خرید ندارید</div>
                 @endif
