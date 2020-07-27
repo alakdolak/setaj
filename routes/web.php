@@ -165,6 +165,17 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::get('usersReport/{gradeId?}', ['as' => 'usersReport', 'uses' => 'ReportController@usersReport']);
 
+    Route::get('usersReportExcel/{gradeId}', ['as' => 'usersReportExcel', 'uses' => 'ReportController@usersReportExcel']);
+
+
+    Route::post("assignProjectToUser", ["as" => "assignProjectToUser", "uses" => "OperatorController@assignProjectToUser"]);
+
+    Route::post("assignServiceToUser", ["as" => "assignServiceToUser", "uses" => "OperatorController@assignServiceToUser"]);
+
+    Route::post("assignProductToUser", ["as" => "assignProductToUser", "uses" => "OperatorController@assignProductToUser"]);
+
+
+
     Route::post('cancelAllSuperActivation', ['as' => 'cancelAllSuperActivation', 'uses' => 'AdminController@cancelAllSuperActivation']);
 
     Route::post('onAllSuperActivation', ['as' => 'onAllSuperActivation', 'uses' => 'AdminController@onAllSuperActivation']);
@@ -264,8 +275,17 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
     Route::get("unDoneProjectsReport/{gradeId?}", ["as" => "unDoneProjectsReport", "uses" => "ReportController@unDoneProjectsReport"]);
 
+    Route::get("unDoneProjectsReportExcel/{gradeId}", ["as" => "unDoneProjectsReportExcel", "uses" => "ReportController@unDoneProjectsReportExcel"]);
+
+
+
     Route::get("productProjectReport/{gradeId?}", ["as" => "productProjectReport", "uses" => "ReportController@productProjectReport"]);
 
+    Route::get("productProjectReportExcel/{gradeId}", ["as" => "productProjectReportExcel", "uses" => "ReportController@productProjectReportExcel"]);
+
+
     Route::get("productsReport/{gradeId?}", ["as" => "productsReport", "uses" => "ReportController@productsReport"]);
+
+    Route::get("productsReportExcel/{gradeId}", ["as" => "productsReportExcel", "uses" => "ReportController@productsReportExcel"]);
 
 });

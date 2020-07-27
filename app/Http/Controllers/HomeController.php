@@ -171,6 +171,8 @@ class HomeController extends Controller {
 
             if($myProject->price == 0)
                 $myProject->price = "رایگان";
+            else
+                $myProject->price .= " سکه ";
         }
 
 

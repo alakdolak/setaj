@@ -142,7 +142,7 @@
                     <h3>محصولی تعریف نشده است</h3>
                 @else
 
-                    <div>
+                    <center>
                         <span>پایه تحصیلی مورد نظر</span>
                         <select onchange="filter(this.value)">
                             <option value="-1">همه</option>
@@ -150,7 +150,7 @@
                                 <option value="{{$grade->id}}">{{$grade->name}}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </center>
 
                     <div class="table-scrollable">
 
@@ -160,6 +160,7 @@
                             <tr>
                                 <th scope="col">ردیف</th>
                                 <th scope="col">نام</th>
+                                <th scope="col">آی دی کالا</th>
                                 <th scope="col">صاحب محصول</th>
                                 <th scope="col">پایه تحصیلی</th>
                                 <td scope="col">تصویر</td>
@@ -179,6 +180,7 @@
                                 <tr class="myTr tr_{{$itr->grade_id}}" id="tr_{{$itr->id}}">
                                     <td>{{$i}}</td>
                                     <td>{{$itr->name}}</td>
+                                    <td>{{$itr->id}}</td>
                                     <td>{{$itr->owner}}</td>
                                     <td>{{$itr->grade}}</td>
                                     <td><img width="100px" src="{{$itr->pic}}"></td>

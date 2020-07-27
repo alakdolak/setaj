@@ -28,6 +28,10 @@
 
         <center>
 
+            <h3>
+                <a href="{{route('unDoneProjectsReportExcel', ['gradeId' => $gradeId])}}">دریافت فایل اکسل</a>
+            </h3>
+
             <div>
                 <span>پروژه مورد نظر</span>
                 <select id="mySelect" onchange="filter(this.value)">
@@ -82,21 +86,27 @@
 
             </div>
 
-            <table style="margin-top: 100px">
+            <h3 style="margin-top: 100px"><span>تعداد کل: </span><span>&nbsp;</span><span id="totalCount">{{count($projects)}}</span></h3>
+
+            <table style="margin-top: 40px">
                 <tr>
+                    <td>ردیف</td>
                     <td>نام کاربر</td>
                     <td>نام پروژه</td>
                     <td>تاریخ پذیرش پروژه</td>
                     <td>عملیات</td>
                 </tr>
 
+                <?php $i = 1; ?>
                 @foreach($projects as $project)
                     <tr class="myTr" data-value="{{$project->title}}" id="myTr_{{$project->id}}">
+                        <td>{{$i}}</td>
                         <td>{{$project->name}}</td>
                         <td>{{$project->title}}</td>
                         <td>{{$project->Bdate}}</td>
                         <td><button class="btn btn-danger" onclick="deleteBuyProject('{{$project->id}}')">بازپس گیری پروژه</button></td>
                     </tr>
+                    <?php $i++; ?>
                 @endforeach
             </table>
         </center>
@@ -242,6 +252,8 @@
 
         function doChange() {
 
+            var x = 0;
+
             for (i = 0; i < exams.length; i++) {
 
                 if(!$("#myTr_" + exams[i].id).hasClass('hidden')) {
@@ -249,9 +261,14 @@
                     if (examsStartValue[i] + examsEndValue[i] + stateValue[i] != 3) {
                         $("#myTr_" + exams[i].id).addClass("hidden");
                     }
+                    else {
+                        x++;
+                    }
                 }
 
             }
+
+            $("#totalCount").empty().append(x);
         }
 
     </script>

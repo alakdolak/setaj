@@ -1430,4 +1430,212 @@ class OperatorController extends Controller {
         }
 
     }
+
+
+    public function assignProjectToUser() {
+
+
+        if(isset($_POST["projectId"]) && isset($_POST["userId"])) {
+
+            $pId = makeValidInput($_POST["projectId"]);
+            $uId = makeValidInput($_POST["userId"]);
+
+            if(ProjectBuyers::whereUserId($uId)->whereProjectId($pId)->count() > 0) {
+                echo "nok2";
+                return;
+            }
+
+            $project = Project::whereId($pId);
+
+            if($project == null) {
+                echo "nok3";
+                return;
+            }
+
+            $user = User::whereId($uId);
+
+            if($user == null) {
+                echo "nok3";
+                return;
+            }
+
+            if($project->price > $user->money) {
+                echo "nok4";
+                return;
+            }
+
+
+            if($project->capacity != -1 &&
+                ProjectBuyers::whereProjectId($project->id)->count() >= $project->capacity) {
+                echo "nok5";
+                return;
+            }
+
+
+            $grades = ProjectGrade::whereProjectId($project->id)->get();
+            $allow = false;
+
+            foreach ($grades as $itr) {
+                if ($itr->grade_id == $user->grade_id) {
+                    $allow = true;
+                    break;
+                }
+            }
+
+            if(!$allow) {
+                echo "nok1";
+                return;
+            }
+
+            try {
+                $tmp = new ProjectBuyers();
+                $tmp->user_id = $user->id;
+                $tmp->project_id = $project->id;
+                $tmp->save();
+
+                $user->money -= $project->price;
+                $user->save();
+
+                echo "ok";
+                return;
+            }
+            catch (\Exception $x) {}
+
+        }
+
+        echo "nok3";
+    }
+
+    public function assignServiceToUser() {
+
+
+        if(isset($_POST["serviceId"]) && isset($_POST["userId"])) {
+
+            $sId = makeValidInput($_POST["serviceId"]);
+            $uId = makeValidInput($_POST["userId"]);
+
+            if(ServiceBuyer::whereUserId($uId)->whereServiceId($sId)->count() > 0) {
+                echo "nok2";
+                return;
+            }
+
+            $service = Service::whereId($sId);
+
+            if($service == null) {
+                echo "nok3";
+                return;
+            }
+
+            $user = User::whereId($uId);
+
+            if($user == null) {
+                echo "nok3";
+                return;
+            }
+
+
+            if($service->capacity != -1 &&
+                ServiceBuyer::whereServiceId($service->id)->count() >= $service->capacity) {
+                echo "nok5";
+                return;
+            }
+
+
+            $grades = ServiceGrade::whereServiceId($service->id)->get();
+            $allow = false;
+
+            foreach ($grades as $itr) {
+                if ($itr->grade_id == $user->grade_id) {
+                    $allow = true;
+                    break;
+                }
+            }
+
+            if(!$allow) {
+                echo "nok1";
+                return;
+            }
+
+            try {
+                $tmp = new ServiceBuyer();
+                $tmp->user_id = $user->id;
+                $tmp->service_id = $service->id;
+                $tmp->save();
+
+                echo "ok";
+                return;
+            }
+            catch (\Exception $x) {}
+
+        }
+
+        echo "nok3";
+    }
+
+    public function assignProductToUser() {
+
+        if(isset($_POST["productId"]) && isset($_POST["userId"])) {
+
+            $pId = makeValidInput($_POST["productId"]);
+            $uId = makeValidInput($_POST["userId"]);
+
+            if(Transaction::whereProductId($pId)->count() > 0) {
+                echo "nok2";
+                return;
+            }
+
+            $product = Product::whereId($pId);
+
+            if($product == null) {
+                echo "nok3";
+                return;
+            }
+
+            $user = User::whereId($uId);
+
+            if($user == null) {
+                echo "nok3";
+                return;
+            }
+
+
+            if($product->price > $user->money) {
+                echo "nok4";
+                return;
+            }
+
+            $product->grade_id = User::whereId($product->user_id)->grade_id;
+
+            if($product->grade_id != $user->grade_id) {
+                echo "nok1";
+                return;
+            }
+
+            try {
+                $tmp = new Transaction();
+                $tmp->user_id = $user->id;
+                $tmp->product_id = $product->id;
+                $tmp->follow_code = generateActivationCode();
+                $tmp->save();
+
+                $user->money -= $product->price;
+                $user->stars += $product->star;
+                $user->save();
+
+                $tmpUser = User::whereId($product->user_id);
+
+                if($tmpUser != null) {
+                    $tmpUser->money += $product->price;
+                    $tmpUser->save();
+                }
+
+                echo "ok";
+                return;
+            }
+            catch (\Exception $x) {}
+
+        }
+
+        echo "nok3";
+    }
 }
