@@ -135,13 +135,13 @@
 
                                                 <div class="sh_descriptRow sh_priceBox">
                                                     <div class="priceIcons coinIcon"></div>
-                                                    <div class="priceText">قیمت: {{$buy->price}} سکه</div>
+                                                    <div class="priceText">قیمت: {{$buy->price}} </div>
                                                 </div>
 
                                                 <div class="sh_descriptRow sh_priceBox">
                                                     <div class="priceIcons statusIcon"></div>
                                                     @if($buy->status)
-                                                        <div class="priceText">وضعیت: تمام شده</div>
+                                                        <div class="priceText">وضعیت: انجام شد</div>
                                                     @else
                                                         <div class="priceText">وضعیت: در حال انجام</div>
                                                     @endif
@@ -216,7 +216,7 @@
                                                 <div class="sh_descriptRow sh_priceBox">
                                                     <div class="priceIcons statusIcon"></div>
                                                     @if($service->status)
-                                                        <div class="priceText">وضعیت: تمام شده</div>
+                                                        <div class="priceText">وضعیت: انجام شد</div>
                                                     @else
                                                         <div class="priceText">وضعیت: در حال انجام</div>
                                                     @endif
@@ -260,14 +260,14 @@
                                                     <div class="priceText">ستاره دریافتی: {{$buy->star}} </div>
                                                 </div>
 
-                                                <div class="sh_descriptRow sh_priceBox">
-                                                    <div class="priceIcons statusIcon"></div>
-                                                    @if($buy->status)
-                                                        <div class="priceText">وضعیت: مرسوله به دست خریدار رسیده است.</div>
-                                                    @else
-                                                        <div class="priceText" style="font-size: 0.9em">وضعیت: مرسوله به دست خریدار نرسیده است.(کد پیگیری شما {{$buy->follow_code}} می باشد.</div>
-                                                    @endif
-                                                </div>
+{{--                                                <div class="sh_descriptRow sh_priceBox">--}}
+{{--                                                    <div class="priceIcons statusIcon"></div>--}}
+{{--                                                    @if($buy->status)--}}
+{{--                                                        <div class="priceText">وضعیت: مرسوله به دست خریدار رسیده است.</div>--}}
+{{--                                                    @else--}}
+{{--                                                        <div class="priceText" style="font-size: 0.9em">وضعیت: مرسوله به دست خریدار نرسیده است.(کد پیگیری شما {{$buy->follow_code}} می باشد.</div>--}}
+{{--                                                    @endif--}}
+{{--                                                </div>--}}
                                             </div>
 
                                             <div class="sh_ownerBox_finish">

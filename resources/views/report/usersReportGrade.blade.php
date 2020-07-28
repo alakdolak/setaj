@@ -10,6 +10,10 @@
             border: 1px solid #444;
         }
 
+        .modal {
+            z-index: 100000;
+        }
+
     </style>
 
 @stop
@@ -19,6 +23,10 @@
     <center class="col-sm-12" style="margin-top: 100px">
 
         <div>
+
+            <h3>
+                <a href="{{route('usersReportExcel', ['gradeId' => $gradeId])}}" download>دانلود فایل اکسل</a>
+            </h3>
 
             <button onclick="addItem()" class="btn btn-success">افزودن کاربر</button>
             <button onclick="cancelAllSuperActivation()" class="btn btn-success">لغو کردن دسترسی فراتر همه دانش آموزان</button>
@@ -34,6 +42,7 @@
                     <td>ارزش کل خریدها(سکه)</td>
                     <td>تعداد ستاره ها</td>
                     <td>تعداد سکه ها</td>
+                    <td>تعداد ستاره های کل</td>
                     <td>عملیات</td>
                 </tr>
 
@@ -48,6 +57,7 @@
                         <td>{{$user->sum}}</td>
                         <td>{{$user->stars}}</td>
                         <td>{{$user->money}}</td>
+                        <td>{{$user->total}}</td>
                         <td>
                             @if($user->status)
                                 <button id="toggle_{{$user->id}}" onclick="toggleStatus('{{$user->id}}')" class="btn btn-danger col-xs-6">غیرفعال کردن کاربر</button>
@@ -66,8 +76,13 @@
                             {{--                            <button onclick="document.location.href = '{{route('userBookmarks', ['uId' => $user->id])}}'" class="btn btn-info col-xs-6">اقلام مورد علاقه کاربر</button>--}}
 
                             <button onclick="document.location.href = '{{route('userBuys', ['uId' => $user->id])}}'" class="btn btn-basic col-xs-6">اقلام خریداری شده کاربر</button>
-                            <button onclick="document.location.href = '{{route('userServices', ['uId' => $user->id])}}'" class="btn btn-default col-xs-6">خدمات انجام شده</button>
+                            <button onclick="document.location.href = '{{route('userServices', ['uId' => $user->id])}}'" style="background-color: #8940b5; color: white;" class="btn col-xs-6">خدمات انجام شده</button>
                             <button onclick="document.location.href = '{{route('userProjects', ['uId' => $user->id])}}'" class="btn btn-warning col-xs-6">پروژه ها</button>
+
+
+                            <button data-toggle="modal" data-target="#assignProjectModal" onclick="chooseSelectedUser('{{$user->id}}')" style="background-color: #0b4d3f; color: white;" class="btn col-xs-6">برداشتن پروژه برای کاربر</button>
+                            <button data-toggle="modal" data-target="#assignServiceModal" onclick="chooseSelectedUser('{{$user->id}}')" style="background-color: #1d7d86; color: white;" class="btn col-xs-6">برداشتن خدمت برای کاربر</button>
+                            <button data-toggle="modal" data-target="#assignProductModal" onclick="chooseSelectedUser('{{$user->id}}')" style="background-color: #862c24; color: white;" class="btn btn-warning col-xs-6">خرید محصول برای کاربر</button>
 
                         </td>
                     </tr>
@@ -112,7 +127,194 @@
         </form>
     </div>
 
+    <div id="assignProjectModal" class="modal">
+
+        <div class="modal-content">
+
+            <center>
+
+                <h5 style="padding-right: 5%;">پروژه مورد نظر</h5>
+                <select id="projects">
+                    @foreach($projects as $project)
+                        <option value="{{$project->id}}">{{$project->title}}</option>
+                    @endforeach
+                </select>
+            </center>
+
+            <div style="margin-top: 20px">
+                <input onclick="assignProject()" type="submit" value="تایید" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
+                <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" data-dismiss="modal">
+            </div>
+        </div>
+
+    </div>
+
+    <div id="assignProductModal" class="modal">
+
+        <div class="modal-content">
+
+            <center>
+                <h5 style="padding-right: 5%;">کد محصول مورد نظر</h5>
+                <input type="text" id="productCode">
+            </center>
+
+            <div style="margin-top: 20px">
+                <input onclick="assignProduct()" type="submit" value="تایید" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
+                <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" data-dismiss="modal">
+            </div>
+        </div>
+
+    </div>
+
+    <div id="assignServiceModal" class="modal">
+
+        <div class="modal-content">
+
+            <center>
+
+                <h5 style="padding-right: 5%;">خدمت مورد نظر</h5>
+                <select id="services">
+                    @foreach($services as $service)
+                        <option value="{{$service->id}}">{{$service->title}}</option>
+                    @endforeach
+                </select>
+            </center>
+
+            <div style="margin-top: 20px">
+                <input onclick="assignService()" type="submit" value="تایید" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
+                <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" data-dismiss="modal">
+            </div>
+        </div>
+
+    </div>
+
+    <div id="assignServiceModal" class="modal">
+
+        <div class="modal-content">
+
+            <center>
+
+                <h5 style="padding-right: 5%;">پروژه مورد نظر</h5>
+                <select id="projects">
+                    @foreach($projects as $project)
+                        <option value="{{$project->id}}">{{$project->title}}</option>
+                    @endforeach
+                </select>
+            </center>
+
+            <div style="margin-top: 20px">
+                <input onclick="assignProject()" type="submit" value="تایید" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
+                <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" data-dismiss="modal">
+            </div>
+        </div>
+
+    </div>
+
+
     <script>
+
+        var userId;
+
+        function assignProduct() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                url: '{{route('assignProductToUser')}}',
+                data: {
+                    productId: $("#productCode").val(),
+                    userId: userId
+                },
+                success: function (res) {
+                    if(res === "ok")
+                        alert("عملیات مورد نظر باموفقیت انجام شد.");
+                    else if(res === "nok1")
+                        alert("این پروژه در مقطع تحصیلی دانش آموز مورد نظر نیست.");
+                    else if(res === "nok2")
+                        alert("این محصول توسط فرد دیگری خریداری شده است.");
+                    else if(res === "nok3")
+                        alert("عملیات مورد نظر مجاز نیست.");
+                    else if(res === "nok4")
+                        alert("سکه های فرد مورد نظر برای این کار کافی نیست.");
+                }
+            });
+
+        }
+
+        function assignService() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                url: '{{route('assignServiceToUser')}}',
+                data: {
+                    serviceId: $("#services").val(),
+                    userId: userId
+                },
+                success: function (res) {
+                    if(res === "ok")
+                        alert("عملیات مورد نظر باموفقیت انجام شد.");
+                    else if(res === "nok1")
+                        alert("این پروژه در مقطع تحصیلی دانش آموز مورد نظر نیست.");
+                    else if(res === "nok2")
+                        alert("دانش آموز مورد نظر قبلا این پروژه را برداشته است.");
+                    else if(res === "nok3")
+                        alert("عملیات مورد نظر مجاز نیست.");
+                    else if(res === "nok4")
+                        alert("سکه های فرد مورد نظر برای این کار کافی نیست.");
+                    else if(res === "nok5")
+                        alert("ظرفیت پروژه مورد نظر به اتمام رسیده است.");
+                }
+            });
+
+        }
+
+        function assignProject() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                url: '{{route('assignProjectToUser')}}',
+                data: {
+                    projectId: $("#projects").val(),
+                    userId: userId
+                },
+                success: function (res) {
+                    if(res === "ok")
+                        alert("عملیات مورد نظر باموفقیت انجام شد.");
+                    else if(res === "nok1")
+                        alert("این پروژه در مقطع تحصیلی دانش آموز مورد نظر نیست.");
+                    else if(res === "nok2")
+                        alert("دانش آموز مورد نظر قبلا این پروژه را برداشته است.");
+                    else if(res === "nok3")
+                        alert("عملیات مورد نظر مجاز نیست.");
+                    else if(res === "nok4")
+                        alert("سکه های فرد مورد نظر برای این کار کافی نیست.");
+                    else if(res === "nok5")
+                        alert("ظرفیت پروژه مورد نظر به اتمام رسیده است.");
+                }
+            });
+
+        }
+
+        function chooseSelectedUser(uId) {
+            userId = uId;
+        }
 
         function cancelAllSuperActivation() {
 

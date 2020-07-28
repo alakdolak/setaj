@@ -26,7 +26,11 @@
     <div class="col-sm-12" style="margin-top: 100px">
 
         <div class="row" style="margin-bottom: 5%;">
-            <div class="col-xs-12" style="margin-top: 5px; direction: rtl">
+            <center class="col-xs-12" style="margin-top: 5px; direction: rtl">
+
+                <h3>
+                    <a href="{{route('productsReportExcel', ['gradeId' => $gradeId])}}">دریافت فایل اکسل</a>
+                </h3>
 
                 <div style="display: inline-block; width: auto; margin-right: 10%; margin-left: 5%; float: right;">
                     <span style="float: right; margin-top: 6%;">    از تاریخ:   </span>
@@ -68,13 +72,16 @@
                     </script>
                 </div>
 
-            </div>
+            </center>
         </div>
 
-        <div>
+        <center>
+
+            <p><span>تعداد کل: </span><span>&nbsp;</span><span id="totalCount">{{count($products)}}</span></p>
 
             <table style="margin-top: 20px">
                 <tr>
+                    <td>ردیف</td>
                     <td>فروشنده</td>
                     <td>خریدار</td>
                     <td>محصول</td>
@@ -84,16 +91,16 @@
                 <?php $i = 0; ?>
                 @foreach($products as $product)
                     <tr id="{{$i}}">
-
+                        <td>{{($i + 1)}}</td>
                         <td>{{$product->seller}}</td>
                         <td>{{$product->buyer}}</td>
                         <td>{{$product->name}}</td>
-                        <td>{{$product->date}}</td>
+                        <td>{{$product->date . '     ساعت:     ' . $product->time}}</td>
                     </tr>
                     <?php $i++; ?>
                 @endforeach
             </table>
-        </div>
+        </center>
 
     </div>
 
@@ -193,14 +200,20 @@
         }
 
         function doChange() {
+
+            var x = 0;
+
             for (i = 0; i < exams.length; i++) {
                 if (examsStartValue[i] + examsEndValue[i] + stateValue[i] == 3) {
                     document.getElementById(i).style.display = '';
+                    x++;
                 }
                 else {
                     document.getElementById(i).style.display = 'none';
                 }
             }
+
+            $("#totalCount").empty().append(x);
         }
 
     </script>

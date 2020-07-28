@@ -62,6 +62,7 @@
                             <thead>
                             <tr>
                                 <th scope="col">ردیف</th>
+                                <th scope="col">عملیات</th>
                                 <th scope="col">نام</th>
                                 <th scope="col">پایه تحصیلی</th>
                                 <th scope="col">ظرفیت</th>
@@ -71,10 +72,9 @@
                                 <th scope="col" style="width:450px !important">توضیح</th>
                                 <th scope="col">هزینه پروژه</th>
                                 <th scope="col">تاریخ تعریف پروژه</th>
-                                <th scope="col">نفرات خریدار پروژه</th>
+                                <th scope="col">تعداد نفرات خریدار پروژه</th>
                                 <th scope="col">تگ ها</th>
                                 <th scope="col">وضعیت نمایش</th>
-                                <th scope="col">عملیات</th>
                             </tr>
                             </thead>
 
@@ -89,6 +89,19 @@
 
                                 <tr class="myTr" data-grades="{{$str}}" id="tr_{{$itr->id}}">
                                     <td>{{$i}}</td>
+                                    <td>
+                                        <button onclick="removeProject('{{$itr->id}}')" class="btn btn-danger" data-toggle="tooltip" title="حذف">
+                                            <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
+                                        </button>
+
+                                        <a target="_blank" href="{{route('editProject', ['id' => $itr->id])}}" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
+                                            <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
+                                        </a>
+
+                                        <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
+
+                                    </td>
+
                                     <td>{{$itr->title}}</td>
 
                                     <td>
@@ -123,18 +136,7 @@
                                         </div>
                                     </td>
                                     <td>{{$itr->hide}}</td>
-                                    <td>
-                                        <button onclick="removeProject('{{$itr->id}}')" class="btn btn-danger" data-toggle="tooltip" title="حذف">
-                                            <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
-                                        </button>
 
-                                        <a target="_blank" href="{{route('editProject', ['id' => $itr->id])}}" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
-                                            <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
-                                        </a>
-
-                                        <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
-
-                                    </td>
                                 </tr>
                                 <?php $i += 1; ?>
                             @endforeach
