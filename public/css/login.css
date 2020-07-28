@@ -103,6 +103,13 @@
     color: #04C582;
 }
 
+.loginErr {
+    font-size: 0.9em;
+    font-weight: 600;
+    text-align: center;
+    color: red;
+}
+
 
 @media only screen and (max-width:350px) {
     .loginBody {

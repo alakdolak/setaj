@@ -5,14 +5,20 @@
     background-repeat: no-repeat;
     background-position: center;
 }
-.advertiseBanner1 {
-    background-image: url(../images/mainAdvertise.jpg);
+.advertiseBanner0 {
+    background-image: url(../images/advertise0.jpg);
 }
-.advertiseBanner2 {
+.advertiseBanner1 {
     background-image: url(../images/advertise1.jpg);
 }
-.advertiseBanner3 {
+.advertiseBanner2 {
     background-image: url(../images/advertise2.jpg);
+}
+.advertiseBanner3 {
+    background-image: url(../images/advertise3.jpg);
+}
+.advertiseBanner4 {
+    background-image: url(../images/advertise4.jpg);
 }
 
 .choosePlane {

@@ -80,7 +80,7 @@
             <div class="loginBtnDiv">
                 <div class="loginBtn">ورود</div>
             </div>
-            <div style="text-align: center;">
+            <div class="loginErr">
                 <p id="loginErr"></p>
             </div>
         </form>
