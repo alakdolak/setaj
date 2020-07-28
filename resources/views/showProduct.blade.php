@@ -8,6 +8,15 @@
 
 @section("content")
 
+
+{{--    <div class="zoomContainer __web-inspector-hide-shortcut__" style="-webkit-transform: translateZ(0);position:absolute;left:950.9091186523438px;top:336.8181915283203px;height:345.682px;width:345.682px;">--}}
+{{--        <div class="zoomLens" style="background-position: 0px 0px; float: right; overflow: hidden; z-index: 999; transform: translateZ(0px); opacity: 0.4; zoom: 1; width: 141.244px; height: 157.447px; background-color: transparent; cursor: crosshair; border: 2.5px solid rgb(239, 86, 97); background-repeat: no-repeat; position: absolute; left: 78.8805px; top: 188.239px; display: none;">&nbsp;</div>--}}
+{{--        <div class="zoomWindowContainer" style="width: 523px;">--}}
+{{--            <div style="overflow: hidden; background-position: -284.152px -699px; text-align: center; background-color: rgb(255, 255, 255); width: 523px; height: 583px; float: left; background-size: 1280px 1280px; z-index: 100; border: 1px solid rgb(136, 136, 136); background-repeat: no-repeat; position: absolute; background-image: url(&quot;https://dkstatics-public.digikala.com/digikala-products/121470106.jpg?x-oss-process=image/resize,w_1280/quality,q_80&quot;); top: -138.659px; left: -523px; display: none;" class="zoomWindow">&nbsp;</div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+
+
     <div class="eachProduct row">
         <div class="pr_descript col-sm-7 col-xs-12">
             <div class="pr_descriptRow pr_title">{{$product->name}}</div>
@@ -225,7 +234,7 @@
                     }
 
                     else if(res === "nok3") {
-                        alert("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
+                        alert("متاسفانه سکه کافی برای خریداری این پروژه را ندارید.");
                     }
 
                     else if(res === "nok5") {
