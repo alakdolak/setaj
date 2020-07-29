@@ -133,7 +133,7 @@
                     <p><span>موفق باشی</span><span>&#128522;</span></p>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="document.location.reload()" type="button" class="btn btn-danger">متوجه شدم</button>
+                    <button onclick="document.location.href = '{{route('profile')}}'" type="button" class="btn btn-danger">متوجه شدم</button>
                 </div>
             </div>
 

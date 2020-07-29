@@ -53,11 +53,12 @@
                     <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif
             </div>
-{{--            @if($canBuy)--}}
+
+            @if($canBuy)
                 <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب پروژه و دریافت آموزش</div>
-{{--            @else--}}
-{{--                <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>--}}
-{{--            @endif--}}
+            @else
+                <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>
+            @endif
         </div>
 
         @if(count($project->attach) > 0)
@@ -116,7 +117,6 @@
                 <div class="modal-body">
                     <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
                 </div>
-{{--                <div id="ra" class="modal-body"></div>--}}
                 <div class="modal-footer">
                     <button onclick="buy()" type="button" class="btn btn-success">بله</button>
                     <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
@@ -148,7 +148,7 @@
                     <a download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}">دانلود تمام فایل ها به طور یکجا</a>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="document.location.reload()" type="button" class="btn btn-danger">متوجه شدم</button>
+                    <button onclick="document.location.href = '{{route('profile')}}'" type="button" class="btn btn-danger">متوجه شدم</button>
                 </div>
             </div>
 
@@ -178,33 +178,28 @@
                 },
                 success: function (res) {
 
-                    $("#alertText").empty().append("<div>sallam</div>");
-                    $("#confirmationModalDialog").addClass("hidden");
-                    $("#confirmationModalDialogAlert").removeClass("hidden");
+                    if(res === "ok") {
+                        $("#closeConfirmationModalBtn").click();
+                        $("#resultModalBtn").click();
+                    }
+                    else {
 
-                    // $("#ra").empty().append("<p>sallam</p>");
-                    // $("#confirmationModalDialog").css("background-color", "red");
+                        if(res === "nok1") {
+                            $("#alertText").empty().append("<div>شما اجازه خرید این محصول را ندارید</div>");
+                        }
+                        else if(res === "nok2") {
+                            $("#alertText").empty().append("<div>شما قبلا این محصول را خریداری کرده اید</div>");
+                        }
+                        else if(res === "nok3") {
+                            $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه ندارید</div>");
+                        }
+                        else {
+                            $("#alertText").empty().append("<div>عملیات مورد نظر غیرمجاز است</div>");
+                        }
 
-                    // if(res === "nok1") {
-                    //     alert("شما اجازه خرید این محصول را ندارید.");
-                    // }
-                    //
-                    // else if(res === "nok2") {
-                    //     alert("شما قبلا این محصول را خریداری کرده اید.");
-                    // }
-                    //
-                    // else if(res === "nok3") {
-                    //     alert("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
-                    // }
-                    //
-                    // else if(res === "nok5") {
-                    //     alert("عملیات مورد نظر غیرمجاز است.");
-                    // }
-                    //
-                    // else if(res === "ok") {
-                    //     $("#closeConfirmationModalBtn").click();
-                    //     $("#resultModalBtn").click();
-                    // }
+                        $("#confirmationModalDialog").addClass("hidden");
+                        $("#confirmationModalDialogAlert").removeClass("hidden");
+                    }
 
                 }
             });
