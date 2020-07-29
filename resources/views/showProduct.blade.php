@@ -18,6 +18,7 @@
 
 
     <div class="eachProduct row">
+
         <div class="pr_descript col-sm-7 col-xs-12">
             <div class="pr_descriptRow pr_title">{{$product->name}}</div>
             <div class="pr_descriptRow pr_salesman">فروشنده: {{$product->owner}}</div>
@@ -86,6 +87,7 @@
             @endif
 
         </div>
+
         <div class="pr_picsBox col-sm-5 col-xs-12">
             <div class="pr_pics pr_productPics">
                 <div class="pr_otherPics">
@@ -154,50 +156,6 @@
 
         @endif
 
-
-{{--        @if(count($product->trailer) > 0)--}}
-
-{{--            <div class="pr_advertiseBox  col-xs-12">--}}
-{{--                <div class="pr_iconesBox" style="margin-bottom: 15px">--}}
-{{--                    <div class="pr_icons movieIcon"></div>--}}
-{{--                    <div>تبلیغات:</div>--}}
-{{--                </div>--}}
-{{--                <div class="pr_advertise col-xs-12">--}}
-
-{{--                    @foreach($product->trailer as $pic)--}}
-{{--                        @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")--}}
-{{--                            <div class="col-xs-12">--}}
-{{--                                <img style="width: 100%; float: right" src="{{$pic["path"]}}">--}}
-{{--                            </div>--}}
-{{--                        @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v")--}}
-{{--                            <div class="col-xs-12" style="padding: 15px">--}}
-{{--                                <video style="width: 100%" controls>--}}
-{{--                                    <source src="{{$pic["path"]}}" type="video/mp4">--}}
-{{--                                    مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.--}}
-{{--                                </video>--}}
-{{--                            </div>--}}
-{{--                        @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg" || $pic["type"] == "m4a" || $pic["type"] == "aac")--}}
-{{--                            <div class="col-xs-12">--}}
-{{--                                <audio style="width: 100%" controls>--}}
-{{--                                    <source src="{{$pic["path"]}}" type="audio/mpeg">--}}
-{{--                                    مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.--}}
-{{--                                </audio>--}}
-{{--                            </div>--}}
-{{--                        @elseif($pic["type"] == "pdf")--}}
-{{--                            <div class="col-xs-12">--}}
-{{--                                <embed src="{{$pic["path"]}}" width="800px" height="800px" />--}}
-{{--                            </div>--}}
-{{--                        @else--}}
-{{--                            <div class="col-xs-12">--}}
-{{--                                <a href="{{$pic["path"]}}" download>دانلود فایل</a>--}}
-{{--                            </div>--}}
-{{--                        @endif--}}
-{{--                    @endforeach--}}
-
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--        @endif--}}
     </div>
 
     <div id="confirmationModal" class="modal fade" role="dialog">

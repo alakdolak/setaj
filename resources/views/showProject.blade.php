@@ -2,12 +2,13 @@
 
 @section('header')
     @parent
-<<<<<<< HEAD
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
 
-=======
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.3")}}">
->>>>>>> 2c7b44147727f312575d4fb640837d21d8a2f627
+    <style>
+        .modal-body > .close {
+            float: left;
+        }
+    </style>
 @stop
 
 @section("content")
@@ -115,15 +116,20 @@
                 <div class="modal-body">
                     <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
                 </div>
-                <div id="ra" class="modal-body"></div>
+{{--                <div id="ra" class="modal-body"></div>--}}
                 <div class="modal-footer">
                     <button onclick="buy()" type="button" class="btn btn-success">بله</button>
                     <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
                 </div>
+            </div>
 
+            <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="alertText"></div>
+                </div>
             </div>
         </div>
-
     </div>
 
 
@@ -172,8 +178,13 @@
                 },
                 success: function (res) {
 
-                    $("#ra").empty().append("<p>sallam</p>");
-                    $("#confirmationModalDialog").css("background-color", "red");
+                    $("#alertText").empty().append("<div>sallam</div>");
+                    $("#confirmationModalDialog").addClass("hidden");
+                    $("#confirmationModalDialogAlert").removeClass("hidden");
+
+                    // $("#ra").empty().append("<p>sallam</p>");
+                    // $("#confirmationModalDialog").css("background-color", "red");
+
                     // if(res === "nok1") {
                     //     alert("شما اجازه خرید این محصول را ندارید.");
                     // }

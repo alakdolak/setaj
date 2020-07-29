@@ -136,6 +136,15 @@
 }
 
 
+/*css of modal*/
+.alertDiv {
+    background-color: red;
+    color: white;
+    font-weight: 500;
+}
+
+
+
 @media only screen and (max-width:1200px) {
     .eachProduct {
         margin: 50px 10% 0 !important;
