@@ -100,9 +100,7 @@
 
     <div id="confirmationModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
+            <div id="confirmationModalDialog" class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">انتخاب پروژه همیاری</h4>
@@ -116,6 +114,12 @@
                 </div>
             </div>
 
+            <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="alertText"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -163,24 +167,27 @@
                 },
                 success: function (res) {
 
-                    if(res === "nok1") {
-                        alert("شما اجازه خرید این محصول را ندارید.");
-                    }
-
-                    else if(res === "nok2") {
-                        alert("شما قبلا این محصول را خریداری کرده اید.");
-                    }
-
-                    else if(res === "nok3") {
-                        alert("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
-                    }
-
-                    else if(res === "nok5") {
-                        alert("عملیات مورد نظر غیرمجاز است.");
-                    }
-
-                    else if(res === "ok") {
+                    if(res === "ok") {
+                        $("#closeConfirmationModalBtn").click();
                         $("#resultModalBtn").click();
+                    }
+                    else {
+
+                        if(res === "nok1") {
+                            $("#alertText").empty().append("<div>شما اجازه خرید این محصول را ندارید</div>");
+                        }
+                        else if(res === "nok2") {
+                            $("#alertText").empty().append("<div>شما قبلا این محصول را خریداری کرده اید</div>");
+                        }
+                        else if(res === "nok3") {
+                            $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه ندارید</div>");
+                        }
+                        else {
+                            $("#alertText").empty().append("<div>عملیات مورد نظر غیرمجاز است</div>");
+                        }
+
+                        $("#confirmationModalDialog").addClass("hidden");
+                        $("#confirmationModalDialogAlert").removeClass("hidden");
                     }
 
                 }

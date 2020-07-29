@@ -137,6 +137,10 @@
 
 
 /*css of modal*/
+.modal-body > .close {
+    float: left;
+}
+
 .alertDiv {
     background-color: red;
     color: white;

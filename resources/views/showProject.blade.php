@@ -4,11 +4,6 @@
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
 
-    <style>
-        .modal-body > .close {
-            float: left;
-        }
-    </style>
 @stop
 
 @section("content")
