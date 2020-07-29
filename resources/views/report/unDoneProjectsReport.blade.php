@@ -103,7 +103,7 @@
                         <td>{{$i}}</td>
                         <td>{{$project->name}}</td>
                         <td>{{$project->title}}</td>
-                        <td>{{$project->Bdate}}</td>
+                        <td>{{$project->Bdate . '    ساعت     ' . $project->time}}</td>
                         <td><button class="btn btn-danger" onclick="deleteBuyProject('{{$project->id}}')">بازپس گیری پروژه</button></td>
                     </tr>
                     <?php $i++; ?>

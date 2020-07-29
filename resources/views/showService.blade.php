@@ -23,7 +23,7 @@
                     <div>توضیحات:</div>
                 </div>
                 <div class="pr_description">
-                    <div>{!! $service->description !!}</div>
+                    <div class="should_be_iransans">{!! $service->description !!}</div>
                 </div>
             </div>
         </div>

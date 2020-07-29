@@ -3,7 +3,6 @@
 @section('header')
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.3")}}">
-
 @stop
 
 @section("content")
@@ -30,7 +29,7 @@
                         <div>توضیحات:</div>
                     </div>
                     <div class="pr_description">
-                        <div>{!! $project->description !!}</div>
+                        <div class="should_be_iransans">{!! $project->description !!}</div>
                     </div>
                 </div>
             @endif

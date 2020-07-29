@@ -13,9 +13,25 @@
             هنوز خریداری نشده است.
         @else
 
+            <center class="col-xs-12">
+                <select id="filter" style="margin: 10px;" onchange='filter(this.value, $("#gradeSelect").val())'>
+                    <option value="0">تمام خریداران</option>
+                    <option value="1">تایید شدگان</option>
+                    <option value="-1">تایید نشدگان</option>
+                </select>
+                <select id="gradeSelect" style="margin: 10px;" onchange="filter($('#filter').val(), this.value)">
+                    <option value="-1">همه پایه های تحصیلی</option>
+                    @foreach($grades as $grade)
+                        <option value="{{$grade->id}}">{{$grade->name}}</option>
+                    @endforeach
+                </select>
+            </center>
+
             @foreach($buyers as $buyer)
-                <center class="col-md-3" style="padding: 4px; border: 1px dotted black; border-radius: 7px;">
+                <center class="myBox col-md-3 {{($buyer["status"]) ? 'confirmed' : 'undone'}} grade_{{$buyer["grade"]}}" style="padding: 4px; height: 220px; margin-top: 10px; border: 1px dotted black; border-radius: 7px;">
                     <p>{{$buyer["name"]}}</p>
+                    <p>{{$buyer["gradeName"]}}</p>
+                    <p>{{$buyer["date"] . '     ساعت:     ' . $buyer["time"]}}</p>
                     <p>
                         <span>وضعیت انجام: </span><span>&nbsp;</span><span>{{($buyer["status"]) ? "انجام شده" : "انجام نشده"}}</span>
                     </p>
@@ -54,6 +70,21 @@
     <script>
 
         var serviceId, userId;
+
+        function filter(val1, val2) {
+
+            $(".myBox").addClass('hidden').each(function () {
+
+                if(
+                    (val1 == 0 || (val1 == 1 && $(this).hasClass('confirmed')) ||
+                        (val1 == -1 && $(this).hasClass('undone'))) &&
+                    (val2 == -1 || $(this).hasClass('grade_' + val2))
+                ) {
+                    $(this).removeClass('hidden');
+                }
+            });
+
+        }
 
         function done() {
 

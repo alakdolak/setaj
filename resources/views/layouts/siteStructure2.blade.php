@@ -30,6 +30,30 @@
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/chatbox.css")}}">
 
 
+        <style>
+            .should_be_iransans {
+                font-family: IRANSans !important;
+                font-weight: normal;
+            }
+            .should_be_iransans p {
+                font-family: IRANSans !important;
+                font-weight: normal;
+            }
+            .should_be_iransans div {
+                font-family: IRANSans !important;
+                font-weight: normal;
+            }
+            .should_be_iransans a {
+                font-family: IRANSans !important;
+                font-weight: normal;
+            }
+            .should_be_iransans span {
+                font-family: IRANSans !important;
+                font-weight: normal;
+            }
+        </style>
+
+
     @show
 </head>
 

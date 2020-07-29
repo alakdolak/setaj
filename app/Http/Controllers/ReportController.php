@@ -159,7 +159,7 @@ class ReportController extends Controller {
         foreach ($projects as $project) {
             $project->Bdate = getCustomDate($project->created_at);
             $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));;
-
+            $project->time = explode(' ', $project->created_at)[1];
             $allowAdd = true;
 
             foreach ($allTitles as $title) {
@@ -188,6 +188,7 @@ class ReportController extends Controller {
         foreach ($projects as $project) {
             $project->Bdate = getCustomDate($project->created_at);
             $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));;
+            $project->time = explode(' ', $project->created_at)[1];
 
             $allowAdd = true;
 
@@ -220,7 +221,7 @@ class ReportController extends Controller {
 
         foreach ($projects as $project) {
 
-            $objPHPExcel->getActiveSheet()->setCellValue('C' . ($i + 2), $project->Bdate);
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . ($i + 2), $project->Bdate . '     ساعت     ' . $project->time);
             $objPHPExcel->getActiveSheet()->setCellValue('B' . ($i + 2), $project->title);
             $objPHPExcel->getActiveSheet()->setCellValue('A' . ($i + 2), $project->name);
 
@@ -284,6 +285,7 @@ class ReportController extends Controller {
 
         foreach ($products as $product) {
             $product->date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
+            $product->time = explode(' ', $product->created_at)[1];
         }
 
         $objPHPExcel = new PHPExcel();
@@ -304,7 +306,9 @@ class ReportController extends Controller {
 
         foreach ($products as $product) {
 
-            $objPHPExcel->getActiveSheet()->setCellValue('D' . ($i + 2), $product->date);
+            $bDate = $product->date . '  -  ' . $product->time;
+
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . ($i + 2), $bDate);
             $objPHPExcel->getActiveSheet()->setCellValue('C' . ($i + 2), $product->name);
             $objPHPExcel->getActiveSheet()->setCellValue('B' . ($i + 2), $product->buyer);
             $objPHPExcel->getActiveSheet()->setCellValue('A' . ($i + 2), $product->seller);
@@ -422,20 +426,34 @@ class ReportController extends Controller {
 
     public function userServices($uId) {
 
-        $services = DB::select("select s.id, s.star as mainStars, s.title, sb.status, sb.star from " .
+        $services = DB::select("select s.id, s.star as mainStars, s.title, sb.status, sb.star, sb.created_at from " .
             "service_buyer sb, service s where s.id = sb.service_id and " .
             "sb.user_id = " . $uId
         );
+
+        foreach ($services as $service) {
+
+            $service->date = MiladyToShamsi('', explode('-', explode(' ', $service->created_at)[0]));
+            $service->time = explode(' ', $service->created_at)[1];
+
+        }
 
         return view("report.userServices", ["services" => $services, 'uId' => $uId]);
     }
 
     public function userProjects($uId) {
 
-        $projects = DB::select("select p.title, pb.status from " .
+        $projects = DB::select("select p.title, pb.status, pb.created_at from " .
             "project_buyers pb, project p where p.id = pb.project_id and " .
             "pb.user_id = " . $uId
         );
+
+        foreach ($projects as $project) {
+
+            $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));
+            $project->time = explode(' ', $project->created_at)[1];
+
+        }
 
         return view("report.userProjects", ["projects" => $projects]);
 
@@ -449,6 +467,8 @@ class ReportController extends Controller {
 
         $t = ServiceBuyer::whereServiceId($id)->get();
 
+        $grades = Grade::all();
+
         if($t == null)
             $buyers = null;
         else {
@@ -457,26 +477,44 @@ class ReportController extends Controller {
 
             foreach ($t as $itr) {
                 $u = User::whereId($itr->user_id);
-                $tmp[count($tmp)] =
-                    ["name" => $u->first_name . ' ' . $u->last_name,
+                foreach ($grades as $grade) {
+
+                    if($grade->id != $u->grade_id)
+                        continue;
+
+                    $tmp[count($tmp)] =
+                        ["name" => $u->first_name . ' ' . $u->last_name,
                         "id" => $u->id,
+                        'gradeName' => $grade->name,
+                        'grade' => $u->grade_id,
                         "status" => $itr->status,
+                        "date" => MiladyToShamsi('', explode('-', explode(' ', $itr->created_at)[0])),
+                        "time" => explode(' ', $itr->created_at)[1],
                         "star" => $itr->star];
+                }
             }
 
             $buyers = $tmp;
         }
 
-        return view('report.serviceBuyers', ['buyers' => $buyers, "star" => $service->star, 'id' => $id]);
+        return view('report.serviceBuyers', ['buyers' => $buyers, 'grades' => $grades,
+            "star" => $service->star, 'id' => $id]);
 
     }
 
     public function userBuys($uId) {
 
-        $products = DB::select("select p.name, concat(u.first_name, ' ', u.last_name) as seller, p.price from " .
+        $products = DB::select("select p.name, concat(u.first_name, ' ', u.last_name) as seller, p.price, t.created_at from " .
             "transactions t, product p, users u where p.user_id = u.id and " .
             " t.user_id = " . $uId . " and t.product_id = p.id"
         );
+
+        foreach ($products as $product) {
+
+            $product->date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
+            $product->time = explode(' ', $product->created_at)[1];
+
+        }
 
         return view("report.userProducts", ["products" => $products]);
 

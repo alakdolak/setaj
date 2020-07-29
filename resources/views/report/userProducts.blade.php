@@ -18,13 +18,14 @@
 
     <div class="col-sm-12" style="margin-top: 100px">
 
-        <div>
+        <center>
 
             <table style="margin-top: 20px">
                 <tr>
                     <td>نام پروژه</td>
                     <td>نام فروشنده</td>
                     <td>هزینه</td>
+                    <td>تاریخ</td>
                 </tr>
 
                 @foreach($products as $product)
@@ -32,10 +33,11 @@
                         <td>{{$product->name}}</td>
                         <td>{{$product->seller}}</td>
                         <td>{{$product->price}}</td>
+                        <td>{{$product->date . '    ساعت    ' . $product->time}}</td>
                     </tr>
                 @endforeach
             </table>
-        </div>
+        </center>
 
     </div>
 

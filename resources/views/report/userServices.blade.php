@@ -25,6 +25,7 @@
                     <td>نام خدمت</td>
                     <td>وضعیت انجام</td>
                     <td>تعداد ستاره تعلق یافته</td>
+                    <td>تاریخ</td>
                     <td>عملیات</td>
                 </tr>
 
@@ -40,6 +41,7 @@
                         @endif
 
                         <td>{{$service->star}}</td>
+                        <td>{{$service->date . '     ساعت     ' . $service->time}}</td>
 
                         <td>
                             @if(!$service->status)

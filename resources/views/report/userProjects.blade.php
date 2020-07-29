@@ -24,6 +24,7 @@
                 <tr>
                     <td>نام پروژه</td>
                     <td>وضعیت انجام</td>
+                    <td>وضعیت</td>
                 </tr>
 
                 @foreach($projects as $project)
@@ -36,6 +37,8 @@
                         @else
                             <td>انجام نشده</td>
                         @endif
+
+                        <td>{{$project->date . '    ساعت     ' . $project->time}}</td>
 
                     </tr>
                 @endforeach

@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceBuyer extends Model {
 
     public $table = 'service_buyer';
-    public $timestamps = false;
 
     public static function whereId($value) {
         return ServiceBuyer::find($value);

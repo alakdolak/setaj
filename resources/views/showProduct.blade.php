@@ -36,7 +36,7 @@
                         <div>توضیحات:</div>
                     </div>
                     <div class="pr_description">
-                        <div>{!! $product->description !!}</div>
+                        <div class="should_be_iransans">{!! $product->description !!}</div>
                     </div>
                 </div>
             @endif
