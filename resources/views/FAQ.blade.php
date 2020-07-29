@@ -10,7 +10,7 @@
 
     <div class="faqBody">
         <div class="faqContents row">
-            <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div style="float: right; margin-bottom: 10%" class="col-lg-4 col-sm-6 col-xs-12">
                 <?php $i = 0; ?>
                 @foreach($categories as $category)
                     @if($i % 3 == 0)
@@ -38,7 +38,7 @@
                 @endforeach
             </div>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div style="display: none" class="col-lg-4 col-sm-6 col-xs-12">
                 <?php $i = 0; ?>
                 @foreach($categories as $category)
                     @if($i % 3 == 1)
@@ -66,7 +66,7 @@
                 @endforeach
             </div>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
+            <div style="display: none" class="col-lg-4 col-sm-6 col-xs-12">
                     <?php $i = 0; ?>
                     @foreach($categories as $category)
                         @if($i % 3 == 2)
