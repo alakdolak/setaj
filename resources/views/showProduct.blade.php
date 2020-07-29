@@ -2,7 +2,7 @@
 
 @section('header')
     @parent
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.3")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
 
 @stop
 
@@ -40,9 +40,54 @@
                     </div>
                 </div>
             @endif
+
+            @if(count($product->trailer) > 0)
+{{--                <div class="pr_advertiseBox">--}}
+                <div class="pr_descriptRow">
+                    <div class="pr_iconesBox" style="margin-bottom: 7px">
+                        <div class="pr_icons movieIcon"></div>
+                        <div>تبلیغات:</div>
+                    </div>
+{{--                    <div class="pr_advertise pr_advertise_product col-xs-12">--}}
+                    <div class="pr_advertise col-xs-12" style="margin-right: 0 !important;">
+
+                        @foreach($product->trailer as $pic)
+                            @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
+                                <div class="eachAdvType col-xs-12">
+                                    <img style="width: 100%; float: right" src="{{$pic["path"]}}">
+                                </div>
+                            @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v")
+                                <div class="eachAdvType col-xs-12">
+                                    <video style="width: 100%" controls>
+                                        <source src="{{$pic["path"]}}" type="video/mp4">
+                                        مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
+                                    </video>
+                                </div>
+                            @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg" || $pic["type"] == "m4a" || $pic["type"] == "aac")
+                                <div class="eachAdvType col-xs-12">
+                                    <audio style="width: 100%" controls>
+                                        <source src="{{$pic["path"]}}" type="audio/mpeg">
+                                        مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
+                                    </audio>
+                                </div>
+                            @elseif($pic["type"] == "pdf")
+                                <div class="eachAdvType col-xs-12">
+                                    <embed style="width: 100% !important;" src="{{$pic["path"]}}" width="800px" height="800px" />
+                                </div>
+                            @else
+                                <div class="eachAdvType col-xs-12">
+                                    <a href="{{$pic["path"]}}" download>دانلود فایل</a>
+                                </div>
+                            @endif
+                        @endforeach
+
+                    </div>
+                </div>
+            @endif
+
         </div>
         <div class="pr_picsBox col-sm-5 col-xs-12">
-            <div class="pr_pics">
+            <div class="pr_pics pr_productPics">
                 <div class="pr_otherPics">
                     @foreach($product->pics as $pic)
                         <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>
@@ -76,29 +121,29 @@
 
                     @foreach($product->attach as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
-                            <div class="col-xs-12">
+                            <div class="eachAdvType col-xs-12">
                                 <img style="width: 100%;" src="{{$pic["path"]}}">
                             </div>
                         @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v")
-                            <div class="col-xs-12" style="padding: 15px !important;">
+                            <div class="eachAdvType col-xs-12">
                                 <video style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="video/mp4">
                                     مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </video>
                             </div>
                         @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg" || $pic["type"] == "m4a" || $pic["type"] == "aac")
-                            <div class="col-xs-12">
+                            <div class="eachAdvType col-xs-12">
                                 <audio style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
                                     مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </audio>
                             </div>
                         @elseif($pic["type"] == "pdf")
-                            <div class="col-xs-12">
-                                <embed style="width: 100%" src="{{$pic["path"]}}" height="800px" />
+                            <div class="eachAdvType col-xs-12">
+                                <embed style="width: 100% !important;" src="{{$pic["path"]}}" width="800px" height="800px" />
                             </div>
                         @else
-                            <div class="col-xs-12">
+                            <div class="eachAdvType col-xs-12">
                                 <a href="{{$pic["path"]}}" download>دانلود فایل</a>
                             </div>
                         @endif
@@ -110,49 +155,49 @@
         @endif
 
 
-        @if(count($product->trailer) > 0)
+{{--        @if(count($product->trailer) > 0)--}}
 
-            <div class="pr_advertiseBox  col-xs-12">
-                <div class="pr_iconesBox" style="margin-bottom: 15px">
-                    <div class="pr_icons coinIcon"></div>
-                    <div>تبلیغات:</div>
-                </div>
-                <div class="pr_advertise col-xs-12">
+{{--            <div class="pr_advertiseBox  col-xs-12">--}}
+{{--                <div class="pr_iconesBox" style="margin-bottom: 15px">--}}
+{{--                    <div class="pr_icons movieIcon"></div>--}}
+{{--                    <div>تبلیغات:</div>--}}
+{{--                </div>--}}
+{{--                <div class="pr_advertise col-xs-12">--}}
 
-                    @foreach($product->trailer as $pic)
-                        @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
-                            <div class="col-xs-12">
-                                <img style="width: 100%; float: right" src="{{$pic["path"]}}">
-                            </div>
-                        @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v")
-                            <div class="col-xs-12" style="padding: 15px">
-                                <video style="width: 100%" controls>
-                                    <source src="{{$pic["path"]}}" type="video/mp4">
-                                    مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
-                                </video>
-                            </div>
-                        @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg" || $pic["type"] == "m4a" || $pic["type"] == "aac")
-                            <div class="col-xs-12">
-                                <audio style="width: 100%" controls>
-                                    <source src="{{$pic["path"]}}" type="audio/mpeg">
-                                    مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
-                                </audio>
-                            </div>
-                        @elseif($pic["type"] == "pdf")
-                            <div class="col-xs-12">
-                                <embed src="{{$pic["path"]}}" width="800px" height="800px" />
-                            </div>
-                        @else
-                            <div class="col-xs-12">
-                                <a href="{{$pic["path"]}}" download>دانلود فایل</a>
-                            </div>
-                        @endif
-                    @endforeach
+{{--                    @foreach($product->trailer as $pic)--}}
+{{--                        @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")--}}
+{{--                            <div class="col-xs-12">--}}
+{{--                                <img style="width: 100%; float: right" src="{{$pic["path"]}}">--}}
+{{--                            </div>--}}
+{{--                        @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v")--}}
+{{--                            <div class="col-xs-12" style="padding: 15px">--}}
+{{--                                <video style="width: 100%" controls>--}}
+{{--                                    <source src="{{$pic["path"]}}" type="video/mp4">--}}
+{{--                                    مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.--}}
+{{--                                </video>--}}
+{{--                            </div>--}}
+{{--                        @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg" || $pic["type"] == "m4a" || $pic["type"] == "aac")--}}
+{{--                            <div class="col-xs-12">--}}
+{{--                                <audio style="width: 100%" controls>--}}
+{{--                                    <source src="{{$pic["path"]}}" type="audio/mpeg">--}}
+{{--                                    مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.--}}
+{{--                                </audio>--}}
+{{--                            </div>--}}
+{{--                        @elseif($pic["type"] == "pdf")--}}
+{{--                            <div class="col-xs-12">--}}
+{{--                                <embed src="{{$pic["path"]}}" width="800px" height="800px" />--}}
+{{--                            </div>--}}
+{{--                        @else--}}
+{{--                            <div class="col-xs-12">--}}
+{{--                                <a href="{{$pic["path"]}}" download>دانلود فایل</a>--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
+{{--                    @endforeach--}}
 
-                </div>
-            </div>
+{{--                </div>--}}
+{{--            </div>--}}
 
-        @endif
+{{--        @endif--}}
     </div>
 
     <div id="confirmationModal" class="modal fade" role="dialog">

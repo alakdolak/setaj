@@ -85,7 +85,7 @@
     align-items: center;
 }
 .pr_description {
-    margin-right: 40px;
+    margin: 10px 40px 0 0;
     text-align: justify;
 }
 .pr_title{
@@ -126,7 +126,13 @@
     text-align: justify;
     border: 2px solid #a4a4a4;
     border-radius: 7px;
-    padding: 5px 15px;
+    padding: 0 !important;
+}
+.eachAdvType {
+    padding: 0 15px 15px !important;
+}
+.eachAdvType:first-child {
+    padding: 15px !important;
 }
 
 
@@ -148,10 +154,20 @@
     .pr_pics {
         margin: 5% 0 0;
     }
+    .pr_productPics {
+        display: none;
+    }
     .pr_picsBox {
-        padding: 0 15px;
+        padding: 0;
     }
     .pr_descript {
-        padding: 0 15px;
+        padding: 0;
+    }
+}
+
+
+@media only screen and (max-width:480px) {
+    .pr_description {
+        margin: 10px 10px 0 0;
     }
 }

@@ -2,7 +2,12 @@
 
 @section('header')
     @parent
+<<<<<<< HEAD
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
+
+=======
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.3")}}">
+>>>>>>> 2c7b44147727f312575d4fb640837d21d8a2f627
 @stop
 
 @section("content")
@@ -47,11 +52,11 @@
                     <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif
             </div>
-            @if($canBuy)
+{{--            @if($canBuy)--}}
                 <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب پروژه و دریافت آموزش</div>
-            @else
-                <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>
-            @endif
+{{--            @else--}}
+{{--                <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>--}}
+{{--            @endif--}}
         </div>
 
         @if(count($project->attach) > 0)
@@ -65,29 +70,29 @@
 
                     @foreach($project->attach as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
-                            <div class="col-xs-12">
+                            <div class="eachAdvType col-xs-12">
                                 <img style="width: 100%;" src="{{$pic["path"]}}">
                             </div>
                         @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v")
-                            <div class="col-xs-12" style="padding: 15px !important;">
+                            <div class="eachAdvType col-xs-12">
                                 <video style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="video/mp4">
                                     مرورگر شما از پخش ویدیو پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </video>
                             </div>
                         @elseif($pic["type"] == "mp3" || $pic["type"] == "ogg" || $pic["type"] == "m4a" || $pic["type"] == "aac")
-                            <div class="col-xs-12">
+                            <div class="eachAdvType col-xs-12">
                                 <audio style="width: 100%;" controls>
                                     <source src="{{$pic["path"]}}" type="audio/mpeg">
                                     مرورگر شما از پخش موزیک پشتیبانی نمی کند. لطفا مرورگر خود را تغییر دهید.
                                 </audio>
                             </div>
                         @elseif($pic["type"] == "pdf")
-                            <div class="col-xs-12">
-                                <embed style="width: 100%" src="{{$pic["path"]}}" height="800px" />
+                            <div class="eachAdvType col-xs-12">
+                                <embed style="width: 100% !important;" src="{{$pic["path"]}}" width="800px" height="800px" />
                             </div>
                         @else
-                            <div class="col-xs-12">
+                            <div class="eachAdvType col-xs-12">
                                 <a href="{{$pic["path"]}}" download>دانلود فایل</a>
                             </div>
                         @endif
@@ -102,9 +107,7 @@
 
     <div id="confirmationModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
+            <div id="confirmationModalDialog" class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">انتخاب پروژه</h4>
@@ -112,13 +115,15 @@
                 <div class="modal-body">
                     <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
                 </div>
+                <div id="ra" class="modal-body"></div>
                 <div class="modal-footer">
-                    <button onclick="buy()" type="button" class="btn btn-success" data-dismiss="modal">بله</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>
+                    <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
                 </div>
-            </div>
 
+            </div>
         </div>
+
     </div>
 
 
@@ -167,25 +172,28 @@
                 },
                 success: function (res) {
 
-                    if(res === "nok1") {
-                        alert("شما اجازه خرید این محصول را ندارید.");
-                    }
-
-                    else if(res === "nok2") {
-                        alert("شما قبلا این محصول را خریداری کرده اید.");
-                    }
-
-                    else if(res === "nok3") {
-                        alert("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
-                    }
-
-                    else if(res === "nok5") {
-                        alert("عملیات مورد نظر غیرمجاز است.");
-                    }
-
-                    else if(res === "ok") {
-                        $("#resultModalBtn").click();
-                    }
+                    $("#ra").empty().append("<p>sallam</p>");
+                    $("#confirmationModalDialog").css("background-color", "red");
+                    // if(res === "nok1") {
+                    //     alert("شما اجازه خرید این محصول را ندارید.");
+                    // }
+                    //
+                    // else if(res === "nok2") {
+                    //     alert("شما قبلا این محصول را خریداری کرده اید.");
+                    // }
+                    //
+                    // else if(res === "nok3") {
+                    //     alert("متاسفانه سکه کافی برای خریداری این پروژه ندارید.");
+                    // }
+                    //
+                    // else if(res === "nok5") {
+                    //     alert("عملیات مورد نظر غیرمجاز است.");
+                    // }
+                    //
+                    // else if(res === "ok") {
+                    //     $("#closeConfirmationModalBtn").click();
+                    //     $("#resultModalBtn").click();
+                    // }
 
                 }
             });

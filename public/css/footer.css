@@ -151,6 +151,9 @@
 
 
 @media only screen and (max-width:480px) {
+    .footer {
+        margin-top: 15%;
+    }
     .phoneDescript {
         width: 350px;
         height: 20px;
