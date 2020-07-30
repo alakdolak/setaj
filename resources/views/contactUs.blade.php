@@ -46,11 +46,11 @@
                     </div>
                     <div class="cU_textBox">
                         <div class="cU_textTitle">مدرسه در تلگرام</div>
-                        <a class="cu_link" href="">seraj school</a>
-                        <a class="cu_link">seraj +</a>
-                        <a class="cu_link">seraj -</a>
+                        <a class="cu_link" href="https://T.me/seraj_school">لینک ورود به کانال</a>
+{{--                        <a class="cu_link">seraj +</a>--}}
+{{--                        <a class="cu_link">seraj -</a>--}}
                     </div>
-                </div>
+                </div>T.me/seraj_school
             </div>
             <div class="col-sm-6 col-xs-12">
                 <div class="cU_descript">
@@ -59,9 +59,9 @@
                     </div>
                     <div class="cU_textBox">
                         <div class="cU_textTitle">مدرسه در بله</div>
-                        <a class="cu_link">seraj school</a>
-                        <a class="cu_link">seraj +</a>
-                        <a class="cu_link">seraj -</a>
+                        <a class="cu_link" href="https://ble.ir/Seraj_school">لینک ورود به کانال</a>
+{{--                        <a class="cu_link">seraj +</a>--}}
+{{--                        <a class="cu_link">seraj -</a>--}}
                     </div>
                 </div>
             </div>
