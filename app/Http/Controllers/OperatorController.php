@@ -1672,4 +1672,25 @@ class OperatorController extends Controller {
 
         echo "nok";
     }
+
+
+    public function deleteJob() {
+
+        if(isset($_POST["sId"]) && isset($_POST["uId"])) {
+
+            $sId = makeValidInput($_POST["sId"]);
+            $uId = makeValidInput($_POST["uId"]);
+
+            try {
+                ServiceBuyer::whereServiceId($sId)->whereUserId($uId)->delete();
+                echo "ok";
+                return;
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+        }
+
+        echo "nok";
+    }
 }

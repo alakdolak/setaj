@@ -41,6 +41,7 @@
                         </p>
                     @else
                         <button onclick="confirmJob('{{$star}}', '{{$buyer["id"]}}', '{{$id}}')" class="btn btn-success">تاییده انجام کار</button>
+                        <button onclick="deleteJob('{{$buyer["id"]}}', '{{$id}}')" class="btn btn-danger">بازپس گیری خدمت</button>
                     @endif
                 </center>
             @endforeach
@@ -122,6 +123,28 @@
             $("#starOptions").empty().append(newElem);
 
             document.getElementById('myConfirmModal').style.display = 'block';
+        }
+
+
+        function deleteJob(uId, sId) {
+
+            $.ajax({
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                url: '{{route('deleteJob')}}',
+                data: {
+                    sId: sId,
+                    uId: uId
+                },
+                success: function (res) {
+                    if(res === "ok") {
+                        alert("عملیات مورد نظر با موفقیت انجام پذیرفت.");
+                    }
+                }
+            });
+
         }
 
     </script>

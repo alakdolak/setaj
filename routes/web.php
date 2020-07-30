@@ -292,4 +292,6 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
     Route::get("reminderProducts/{gradeId?}", ["as" => "reminderProducts", "uses" => "ReportController@reminderProducts"]);
 
     Route::post('deleteTransaction', ['as' => 'deleteTransaction', 'uses' => 'OperatorController@deleteTransaction']);
+
+    Route::post('deleteJob', ['as' => 'deleteJob', 'uses' => 'OperatorController@deleteJob']);
 });
