@@ -317,6 +317,12 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item  ">
+                                <a href="{{route('reminderProducts')}}" class="nav-link">
+                                    <span class="title">کالا هاای خریداری نشده</span>
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
 

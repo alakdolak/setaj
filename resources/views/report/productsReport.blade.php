@@ -86,6 +86,7 @@
                     <td>خریدار</td>
                     <td>محصول</td>
                     <td>تاریخ انجام معامله</td>
+                    <td>عملیات</td>
                 </tr>
 
                 <?php $i = 0; ?>
@@ -96,6 +97,7 @@
                         <td>{{$product->buyer}}</td>
                         <td>{{$product->name}}</td>
                         <td>{{$product->date . '     ساعت:     ' . $product->time}}</td>
+                        <td><button onclick="deleteTransaction('{{$product->tId}}')" class="btn btn-danger">بازپس گیری محصول</button></td>
                     </tr>
                     <?php $i++; ?>
                 @endforeach
@@ -214,6 +216,25 @@
             }
 
             $("#totalCount").empty().append(x);
+        }
+
+        function deleteTransaction(tId) {
+            $.ajax({
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                url: '{{route('deleteTransaction')}}',
+                data: {
+                    tId: tId
+                },
+                success: function (res) {
+
+                    if (res === "ok") {
+                        alert("عملیات مورد نظر با موفقیت انجام شد");
+                    }
+                }
+            });
         }
 
     </script>

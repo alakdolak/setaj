@@ -261,7 +261,7 @@ class ReportController extends Controller {
             return view('report.usersReport', ['grades' => Grade::all(),
                 "path" => route("productsReport")]);
 
-        $products = DB::select("select concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
+        $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
             "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
             "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
             "t.user_id = u1.id and u1.grade_id = " . $gradeId
@@ -275,9 +275,24 @@ class ReportController extends Controller {
         return view("report.productsReport", ["products" => $products, 'gradeId' => $gradeId]);
     }
 
+    public function reminderProducts($gradeId = -1) {
+
+        if($gradeId == -1)
+            return view('report.usersReport', ['grades' => Grade::all(),
+                "path" => route("reminderProducts")]);
+
+        $products = DB::select("select p.id, concat(u2.first_name, ' ', u2.last_name) as seller, p.name, " .
+            "p.star, p.price from users u2, product p, project_buyers pb where " .
+            "pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
+            "u2.grade_id = " . $gradeId . ' and (select count(*) from transactions where product_id = p.id) = 0'
+        );
+
+        return view("report.reminderProductsReport", ["products" => $products, 'gradeId' => $gradeId]);
+    }
+
     public function productsReportExcel($gradeId) {
 
-        $products = DB::select("select concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
+        $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
             "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
             "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
             "t.user_id = u1.id and u1.grade_id = " . $gradeId

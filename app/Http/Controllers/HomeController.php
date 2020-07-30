@@ -960,7 +960,7 @@ class HomeController extends Controller {
                 return;
             }
 
-            if(Transaction::whereUserId($user->id)->whereProductId($product->id)->count() > 0) {
+            if(Transaction::whereProductId($product->id)->count() > 0) {
                 echo "nok2";
                 return;
             }
