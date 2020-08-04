@@ -243,6 +243,9 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::get("serviceBuyers/{id}", ['as' => 'serviceBuyers', 'uses' => 'ReportController@serviceBuyers']);
 
+    Route::get("serviceBuyersExcel/{id}", ['as' => 'serviceBuyersExcel', 'uses' => 'ReportController@serviceBuyersExcel']);
+
+
     Route::get("operators", ["as" => "operators", 'uses' => "ReportController@operators"]);
 
 

@@ -264,15 +264,20 @@ class ReportController extends Controller {
         $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
             "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
             "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
-            "t.user_id = u1.id and u1.grade_id = " . $gradeId
+            "t.user_id = u1.id and u1.grade_id = " . $gradeId . " order by t.id desc"
         );
+
+        $distinctProducts = [];
 
         foreach ($products as $product) {
             $product->date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
             $product->time = explode(' ', $product->created_at)[1];
+            if(!in_array($product->name, $distinctProducts))
+                $distinctProducts[count($distinctProducts)] = $product->name;
         }
 
-        return view("report.productsReport", ["products" => $products, 'gradeId' => $gradeId]);
+        return view("report.productsReport", ["products" => $products,
+            'gradeId' => $gradeId, 'distinctProducts' => $distinctProducts]);
     }
 
     public function reminderProducts($gradeId = -1) {
@@ -295,12 +300,17 @@ class ReportController extends Controller {
         $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
             "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
             "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
-            "t.user_id = u1.id and u1.grade_id = " . $gradeId
+            "t.user_id = u1.id and u1.grade_id = " . $gradeId . " order by t.id desc"
         );
+
+        $distinctProducts = [];
 
         foreach ($products as $product) {
             $product->date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
             $product->time = explode(' ', $product->created_at)[1];
+
+            if(!in_array($product->name, $distinctProducts))
+                $distinctProducts[count($distinctProducts)] = $product->name;
         }
 
         $objPHPExcel = new PHPExcel();
@@ -351,7 +361,10 @@ class ReportController extends Controller {
             unlink($fileName);
         }
 
-        return view("report.productsReport", ["products" => $products]);
+        return view("report.productsReport", [
+            "products" => $products,'distinctProducts' => $distinctProducts,
+            'gradeId' => $gradeId
+        ]);
     }
 
 
@@ -515,6 +528,93 @@ class ReportController extends Controller {
         return view('report.serviceBuyers', ['buyers' => $buyers, 'grades' => $grades,
             "star" => $service->star, 'id' => $id]);
 
+    }
+
+    public function serviceBuyersExcel($id) {
+
+        $service = Service::whereId($id);
+        if($service == null)
+            return Redirect::route("admin");
+
+        $t = ServiceBuyer::whereServiceId($id)->get();
+
+        $grades = Grade::all();
+
+        if($t == null)
+            $buyers = null;
+        else {
+
+            $tmp = [];
+
+            foreach ($t as $itr) {
+                $u = User::whereId($itr->user_id);
+                foreach ($grades as $grade) {
+
+                    if($grade->id != $u->grade_id)
+                        continue;
+
+                    $tmp[count($tmp)] =
+                        ["name" => $u->first_name . ' ' . $u->last_name,
+                            "id" => $u->id,
+                            'gradeName' => $grade->name,
+                            'grade' => $u->grade_id,
+                            "status" => $itr->status,
+                            "date" => MiladyToShamsi('', explode('-', explode(' ', $itr->created_at)[0])),
+                            "time" => explode(' ', $itr->created_at)[1],
+                            "star" => $itr->star];
+                }
+            }
+
+            $buyers = $tmp;
+        }
+
+
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->getProperties()->setCreator("Karestoon");
+        $objPHPExcel->getProperties()->setLastModifiedBy("Karestoon");
+        $objPHPExcel->getProperties()->setTitle("Office 2007 XLSX Test Document");
+        $objPHPExcel->getProperties()->setSubject("Office 2007 XLSX Test Document");
+        $objPHPExcel->getProperties()->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.");
+
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objPHPExcel->getActiveSheet()->setCellValue('E1', 'تعداد ستاره های داده شده');
+        $objPHPExcel->getActiveSheet()->setCellValue('D1', 'وضعیت انجام');
+        $objPHPExcel->getActiveSheet()->setCellValue('C1', 'تاریخ');
+        $objPHPExcel->getActiveSheet()->setCellValue('B1', 'پایه تحصیلی');
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', 'نام کاربر');
+
+        $i = 0;
+
+        foreach ($buyers as $user) {
+            $objPHPExcel->getActiveSheet()->setCellValue('E' . ($i + 2), ($user["status"]) ? $user["star"] : 0);
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . ($i + 2), ($user["status"]) ? "انجام شده" : "انجام نشده");
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . ($i + 2), $user["date"] . ' - ' . $user["time"]);
+            $objPHPExcel->getActiveSheet()->setCellValue('B' . ($i + 2), $user["gradeName"]);
+            $objPHPExcel->getActiveSheet()->setCellValue('A' . ($i + 2), $user["name"]);
+            $i++;
+        }
+
+        $fileName = __DIR__ . "/../../../public/tmp/karestoon.xlsx";
+
+        $objPHPExcel->getActiveSheet()->setTitle('گزارش گیری آزمون ها');
+
+        $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save($fileName);
+
+
+        if (file_exists($fileName)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($fileName).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($fileName));
+            readfile($fileName);
+            unlink($fileName);
+        }
+        exit();
     }
 
     public function userBuys($uId) {

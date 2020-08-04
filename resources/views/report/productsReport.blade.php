@@ -77,6 +77,13 @@
 
         <center>
 
+            <select id="distinctProducts" onchange="doChange()">
+                <option value="-1">همه</option>
+                @foreach($distinctProducts as $distinctProduct)
+                    <option value="{{$distinctProduct}}">{{$distinctProduct}}</option>
+                @endforeach
+            </select>
+
             <p><span>تعداد کل: </span><span>&nbsp;</span><span id="totalCount">{{count($products)}}</span></p>
 
             <table style="margin-top: 20px">
@@ -91,7 +98,7 @@
 
                 <?php $i = 0; ?>
                 @foreach($products as $product)
-                    <tr id="{{$i}}">
+                    <tr id="{{$i}}" class="{{$product->name}}">
                         <td>{{($i + 1)}}</td>
                         <td>{{$product->seller}}</td>
                         <td>{{$product->buyer}}</td>
@@ -204,11 +211,17 @@
         function doChange() {
 
             var x = 0;
+            var productId = $("#distinctProducts").val();
 
             for (i = 0; i < exams.length; i++) {
                 if (examsStartValue[i] + examsEndValue[i] + stateValue[i] == 3) {
-                    document.getElementById(i).style.display = '';
-                    x++;
+                    if(productId == -1 || $("#" + i).hasClass(productId)) {
+                        document.getElementById(i).style.display = '';
+                        x++;
+                    }
+                    else {
+                        document.getElementById(i).style.display = 'none';
+                    }
                 }
                 else {
                     document.getElementById(i).style.display = 'none';
