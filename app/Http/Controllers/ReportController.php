@@ -634,4 +634,11 @@ class ReportController extends Controller {
         return view("report.userProducts", ["products" => $products]);
 
     }
+
+    public function serviceReport() {
+
+        $services = Service::all();
+        return view('report.serviceReport', ['services' => $services]);
+
+    }
 }

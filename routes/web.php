@@ -204,8 +204,6 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
     Route::post('doEditService/{id}', ['as' => 'doEditService', 'uses' => 'OperatorController@doEditService']);
 
 
-    Route::post('doneService', ['as' => 'doneService', 'uses' => 'OperatorController@doneService']);
-
 
     Route::get('projects', ['as' => 'projects', 'uses' => 'OperatorController@projects']);
 
@@ -239,11 +237,6 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::post('deleteGradeService', ['as' => 'deleteGradeService', 'uses' => 'OperatorController@deleteGradeService']);
 
-
-
-    Route::get("serviceBuyers/{id}", ['as' => 'serviceBuyers', 'uses' => 'ReportController@serviceBuyers']);
-
-    Route::get("serviceBuyersExcel/{id}", ['as' => 'serviceBuyersExcel', 'uses' => 'ReportController@serviceBuyersExcel']);
 
 
     Route::get("operators", ["as" => "operators", 'uses' => "ReportController@operators"]);
@@ -290,6 +283,18 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
     Route::get("productsReport/{gradeId?}", ["as" => "productsReport", "uses" => "ReportController@productsReport"]);
 
     Route::get("productsReportExcel/{gradeId}", ["as" => "productsReportExcel", "uses" => "ReportController@productsReportExcel"]);
+
+
+
+    Route::get("serviceBuyers/{id}", ['as' => 'serviceBuyers', 'uses' => 'ReportController@serviceBuyers']);
+
+    Route::get("serviceBuyersExcel/{id}", ['as' => 'serviceBuyersExcel', 'uses' => 'ReportController@serviceBuyersExcel']);
+
+    Route::get('serviceReport', ['as' => 'serviceReport', 'uses' => 'ReportController@serviceReport']);
+
+
+
+    Route::post('doneService', ['as' => 'doneService', 'uses' => 'OperatorController@doneService']);
 
 
     Route::get("reminderProducts/{gradeId?}", ["as" => "reminderProducts", "uses" => "ReportController@reminderProducts"]);
