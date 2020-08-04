@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/general.css?v=2.2")}}">
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/myFont.css?v=1.3")}}">
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/home.css?v=2.2")}}">
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/login.css?v=1.3")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/login.css?v=1.4")}}">
 
 </head>
 <body>
