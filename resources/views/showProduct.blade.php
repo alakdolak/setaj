@@ -104,11 +104,11 @@
             @if($product->user_id == \Illuminate\Support\Facades\Auth::user()->id)
                 <div class="shopBtn doneBtn">شما قادر به خرید محصول خود نیستید</div>
             @else
-                @if($canBuy)
+{{--                @if($canBuy)--}}
                     <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
-                @else
-                    <div class="shopBtn doneBtn">شما امکان خرید ندارید</div>
-                @endif
+{{--                @else--}}
+{{--                    <div class="shopBtn doneBtn">شما امکان خرید ندارید</div>--}}
+{{--                @endif--}}
             @endif
         </div>
 
@@ -162,7 +162,7 @@
         <div class="modal-dialog">
             <div id="confirmationModalDialog" class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button id="closeConfirmationModalBtn" type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">آیا از خرید این محصول مطمئنید؟!</h4>
                 </div>
                 <div class="modal-body">
@@ -171,7 +171,7 @@
                     <p>تعداد خریدهای باقی مانده:{{$myReminder}}</p>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="buy()" type="button" class="btn btn-success" data-dismiss="modal">بله</button>
+                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
                     <div class="alert alert-warning hidden" role="alert">شما اجازه خرید این محصول را ندارید.</div>
                 </div>
@@ -240,7 +240,7 @@
                             $("#alertText").empty().append("<div>شما اجازه خرید این محصول را ندارید</div>");
                         }
                         else if(res === "nok2") {
-                            $("#alertText").empty().append("<div>شما قبلا این محصول را خریداری کرده اید</div>");
+                            $("#alertText").empty().append("<div>این محصول قبلا به فروش رسیده است و شما اجازه خرید مجدد آن را ندارد.</div>");
                         }
                         else if(res === "nok3") {
                             $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه ندارید</div>");
