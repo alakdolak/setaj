@@ -17,11 +17,14 @@
     <div>
         <div class="swiper-container swiper-container-autoheight">
             <div class="swiper-wrapper">
+{{--                <div class="swiper-slide advertiseBanner advertiseBanner5"></div>--}}
                 <div class="swiper-slide advertiseBanner advertiseBanner0"></div>
-                <div class="swiper-slide advertiseBanner advertiseBanner1"></div>
+                <div class="swiper-slide advertiseBanner advertiseBanner7"></div>
+{{--                <div class="swiper-slide advertiseBanner advertiseBanner1"></div>--}}
                 <div class="swiper-slide advertiseBanner advertiseBanner2"></div>
-                <div class="swiper-slide advertiseBanner advertiseBanner3"></div>
-                <div class="swiper-slide advertiseBanner advertiseBanner4"></div>
+{{--                <div class="swiper-slide advertiseBanner advertiseBanner3"></div>--}}
+{{--                <div class="swiper-slide advertiseBanner advertiseBanner4"></div>--}}
+                <div class="swiper-slide advertiseBanner advertiseBanner6"></div>
             </div>
 
             <!-- pagination -->

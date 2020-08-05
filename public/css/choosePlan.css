@@ -20,6 +20,15 @@
 .advertiseBanner4 {
     background-image: url(../images/advertise4.jpg);
 }
+.advertiseBanner5 {
+    background-image: url(../images/advertise5.jpg);
+}
+.advertiseBanner6 {
+    background-image: url(../images/advertise6.jpg);
+}
+.advertiseBanner7 {
+    background-image: url(../images/advertise7.jpg);
+}
 
 .choosePlane {
     margin: 0 !important;
