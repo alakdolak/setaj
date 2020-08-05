@@ -3,6 +3,14 @@
 
 @section('header')
     @parent
+    <style>
+
+        td {
+            padding: 7px;
+            border: 1px solid;
+        }
+
+    </style>
 @stop
 
 @section('content')
@@ -27,23 +35,62 @@
                 </select>
             </center>
 
-            @foreach($buyers as $buyer)
-                <center class="myBox col-md-3 {{($buyer["status"]) ? 'confirmed' : 'undone'}} grade_{{$buyer["grade"]}}" style="padding: 4px; height: 220px; margin-top: 10px; border: 1px dotted black; border-radius: 7px;">
-                    <p>{{$buyer["name"]}}</p>
-                    <p>{{$buyer["gradeName"]}}</p>
-                    <p>{{$buyer["date"] . '     ساعت:     ' . $buyer["time"]}}</p>
-                    <p>
-                        <span>وضعیت انجام: </span><span>&nbsp;</span><span>{{($buyer["status"]) ? "انجام شده" : "انجام نشده"}}</span>
-                    </p>
-                    @if($buyer["status"])
-                        <p>
-                            <span>تعداد ستاره های داده شده: </span><span>&nbsp;</span><span>{{$buyer["star"]}}</span>
-                        </p>
-                    @else
-                        <button onclick="confirmJob('{{$star}}', '{{$buyer["id"]}}', '{{$id}}')" class="btn btn-success">تاییده انجام کار</button>
-                    @endif
-                </center>
-            @endforeach
+        <center class="col-xs-12">
+
+            <p>
+                <span id="found">{{count($buyers)}}</span>
+                <span>&nbsp;</span>
+                <span>مورد یافته شده</span>
+            </p>
+
+
+            <a class="btn btn-default" style="margin: 5px;" href="{{route('serviceBuyersExcel', ['id' => $id])}}" download>دانلود فایل اکسل</a>
+
+            <table>
+                <tr>
+                    <td>ردیف</td>
+                    <td>نام</td>
+                    <td>پایه تحصیلی</td>
+                    <td>تاریخ</td>
+                    <td>وضعیت انجام</td>
+                    <td>تعداد ستاره های داده شده</td>
+                    <td>عملیات</td>
+                </tr>
+
+                <?php $i = 1 ?>
+                @foreach($buyers as $buyer)
+
+                    <tr class="myBox {{($buyer["status"]) ? 'confirmed' : 'undone'}} grade_{{$buyer["grade"]}}">
+                        <td>{{$i}}</td>
+                        <td>{{$buyer["name"]}}</td>
+                        <td>{{$buyer["gradeName"]}}</td>
+                        <td>{{$buyer["date"] . '     ساعت:     ' . $buyer["time"]}}</td>
+                        <td>
+                            <span>{{($buyer["status"]) ? "انجام شده" : "انجام نشده"}}</span>
+                        </td>
+
+                        <td>
+                            @if($buyer["status"])
+                                <span>{{$buyer["star"]}}</span>
+                            @else
+                                <span>0</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if(!$buyer["status"])
+                                <button onclick="confirmJob('{{$star}}', '{{$buyer["id"]}}', '{{$id}}')" class="btn btn-success">تاییده انجام کار</button>
+                                <button onclick="deleteJob('{{$buyer["id"]}}', '{{$id}}')" class="btn btn-danger">بازپس گیری خدمت</button>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <?php $i++ ?>
+
+                @endforeach
+
+            </table>
+        </center>
+
         @endif
     </div>
 
@@ -73,6 +120,8 @@
 
         function filter(val1, val2) {
 
+            var counter = 0;
+
             $(".myBox").addClass('hidden').each(function () {
 
                 if(
@@ -81,8 +130,11 @@
                     (val2 == -1 || $(this).hasClass('grade_' + val2))
                 ) {
                     $(this).removeClass('hidden');
+                    counter++;
                 }
             });
+
+            $("#found").empty().append(counter);
 
         }
 
@@ -122,6 +174,28 @@
             $("#starOptions").empty().append(newElem);
 
             document.getElementById('myConfirmModal').style.display = 'block';
+        }
+
+
+        function deleteJob(uId, sId) {
+
+            $.ajax({
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                url: '{{route('deleteJob')}}',
+                data: {
+                    sId: sId,
+                    uId: uId
+                },
+                success: function (res) {
+                    if(res === "ok") {
+                        alert("عملیات مورد نظر با موفقیت انجام پذیرفت.");
+                    }
+                }
+            });
+
         }
 
     </script>

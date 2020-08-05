@@ -1638,4 +1638,59 @@ class OperatorController extends Controller {
 
         echo "nok3";
     }
+
+    public function deleteTransaction() {
+
+        if(isset($_POST["tId"])) {
+
+            $tId = makeValidInput($_POST["tId"]);
+
+            $t = Transaction::whereId($tId);
+            if($t == null)
+                return;
+
+            $u = User::whereId($t->user_id);
+            if($u == null)
+                return;
+
+            $p = Product::whereId($t->product_id);
+            if($p == null)
+                return;
+
+            try {
+                $u->money += $p->price;
+                $u->stars -= $p->star;
+                $u->save();
+                $t->delete();
+                echo "ok";
+                return;
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+        }
+
+        echo "nok";
+    }
+
+
+    public function deleteJob() {
+
+        if(isset($_POST["sId"]) && isset($_POST["uId"])) {
+
+            $sId = makeValidInput($_POST["sId"]);
+            $uId = makeValidInput($_POST["uId"]);
+
+            try {
+                ServiceBuyer::whereServiceId($sId)->whereUserId($uId)->delete();
+                echo "ok";
+                return;
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+        }
+
+        echo "nok";
+    }
 }

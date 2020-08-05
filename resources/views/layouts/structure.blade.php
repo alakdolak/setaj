@@ -317,6 +317,18 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item  ">
+                                <a href="{{route('reminderProducts')}}" class="nav-link">
+                                    <span class="title">کالا هاای خریداری نشده</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item  ">
+                                <a href="{{route('serviceReport')}}" class="nav-link">
+                                    <span class="title">گزارش گیری خدمات</span>
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
 
