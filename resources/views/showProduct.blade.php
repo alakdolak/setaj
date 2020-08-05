@@ -104,11 +104,11 @@
             @if($product->user_id == \Illuminate\Support\Facades\Auth::user()->id)
                 <div class="shopBtn doneBtn">شما قادر به خرید محصول خود نیستید</div>
             @else
-{{--                @if($canBuy)--}}
+                @if($canBuy)
                     <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
-{{--                @else--}}
-{{--                    <div class="shopBtn doneBtn">شما امکان خرید ندارید</div>--}}
-{{--                @endif--}}
+                @else
+                    <div class="shopBtn doneBtn">شما امکان خرید ندارید</div>
+                @endif
             @endif
         </div>
 
