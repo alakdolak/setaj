@@ -4,7 +4,7 @@
 @section("header")
 
     @parent
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/choosePlan.css?v=1.5")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/choosePlan.css?v=1.7")}}">
 
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/swiper.css?v=1.1")}}">
 {{--    <script src = {{URL::asset("js/swiper.min.js") }}></script>--}}
@@ -18,10 +18,11 @@
         <div class="swiper-container swiper-container-autoheight">
             <div class="swiper-wrapper">
 {{--                <div class="swiper-slide advertiseBanner advertiseBanner5"></div>--}}
-                <div class="swiper-slide advertiseBanner advertiseBanner0"></div>
-                <div class="swiper-slide advertiseBanner advertiseBanner7"></div>
+                <div class="swiper-slide advertiseBanner advertiseBanner8"></div>
+                <div class="swiper-slide advertiseBanner advertiseBanner9"></div>
+                <div class="swiper-slide advertiseBanner advertiseBanner10"></div>
 {{--                <div class="swiper-slide advertiseBanner advertiseBanner1"></div>--}}
-                <div class="swiper-slide advertiseBanner advertiseBanner2"></div>
+                <div class="swiper-slide advertiseBanner advertiseBanner7"></div>
 {{--                <div class="swiper-slide advertiseBanner advertiseBanner3"></div>--}}
 {{--                <div class="swiper-slide advertiseBanner advertiseBanner4"></div>--}}
                 <div class="swiper-slide advertiseBanner advertiseBanner6"></div>
