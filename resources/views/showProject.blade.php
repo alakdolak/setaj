@@ -185,6 +185,9 @@
                         else if(res === "nok2") {
                             $("#alertText").empty().append("<div>شما قبلا این محصول را خریداری کرده اید</div>");
                         }
+                        else if(res === "nok9") {
+                            $("#alertText").empty().append("<div>حتما باید یه عینی بخری</div>");
+                        }
                         else if(res === "nok3") {
                             $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه ندارید</div>");
                         }

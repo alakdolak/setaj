@@ -410,7 +410,7 @@ class HomeController extends Controller {
 
         $date = getToday()["date"];
 
-        $projects = DB::select('select id, title, description, price, capacity, start_reg, end_reg from project where ' .
+        $projects = DB::select('select id, title, physical, description, price, capacity, start_reg, end_reg from project where ' .
             '(select count(*) from project_grade where project_id = project.id and grade_id = ' . $grade . ' ) > 0' .
             ' and hide = false order by id desc');
 
@@ -465,7 +465,7 @@ class HomeController extends Controller {
             $project->tagStr = $str;
         }
 
-        return view('projects', ['projects' => $projects, 'tags' => Tag::all(), 'grade' => $grade]);
+        return view('projects', ['projects' => $projects, 'tags' => Tag::whereType("PROJECT")->get(), 'grade' => $grade]);
     }
 
     public function showProject($id) {
@@ -915,12 +915,29 @@ class HomeController extends Controller {
             }
 
             $capacity = ConfigModel::first()->project_limit;
-            $nums = DB::select("select count(*) as countNum from project_buyers where status = false and user_id = " . Auth::user()->id)[0]->countNum;
+            $openProjects = DB::select("select p.physical from project_buyers pb, project p where pb.status = false and pb.user_id = " . Auth::user()->id);
 
-            $reminder = $capacity - $nums;
-            if($reminder <= 0) {
+            if($capacity - count($openProjects) <= 0) {
                 echo "nok6";
                 return;
+            }
+
+            if(count($openProjects) > 0) {
+
+                $allow = false;
+
+                foreach($openProjects as $openProject) {
+                    if($openProject->physical) {
+                        $allow = true;
+                        break;
+                    }
+                }
+
+                if(!$allow) {
+                    echo "nok9";
+                    return;
+                }
+
             }
 
             try {
@@ -965,8 +982,9 @@ class HomeController extends Controller {
                 return;
             }
 
-            $countBuys = Transaction::whereUserId($user->id)->count();
-            if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= $countBuys) {
+            $buys = DB::select("select p.physical from transactions t, product p where p.id = t.product_id and t.user_id = " . $user->id);
+
+            if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= count($buys)) {
                 echo "nok7";
                 return;
             }
@@ -974,6 +992,23 @@ class HomeController extends Controller {
             if($product->price > $user->money) {
                 echo "nok3";
                 return;
+            }
+
+            if(count($buys) > 0) {
+
+                $allow = false;
+
+                foreach ($buys as $buy) {
+                    if($buy->physical) {
+                        $allow = true;
+                        break;
+                    }
+                }
+
+                if(!$allow) {
+                    echo "nok9";
+                    return;
+                }
             }
 
             try {

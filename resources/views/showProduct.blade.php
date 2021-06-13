@@ -245,6 +245,9 @@
                         else if(res === "nok3") {
                             $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه ندارید</div>");
                         }
+                        else if(res === "nok9") {
+                            $("#alertText").empty().append("<div>حتما باید یه عینی بخری</div>");
+                        }
                         else {
                             $("#alertText").empty().append("<div>عملیات مورد نظر غیرمجاز است</div>");
                         }

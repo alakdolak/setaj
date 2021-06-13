@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $user_id
  * @property integer $star
  * @property boolean $hide
+ * @property boolean $physical
  * @property string $name
  * @property string $description
  * @property integer $price

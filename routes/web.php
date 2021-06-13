@@ -215,6 +215,20 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::post('deleteProject', ['as' => 'deleteProject', 'uses' => 'OperatorController@deleteProject']);
 
+
+
+    Route::get('citizens', ['as' => 'citizens', 'uses' => 'OperatorController@citizens']);
+
+    Route::post('addCitizen', ['as' => 'addCitizen', 'uses' => 'OperatorController@addCitizen']);
+
+    Route::get('editCitizen/{id}', ['as' => 'editCitizen', 'uses' => 'OperatorController@editCitizen']);
+
+    Route::post('doEditCitizen/{id}', ['as' => 'doEditCitizen', 'uses' => 'OperatorController@doEditCitizen']);
+
+    Route::post('deleteCitizen', ['as' => 'deleteCitizen', 'uses' => 'OperatorController@deleteCitizen']);
+
+
+
     Route::post('deleteService', ['as' => 'deleteService', 'uses' => 'OperatorController@deleteService']);
 
 

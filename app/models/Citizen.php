@@ -1,0 +1,27 @@
+<?php
+
+namespace App\models;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * An Eloquent Model: 'Citizen'
+ *
+ * @property integer $id
+ * @property string $title
+ * @property boolean $hide
+ * @property string $description
+ * @property string $start_reg
+ * @property string $end_reg
+ * @property integer $point
+ * @method static \Illuminate\Database\Query\Builder|\App\models\Citizen whereGradeId($value)
+ */
+
+class Citizen extends Model {
+
+    public $table = 'citizen';
+
+    public static function whereId($value) {
+        return Citizen::find($value);
+    }
+}

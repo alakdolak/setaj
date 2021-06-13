@@ -252,11 +252,18 @@
                             </a>
                         </li>
 
+                        <li class="nav-item  ">
+                            <a href="{{route('citizens')}}" class="nav-link nav-toggle">
+                                <i class="icon-diamond"></i>
+                                <span class="title">شهروندی</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
 
                         <li class="nav-item  ">
                             <a href="{{route('services')}}" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
-                                <span class="title">خدمات</span>
+                                <span class="title">پروژه های همیاری(خدمت)</span>
                                 <span class="arrow"></span>
                             </a>
                         </li>

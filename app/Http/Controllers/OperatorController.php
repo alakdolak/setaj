@@ -470,8 +470,10 @@ class OperatorController extends Controller {
             $project->description = $_POST["description"];
             $project->capacity = makeValidInput($_POST["capacity"]);
             $project->price = makeValidInput($_POST["price"]);
+            $project->physical = (isset($_POST["physical"]));
             $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
+
 
             try {
 
@@ -584,22 +586,17 @@ class OperatorController extends Controller {
             && isset($_POST["star"]) && isset($_POST["username"])
         ) {
 
-            $username = makeValidInput($_POST["username"]);
+            $project = Project::whereId(makeValidInput($_POST["project"]));
+            if($project == null)
+                return Redirect::route('products', ['err' => 1]);
 
+            $username = makeValidInput($_POST["username"]);
             $user = DB::select("select id from users where nid = " . $username . ' or username = ' . $username);
 
-            if($user == null || count($user) == 0) {
-                return Redirect::route('products', ['err' => 1]);
-            }
-
-            $project = makeValidInput($_POST["project"]);
-            $p = ProjectBuyers::whereUserId($user[0]->id)->whereProjectId($project)->first();
-
-            if($p == null)
+            if($user == null || count($user) == 0)
                 return Redirect::route('products', ['err' => 1]);
 
-            $p->status = 1;
-            $p->save();
+            DB::update("update project_buyers set status = true where user_id = " . $user[0]->id . " and project_id = " . $project->id);
 
             $product = new Product();
             $product->name = makeValidInput($_POST["name"]);
@@ -607,7 +604,8 @@ class OperatorController extends Controller {
             $product->price = makeValidInput($_POST["price"]);
             $product->star = makeValidInput($_POST["star"]);
             $product->user_id = $user[0]->id;
-            $product->project_id = $project;
+            $product->project_id = $project->id;
+            $product->physical = $project->physical;
 
             try {
 
@@ -747,6 +745,128 @@ class OperatorController extends Controller {
 
         return Redirect::route('products');
     }
+
+    public function addCitizen() {
+
+        if(isset($_POST["name"]) && isset($_POST["description"])
+            && isset($_POST["point"]) && isset($_POST["gradeId"])
+            && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
+        ) {
+
+            $project = new Project();
+            $project->title = makeValidInput($_POST["name"]);
+            $project->description = $_POST["description"];
+            $project->capacity = makeValidInput($_POST["capacity"]);
+            $project->price = makeValidInput($_POST["price"]);
+            $project->physical = (isset($_POST["physical"]));
+            $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
+            $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
+
+
+            try {
+
+                $project->save();
+
+                $gradeId = makeValidInput($_POST["gradeId"]);
+                $tmp = new ProjectGrade();
+                $tmp->grade_id = $gradeId;
+                $tmp->project_id = $project->id;
+                $tmp->save();
+
+
+                if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])) {
+
+                    $file = Input::file('file');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/projectPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ProjectPic();
+                            $tmp->project_id = $project->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+
+                if(isset($_FILES["attach"]) && !empty($_FILES["attach"]["name"])) {
+
+                    $file = Input::file('attach');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/projectPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new ProjectAttach();
+                            $tmp->project_id = $project->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+
+        }
+
+        return Redirect::route('projects');
+    }
+
 
 
 

@@ -14,13 +14,13 @@
 
     </style>
 
-    <script src = {{URL::asset("js/calendar.js") }}></script>
-    <script src = {{URL::asset("js/calendar-setup.js") }}></script>
-    <script src = {{URL::asset("js/calendar-fa.js") }}></script>
-    <script src = {{URL::asset("js/jalali.js") }}></script>
-    <link rel="stylesheet" href = {{URL::asset("css/calendar-green.css") }}>
+    <script src = "{{URL::asset("js/calendar.js") }}"></script>
+    <script src = "{{URL::asset("js/calendar-setup.js") }}"></script>
+    <script src = "{{URL::asset("js/calendar-fa.js") }}"></script>
+    <script src = "{{URL::asset("js/jalali.js") }}"></script>
+    <link rel="stylesheet" href = "{{URL::asset("css/calendar-green.css") }}">
     <script src="//cdn.ckeditor.com/4.10.1/full/ckeditor.js"></script>
-
+{{--    {{URL::asset("js/ckeditor.js") }}--}}
 @stop
 
 @section('content')
@@ -68,12 +68,13 @@
                                 <th scope="col">ظرفیت</th>
                                 <th scope="col">تاریخ شروع امکان خرید</th>
                                 <th scope="col">تاریخ پایان امکان خرید</th>
-                                <td scope="col">تصویر</td>
+                                <th scope="col">تصویر</th>
                                 <th scope="col" style="width:450px !important">توضیح</th>
                                 <th scope="col">هزینه پروژه</th>
                                 <th scope="col">تاریخ تعریف پروژه</th>
                                 <th scope="col">تعداد نفرات خریدار پروژه</th>
                                 <th scope="col">تگ ها</th>
+                                <th scope="col">عینی و غیر عینی</th>
                                 <th scope="col">وضعیت نمایش</th>
                             </tr>
                             </thead>
@@ -135,6 +136,7 @@
                                             <button onclick="showTags('{{$itr->id}}')" class="btn btn-default">افزودن تگ جدید</button>
                                         </div>
                                     </td>
+                                    <td>{{($itr->physical) ? "عینی" : "غیر عینی"}}</td>
                                     <td>{{$itr->hide}}</td>
 
                                 </tr>
@@ -160,6 +162,9 @@
 
                     <h5 style="padding-right: 5%;">نام پروژه</h5>
                     <input type="text" name="name" required maxlength="100">
+
+                    <h5 style="padding-right: 5%;">آیا پروژه عینی است؟</h5>
+                    <input type="checkbox" name="physical" maxlength="100">
 
                     <h5 style="padding-right: 5%;">هزینه پروژه</h5>
                     <input type="number" name="price" required min="0">

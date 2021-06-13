@@ -73,6 +73,12 @@
                                                     @endif
                                                 <?php $k++; ?>
                                                 @endforeach
+                                                <span> - </span>
+                                                @if($project->physical)
+                                                    <span>عینی</span>
+                                                @else
+                                                    <span>غیرعینی</span>
+                                                @endif
                                             </div>
                                         </div>
 
