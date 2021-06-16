@@ -42,3 +42,9 @@
 <script src="{{URL::asset('layouts/global/scripts/quick-sidebar.min.js')}}" type="text/javascript"></script>
 <script src="{{URL::asset('layouts/global/scripts/quick-nav.min.js')}}" type="text/javascript"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
+
+
+<script src="{{\Illuminate\Support\Facades\URL::asset('pages/scripts/table-datatables-fixedheader.min.js')}}" type="text/javascript"></script>
+<script src="{{\Illuminate\Support\Facades\URL::asset("global/scripts/datatable.js")}}" type="text/javascript"></script>
+<script src="{{\Illuminate\Support\Facades\URL::asset('global/plugins/datatables/datatables.min.js')}}" type="text/javascript"></script>
+<script src="{{\Illuminate\Support\Facades\URL::asset('global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js')}}" type="text/javascript"></script>

@@ -28,7 +28,7 @@
     <div style="margin-top: 100px">
 
         <div style="margin: 20px">
-            <button onclick="addProject()" class="btn btn-primary">افزودن پروژه جدید</button>
+            <button onclick="addProject()" class="btn btn-primary">افزودن پروژه شهروندی جدید</button>
         </div>
 
         <div class="portlet box purple">
@@ -36,7 +36,7 @@
             <div class="portlet-title">
                 <div class="caption" style="float: right">
                     <i style="float: right" class="fa fa-cogs"></i>
-                    <span style="margin-right: 10px">پروژه های تعریف شده</span>
+                    <span style="margin-right: 10px">پروژه های شهروندی تعریف شده</span>
                 </div>
             </div>
             <div class="portlet-body">
@@ -65,16 +65,14 @@
                                 <th scope="col">عملیات</th>
                                 <th scope="col">نام</th>
                                 <th scope="col">پایه تحصیلی</th>
-                                <th scope="col">ظرفیت</th>
                                 <th scope="col">تاریخ شروع امکان خرید</th>
                                 <th scope="col">تاریخ پایان امکان خرید</th>
                                 <th scope="col">تصویر</th>
                                 <th scope="col" style="width:450px !important">توضیح</th>
-                                <th scope="col">هزینه پروژه</th>
+                                <th scope="col">امتیاز پروژه</th>
                                 <th scope="col">تاریخ تعریف پروژه</th>
                                 <th scope="col">تعداد نفرات خریدار پروژه</th>
-                                <th scope="col">تگ ها</th>
-                                <th scope="col">عینی و غیر عینی</th>
+                                <th scope="col">تگ</th>
                                 <th scope="col">وضعیت نمایش</th>
                             </tr>
                             </thead>
@@ -95,7 +93,7 @@
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
                                         </button>
 
-                                        <a target="_blank" href="{{route('editProject', ['id' => $itr->id])}}" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
+                                        <a target="_blank" href="{{route('editCitizen', ['id' => $itr->id])}}" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
                                         </a>
 
@@ -117,26 +115,14 @@
                                         </div>
                                     </td>
 
-                                    <td>{{$itr->capacity}}</td>
                                     <td>{{$itr->startReg}}</td>
                                     <td>{{$itr->endReg}}</td>
                                     <td><img width="100px" src="{{$itr->pic}}"></td>
                                     <td>...</td>
-                                    <td>{{$itr->price}}</td>
+                                    <td>{{$itr->point}}</td>
                                     <td>{{$itr->date}}</td>
                                     <td>{{$itr->buyers}}</td>
-                                    <td>
-                                        @foreach($itr->tags as $tag)
-                                            <button id="tag_{{$tag->id}}" onclick="removeTag('{{$tag->id}}')" style="margin: 4px" class="btn btn-info">
-                                                <span>{{$tag->name}}</span>
-                                                <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-remove"></span>
-                                            </button>
-                                        @endforeach
-                                        <div style="margin-top: 10px">
-                                            <button onclick="showTags('{{$itr->id}}')" class="btn btn-default">افزودن تگ جدید</button>
-                                        </div>
-                                    </td>
-                                    <td>{{($itr->physical) ? "عینی" : "غیر عینی"}}</td>
+                                    <td>{{$itr->tag}}</td>
                                     <td>{{$itr->hide}}</td>
 
                                 </tr>
@@ -154,7 +140,7 @@
 
     <div id="myAddModal" class="modal">
 
-        <form action="{{route('addProject')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('addCitizen')}}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="modal-content" style="width: 75% !important;">
 
@@ -163,11 +149,8 @@
                     <h5 style="padding-right: 5%;">نام پروژه</h5>
                     <input type="text" name="name" required maxlength="100">
 
-                    <h5 style="padding-right: 5%;">آیا پروژه عینی است؟</h5>
-                    <input type="checkbox" name="physical" maxlength="100">
-
-                    <h5 style="padding-right: 5%;">هزینه پروژه</h5>
-                    <input type="number" name="price" required min="0">
+                    <h5 style="padding-right: 5%;">امتیاز پروژه</h5>
+                    <input type="number" name="point" required min="0">
 
                     <h5 style="padding-right: 5%;">پایه تحصیلی</h5>
                     <select name="gradeId" required>
@@ -176,10 +159,12 @@
                         @endforeach
                     </select>
 
-                    <h5 style="padding-right: 5%;">ظرفیت</h5>
-                    <input type="number" name="capacity" required>
-                    <p>اگر می خواهید ظرفیت این پروژه بی نهایت باشد، 1- را وارد نمایید.</p>
-
+                    <h5>دسته پروژه</h5>
+                    <select name="tagId">
+                        @foreach($tags as $tag)
+                            <option value="{{$tag->id}}">{{$tag->name}}</option>
+                        @endforeach
+                    </select>
 
                     <div>
                         <span>تاریخ شروع امکان خرید</span>
@@ -230,28 +215,6 @@
         </form>
     </div>
 
-    <div id="myTagModal" class="modal">
-
-        <div class="modal-content">
-
-            <div>
-
-                <h5 style="padding-right: 5%;">تگ ها</h5>
-                <select id="tagId">
-                    @foreach($tags as $tag)
-                        <option value="{{$tag->id}}">{{$tag->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div style="margin-top: 20px">
-                <input onclick="addNewTag()" type="submit" value="افزودن تگ" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
-                <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('myTagModal').style.display = 'none'">
-            </div>
-        </div>
-
-    </div>
-
     <div id="myGradeModal" class="modal">
 
         <div class="modal-content">
@@ -285,7 +248,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 },
-                url: '{{route('deleteGradeProject')}}',
+                url: '{{route('deleteGradeCitizen')}}',
                 data: {
                     id: id
                 },
@@ -298,56 +261,9 @@
             });
         }
 
-        function removeTag(id) {
-
-            $.ajax({
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: '{{route('deleteTagProject')}}',
-                data: {
-                    id: id
-                },
-                success: function (res) {
-
-                    if(res === "ok")
-                        $("#tag_" + id).remove();
-
-                }
-            });
-        }
-
-        function showTags(id) {
-            itemId = id;
-            document.getElementById('myTagModal').style.display = 'block';
-        }
-
         function showGrades(id) {
             itemId = id;
             document.getElementById('myGradeModal').style.display = 'block';
-        }
-
-        function addNewTag() {
-
-            $.ajax({
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: '{{route('addTagProject')}}',
-                data: {
-                    id: itemId,
-                    tagId: $("#tagId").val()
-                },
-                success: function (res) {
-
-                    if(res === "ok")
-                        document.location.reload();
-
-                }
-            });
-
         }
 
         function addNewGrade() {
@@ -357,7 +273,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 },
-                url: '{{route('addGradeProject')}}',
+                url: '{{route('addGradeCitizen')}}',
                 data: {
                     id: itemId,
                     gradeId: $("#gradeId").val()
@@ -402,7 +318,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 },
-                url: '{{route('deleteProject')}}',
+                url: '{{route('deleteCitizen')}}',
                 data: {
                     id: id
                 },
@@ -423,7 +339,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 },
-                url: '{{route('toggleHideProject')}}',
+                url: '{{route('toggleHideCitizen')}}',
                 data: {
                     id: id
                 },

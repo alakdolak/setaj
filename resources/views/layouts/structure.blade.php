@@ -287,6 +287,13 @@
                         </a>
                     </li>
 
+                    <li class="nav-item  ">
+                        <a href="{{route('citizensReport')}}" class="nav-link nav-toggle">
+                            <i class="icon-diamond"></i>
+                            <span class="title">پروژه های شهروندی</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
 
@@ -333,6 +340,12 @@
                             <li class="nav-item  ">
                                 <a href="{{route('serviceReport')}}" class="nav-link">
                                     <span class="title">گزارش گیری خدمات</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item  ">
+                                <a href="{{route('healthReport')}}" class="nav-link">
+                                    <span class="title">سلامت</span>
                                 </a>
                             </li>
 

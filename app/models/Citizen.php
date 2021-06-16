@@ -14,7 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $start_reg
  * @property string $end_reg
  * @property integer $point
+ * @property integer $tag_id
  * @method static \Illuminate\Database\Query\Builder|\App\models\Citizen whereGradeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\models\Citizen whereTagId($value)
  */
 
 class Citizen extends Model {

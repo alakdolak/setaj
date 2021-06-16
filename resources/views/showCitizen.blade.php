@@ -10,58 +10,61 @@
 
     <div class="eachProduct row">
         <div class="pr_descript col-sm-7 col-xs-12">
-            <div class="pr_descriptRow pr_title">{{$service->title}}</div>
+            <div class="pr_descriptRow pr_title">{{$project->title}}</div>
+
             <div class="pr_descriptRow pr_salesman">سفارش مدرسه سراج</div>
 
             <div class="pr_descriptRow pr_iconesBox">
-                <div class="pr_icons starIcon"></div>
-                <div>حداکثر ستاره‌ی دریافتی: {{$service->star}}</div>
+                <div class="pr_icons coinIcon"></div>
+                <div>امتیاز: {{$project->point}}</div>
             </div>
-            <div class="pr_descriptRow">
-                <div class="pr_iconesBox">
-                    <div class="pr_icons folderIcon"></div>
-                    <div>توضیحات:</div>
+
+            @if(!empty($project->description))
+                <div class="pr_descriptRow">
+                    <div class="pr_iconesBox">
+                        <div class="pr_icons folderIcon"></div>
+                        <div>توضیحات:</div>
+                    </div>
+                    <div class="pr_description">
+                        <div class="should_be_iransans">{!! $project->description !!}</div>
+                    </div>
                 </div>
-                <div class="pr_description">
-                    <div class="should_be_iransans">{!! $service->description !!}</div>
-                </div>
-            </div>
+            @endif
         </div>
         <div class="pr_picsBox col-sm-5 col-xs-12">
             <div class="pr_pics">
                 <div class="pr_otherPics">
-                    @foreach($service->pics as $pic)
+                    @foreach($project->pics as $pic)
                         <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>
                     @endforeach
                 </div>
-                @if(count($service->pics) > 0)
-                    <div style="background-image: url('{{$service->pics[0]}}');" id="pr_mainPic" class="pr_mainPic"></div>
+                @if(count($project->pics) > 0)
+                    <div style="background-image: url('{{$project->pics[0]}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @else
                     <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif
             </div>
-            @if($oldBuy)
-                <div class="shopBtn doneBtn">قبلا پذیرفته اید</div>
-            @else
-                @if($canBuy)
-                    <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب همیاری و دریافت آموزش</div>
-                @else
-                    <div class="shopBtn doneBtn">شما امکان خرید ندارید</div>
-                @endif
+
+            @if($canBuy)
+                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انجام دادم</div>
             @endif
+
+            @if(count($project->pics) > 0)
+                <a style="display: block" download href="{{route('downloadAllCitizenAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>
+            @endif
+
         </div>
 
-
-        @if(count($service->attaches) > 0)
+        @if(count($project->attach) > 0)
 
             <div class="pr_advertiseBox col-xs-12">
                 <div class="pr_iconesBox" style="margin-bottom: 15px">
                     <div class="pr_icons movieIcon"></div>
-                    <div>توضیحات تکمیلی:</div>
+                    <div>فایل های آموزشی:</div>
                 </div>
                 <div class="pr_advertise col-xs-12">
 
-                    @foreach($service->attaches as $pic)
+                    @foreach($project->attach as $pic)
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
                             <div class="eachAdvType col-xs-12">
                                 <img style="width: 100%;" src="{{$pic["path"]}}">
@@ -103,14 +106,15 @@
             <div id="confirmationModalDialog" class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">انتخاب پروژه همیاری</h4>
+                    <h4 class="modal-title">انجام پروژه</h4>
                 </div>
                 <div class="modal-body">
-                    <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
+                    <p>توضیحی میخوای بنویسی؟</p>
+                    <textarea id="desc" maxlength="1000" placeholder="حداکثر 1000 کاراکتر"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="buy()" type="button" class="btn btn-success" data-dismiss="modal">بله</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>
+                    <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
                 </div>
             </div>
 
@@ -130,11 +134,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">این پروژه با موفقیت برای شما انتخاب شد</h4>
-                </div>
-                <div class="modal-body">
-                    <p>در صورت نیاز به راهنمایی بیشتر با معلم راهنمای خود در ارتباط باشید.</p>
-                    <p><span>موفق باشی</span><span>&#128522;</span></p>
+                    <h4 class="modal-title">امتیاز این پروژه با موفقیت برای شما ثبت شد</h4>
                 </div>
                 <div class="modal-footer">
                     <button onclick="document.location.href = '{{route('profile')}}'" type="button" class="btn btn-danger">متوجه شدم</button>
@@ -161,9 +161,10 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 },
-                url: '{{route('buyService')}}',
+                url: '{{route('buyCitizen')}}',
                 data: {
-                    id: '{{$service->id}}'
+                    id: '{{$project->id}}',
+                    desc: $("#desc").val()
                 },
                 success: function (res) {
 
@@ -172,20 +173,7 @@
                         $("#resultModalBtn").click();
                     }
                     else {
-
-                        if(res === "nok1") {
-                            $("#alertText").empty().append("<div>شما اجازه خرید این محصول را ندارید</div>");
-                        }
-                        else if(res === "nok2") {
-                            $("#alertText").empty().append("<div>شما قبلا این محصول را خریداری کرده اید</div>");
-                        }
-                        else if(res === "nok3") {
-                            $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه ندارید</div>");
-                        }
-                        else {
-                            $("#alertText").empty().append("<div>عملیات مورد نظر غیرمجاز است</div>");
-                        }
-
+                        $("#alertText").empty().append("<div>عملیات مورد نظر غیرمجاز است</div>");
                         $("#confirmationModalDialog").addClass("hidden");
                         $("#confirmationModalDialogAlert").removeClass("hidden");
                     }

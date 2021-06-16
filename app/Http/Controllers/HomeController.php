@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 
 use App\models\Bookmark;
 use App\models\Chat;
+use App\models\Citizen;
+use App\models\CitizenAttach;
+use App\models\CitizenBuyers;
+use App\models\CitizenGrade;
+use App\models\CitizenPic;
 use App\models\CommonQuestion;
 use App\models\ConfigModel;
 use App\models\FAQCategory;
-use App\models\Likes;
 use App\models\Msg;
 use App\models\Product;
 use App\models\ProductAttach;
@@ -315,7 +319,6 @@ class HomeController extends Controller {
             else
                 $service->canBuy = (ServiceBuyer::whereServiceId($service->id)->count() < $service->capacity);
 
-            $service->likes = Likes::whereItemId($service->id)->whereMode(getValueInfo('serviceMode'))->count();
             $service->reminder = $service->capacity - ServiceBuyer::whereServiceId($service->id)->count();
         }
 
@@ -380,11 +383,6 @@ class HomeController extends Controller {
 
         $service->attaches = $pics;
 
-        $bookmark = true;
-//        $bookmark = (Bookmark::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('serviceMode'))->count() > 0);
-
-        $like = (Likes::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('serviceMode'))->count() > 0);
-
         $canBuy = true;
         $oldBuy = ServiceBuyer::whereServiceId($id)->whereUserId(Auth::user()->id)->count();
 
@@ -394,8 +392,8 @@ class HomeController extends Controller {
         )
             $canBuy = false;
 
-        return view('showService', ['bookmark' => $bookmark, 'canBuy' => $canBuy,
-            'service' => $service, 'like' => $like, 'oldBuy' => $oldBuy]);
+        return view('showService', ['canBuy' => $canBuy,
+            'service' => $service, 'oldBuy' => $oldBuy]);
     }
 
 
@@ -457,7 +455,6 @@ class HomeController extends Controller {
                     $project->canBuy = false;
             }
 
-            $project->likes = Likes::whereItemId($project->id)->whereMode(getValueInfo('projectMode'))->count();
             $project->tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $project->id);
             $str = "-";
             foreach ($project->tags as $tag)
@@ -531,9 +528,6 @@ class HomeController extends Controller {
         else
             $project->price = number_format($project->price);
 
-        $bookmark = true;
-//        $bookmark = (Bookmark::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('projectMode'))->count() > 0);
-        $like = (Likes::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('projectMode'))->count() > 0);
         $canBuy = true;
         $date = getToday()["date"];
 
@@ -554,10 +548,127 @@ class HomeController extends Controller {
         if($reminder <= 0 && $canBuy)
             $canBuy = false;
 
-        return view('showProject', ['bookmark' => $bookmark, 'canBuy' => $canBuy,
-            'project' => $project, 'like' => $like]);
+        return view('showProject', ['canBuy' => $canBuy, 'project' => $project]);
     }
 
+
+    public function showAllCitizens($grade = -1) {
+
+        if($grade != -1 && Auth::user()->level == getValueInfo("studentLevel"))
+            return Redirect::route("choosePlan");
+
+        if($grade == -1)
+            $grade = Auth::user()->grade_id;
+
+        $date = getToday()["date"];
+
+        $projects = DB::select('select citizen.id, title, tag_id, description, point, tag.name as tag, start_reg, end_reg from citizen, tag where ' .
+            'tag.id = tag_id and (select count(*) from citizen_grade where project_id = citizen.id and grade_id = ' . $grade . ' ) > 0' .
+            ' and hide = false order by citizen.id desc');
+
+        $mainDiff = findDiffWithSiteStart();
+
+        foreach ($projects as $project) {
+
+            $diff = 0;
+
+            if ($date != $project->start_reg) {
+
+                for ($i = 1; $i <= 63; $i++) {
+                    if (
+                        ($i == 1 && $project->start_reg == getPast("- " . $i . ' day')) ||
+                        ($i > 1 && $project->start_reg == getPast("- " . $i . ' days'))
+                    ) {
+                        $diff = $i;
+                        break;
+                    }
+                }
+            }
+
+            $project->week = floor(($mainDiff - $diff) / 7);
+
+            $tmpPic = CitizenPic::whereProjectId($project->id)->first();
+
+            if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/citizenPic/' . $tmpPic->name))
+                $project->pic = URL::asset('citizenPic/defaultPic.jpg');
+            else
+                $project->pic = URL::asset('citizenPic/' . $tmpPic->name);
+
+            $project->canBuy = true;
+            if($project->canBuy) {
+                if($project->start_reg > $date || $project->end_reg < $date)
+                    $project->canBuy = false;
+            }
+        }
+
+        return view('citizens', ['projects' => $projects, 'tags' => Tag::whereType("CITIZEN")->get(), 'grade' => $grade]);
+    }
+
+    public function showCitizen($id) {
+
+        $project = Citizen::whereId($id);
+
+        if($project == null || $project->hide)
+            return Redirect::route('showAllCitizens');
+
+        $grade = Auth::user()->grade_id;
+        if(Auth::user()->level == getValueInfo('studentLevel')) {
+
+            $grades = CitizenGrade::whereProjectId($project->id)->get();
+            $allow = false;
+
+            foreach ($grades as $itr) {
+                if ($itr->grade_id == $grade) {
+                    $allow = true;
+                    break;
+                }
+            }
+
+            if(!$allow)
+                return Redirect::route('home');
+        }
+
+        $tmpPics = CitizenPic::whereProjectId($project->id)->get();
+        $pics = [];
+
+        foreach ($tmpPics as $tmpPic) {
+
+            if(file_exists(__DIR__ . '/../../../public/citizenPic/' . $tmpPic->name))
+                $pics[count($pics)] = URL::asset('citizenPic/' . $tmpPic->name);
+
+        }
+
+        $project->pics = $pics;
+
+        $tmpPics = CitizenAttach::whereProjectId($project->id)->get();
+        $pics = [];
+
+        foreach ($tmpPics as $tmpPic) {
+
+            $type = explode(".", $tmpPic->name);
+            $type = $type[count($type) - 1];
+
+            if(file_exists(__DIR__ . '/../../../public/citizenPic/' . $tmpPic->name))
+                $pics[count($pics)] = [
+                    "path" => URL::asset('citizenPic/' . $tmpPic->name),
+                    "type" => $type
+                ];
+
+        }
+
+        $project->attach = $pics;
+
+        $canBuy = true;
+        $date = getToday()["date"];
+
+        if(
+            CitizenBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->count() > 0 ||
+            $project->start_reg > $date || $project->end_reg < $date
+        )
+            $canBuy = false;
+
+        return view('showCitizen', ['canBuy' => $canBuy, 'project' => $project]);
+    }
 
 
     public function showAllProducts($grade = -1) {
@@ -611,8 +722,6 @@ class HomeController extends Controller {
             else
                 $product->price = number_format($product->price);
 
-            $product->likes = Likes::whereItemId($product->id)->whereMode(getValueInfo('productMode'))->count();
-
             $product->tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $product->project_id);
 
             $str = "-";
@@ -624,7 +733,7 @@ class HomeController extends Controller {
             $product->canBuy = (Transaction::whereProductId($product->id)->count() == 0);
         }
 
-        return view('products', ['products' => $products, 'tags' => Tag::all(), 'grade' => $grade]);
+        return view('products', ['products' => $products, 'tags' => Tag::whereType("PROJECT")->get(), 'grade' => $grade]);
 
     }
 
@@ -703,10 +812,6 @@ class HomeController extends Controller {
         else
             $product->price = number_format($product->price);
 
-//        $bookmark = (Bookmark::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('productMode'))->count() > 0);
-        $bookmark = true;
-        $like = (Likes::whereUserId(Auth::user()->id)->whereItemId($id)->whereMode(getValueInfo('productMode'))->count() > 0);
-
         $canBuy = true;
 
         $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
@@ -716,8 +821,8 @@ class HomeController extends Controller {
         if(Transaction::whereProductId($id)->count() > 0)
             $canBuy = false;
 
-        return view('showProduct', ['bookmark' => $bookmark, 'canBuy' => $canBuy,
-            'product' => $product, 'like' => $like, 'myReminder' => $myReminder]);
+        return view('showProduct', ['canBuy' => $canBuy,
+            'product' => $product, 'myReminder' => $myReminder]);
     }
 
 
@@ -746,120 +851,57 @@ class HomeController extends Controller {
         echo "nok";
     }
 
-    public function bookmark() {
 
-        if(isset($_POST["id"]) && isset($_POST["mode"])) {
+    public function buyCitizen() {
 
-            $item_id = makeValidInput($_POST["id"]);
-            $mode = makeValidInput($_POST["mode"]);
+        if(isset($_POST["id"])) {
 
-            $uId = Auth::user()->id;
+            $project = Citizen::whereId(makeValidInput($_POST["id"]));
+            $user = Auth::user();
 
-            $bookmark = Bookmark::whereItemId($item_id)->whereUserId($uId)->whereMode($mode)->first();
-            if($bookmark == null) {
-                $bookmark = new Bookmark();
-                $bookmark->item_id = $item_id;
-                $bookmark->user_id = $uId;
-                $bookmark->mode = $mode;
-                $bookmark->save();
-                echo "ok";
-                return;
+            if($project == null || $project->hide)
+                return "nok1";
+
+            if(Auth::user()->level == getValueInfo('studentLevel')) {
+
+                $grades = CitizenGrade::whereProjectId($project->id)->get();
+                $allow = false;
+
+                foreach ($grades as $itr) {
+                    if ($itr->grade_id == $user->grade_id) {
+                        $allow = true;
+                        break;
+                    }
+                }
+
+                if(!$allow)
+                    return "nok1";
             }
-            else {
-                $bookmark->delete();
-                echo "nok";
+
+            if(CitizenBuyers::whereUserId($user->id)->whereProjectId($project->id)->count() > 0)
+                return "ok";
+
+            $date = getToday()["date"];
+            if($project->start_reg > $date || $project->end_reg < $date)
+                return "nok4";
+
+            try {
+                $tmp = new CitizenBuyers();
+                $tmp->user_id = $user->id;
+                $tmp->project_id = $project->id;
+                if(isset($_POST["desc"]) && !empty($_POST["desc"]))
+                    $tmp->description = makeValidInput($_POST["desc"]);
+                $tmp->point = $project->point;
+
+                $tmp->save();
+
+                return "ok";
             }
+            catch (\Exception $x) {}
         }
 
+        return "nok5";
     }
-
-    public function like() {
-
-        if(isset($_POST["id"]) && isset($_POST["mode"])) {
-
-            $item_id = makeValidInput($_POST["id"]);
-            $mode = makeValidInput($_POST["mode"]);
-
-            $uId = Auth::user()->id;
-
-            $like = Likes::whereItemId($item_id)->whereUserId($uId)->whereMode($mode)->first();
-            if($like == null) {
-                $like = new Likes();
-                $like->item_id = $item_id;
-                $like->user_id = $uId;
-                $like->mode = $mode;
-                $like->save();
-                echo "ok";
-                return;
-            }
-            else {
-                $like->delete();
-                echo "nok";
-            }
-        }
-
-    }
-
-    public function bookmarks($mode) {
-
-        $items = Bookmark::whereUserId(Auth::user()->id)->whereMode($mode)->get();
-
-        if($mode == getValueInfo('productMode')) {
-
-            $out = [];
-
-            foreach ($items as $product) {
-
-                $product = Product::whereId($product->item_id);
-
-                $tmpPic = ProductPic::whereProductId($product->id)->first();
-
-                if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
-                    $product->pic = URL::asset('productPic/defaultPic.jpg');
-                else
-                    $product->pic = URL::asset('productPic/' . $tmpPic->name);
-
-                if($product->price == 0)
-                    $product->price = "رایگان";
-                else
-                    $product->price = number_format($product->price);
-
-                $product->likes = Likes::whereItemId($product->id)->whereMode(getValueInfo('productMode'))->count();
-                $out[count($out)] = $product;
-            }
-
-            return view('products', ['products' => $out]);
-
-        }
-        else {
-
-            $out = [];
-
-            foreach ($items as $project) {
-
-                $project = Project::whereId($project->item_id);
-
-                $tmpPic = ProjectPic::whereProjectId($project->id)->first();
-
-                if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/projectPic/' . $tmpPic->name))
-                    $project->pic = URL::asset('projectPic/defaultPic.jpg');
-                else
-                    $project->pic = URL::asset('projectPic/' . $tmpPic->name);
-
-                if($project->price == 0)
-                    $project->price = "رایگان";
-                else
-                    $project->price = number_format($project->price);
-
-                $project->likes = Likes::whereItemId($project->id)->whereMode(getValueInfo('projectMode'))->count();
-                $out[count($out)] = $project;
-            }
-
-            return view('projects', ['projects' => $out]);
-        }
-
-    }
-
 
     public function buyProject() {
 

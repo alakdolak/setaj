@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\models\Chat;
+use App\models\Citizen;
+use App\models\CitizenAttach;
+use App\models\CitizenBuyers;
+use App\models\CitizenGrade;
+use App\models\CitizenPic;
 use App\models\Grade;
 use App\models\Msg;
 use App\models\Product;
@@ -127,6 +132,79 @@ class OperatorController extends Controller {
             'err' => $err]);
     }
 
+    public function healthReport($gradeId = -1) {
+
+        if($gradeId == -1)
+            return view('operator.chooseGradeHealth');
+
+        $tags = Tag::whereType("CITIZEN")->get();
+        $users = User::select(["id", "first_name", "last_name"])->whereGradeId($gradeId)->get();
+        $first = true;
+        $usersOut = [];
+
+        $tmpArr = [];
+        foreach ($tags as $tag) {
+            $tmpArr[$tag->name] = 0;
+        }
+
+
+        foreach ($tags as $tag) {
+
+            $points = DB::select("select b.user_id, sum(b.point) as point from citizen_buyers b, citizen c, users u where u.id = b.user_id and u.grade_id = " . $gradeId . " and b.project_id = c.id and c.tag_id = " . $tag->id . " group by(b.user_id)");
+            $idx = 0;
+
+            foreach ($users as $user) {
+
+                if($first) {
+                    $usersOut[$idx] = [
+                        "name" => $user->first_name . " " . $user->last_name,
+                        "points" => $tmpArr
+                    ];
+                }
+
+                foreach ($points as $point) {
+                    if($point->user_id == $user->id) {
+                        $usersOut[$idx]["points"][$tag->name] = $point->point;
+                        break;
+                    }
+                }
+
+                $idx++;
+            }
+
+            $first = false;
+        }
+
+        return view('report.health', ['points' => $usersOut, 'tags' => $tags]);
+    }
+
+    public function citizensReport() {
+
+        $items = DB::select("select b.created_at, b.description, b.point, c.id as cId, c.title, c.point as totalPoint, " .
+            "b.id, g.name as grade, t.name as tag, g.id as gradeId, concat(u.first_name, ' ', u.last_name) as owner ".
+            "from citizen_buyers b, tag t, citizen c, users u, grade g where c.id = b.project_id " .
+            "and t.id = c.tag_id and b.user_id = u.id and u.grade_id = g.id order by b.id desc");
+
+        foreach ($items as $item)
+            $item->date = MiladyToShamsi('', explode('-', explode(' ', $item->created_at)[0]));
+
+        return view('operator.citizensReport', ['items' => $items, 'grades' => Grade::all(),
+            "all" => Citizen::select('id', 'title')->get()]);
+    }
+
+    public function changePoint() {
+
+        if(isset($_POST["point"]) && isset($_POST["id"])) {
+
+            DB::update("update citizen_buyers set point = " . makeValidInput($_POST["point"]) .
+                " where id = " . makeValidInput($_POST["id"]));
+
+            return "ok";
+        }
+
+        return "nok";
+    }
+
     public function projects() {
 
         $projects = Project::orderBy("id", "desc")->get();
@@ -164,6 +242,34 @@ class OperatorController extends Controller {
 
         return view('operator.projects', ['projects' => $projects,
             'grades' => Grade::all(), 'tags' => Tag::all()]);
+    }
+
+    public function citizens() {
+
+        $projects = Citizen::orderBy("id", "desc")->get();
+
+        foreach ($projects as $project) {
+
+            $project->grades = DB::select("select p.id, g.name from citizen_grade p, grade g where p.grade_id = g.id and p.project_id = " . $project->id);
+            $tmpPic = CitizenPic::whereProjectId($project->id)->first();
+
+            if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/citizenPic/' . $tmpPic->name))
+                $project->pic = URL::asset('citizenPic/defaultPic.jpg');
+            else
+                $project->pic = URL::asset('citizenPic/' . $tmpPic->name);
+
+            $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));
+            $project->buyers = CitizenBuyers::whereProjectId($project->id)->count();
+
+            $project->startReg = convertStringToDate($project->start_reg);
+            $project->endReg = convertStringToDate($project->end_reg);
+
+            $project->hide = (!$project->hide) ? "آشکار" : "مخفی";
+            $project->tag = Tag::whereId($project->tag_id)->name;
+        }
+
+        return view('operator.citizens', ['projects' => $projects,
+            'grades' => Grade::all(), 'tags' => Tag::whereType("CITIZEN")->get()]);
     }
 
 
@@ -276,6 +382,38 @@ class OperatorController extends Controller {
         echo "nok";
     }
 
+
+
+    public function addGradeCitizen() {
+
+        if(isset($_POST["id"]) && isset($_POST["gradeId"])) {
+
+            $tmp = new CitizenGrade();
+            $tmp->project_id = makeValidInput($_POST["id"]);
+            $tmp->grade_id = makeValidInput($_POST["gradeId"]);
+            try {
+                $tmp->save();
+                return "ok";
+            }
+            catch (\Exception $x) {}
+        }
+
+        return "nok";
+    }
+
+    public function deleteGradeCitizen() {
+
+        if(isset($_POST["id"])) {
+
+            try {
+                CitizenGrade::destroy(makeValidInput($_POST["id"]));
+                return "ok";
+            }
+            catch (\Exception $x) {}
+        }
+
+        return "nok";
+    }
 
 
 
@@ -751,28 +889,26 @@ class OperatorController extends Controller {
         if(isset($_POST["name"]) && isset($_POST["description"])
             && isset($_POST["point"]) && isset($_POST["gradeId"])
             && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
+            && isset($_POST["tagId"])
         ) {
 
-            $project = new Project();
+            $project = new Citizen();
             $project->title = makeValidInput($_POST["name"]);
             $project->description = $_POST["description"];
-            $project->capacity = makeValidInput($_POST["capacity"]);
-            $project->price = makeValidInput($_POST["price"]);
-            $project->physical = (isset($_POST["physical"]));
+            $project->point = makeValidInput($_POST["point"]);
             $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
-
+            $project->tag_id = makeValidInput($_POST["tagId"]);
 
             try {
 
                 $project->save();
 
                 $gradeId = makeValidInput($_POST["gradeId"]);
-                $tmp = new ProjectGrade();
+                $tmp = new CitizenGrade();
                 $tmp->grade_id = $gradeId;
                 $tmp->project_id = $project->id;
                 $tmp->save();
-
 
                 if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])) {
 
@@ -799,10 +935,10 @@ class OperatorController extends Controller {
                         foreach ($q as $itr)
                             $vals[count($vals)] = $itr;
 
-                        $newDest = __DIR__ . '/../../../public/projectPic/';
+                        $newDest = __DIR__ . '/../../../public/citizenPic/';
 
                         foreach ($vals as $val) {
-                            $tmp = new ProjectPic();
+                            $tmp = new CitizenPic();
                             $tmp->project_id = $project->id;
                             $tmp->name = time() . $val;
                             $tmp->save();
@@ -841,10 +977,10 @@ class OperatorController extends Controller {
                         foreach ($q as $itr)
                             $vals[count($vals)] = $itr;
 
-                        $newDest = __DIR__ . '/../../../public/projectPic/';
+                        $newDest = __DIR__ . '/../../../public/citizenPic/';
 
                         foreach ($vals as $val) {
-                            $tmp = new ProjectAttach();
+                            $tmp = new CitizenAttach();
                             $tmp->project_id = $project->id;
                             $tmp->name = time() . $val;
                             $tmp->save();
@@ -864,7 +1000,7 @@ class OperatorController extends Controller {
 
         }
 
-        return Redirect::route('projects');
+        return Redirect::route('citizens');
     }
 
 
@@ -873,58 +1009,40 @@ class OperatorController extends Controller {
     public function toggleHideProject() {
 
         if(isset($_POST["id"])) {
-
-            $p = Project::whereId(makeValidInput($_POST["id"]));
-            if($p != null) {
-                $p->hide = !$p->hide;
-                try {
-                    $p->save();
-                    echo "ok";
-                    return;
-                }
-                catch (\Exception $x) {}
-            }
+            DB::update("update project set hide = not hide where id = " . makeValidInput($_POST["id"]));
+            return "ok";
         }
 
-        echo "nok";
+        return "nok";
+    }
+
+    public function toggleHideCitizen() {
+
+        if(isset($_POST["id"])) {
+            DB::update("update citizen set hide = not hide where id = " . makeValidInput($_POST["id"]));
+            return "ok";
+        }
+
+        return "nok";
     }
 
     public function toggleHideProduct() {
 
         if(isset($_POST["id"])) {
-
-            $p = Product::whereId(makeValidInput($_POST["id"]));
-            if($p != null) {
-                $p->hide = !$p->hide;
-                try {
-                    $p->save();
-                    echo "ok";
-                    return;
-                }
-                catch (\Exception $x) {}
-            }
+            DB::update("update product set hide = not hide where id = " . makeValidInput($_POST["id"]));
+            return "ok";
         }
 
-        echo "nok";
+        return "nok";
     }
 
     public function toggleHideService() {
-
         if(isset($_POST["id"])) {
-
-            $p = Service::whereId(makeValidInput($_POST["id"]));
-            if($p != null) {
-                $p->hide = !$p->hide;
-                try {
-                    $p->save();
-                    echo "ok";
-                    return;
-                }
-                catch (\Exception $x) {}
-            }
+            DB::update("update service set hide = not hide where id = " . makeValidInput($_POST["id"]));
+            return "ok";
         }
 
-        echo "nok";
+        return "nok";
     }
 
 
@@ -947,6 +1065,40 @@ class OperatorController extends Controller {
                 foreach ($pics as $pic) {
                     if (file_exists(__DIR__ . '/../../../public/projectPic/' . $pic->name))
                         unlink(__DIR__ . '/../../../public/projectPic/' . $pic->name);
+                }
+
+                try {
+                    $p->delete();
+                    echo "ok";
+                    return;
+                }
+                catch (\Exception $x) {
+                    dd($x);
+                }
+            }
+        }
+
+        echo "nok";
+    }
+
+    public function deleteCitizen() {
+
+        if(isset($_POST["id"])) {
+
+            $p = Citizen::whereId(makeValidInput($_POST["id"]));
+
+            if($p != null) {
+
+                $pics = CitizenPic::whereProjectId($p->id)->get();
+                foreach ($pics as $pic) {
+                    if (file_exists(__DIR__ . '/../../../public/citizenPic/' . $pic->name))
+                        unlink(__DIR__ . '/../../../public/citizenPic/' . $pic->name);
+                }
+
+                $pics = CitizenAttach::whereProjectId($p->id)->get();
+                foreach ($pics as $pic) {
+                    if (file_exists(__DIR__ . '/../../../public/citizenPic/' . $pic->name))
+                        unlink(__DIR__ . '/../../../public/citizenPic/' . $pic->name);
                 }
 
                 try {
@@ -1190,6 +1342,157 @@ class OperatorController extends Controller {
         return Redirect::route('projects');
 
 
+    }
+
+
+
+    public function editCitizen($id) {
+
+        $project = Citizen::whereId($id);
+
+        if($project == null)
+            return Redirect::route('admin');
+
+        $project->start_reg = convertStringToDate($project->start_reg);
+        $project->end_reg = convertStringToDate($project->end_reg);
+
+        return view('operator.editCitizen', ['project' => $project]);
+    }
+
+    public function doEditCitizen($id) {
+
+        $project = Citizen::whereId($id);
+
+        if($project == null)
+            return Redirect::route('admin');
+
+
+        if(isset($_POST["name"]) && isset($_POST["description"])
+            && isset($_POST["point"])
+            && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
+        ) {
+
+            $project->title = makeValidInput($_POST["name"]);
+            $project->description = $_POST["description"];
+            $project->point = makeValidInput($_POST["point"]);
+            $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
+            $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
+
+            try {
+
+                $project->save();
+
+                if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])) {
+
+
+                    $pics = CitizenPic::whereProjectId($project->id)->get();
+                    foreach ($pics as $pic) {
+
+                        if (file_exists(__DIR__ . '/../../../public/citizenPic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/citizenPic/' . $pic->name);
+
+                        $pic->delete();
+                    }
+
+                    $file = Input::file('file');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/citizenPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new CitizenPic();
+                            $tmp->project_id = $project->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+
+                if(isset($_FILES["attach"]) && !empty($_FILES["attach"]["name"])) {
+
+                    $pics = CitizenAttach::whereProjectId($project->id)->get();
+                    foreach ($pics as $pic) {
+
+                        if (file_exists(__DIR__ . '/../../../public/citizenPic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/citizenPic/' . $pic->name);
+
+                        $pic->delete();
+                    }
+
+
+                    $file = Input::file('attach');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+                        $folder = time();
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/citizenPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new CitizenAttach();
+                            $tmp->project_id = $project->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+
+                    }
+                }
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+
+        }
+
+        return Redirect::route('citizens');
     }
 
 

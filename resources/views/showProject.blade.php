@@ -213,49 +213,5 @@
 
         });
 
-        function bookmark() {
-
-            $.ajax({
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: '{{route('bookmark')}}',
-                data: {
-                    id: '{{$project->id}}',
-                    mode: '{{getValueInfo('projectMode')}}'
-                },
-                success: function (res) {
-                    if(res === "ok")
-                        $("#bookmark").removeClass('glyphicon-heart-empty').addClass('glyphicon-heart');
-                    else
-                        $("#bookmark").removeClass('glyphicon-heart').addClass('glyphicon-heart-empty');
-                }
-            });
-
-        }
-
-        function like() {
-
-            $.ajax({
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: '{{route('like')}}',
-                data: {
-                    id: '{{$project->id}}',
-                    mode: '{{getValueInfo('projectMode')}}'
-                },
-                success: function (res) {
-                    if(res === "ok")
-                        $("#like").removeClass('glyphicon-heart-empty').addClass('glyphicon-heart');
-                    else
-                        $("#like").removeClass('glyphicon-heart').addClass('glyphicon-heart-empty');
-                }
-            });
-
-        }
-
     </script>
 @stop

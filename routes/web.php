@@ -44,12 +44,6 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
     Route::get('profile', ['as' => 'profile', 'uses' => 'HomeController@profile']);
 
-    Route::get('bookmarks/{mode}', ['as' => 'bookmarks', 'uses' => 'HomeController@bookmarks']);
-
-    Route::post('bookmark', ['as' => 'bookmark', 'uses' => 'HomeController@bookmark']);
-
-    Route::post('like', ['as' => 'like', 'uses' => 'HomeController@like']);
-
     Route::post("sendMsg", ["as" => "sendMsg", "uses" => "HomeController@sendMsg"]);
 
     Route::post("reloadMsgs", ["as" => "reloadMsgs", "uses" => "HomeController@reloadMsgs"]);
@@ -66,6 +60,10 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
     Route::get('showProject/{id}', ['as' => 'showProject', 'uses' => 'HomeController@showProject']);
 
 
+    Route::get('showAllCitizens/{grade?}', ['as' => 'showAllCitizens', 'uses' => 'HomeController@showAllCitizens']);
+
+    Route::get('showCitizen/{id}', ['as' => 'showCitizen', 'uses' => 'HomeController@showCitizen']);
+
 
     Route::get('showProduct/{id}', ['as' => 'showProduct', 'uses' => 'HomeController@showProduct']);
 
@@ -75,10 +73,14 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
     Route::get("downloadAllProjectAttaches/{pId}", ["as" => "downloadAllProjectAttaches", "uses" => "HomeController@downloadAllProjectAttaches"]);
 
+    Route::get("downloadAllCitizenAttaches/{pId}", ["as" => "downloadAllCitizenAttaches", "uses" => "HomeController@downloadAllCitizenAttaches"]);
+
     Route::post('convertStarToCoin', ['as' => 'convertStarToCoin', 'uses' => 'HomeController@convertStarToCoin']);
 
 
     Route::post('buyProject', ['as' => 'buyProject', 'uses' => 'HomeController@buyProject']);
+
+    Route::post('buyCitizen', ['as' => 'buyCitizen', 'uses' => 'HomeController@buyCitizen']);
 
     Route::post('buyProduct', ['as' => 'buyProduct', 'uses' => 'HomeController@buyProduct']);
 
@@ -157,8 +159,6 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
     Route::post('addOperators', ['as' => 'addOperators', 'uses' => 'AdminController@addOperators']);
 
 
-
-    Route::post('deleteBuyProject', ['as' => 'deleteBuyProject', 'uses' => 'AdminController@deleteBuyProject']);
 });
 
 Route::group(['middleware' => ['auth', 'adminLevel']], function () {
@@ -234,6 +234,8 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::post('toggleHideProject', ['as' => 'toggleHideProject', 'uses' => 'OperatorController@toggleHideProject']);
 
+    Route::post('toggleHideCitizen', ['as' => 'toggleHideCitizen', 'uses' => 'OperatorController@toggleHideCitizen']);
+
 
     Route::post('toggleHideService', ['as' => 'toggleHideService', 'uses' => 'OperatorController@toggleHideService']);
 
@@ -244,6 +246,11 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
     Route::post('addGradeProject', ['as' => 'addGradeProject', 'uses' => 'OperatorController@addGradeProject']);
 
     Route::post('deleteGradeProject', ['as' => 'deleteGradeProject', 'uses' => 'OperatorController@deleteGradeProject']);
+
+
+    Route::post('addGradeCitizen', ['as' => 'addGradeCitizen', 'uses' => 'OperatorController@addGradeCitizen']);
+
+    Route::post('deleteGradeCitizen', ['as' => 'deleteGradeCitizen', 'uses' => 'OperatorController@deleteGradeCitizen']);
 
 
 
@@ -266,9 +273,19 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
 Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
+    Route::post('deleteBuyProject', ['as' => 'deleteBuyProject', 'uses' => 'AdminController@deleteBuyProject']);
+
+    Route::post('changePoint', ['as' => 'changePoint', 'uses' => 'OperatorController@changePoint']);
+
     Route::get('products/{err?}', ['as' => 'products', 'uses' => 'OperatorController@products']);
 
     Route::post('addProduct', ['as' => 'addProduct', 'uses' => 'OperatorController@addProduct']);
+
+
+    Route::get('citizensReport', ['as' => 'citizensReport', 'uses' => 'OperatorController@citizensReport']);
+
+    Route::get('healthReport/{gradeId?}', ['as' => 'healthReport', 'uses' => 'OperatorController@healthReport']);
+
 
 
     Route::get('editProduct/{id}', ['as' => 'editProduct', 'uses' => 'OperatorController@editProduct']);
