@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{URL::asset('css/card.css?v=1.3')}}">
 
     <style>
+
         .userActivitiesPhotos {
             padding: 20px 0 !important;
         }
