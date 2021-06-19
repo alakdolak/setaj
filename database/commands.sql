@@ -64,3 +64,6 @@ ALTER TABLE `citizen_buyers`
 ALTER TABLE `citizen_buyers` ADD `description` LONGTEXT NULL DEFAULT NULL AFTER `point`;
 DROP TABLE `seraj`.`likes`;
 DROP TABLE ` bookmarks `;
+
+ALTER TABLE `project_buyers` ADD `file` VARCHAR(500) NULL AFTER `status`, ADD `adv` VARCHAR(500) NULL AFTER `file`;
+

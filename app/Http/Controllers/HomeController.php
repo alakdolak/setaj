@@ -33,6 +33,7 @@ use App\models\Transaction;
 use App\models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -142,7 +143,7 @@ class HomeController extends Controller {
         }
 
 
-        $myProjects = DB::select("select p.*, pb.status from project p, project_buyers pb where " .
+        $myProjects = DB::select("select p.*, pb.status, pb.id as pbId from project p, project_buyers pb where " .
             "p.id = pb.project_id and pb.user_id = " . Auth::user()->id);
 
         foreach ($myProjects as $myProject) {

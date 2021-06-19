@@ -40,6 +40,11 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
 Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
+
+    Route::post('addAdv', ['as' => 'addAdv', 'uses' => 'StudentController@addAdv']);
+
+    Route::post('addFile', ['as' => 'addFile', 'uses' => 'StudentController@addFile']);
+
     Route::get('choosePlan', ['as' => 'choosePlan', 'uses' => 'HomeController@choosePlan']);
 
     Route::get('profile', ['as' => 'profile', 'uses' => 'HomeController@profile']);
