@@ -3,7 +3,8 @@
 @section('header')
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
-
+    <script src="{{\Illuminate\Support\Facades\URL::asset('dropzone/dropzone.js')}}"></script>
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("dropzone/dropzone.css")}}">
 @stop
 
 @section("content")
@@ -52,13 +53,19 @@
             @if($canBuy)
                 <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب پروژه و دریافت آموزش</div>
             @else
-                @if($project->pbId != -1)
+                @if($canAddAdv)
                     <div onclick="$('#advId').val({{$project->pbId}})" data-toggle="modal" data-target="#advModal" class="shopBtn shopDownloadBtn">افزودن تبلیغ</div>
-                    @if(!$project->physical)
+                    @if($canAddFile)
                         <div data-toggle="modal" data-target="#contentModal" class="shopBtn shopDownloadBtn">افزودن محتوا</div>
                     @endif
                 @endif
                 <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>
+            @endif
+
+            @if($advStatus == 1)
+                <p>تبلیغ شما به تایید معلم راهنما رسید.</p>
+            @elseif($advStatus == 0)
+                <p>تبلیغ شما در حال بررسی توسط معلم راهنما می باشد.</p>
             @endif
         </div>
 
@@ -133,26 +140,28 @@
         </div>
     </div>
 
-    <div id="advModal" class="modal fade" role="dialog">
+    <div id="advModal" style="background-color: red" class="modal fade" role="dialog">
         <div class="modal-dialog">
-            <div id="confirmationModalDialog" class="modal-content">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">انتخاب پروژه</h4>
+                    <h4 class="modal-title">افزودن تبلیغ</h4>
                 </div>
-                <div class="modal-body">
-                    <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
-                </div>
+
+                <form action="{{route('addAdv')}}" class="dropzone" id="my-awesome-dropzone">
+                    {{csrf_field()}}
+                    <input type="hidden" name="id" value="{{$project->pbId}}">
+                </form>
+
                 <div class="modal-footer">
-                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>
-                    <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                    <button type="button" id="closeAdvModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
                 </div>
+
             </div>
 
-            <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">
+            <div class="modal-content alertDiv hidden">
                 <div class="modal-body">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div id="alertText"></div>
                 </div>
             </div>
         </div>
@@ -160,24 +169,26 @@
 
     <div id="contentModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-            <div id="confirmationModalDialog" class="modal-content">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">انتخاب پروژه</h4>
+                    <h4 class="modal-title">افزودن محتوا</h4>
                 </div>
-                <div class="modal-body">
-                    <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
-                </div>
+
+                <form action="{{route('addAdv')}}" class="dropzone" id="my-awesome-dropzone">
+                    {{csrf_field()}}
+                    <input type="hidden" name="id" value="{{$project->pbId}}">
+                </form>
+
                 <div class="modal-footer">
-                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>
-                    <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                    <button type="button" class="btn btn-success">بله</button>
+                    <button type="button" id="closeContentModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
                 </div>
             </div>
 
-            <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">
+            <div class="modal-content alertDiv hidden">
                 <div class="modal-body">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div id="alertText"></div>
                 </div>
             </div>
         </div>
@@ -208,6 +219,14 @@
     <button class="hidden" id="resultModalBtn" data-toggle="modal" data-target="#resultModal"></button>
 
     <script>
+
+        Dropzone.options.myAwesomeDropzone = {
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: 2, // MB
+            accept: function(file, done) {
+                done();
+            }
+        };
 
         $(".thumb-wrapper").on('click', function () {
 

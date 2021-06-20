@@ -18,7 +18,7 @@ class StudentController extends Controller {
                 return Redirect::route('profile');
 
             $path = $request->file->store("advs");
-            $b->adv = $path;
+            $b->adv = str_replace("adv/", "", $path);
             $b->save();
         }
 
@@ -34,9 +34,13 @@ class StudentController extends Controller {
             if($b == null || $b->user_id != Auth::user()->id || $b->status)
                 return Redirect::route('profile');
 
-            $path = $request->file->store("advs");
+            $path = $request->file->store("contents");
+            $b->file = str_replace("contents/", "", $path);
+            $b->save();
+
         }
 
+        return Redirect::route('profile');
     }
 
 }
