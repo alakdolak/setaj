@@ -528,19 +528,34 @@ class HomeController extends Controller {
             $project->price = number_format($project->price);
 
         $canBuy = true;
+        $canAddAdv = false;
+        $canAddFile = false;
+        $advStatus = -1;
+        $fileStatus = -1;
+
         $date = getToday()["date"];
 
         $pb = ProjectBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->first();
         if($pb != null) {
             $canBuy = false;
-            $project->pbStatus = $pb->status;
+            if(!$pb->status) {
+                if($pb->adv == null)
+                    $canAddAdv = true;
+                if(!$project->physical && $pb->file == null)
+                    $canAddFile = true;
+            }
+
             $project->pbId = $pb->id;
+
+            if(!$canAddAdv && $pb->adv != null)
+                $advStatus = $pb->adv_status ? 1 : 0;
+
+            if(!$canAddFile && $pb->file != null)
+                $fileStatus = $pb->file_status ? 1 : 0;
         }
 
-        else if($project->start_reg > $date || $project->end_reg < $date) {
+        else if($project->start_reg > $date || $project->end_reg < $date)
             $canBuy = false;
-            $project->pbId = -1;
-        }
 
         if($canBuy && $project->capacity != -1) {
             $canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
@@ -553,7 +568,9 @@ class HomeController extends Controller {
         if($reminder <= 0 && $canBuy)
             $canBuy = false;
 
-        return view('showProject', ['canBuy' => $canBuy, 'project' => $project]);
+        return view('showProject', ['canBuy' => $canBuy, 'project' => $project,
+            "canAddAdv" => $canAddAdv, "canAddFile" => $canAddFile,
+            "advStatus" => $advStatus, "fileStatus" => $fileStatus]);
     }
 
 

@@ -10,7 +10,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $id
  * @property integer $user_id
  * @property integer $project_id
+ * @property string $file
+ * @property string $adv
  * @property boolean $status
+ * @property boolean $adv_status
+ * @property boolean $file_status
  * @method static \Illuminate\Database\Query\Builder|\App\models\ProjectBuyers whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\ProjectBuyers whereProjectId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\ProjectBuyers whereStatus($value)
