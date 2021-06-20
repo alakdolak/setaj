@@ -70,8 +70,59 @@ class OperatorController extends Controller {
         echo "nok";
     }
 
+    public function setFileStatus() {
 
+        if(isset($_POST["pbId"]) && isset($_POST["status"])) {
 
+            $pb = ProjectBuyers::whereId(makeValidInput($_POST["pbId"]));
+            if($pb == null)
+                return "nok";
+
+            $status = makeValidInput($_POST["status"]);
+            if($status != -1 && $status != 1)
+                return "nok";
+
+            $pb->file_status = $status;
+            if($status == -1) {
+                if(file_exists(__DIR__ . '/../../../public/storage/contents/' . $pb->file))
+                    unlink(__DIR__ . '/../../../public/storage/contents/' . $pb->file);
+
+                $pb->file = null;
+            }
+
+            $pb->save();
+            return "ok";
+        }
+
+        return "nok";
+    }
+
+    public function setAdvStatus() {
+
+        if(isset($_POST["pbId"]) && isset($_POST["status"])) {
+
+            $pb = ProjectBuyers::whereId(makeValidInput($_POST["pbId"]));
+            if($pb == null)
+                return "nok";
+
+            $status = makeValidInput($_POST["status"]);
+            if($status != -1 && $status != 1)
+                return "nok";
+
+            $pb->adv_status = $status;
+            if($status == -1) {
+                if(file_exists(__DIR__ . '/../../../public/storage/advs/' . $pb->file))
+                    unlink(__DIR__ . '/../../../public/storage/advs/' . $pb->file);
+
+                $pb->adv = null;
+            }
+
+            $pb->save();
+            return "ok";
+        }
+
+        return "nok";
+    }
 
     public function services() {
 
@@ -97,9 +148,15 @@ class OperatorController extends Controller {
 
     public function products($err = -1) {
 
-        $products = DB::select("select p.*, g.name as grade, g.id as grade_id, concat(u.first_name, ' ', u.last_name) as owner from product p, users u, grade g where p.user_id = u.id and u.grade_id = g.id order by p.id desc");
+        $products = DB::select("select pb.adv, pb.adv_status, pb.file, pb.file_status, p.*, g.name as grade, g.id as grade_id, concat(u.first_name, ' ', u.last_name) as owner from product p, users u, grade g, project_buyers pb where p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = g.id order by p.id desc");
 
         foreach ($products as $product) {
+
+            if($product->adv_status && $product->adv != null &&
+                file_exists(__DIR__ . '/../../../storage/app/public/advs/' . $product->adv))
+                $product->adv = URL::asset("storage/adv/" . $product->adv);
+            else
+                $product->adv = null;
 
             $tmpPic = ProductPic::whereProductId($product->id)->first();
 

@@ -149,11 +149,13 @@
                 <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب پروژه و دریافت آموزش</div>
             @else
                 @if($canAddAdv)
-                    <div onclick="$('#advId').val({{$project->pbId}})" data-toggle="modal" data-target="#advModal" class="shopBtn shopDownloadBtn">افزودن تبلیغ</div>
-                    @if($canAddFile)
-                        <div data-toggle="modal" data-target="#contentModal" class="shopBtn shopDownloadBtn">افزودن محتوا</div>
-                    @endif
+                    <div data-toggle="modal" data-target="#advModal" class="shopBtn shopDownloadBtn">افزودن تبلیغ</div>
                 @endif
+
+                @if($canAddFile)
+                    <div data-toggle="modal" data-target="#contentModal" class="shopBtn shopDownloadBtn">افزودن محتوا</div>
+                @endif
+
                 <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>
             @endif
 
@@ -161,7 +163,19 @@
                 <p>تبلیغ شما به تایید معلم راهنما رسید.</p>
             @elseif($advStatus == 0)
                 <p>تبلیغ شما در حال بررسی توسط معلم راهنما می باشد.</p>
+            @elseif($advStatus == -1)
+                <p>تبلیغ شما توسط معلم راهنما رد گردید.</p>
             @endif
+
+
+            @if($fileStatus == 1)
+                <p>محتوا شما به تایید معلم راهنما رسید.</p>
+            @elseif($fileStatus == 0)
+                <p>محتوا شما در حال بررسی توسط معلم راهنما می باشد.</p>
+            @elseif($fileStatus == -1)
+                <p>محتوا شما توسط معلم راهنما رد گردید.</p>
+            @endif
+
         </div>
 
         @if(count($project->attach) > 0)
@@ -290,7 +304,7 @@
                     <h4 class="modal-title">افزودن محتوا</h4>
                 </div>
 
-                <form action="{{route('addAdv')}}" class="dropzone" id="my-awesome-dropzone">
+                <form action="{{route('addFile')}}" class="dropzone" id="my-awesome-dropzone">
                     {{csrf_field()}}
                     <input type="hidden" name="id" value="{{$project->pbId}}">
                 </form>

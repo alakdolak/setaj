@@ -15,14 +15,15 @@ class StudentController extends Controller {
 
             $b = ProjectBuyers::whereId($request->get("id"));
             if($b == null || $b->user_id != Auth::user()->id || $b->status)
-                return Redirect::route('profile');
+                return "nok";
 
-            $path = $request->file->store("advs");
-            $b->adv = str_replace("adv/", "", $path);
+            $path = $request->file->store("public/advs");
+            $b->adv = str_replace("public/advs/", "", $path);
             $b->save();
+            return "ok";
         }
 
-        return Redirect::route('profile');
+        return "nok";
     }
 
 
@@ -34,8 +35,8 @@ class StudentController extends Controller {
             if($b == null || $b->user_id != Auth::user()->id || $b->status)
                 return Redirect::route('profile');
 
-            $path = $request->file->store("contents");
-            $b->file = str_replace("contents/", "", $path);
+            $path = $request->file->store("public/contents");
+            $b->file = str_replace("public/contents/", "", $path);
             $b->save();
 
         }

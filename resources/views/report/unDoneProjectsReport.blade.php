@@ -93,6 +93,10 @@
                     <td>ردیف</td>
                     <td>نام کاربر</td>
                     <td>نام پروژه</td>
+                    <td>فایل تبلیغ</td>
+                    <td>وضعیت تایید تبلیغ</td>
+                    <td>محتوا غیرعینی</td>
+                    <td>وضعیت تایید محتوا غیرعینی</td>
                     <td>تاریخ پذیرش پروژه</td>
                     <td>عملیات</td>
                 </tr>
@@ -103,8 +107,56 @@
                         <td>{{$i}}</td>
                         <td>{{$project->name}}</td>
                         <td>{{$project->title}}</td>
+                        @if($project->adv == null)
+                            <td>فایلی بارگذاری نشده</td>
+                        @else
+                            <td><a download href="{{$project->adv}}">دانلود فایل</a></td>
+                        @endif
+                        <td id="adv_status_{{$project->id}}">
+                            @if($project->adv_status == 1)
+                                تایید شده
+                            @elseif($project->adv_status == 0)
+                                تایید نشده
+                            @else
+                                رد شده
+                            @endif
+                        </td>
+
+                        @if($project->file == null)
+                            <td>فایلی بارگذاری نشده</td>
+                        @else
+                            <td><a download href="{{$project->file}}">دانلود فایل</a></td>
+                        @endif
+
+                        <td id="file_status_{{$project->id}}">{{($project->file_status == 1) ? "تایید شده" : ($project->file_status == 0) ? "تایید نشده" : "رد شده"}}</td>
+
                         <td>{{$project->Bdate . '    ساعت     ' . $project->time}}</td>
-                        <td><button class="btn btn-danger" onclick="deleteBuyProject('{{$project->id}}')">بازپس گیری پروژه</button></td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteBuyProject('{{$project->id}}')">بازپس گیری پروژه</button>
+
+                            @if($project->adv != null &&
+                                ($project->adv_status == 0 || $project->adv_status == -1)
+                            )
+                                <button id="accept_adv_{{$project->id}}" class="btn btn-success" onclick="setAdvStatus('{{$project->id}}', 1)">تایید تبلیغ</button>
+                            @endif
+                            @if($project->adv != null &&
+                                ($project->adv_status == 0 || $project->adv_status == 1)
+                            )
+                                <button id="reject_adv_{{$project->id}}" class="btn btn-warning" onclick="setAdvStatus('{{$project->id}}', -1)">رد تبلیغ</button>
+                            @endif
+
+                            @if($project->file != null && !$project->physical &&
+                                ($project->file_status == 0 || $project->file_status == -1)
+                            )
+                                <button id="accept_file_{{$project->id}}" class="btn btn-primary" onclick="setFileStatus('{{$project->id}}', 1)">تایید محتوا غیرعینی</button>
+                            @endif
+                            @if($project->file != null && !$project->physical &&
+                                ($project->file_status == 0 || $project->file_status == 1)
+                            )
+                                <button id="reject_file_{{$project->id}}" class="btn btn-warning" onclick="setFileStatus('{{$project->id}}', -1)">رد محتوا غیرعینی</button>
+                            @endif
+
+                        </td>
                     </tr>
                     <?php $i++; ?>
                 @endforeach
@@ -114,6 +166,68 @@
     </div>
 
     <script>
+
+        function setAdvStatus(pbId, status) {
+
+            $.ajax({
+                type: 'post',
+                url: '{{route('setAdvStatus')}}',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                data: {
+                    status: status,
+                    pbId: pbId
+                },
+                success: function (res) {
+                    if(res === "ok") {
+                        alert("عملیات موردنظر با موفقیت انجام شد.");
+                        if(status == 1) {
+                            $("#accept_adv_" + pbId).remove();
+                            $("#adv_status_" + pbId).empty().append("تایید شده");
+                        }
+                        else {
+                            $("#reject_adv_" + pbId).remove();
+                            $("#adv_status_" + pbId).empty().append("رد شده");
+                        }
+                    }
+                    else
+                        alert("عملیات موردنظر با خطا مواجه شده است.");
+                }
+            });
+
+        }
+
+        function setFileStatus(pbId, status) {
+
+            $.ajax({
+                type: 'post',
+                url: '{{route('setFileStatus')}}',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                data: {
+                    status: status,
+                    pbId: pbId
+                },
+                success: function (res) {
+                    if(res === "ok") {
+                        alert("عملیات موردنظر با موفقیت انجام شد.");
+                        if(status == 1) {
+                            $("#accept_file_" + pbId).remove();
+                            $("#file_status_" + pbId).empty().append("تایید شده");
+                        }
+                        else {
+                            $("#reject_file_" + pbId).remove();
+                            $("#file_status_" + pbId).empty().append("رد شده");
+                        }
+                    }
+                    else
+                        alert("عملیات موردنظر با خطا مواجه شده است.");
+                }
+            });
+
+        }
 
         function filter(id) {
 

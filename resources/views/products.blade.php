@@ -51,7 +51,11 @@
 
                             <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{route('showProduct', ['id' => $product->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
                                 <div class="sh_mainBox">
-                                    <div class="sh_advPic"></div>
+
+                                    @if($product->adv != null)
+                                        <div class="sh_advPic"></div>
+                                    @endif
+
                                     <div style="background-image: url('{{$product->pic}}')" class="sh_mainPic"></div>
                                     <div class="sh_descript">
                                         <div class="sh_descriptRow sh_title">{{$product->name}}</div>
