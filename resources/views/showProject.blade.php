@@ -4,6 +4,53 @@
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
 
+    <style>
+        .uploadBody {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 30em;
+            height: 40em;
+            margin-top: -20em;
+            margin-left: -15em;
+            background-color: white;
+            border-radius: 7px;
+            border-bottom: 15px solid #04c582;
+        }
+        .uploadBorder {
+            width: 100%;
+            height: -webkit-fill-available;
+            border-top: 40px solid #f9f9f9;
+            border-bottom: 40px solid #f9f9f9;
+            border-radius: 7px;
+        }
+        .uploadHeader {
+            width: 60%;
+            height: 70px;
+            background-color: #ffc20e;
+            margin: -40px auto 0;
+            border-radius: 0 0 10px 10px;
+        }
+        .uploadHeader_imges {
+            width: 24%;
+            height: -webkit-fill-available;
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+        .uploadHeader_img1 {
+            background-image: url("../../public/images/uploadPics/sound.png");
+        }
+        .uploadHeader_img2 {
+            background-image: url("../../public/images/uploadPics/pic.png");
+        }
+        .uploadHeader_img3 {
+            background-image: url("../../public/images/uploadPics/video.png");
+        }
+        .uploadHeader_img4 {
+            background-image: url("../../public/images/uploadPics/file.png");
+        }
+    </style>
+
 @stop
 
 @section("content")
@@ -134,28 +181,38 @@
     </div>
 
     <div id="advModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div id="confirmationModalDialog" class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">انتخاب پروژه</h4>
-                </div>
-                <div class="modal-body">
-                    <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
-                </div>
-                <div class="modal-footer">
-                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>
-                    <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-                </div>
-            </div>
-
-            <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">
-                <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div id="alertText"></div>
+        <div class="uploadBody">
+            <div class="uploadBorder">
+                <div class="uploadHeader">
+                    <div class="uploadHeader_imges uploadHeader_img1"></div>
+                    <div class="uploadHeader_imges uploadHeader_img2"></div>
+                    <div class="uploadHeader_imges uploadHeader_img3"></div>
+                    <div class="uploadHeader_imges uploadHeader_img4"></div>
                 </div>
             </div>
         </div>
+{{--        <div class="modal-dialog">--}}
+{{--            <div id="confirmationModalDialog" class="modal-content">--}}
+{{--                <div class="modal-header">--}}
+{{--                    <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+{{--                    <h4 class="modal-title">انتخاب پروژه</h4>--}}
+{{--                </div>--}}
+{{--                <div class="modal-body">--}}
+{{--                    <p>آیا از انتخاب این پروژه مطمئنید؟!</p>--}}
+{{--                </div>--}}
+{{--                <div class="modal-footer">--}}
+{{--                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>--}}
+{{--                    <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+
+{{--            <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">--}}
+{{--                <div class="modal-body">--}}
+{{--                    <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+{{--                    <div id="alertText"></div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
     </div>
 
     <div id="contentModal" class="modal fade" role="dialog">
