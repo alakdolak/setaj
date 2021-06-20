@@ -52,6 +52,12 @@
             @if($canBuy)
                 <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب پروژه و دریافت آموزش</div>
             @else
+                @if($project->pbId != -1)
+                    <div onclick="$('#advId').val({{$buy->pbId}})" data-toggle="modal" data-target="#advModal" class="shopBtn shopDownloadBtn">افزودن تبلیغ</div>
+                    @if(!$project->physical)
+                        <div data-toggle="modal" data-target="#contentModal" class="shopBtn shopDownloadBtn">افزودن محتوا</div>
+                    @endif
+                @endif
                 <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>
             @endif
         </div>
@@ -127,6 +133,55 @@
         </div>
     </div>
 
+    <div id="advModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div id="confirmationModalDialog" class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">انتخاب پروژه</h4>
+                </div>
+                <div class="modal-body">
+                    <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>
+                    <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                </div>
+            </div>
+
+            <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="alertText"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contentModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div id="confirmationModalDialog" class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">انتخاب پروژه</h4>
+                </div>
+                <div class="modal-body">
+                    <p>آیا از انتخاب این پروژه مطمئنید؟!</p>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>
+                    <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                </div>
+            </div>
+
+            <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="alertText"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="resultModal" class="modal fade" role="dialog">
         <div class="modal-dialog">

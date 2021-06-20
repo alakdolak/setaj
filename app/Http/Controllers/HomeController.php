@@ -42,8 +42,6 @@ use ZipArchive;
 
 class HomeController extends Controller {
 
-    private $siteStart = "13990426";
-
     public function home() {
 
         $x = -1;
@@ -143,7 +141,7 @@ class HomeController extends Controller {
         }
 
 
-        $myProjects = DB::select("select p.*, pb.status, pb.id as pbId from project p, project_buyers pb where " .
+        $myProjects = DB::select("select p.* from project p, project_buyers pb where " .
             "p.id = pb.project_id and pb.user_id = " . Auth::user()->id);
 
         foreach ($myProjects as $myProject) {
@@ -532,11 +530,17 @@ class HomeController extends Controller {
         $canBuy = true;
         $date = getToday()["date"];
 
-        if(
-            ProjectBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->count() > 0 ||
-            $project->start_reg > $date || $project->end_reg < $date
-        )
+        $pb = ProjectBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->first();
+        if($pb != null) {
             $canBuy = false;
+            $project->pbStatus = $pb->status;
+            $project->pbId = $pb->id;
+        }
+
+        else if($project->start_reg > $date || $project->end_reg < $date) {
+            $canBuy = false;
+            $project->pbId = -1;
+        }
 
         if($canBuy && $project->capacity != -1) {
             $canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
