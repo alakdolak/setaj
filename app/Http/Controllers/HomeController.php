@@ -713,8 +713,8 @@ class HomeController extends Controller {
         foreach ($products as $product) {
 
             if($product->adv_status && $product->adv != null &&
-                file_exists(__DIR__ . '/../../../storage/app/public/advs/' . $product->adv))
-                $product->adv = URL::asset("storage/adv/" . $product->adv);
+                file_exists(__DIR__ . '/../../../public/storage/advs/' . $product->adv))
+                $product->adv = true;
             else
                 $product->adv = null;
 
@@ -768,13 +768,16 @@ class HomeController extends Controller {
 
     public function showProduct($id) {
 
-        $product = Product::whereId($id);
+        $product = DB::select('select pb.adv, pb.adv_status, pb.file, pb.file_status, ' .
+            'p.* from product p, project_buyers pb where ' .
+            'p.project_id = pb.project_id and pb.user_id = p.user_id and p.id = ' . $id . ' and hide = false order by p.id desc');
+
         $grade = Auth::user()->grade_id;
 
-        if($product == null || $product->hide) {
+        if($product == null || count($product) == 0)
             return Redirect::route('showAllProducts');
-        }
 
+        $product = $product[0];
         $u = User::whereId($product->user_id);
         $product->owner = $u->first_name . ' ' . $u->last_name;
 
@@ -815,7 +818,6 @@ class HomeController extends Controller {
         $product->attach = $pics;
 
 
-
         $tmpPics = ProductTrailer::whereProductId($product->id)->get();
         $pics = [];
 
@@ -835,7 +837,6 @@ class HomeController extends Controller {
         $product->trailer = $pics;
 
 
-
         if($product->price == 0)
             $product->price = "رایگان";
         else
@@ -849,6 +850,18 @@ class HomeController extends Controller {
 
         if(Transaction::whereProductId($id)->count() > 0)
             $canBuy = false;
+
+        if($product->adv_status && $product->adv != null &&
+            file_exists(__DIR__ . '/../../../public/storage/advs/' . $product->adv))
+            $product->adv = URL::asset("storage/advs/" . $product->adv);
+        else
+            $product->adv = null;
+
+        if($product->file_status && $product->file != null &&
+            file_exists(__DIR__ . '/../../../public/storage/advs/' . $product->file))
+            $product->file = URL::asset("storage/contents/" . $product->file);
+        else
+            $product->file = null;
 
         return view('showProduct', ['canBuy' => $canBuy,
             'product' => $product, 'myReminder' => $myReminder]);
