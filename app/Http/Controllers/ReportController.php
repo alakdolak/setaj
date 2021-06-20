@@ -11,6 +11,7 @@ use App\models\Transaction;
 use App\models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\URL;
 use PHPExcel;
 use PHPExcel_Writer_Excel2007;
 
@@ -150,7 +151,9 @@ class ReportController extends Controller {
             return view('report.usersReport', ['grades' => Grade::all(),
                 "path" => route("unDoneProjectsReport")]);
 
-        $projects = DB::select("select p.title, concat(u.first_name, ' ', u.last_name) as name, pb.id, pb.created_at from project_buyers pb, project p, users u where p.id = pb.project_id" .
+        $projects = DB::select("select p.physical, p.title, concat(u.first_name, ' ', u.last_name) as name, " .
+            "pb.id, pb.created_at, pb.adv, pb.file, pb.adv_status, pb.file_status " .
+            "from project_buyers pb, project p, users u where p.id = pb.project_id" .
             " and pb.user_id = u.id and pb.status = false and u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 order by pb.created_at desc"
         );
 
@@ -168,6 +171,18 @@ class ReportController extends Controller {
                     break;
                 }
             }
+
+            if($project->adv != null &&
+                file_exists(__DIR__ . '/../../../public/storage/advs/' . $project->adv))
+                $project->adv = URL::asset("storage/advs/" . $project->adv);
+            else
+                $project->adv = null;
+
+            if($project->file != null &&
+                file_exists(__DIR__ . '/../../../public/storage/contents/' . $project->file))
+                $project->file = URL::asset("storage/contents/" . $project->file);
+            else
+                $project->file = null;
 
             if($allowAdd)
                 $allTitles[count($allTitles)] = $project->title;

@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $file
  * @property string $adv
  * @property boolean $status
- * @property boolean $adv_status
- * @property boolean $file_status
+ * @property int $adv_status
+ * @property int $file_status
  * @method static \Illuminate\Database\Query\Builder|\App\models\ProjectBuyers whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\ProjectBuyers whereProjectId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\ProjectBuyers whereStatus($value)

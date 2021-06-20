@@ -530,8 +530,8 @@ class HomeController extends Controller {
         $canBuy = true;
         $canAddAdv = false;
         $canAddFile = false;
-        $advStatus = -1;
-        $fileStatus = -1;
+        $advStatus = -2;
+        $fileStatus = -2;
 
         $date = getToday()["date"];
 
@@ -547,11 +547,11 @@ class HomeController extends Controller {
 
             $project->pbId = $pb->id;
 
-            if(!$canAddAdv && $pb->adv != null)
-                $advStatus = $pb->adv_status ? 1 : 0;
+            if((!$canAddAdv && $pb->adv != null) || $pb->adv_status != 0)
+                $advStatus = $pb->adv_status;
 
-            if(!$canAddFile && $pb->file != null)
-                $fileStatus = $pb->file_status ? 1 : 0;
+            if((!$canAddFile && $pb->file != null) || $pb->file_status != 0)
+                $fileStatus = $pb->file_status;
         }
 
         else if($project->start_reg > $date || $project->end_reg < $date)
@@ -702,14 +702,21 @@ class HomeController extends Controller {
             $grade = Auth::user()->grade_id;
 
         $today = getToday()["date"];
-        $products = DB::select('select p.id, name, description, price, star, project_id, ' .
+        $products = DB::select('select pb.adv, pb.adv_status, pb.file, pb.file_status, ' .
+            'p.id, name, description, price, star, p.project_id, ' .
             'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
-            ' from product p, users u where ' .
-            'p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
+            ' from product p, users u, project_buyers pb  where ' .
+            'p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
 
         $mainDiff = findDiffWithSiteStart();
 
         foreach ($products as $product) {
+
+            if($product->adv_status && $product->adv != null &&
+                file_exists(__DIR__ . '/../../../storage/app/public/advs/' . $product->adv))
+                $product->adv = URL::asset("storage/adv/" . $product->adv);
+            else
+                $product->adv = null;
 
             $date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
             $date = convertDateToString2($date, "-");

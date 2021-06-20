@@ -278,6 +278,10 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
 Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
+    Route::post('setAdvStatus', ['as' => 'setAdvStatus', 'uses' => 'OperatorController@setAdvStatus']);
+
+    Route::post('setFileStatus', ['as' => 'setFileStatus', 'uses' => 'OperatorController@setFileStatus']);
+
     Route::post('deleteBuyProject', ['as' => 'deleteBuyProject', 'uses' => 'AdminController@deleteBuyProject']);
 
     Route::post('changePoint', ['as' => 'changePoint', 'uses' => 'OperatorController@changePoint']);
