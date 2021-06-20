@@ -129,8 +129,8 @@
                             <div class="photosAndVideosMainDiv" id="myProjects">
                                 @foreach($myProjects as $buy)
                                     <div class="shopOneBox col-lg-4 col-xs-6">
-                                        <div class="sh_mainBox">
-                                            <div onclick="document.location.href = '{{route('showProject', ['id' => $buy->id])}}'" style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
+                                        <div onclick="document.location.href = '{{route('showProject', ['id' => $buy->id])}}'" class="sh_mainBox">
+                                            <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
                                             <div class="sh_descript">
                                                 <div class="sh_descriptRow sh_title">{{$buy->title}}</div>
 
@@ -147,15 +147,6 @@
                                                         <div class="priceText">وضعیت: در حال انجام</div>
                                                     @endif
                                                 </div>
-
-                                                @if(!$buy->status)
-                                                    <center>
-                                                        <button onclick="$('#advId').val({{$buy->pbId}})" data-toggle="modal" data-target="#advModal" style="margin: 10px">افزودن تبلیغ</button>
-                                                        @if(!$buy->physical)
-                                                            <button style="margin: 10px">افزودن محتوا</button>
-                                                        @endif
-                                                    </center>
-                                                @endif
 
                                                 <div class="sh_descriptRow sh_priceBox">
                                                     <div class="priceIcons calenderIcon"></div>
