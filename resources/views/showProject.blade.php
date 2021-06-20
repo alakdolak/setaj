@@ -53,7 +53,7 @@
                 <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب پروژه و دریافت آموزش</div>
             @else
                 @if($project->pbId != -1)
-                    <div onclick="$('#advId').val({{$buy->pbId}})" data-toggle="modal" data-target="#advModal" class="shopBtn shopDownloadBtn">افزودن تبلیغ</div>
+                    <div onclick="$('#advId').val({{$project->pbId}})" data-toggle="modal" data-target="#advModal" class="shopBtn shopDownloadBtn">افزودن تبلیغ</div>
                     @if(!$project->physical)
                         <div data-toggle="modal" data-target="#contentModal" class="shopBtn shopDownloadBtn">افزودن محتوا</div>
                     @endif

@@ -141,7 +141,7 @@ class HomeController extends Controller {
         }
 
 
-        $myProjects = DB::select("select p.* from project p, project_buyers pb where " .
+        $myProjects = DB::select("select p.*, pb.status from project p, project_buyers pb where " .
             "p.id = pb.project_id and pb.user_id = " . Auth::user()->id);
 
         foreach ($myProjects as $myProject) {
