@@ -111,8 +111,8 @@ class OperatorController extends Controller {
 
             $pb->adv_status = $status;
             if($status == -1) {
-                if(file_exists(__DIR__ . '/../../../public/storage/advs/' . $pb->file))
-                    unlink(__DIR__ . '/../../../public/storage/advs/' . $pb->file);
+                if(file_exists(__DIR__ . '/../../../public/storage/advs/' . $pb->adv))
+                    unlink(__DIR__ . '/../../../public/storage/advs/' . $pb->adv);
 
                 $pb->adv = null;
             }
