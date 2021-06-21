@@ -10,8 +10,8 @@
             top: 50%;
             left: 50%;
             width: 30em;
-            height: 34em;
-            margin-top: -17em;
+            height: 36em;
+            margin-top: -18em;
             margin-left: -15em;
             background-color: white;
             border-radius: 7px;
@@ -53,30 +53,56 @@
         .uploadHeader_img4 {
             background-image: url("../../public/images/uploadPics/file.png");
         }
-        .uploadBtn {
-            width: 80%;
-            height: 60px !important;
+        /*.uploadBtn {*/
+        /*    line-height: 60px;*/
+        /*    background-image: linear-gradient(to bottom right, #ffc438, red) !important;*/
+        /*    border: none !important;*/
+        /*    border-radius: 100px !important;*/
+        /*    box-shadow: 0px 0px 20px 5px #ff8900;*/
+        /*    color: white;*/
+        /*    padding: 0px !important;*/
+        /*    min-height: 0px !important;*/
+        /*    margin: 35px;*/
+        /*    font-size: 1.75em;*/
+        /*    font-weight: 500;*/
+        /*    text-align: center;*/
+        /*}*/
+        /*.uploadDescript {*/
+        /*    padding: 50px 70px;*/
+        /*    text-align: center;*/
+        /*}*/
+        /*.uploadTitleText {*/
+        /*    font-size: 1.5em;*/
+        /*    font-weight: 700;*/
+        /*    padding: 10px;*/
+        /*}*/
+        .uploadBodyBox {
+            text-align: center;
+            padding: 50px 70px;
+        }
+        .uploadTitleText {
             line-height: 60px;
             background-image: linear-gradient(to bottom right, #ffc438, red) !important;
-            border: none !important;
-            border-radius: 100px !important;
+            border-radius: 25px 25px 0 0 !important;
             box-shadow: 0px 0px 20px 5px #ff8900;
             color: white;
             padding: 0px !important;
             min-height: 0px !important;
-            margin: 35px;
             font-size: 1.75em;
             font-weight: 500;
             text-align: center;
         }
-        .uploadDescript {
-            padding: 50px 35px 0;
-            text-align: center;
+        .uploadBox {
+            border: 1px solid orange !important;
+            box-shadow: 0px 0px 20px 5px #ff8900;
+            border-radius: 0 0 25px 25px !important;
+            padding: 0 !important;
         }
-        .uploadTitleText {
-            font-size: 1.5em;
-            font-weight: 700;
-            padding: 10px;
+        .dropzone .dz-message {
+            margin: 3em 0 !important;
+        }
+        .uploadّFileAllowed {
+            margin: 30px 0;
         }
         .uploadfooter_image {
             width: 65px;
@@ -84,7 +110,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 70px auto 0px;
+            margin: -45px auto 0px;
             background-color: #f9f9f9;
             border-radius: 50%;
             box-shadow: 0px 0px 10px 2px #fff;
@@ -258,13 +284,21 @@
                     <div class="uploadHeader_images uploadHeader_img3"></div>
                     <div class="uploadHeader_images uploadHeader_img4"></div>
                 </div>
-                <div class="uploadDescript">
+{{--                <div class="uploadDescript">--}}
+{{--                    <div class="uploadTitleText">بارگزاری فایل تبلیغ</div>--}}
+{{--                    <div>فایل های خود را اینجا بکشـــید و <br>یا فایل خود را با کلیک انتخاب کنید</div>--}}
+{{--                    <form action="{{route('addAdv')}}" class="dropzone uploadBtn" id="my-awesome-dropzone">--}}
+{{--                        {{csrf_field()}}--}}
+{{--                        <input type="hidden" name="id" value="{{$project->pbId}}">--}}
+{{--                    </form>--}}
+{{--                </div>--}}
+                <div class="uploadBodyBox">
                     <div class="uploadTitleText">بارگزاری فایل تبلیغ</div>
-                    <div>فایل های خود را اینجا بکشـــید و <br>یا فایل خود را با کلیک انتخاب کنید</div>
-                    <form action="{{route('addAdv')}}" class="dropzone uploadBtn" id="my-awesome-dropzone">
+                    <form action="{{route('addAdv')}}" class="dropzone uploadBox" id="my-awesome-dropzone">
                         {{csrf_field()}}
                         <input type="hidden" name="id" value="{{$project->pbId}}">
                     </form>
+                    <div class="uploadّFileAllowed">حداکثر فایل مجاز: 100 مگابایت</div>
                 </div>
                 <div class="uploadfooter_image">
                     <div class="uploadfooter_img1"></div>
