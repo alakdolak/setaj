@@ -61,7 +61,7 @@
         </div>
         </div>
         <div class="mainBodyUserProfile">
-            <div class="col-sm-12" style="padding: 0 12% !important; background-color: #feebcd">
+            <div class="col-sm-12 pr_scoreBodyBox">
                 <div class="pr_scoreBody">
                     <div class="pr_arrows leftArrow"></div>
                     <div class="pr_scoreBox">
