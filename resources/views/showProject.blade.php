@@ -110,7 +110,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: -45px auto 0px;
+            margin: -50px auto 0px;
             background-color: #f9f9f9;
             border-radius: 50%;
             box-shadow: 0px 0px 10px 2px #fff;

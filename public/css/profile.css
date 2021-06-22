@@ -177,7 +177,128 @@
 
 /*end of header of prifile page*/
 
-/*body of prifile page*/
+
+/*body of a a part of medal of profile page*/
+
+.pr_scoreBody {
+    width: 95%;
+    margin: 50px auto;
+    padding: 10px 0;
+    background-image: linear-gradient(to right, #ffcb9d 77%, #ffbb80 77%, #ffbb80) !important;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.pr_scoreBox {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.pr_scoreRow {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+.pr_scoreText {
+    color: white;
+    font-size: 2em;
+    font-weight: 800;
+}
+.pr_scoreIcone {
+    width: 75px;
+    height: 75px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.healthIcone {
+    background-image: url("../images/profilePics/healthy.png");
+}
+.behaviorIcone {
+    background-image: url("../images/profilePics/behavior.png");
+}
+.thinkIcone {
+    background-image: url("../images/profilePics/think.png");
+}
+.karestonIcone {
+    background-image: url("../images/profilePics/kareston.png");
+}
+.pr_scorePointBox {
+    width: 585px;
+    height: 75px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("../images/profilePics/pointRow.png");
+    position: relative;
+}
+.pr_scorePoint {
+    background-image: linear-gradient(to right, #ffffc3, #ffc438) !important;
+    height: 25px;
+    position: absolute;
+    top: 21px;
+    right: 18px;
+}
+.healthPoint {
+    width: 56px;
+}
+.behaviorPoint {
+    width: 546px;
+}
+.thinkPoint {
+    width: 406px;
+}
+.karestonPoint {
+    width: 190px;
+}
+.pr_scoreFieldBox {
+    width: 75px;
+    height: 75px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.pr_scoreHealthyBox {
+    background-image: url("../images/profilePics/healthyBox.png");
+}
+.pr_scoreBehaviorBox {
+    background-image: url("../images/profilePics/behaviorBox.png");
+}
+.pr_scoreThinkBox {
+    background-image: url("../images/profilePics/thinkBox.png");
+}
+.pr_scoreKarestonBox {
+    background-image: url("../images/profilePics/karestonBox.png");
+}
+.pr_scoreNum {
+    line-height: 75px;
+    text-align: center;
+    font-size: 2em;
+    font-weight: 700;
+}
+
+.pr_arrows {
+    width: 75px;
+    height: 75px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    position: absolute;
+}
+.leftArrow {
+    background-image: url("../images/profilePics/leftArrow.png");
+    right: -30px;
+}
+.rightArrow {
+    background-image: url("../images/profilePics/rightArrow.png");
+    left: -30px;
+}
+
+
+/*end of body of a a part of medal of profile page*/
+
+
+/*body of profile page*/
 
 .pointDescript {
     padding: 15px 0 0;
@@ -248,4 +369,4 @@
     }
 }
 
-/*end of body of prifile page*/
+/*end of body of profile page*/
