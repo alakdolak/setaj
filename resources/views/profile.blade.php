@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{URL::asset('css/card.css?v=1.3')}}">
 
     <style>
-
         .userActivitiesPhotos {
             padding: 20px 0 !important;
         }
@@ -62,6 +61,54 @@
         </div>
         </div>
         <div class="mainBodyUserProfile">
+            <div class="col-sm-12" style="padding: 0 12% !important; background-color: #feebcd">
+                <div class="pr_scoreBody">
+                    <div class="pr_arrows leftArrow"></div>
+                    <div class="pr_scoreBox">
+                        <div class="pr_scoreRow">
+                            <div class="pr_scoreText">تندرستی</div>
+                            <div class="pr_scoreIcone healthIcone"></div>
+                            <div class="pr_scorePointBox">
+                                <div class="pr_scorePoint healthPoint"></div>
+                            </div>
+                            <div class="pr_scoreFieldBox pr_scoreHealthyBox">
+                                <div class="pr_scoreNum">10</div>
+                            </div>
+                        </div>
+                        <div class="pr_scoreRow">
+                            <div class="pr_scoreText">تفکـــــر</div>
+                            <div class="pr_scoreIcone behaviorIcone"></div>
+                            <div class="pr_scorePointBox">
+                                <div class="pr_scorePoint behaviorPoint"></div>
+                            </div>
+                            <div class="pr_scoreFieldBox pr_scoreBehaviorBox">
+                                <div class="pr_scoreNum">100</div>
+                            </div>
+                        </div>
+                        <div class="pr_scoreRow">
+                            <div class="pr_scoreText">کــــردار</div>
+                            <div class="pr_scoreIcone thinkIcone"></div>
+                            <div class="pr_scorePointBox">
+                                <div class="pr_scorePoint thinkPoint"></div>
+                            </div>
+                            <div class="pr_scoreFieldBox pr_scoreThinkBox">
+                                <div class="pr_scoreNum">80</div>
+                            </div>
+                        </div>
+                        <div class="pr_scoreRow">
+                            <div class="pr_scoreText">دست‌رنج</div>
+                            <div class="pr_scoreIcone karestonIcone"></div>
+                            <div class="pr_scorePointBox">
+                                <div class="pr_scorePoint karestonPoint"></div>
+                            </div>
+                            <div class="pr_scoreFieldBox pr_scoreKarestonBox">
+                                <div class="pr_scoreNum">30</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pr_arrows rightArrow"></div>
+                </div>
+            </div>
             <div class="mainDivContainerProfilePage row">
                 <div class="col-sm-12" style="margin-top: 40px; padding: 0 !important;">
                     <div class="userProfileDetailsMainDiv rightColBoxes col-md-4 col-xs-12">
