@@ -65,6 +65,8 @@
 
 
 @include("layouts.footer")
-@include("layouts.support")
+@if(\Illuminate\Support\Facades\Auth::check())
+    @include("layouts.support")
+@endif
 
 </body>

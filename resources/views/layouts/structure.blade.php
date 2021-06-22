@@ -220,6 +220,14 @@
                         </li>
 
                         <li class="nav-item  ">
+                            <a href="{{route('tutorials')}}" class="nav-link nav-toggle">
+                                <i class="icon-diamond"></i>
+                                <span class="title">آموزش ها</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item  ">
                             <a href="{{route('grades')}}" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
                                 <span class="title">پایه های تحصیلی</span>

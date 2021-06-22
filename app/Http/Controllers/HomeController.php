@@ -13,6 +13,7 @@ use App\models\CitizenPic;
 use App\models\CommonQuestion;
 use App\models\ConfigModel;
 use App\models\FAQCategory;
+use App\models\Grade;
 use App\models\Msg;
 use App\models\Product;
 use App\models\ProductAttach;
@@ -30,6 +31,7 @@ use App\models\ServiceGrade;
 use App\models\ServicePic;
 use App\models\Tag;
 use App\models\Transaction;
+use App\models\Tutorial;
 use App\models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -44,13 +46,16 @@ class HomeController extends Controller {
 
     public function home() {
 
-        $x = -1;
+//        $x = -1;
+//
+//        if(!siteTime()) {
+//            $x = getReminderToNextTime();
+//        }
 
-        if(!siteTime()) {
-            $x = getReminderToNextTime();
-        }
+        if(Auth::check())
+            return Redirect::route('choosePlan');
 
-        return view('home', ["reminder" => $x]);
+        return view('home', ["reminder" => -1]);
     }
 
     public function choosePlan() {
@@ -202,11 +207,22 @@ class HomeController extends Controller {
 
         $categories = FAQCategory::all();
 
-        foreach ($categories as $category) {
+        foreach ($categories as $category)
             $category->items = CommonQuestion::whereCategoryId($category->id)->get();
+
+        $tutorials = Tutorial::all();
+        foreach ($tutorials as $tutorial) {
+
+            if($tutorial->pic != null &&
+                file_exists(__DIR__ . '/../../../public/storage/tutorials/' . $tutorial->pic))
+                $tutorial->pic = URL::asset("storage/tutorials/" . $tutorial->pic);
+            else
+                $tutorial->pic = null;
+
+            $tutorial->path = URL::asset("storage/tutorials/" . $tutorial->path);
         }
 
-        return view('FAQ', ['categories' => $categories]);
+        return view('FAQ', ['categories' => $categories, 'tutorials' => $tutorials]);
     }
 
 
@@ -215,9 +231,9 @@ class HomeController extends Controller {
 
         $x = -1;
 
-        if(!siteTime()) {
-            $x = getReminderToNextTime();
-        }
+//        if(!siteTime()) {
+//            $x = getReminderToNextTime();
+//        }
 
         return view('home', ["reminder" => $x]);
     }
@@ -270,11 +286,8 @@ class HomeController extends Controller {
 
     public function showAllServices($grade = -1) {
 
-        if($grade != -1 && Auth::user()->level == getValueInfo("studentLevel"))
-            return Redirect::route("choosePlan");
-
         if($grade == -1)
-            $grade = Auth::user()->grade_id;
+            $grade = Grade::first()->id;
 
         $services = DB::select('select id, title, description, star, capacity, created_at from service where ' .
             '(select count(*) from service_grade where service_id = service.id and grade_id = ' . $grade . ' ) > 0'.
@@ -399,11 +412,14 @@ class HomeController extends Controller {
 
     public function showAllProjects($grade = -1) {
 
-        if($grade != -1 && Auth::user()->level == getValueInfo("studentLevel"))
-            return Redirect::route("choosePlan");
+//        if($grade != -1 && Auth::user()->level == getValueInfo("studentLevel"))
+//            return Redirect::route("choosePlan");
+
+//        if($grade == -1)
+//            $grade = Auth::user()->grade_id;
 
         if($grade == -1)
-            $grade = Auth::user()->grade_id;
+            $grade = Grade::first()->id;
 
         $date = getToday()["date"];
 
@@ -576,11 +592,8 @@ class HomeController extends Controller {
 
     public function showAllCitizens($grade = -1) {
 
-        if($grade != -1 && Auth::user()->level == getValueInfo("studentLevel"))
-            return Redirect::route("choosePlan");
-
         if($grade == -1)
-            $grade = Auth::user()->grade_id;
+            $grade = Grade::first()->id;
 
         $date = getToday()["date"];
 
@@ -695,11 +708,11 @@ class HomeController extends Controller {
 
     public function showAllProducts($grade = -1) {
 
-        if($grade != -1 && Auth::user()->level == getValueInfo("studentLevel"))
-            return Redirect::route("choosePlan");
+        if(Auth::check())
+            $grade = Auth::user()->grade_id;
 
         if($grade == -1)
-            $grade = Auth::user()->grade_id;
+            $grade = Grade::first()->id;
 
         $today = getToday()["date"];
         $products = DB::select('select pb.adv, pb.adv_status, pb.file, pb.file_status, ' .

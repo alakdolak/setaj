@@ -41,9 +41,9 @@
     @include("layouts.header")
     @yield("banner")
 
-    @if(\Illuminate\Support\Facades\Auth::user()->level != getValueInfo('studentLevel'))
+    <center>
 
-        <center>
+        @if(!\Illuminate\Support\Facades\Auth::check() || \Illuminate\Support\Facades\Auth::user()->level == 3)
 
             @if($grade != 4)
                 <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default">دوم</button>
@@ -81,9 +81,8 @@
                 <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">هفتم</button>
             @endif
 
-        </center>
-
-    @endif
+        @endif
+    </center>
 
     @if(isset($tags))
         <div class="filterBorder">
@@ -101,7 +100,10 @@
     @yield("content")
 
     @include("layouts.footer")
-    @include("layouts.support")
+
+    @if(\Illuminate\Support\Facades\Auth::check())
+        @include("layouts.support")
+    @endif
 
     <script>
 

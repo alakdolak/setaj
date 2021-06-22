@@ -13,7 +13,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', ['as' => 'home', 'uses' => 'HomeController@home']);
+
+Route::get('/', ['as' => 'home', 'uses' => 'HomeController@choosePlan']);
 
 Route::get('faq', ['as' => 'faq', 'uses' => 'HomeController@faq']);
 
@@ -21,6 +22,15 @@ Route::get('contactUs', ['as' => 'contactUs', 'uses' => 'HomeController@contactU
 
 Route::get('rules', ['as' => 'rules', 'uses' => 'HomeController@rules']);
 
+Route::get('choosePlan', ['as' => 'choosePlan', 'uses' => 'HomeController@choosePlan']);
+
+Route::get('showAllServices/{grade?}', ['as' => 'showAllServices', 'uses' => 'HomeController@showAllServices']);
+
+Route::get('showAllProjects/{grade?}', ['as' => 'showAllProjects', 'uses' => 'HomeController@showAllProjects']);
+
+Route::get('showAllCitizens/{grade?}', ['as' => 'showAllCitizens', 'uses' => 'HomeController@showAllCitizens']);
+
+Route::get('showAllProducts/{grade?}', ['as' => 'showAllProducts', 'uses' => 'HomeController@showAllProducts']);
 
 
 Route::group(['middleware' => ['notLogin']], function () {
@@ -46,8 +56,6 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
     Route::post('addFile', ['as' => 'addFile', 'uses' => 'StudentController@addFile']);
 
-    Route::get('choosePlan', ['as' => 'choosePlan', 'uses' => 'HomeController@choosePlan']);
-
     Route::get('profile', ['as' => 'profile', 'uses' => 'HomeController@profile']);
 
     Route::post("sendMsg", ["as" => "sendMsg", "uses" => "HomeController@sendMsg"]);
@@ -55,25 +63,16 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
     Route::post("reloadMsgs", ["as" => "reloadMsgs", "uses" => "HomeController@reloadMsgs"]);
 
 
-
-    Route::get('showAllServices/{grade?}', ['as' => 'showAllServices', 'uses' => 'HomeController@showAllServices']);
-
     Route::get('showService/{id}', ['as' => 'showService', 'uses' => 'HomeController@showService']);
 
 
-    Route::get('showAllProjects/{grade?}', ['as' => 'showAllProjects', 'uses' => 'HomeController@showAllProjects']);
+
 
     Route::get('showProject/{id}', ['as' => 'showProject', 'uses' => 'HomeController@showProject']);
 
-
-    Route::get('showAllCitizens/{grade?}', ['as' => 'showAllCitizens', 'uses' => 'HomeController@showAllCitizens']);
-
     Route::get('showCitizen/{id}', ['as' => 'showCitizen', 'uses' => 'HomeController@showCitizen']);
 
-
     Route::get('showProduct/{id}', ['as' => 'showProduct', 'uses' => 'HomeController@showProduct']);
-
-    Route::get('showAllProducts/{grade?}', ['as' => 'showAllProducts', 'uses' => 'HomeController@showAllProducts']);
 
 
 
@@ -106,6 +105,13 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
     Route::get("admin", function () {
         return view('adminProfile');
     });
+
+    Route::get('tutorials', ['as' => 'tutorials', 'uses' => 'AdminController@tutorials']);
+
+    Route::delete('tutorial/{id}', ['as' => 'deleteTutorial', 'uses' => 'AdminController@deleteTutorial']);
+
+    Route::post('addTutorial', ['as' => 'addTutorial', 'uses' => 'AdminController@addTutorial']);
+
 
     Route::get('config', ['as' => 'config', 'uses' => 'AdminController@config']);
 

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\models\Citizen;
 use App\models\ProjectBuyers;
 use App\models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\URL;
 
 class StudentController extends Controller {
 
@@ -52,18 +52,32 @@ class StudentController extends Controller {
 
     public function getMyCitizenPoints() {
 
-        $tags = Tag::whereType("CITIZEN")->get();
+        $tags = Tag::whereType("CITIZEN")->orderBy("id", "asc")->get();
         $uId = Auth::user()->id;
         $points = [];
         $counter = 0;
+        $localPoints = [];
 
         foreach ($tags as $tag) {
             $query = DB::select('select sum(cb.point) as sum_ from citizen c, citizen_buyers cb where ' .
                 'c.id = cb.project_id and c.tag_id = ' . $tag->id . ' and cb.user_id = ' . $uId);
-            $points[$counter++] = ["point" => ($query[0]->sum_ == null) ? 0 : $query[0]->sum_,
+            $points[$counter] = ["point" => ($query[0]->sum_ == null) ? 0 : $query[0]->sum_,
                 "id" => $tag->id];
+
+            $localPoints[$counter] = $points[$counter]["point"];
+            $counter++;
         }
 
-        return json_encode(["status" => "ok", "points" => $points]);
+        $medal = DB::select("select name, pic from medal where `8` <= " .$localPoints[0]
+            . " and `9` <= " . $localPoints[1] . " and `10` <= " . $localPoints[2] . " order by id desc limit 0, 1");
+
+        if($medal != null && count($medal) > 0) {
+            $medal = $medal[0];
+            $medal->pic = URL::asset("medals/" . $medal->pic);
+        }
+        else
+            $medal = null;
+
+        return json_encode(["status" => "ok", "points" => $points, 'medal' => $medal]);
     }
 }

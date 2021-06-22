@@ -1,6 +1,14 @@
-ALTER TABLE `project_buyers` CHANGE `adv_status` `adv_status` INT(1) NOT NULL DEFAULT '0';
-ALTER TABLE `project_buyers` CHANGE `file_status` `file_status` INT(1) NOT NULL DEFAULT '0';
-ALTER TABLE `tag` ADD `second_name` VARCHAR(400) NULL DEFAULT NULL AFTER `type`;
-UPDATE `tag` SET `second_name` = 'تندرستی' WHERE `tag`.`id` = 8;
-UPDATE `tag` SET `second_name` = 'تفکـــــر' WHERE `tag`.`id` = 9;
-UPDATE `tag` SET `second_name` = 'کــــردار' WHERE `tag`.`id` = 10;
+CREATE TABLE `seraj`.`tutorials` ( `id` INT NOT NULL AUTO_INCREMENT , `title` VARCHAR(500) NOT NULL , `pic` VARCHAR(500) NULL , `path` VARCHAR(500) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `medal` (
+  `id` int(11) NOT NULL,
+  `name` varchar(400) NOT NULL,
+  `pic` varchar(400) NOT NULL,
+  `8` int(3) NOT NULL,
+  `9` int(3) NOT NULL,
+  `10` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE `medal`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `medal`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

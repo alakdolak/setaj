@@ -6,19 +6,16 @@ use App\models\CommonQuestion;
 use App\models\ConfigModel;
 use App\models\FAQCategory;
 use App\models\Grade;
-use App\models\PointConfig;
 use App\models\ProjectBuyers;
-use App\models\RedundantInfo1;
-use App\models\SchoolStudent;
 use App\models\Tag;
+use App\models\Tutorial;
 use App\models\User;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
-use PHPExcel;
+use Illuminate\Support\Facades\URL;
 use PHPExcel_IOFactory;
-use PHPExcel_Writer_Excel2007;
 
 class AdminController extends Controller {
 
@@ -84,6 +81,58 @@ class AdminController extends Controller {
     }
 
 
+    public function tutorials() {
+
+        $tutorials = Tutorial::all();
+        foreach ($tutorials as $tutorial) {
+
+            if($tutorial->pic != null &&
+                file_exists(__DIR__ . '/../../../public/storage/tutorials/' . $tutorial->pic))
+                $tutorial->pic = URL::asset("storage/tutorials/" . $tutorial->pic);
+            else
+                $tutorial->pic = null;
+        }
+
+        return view('operator.tutorials', ['tutorials' => $tutorials]);
+    }
+
+    public function addTutorial(Request $request) {
+
+        if($request->has("name") && $request->hasFile("file") &&
+            $request->hasFile("pic")) {
+
+            $tmp = new Tutorial();
+            $tmp->title = $request["name"];
+            $tmp->pic = str_replace("public/tutorials/", "", $request->pic->store("public/tutorials"));
+            $tmp->path = str_replace("public/tutorials/", "", $request->file->store("public/tutorials"));
+            $tmp->save();
+
+        }
+
+        return Redirect::route('tutorials');
+    }
+
+    public function deleteTutorial($id) {
+        try {
+
+            $t = Tutorial::whereId($id);
+            if($t == null)
+                return "nok";
+
+            if($t->pic != null &&
+                file_exists(__DIR__ . '/../../../public/storage/tutorials/' . $t->pic))
+                unlink(__DIR__ . '/../../../public/storage/tutorials/' . $t->pic);
+
+            if(file_exists(__DIR__ . '/../../../public/storage/tutorials/' . $t->path))
+                unlink(__DIR__ . '/../../../public/storage/tutorials/' . $t->path);
+
+            $t->delete();
+            return "ok";
+        }
+        catch (\Exception $x) {
+            return "nok";
+        }
+    }
 
     public function faqCategories($err = "") {
         return view('faqCategories', ['items' => FAQCategory::all(), 'err' => $err]);

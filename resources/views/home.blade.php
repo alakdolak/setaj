@@ -24,7 +24,7 @@
 
         <div class="homePic"></div>
 
-        @if($reminder != -1)
+        @if($reminder != -1 )
             <div class="nextEvent">
                 <div class="nextEventLogoDiv">
                     <div class="nextEventLogo"></div>
@@ -36,23 +36,23 @@
             </div>
         @endif
 
-        @if(\Illuminate\Support\Facades\Auth::check())
-            <div class="homeLoginBtn" onclick="document.location.href = '{{route('choosePlan')}}'">
-                <div class="homeLoginBtnText">
-                    ورود به ســــــایت
-                </div>
-            </div>
-        @else
-            <div class="homeLoginBtn" onclick="showLogin()">
-                <div class="homeLoginBtnText">
-                    ورود به ســــــایت
-                </div>
-            </div>
-        @endif
+{{--        @if(\Illuminate\Support\Facades\Auth::check())--}}
+{{--            <div class="homeLoginBtn" onclick="document.location.href = '{{route('choosePlan')}}'">--}}
+{{--                <div class="homeLoginBtnText">--}}
+{{--                    ورود به ســــــایت--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        @else--}}
+{{--            <div class="homeLoginBtn" onclick="showLogin()">--}}
+{{--                <div class="homeLoginBtnText">--}}
+{{--                    ورود به ســــــایت--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        @endif--}}
 
     </div>
 
-    <div class="loginBody hidden">
+    <div class="loginBody">
         <div class="loginTitle">
             <div class="loginTitleImg"></div>
         </div>
