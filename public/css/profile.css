@@ -180,8 +180,13 @@
 
 /*body of a a part of medal of profile page*/
 
+.pr_scoreBodyBox {
+    background-color: #feebcd;
+    padding: 0 12% !important;
+}
+
 .pr_scoreBody {
-    width: 95%;
+    /*width: 95%;*/
     margin: 50px auto;
     padding: 10px 0;
     background-image: linear-gradient(to right, #ffcb9d 77%, #ffbb80 77%, #ffbb80) !important;
@@ -190,6 +195,7 @@
     align-items: center;
 }
 .pr_scoreBox {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-content: center;
@@ -204,12 +210,13 @@
     padding: 10px;
 }
 .pr_scoreText {
+    width: 11%;
     color: white;
     font-size: 2em;
     font-weight: 800;
 }
 .pr_scoreIcone {
-    width: 75px;
+    width: 8%;
     height: 75px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -227,7 +234,7 @@
     background-image: url("../images/profilePics/kareston.png");
 }
 .pr_scorePointBox {
-    width: 585px;
+    width: 65%;
     height: 75px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -239,11 +246,11 @@
     height: 25px;
     position: absolute;
     top: 21px;
-    right: 18px;
+    right: 3%;
 }
 
 .pr_scoreFieldBox {
-    width: 75px;
+    width: 8%;
     height: 75px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -281,6 +288,106 @@
 .rightArrow {
     background-image: url("../images/profilePics/rightArrow.png");
     left: -30px;
+}
+
+
+@media (max-width: 1300px) {
+    .pr_scoreBodyBox {
+        padding: 0 10% !important;
+    }
+    .pr_scoreRow {
+        width: 92%;
+    }
+    .pr_scoreText {
+        font-size: 1.75em;
+    }
+    .pr_scoreNum {
+        font-size: 1.75em;
+    }
+}
+@media (max-width: 992px) {
+    .pr_scoreBodyBox {
+        padding: 0 6% !important;
+    }
+    .pr_scoreText {
+        font-size: 1.5em;
+    }
+    .pr_scoreIcone {
+        width: 9%;
+    }
+    .pr_scorePointBox {
+         width: 60%;
+     }
+    .pr_scoreFieldBox {
+        width: 9%;
+    }
+    .pr_scoreNum {
+        font-size: 1.5em;
+    }
+    .pr_arrows {
+        width: 60px;
+        height: 60px;
+    }
+}
+@media (max-width: 768px) {
+    .pr_scoreBodyBox {
+        padding: 0 4% !important;
+    }
+
+    .pr_scoreRow {
+        width: 100%;
+    }
+    .pr_scoreText {
+        font-size: 1.25em;
+    }
+    .pr_scoreIcone {
+        width: 11%;
+    }
+    .pr_scorePointBox {
+        width: 50%;
+    }
+    .pr_scoreFieldBox {
+        width: 11%;
+    }
+    .pr_scoreNum {
+        font-size: 1.25em;
+    }
+    .pr_arrows {
+        width: 45px;
+        height: 45px;
+    }
+    .leftArrow {
+        right: -12px;
+    }
+    .rightArrow {
+        left: -12px;
+    }
+}
+@media (max-width: 525px) {
+    .pr_scoreBodyBox {
+        padding: 0 !important;
+    }
+    .pr_arrows {
+        display: none;
+    }
+}
+@media (max-width: 468px) {
+
+    .pr_scoreText {
+        font-size: 1em;
+    }
+    .pr_scoreIcone {
+        width: 12%;
+    }
+    .pr_scorePointBox {
+        width: 45%;
+    }
+    .pr_scoreFieldBox {
+        width: 12%;
+    }
+    .pr_scoreNum {
+        font-size: 1em;
+    }
 }
 
 
