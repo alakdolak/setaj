@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\models\Citizen;
 use App\models\ProjectBuyers;
+use App\models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class StudentController extends Controller {
@@ -46,4 +49,21 @@ class StudentController extends Controller {
         return Redirect::route('profile');
     }
 
+
+    public function getMyCitizenPoints() {
+
+        $tags = Tag::whereType("CITIZEN")->get();
+        $uId = Auth::user()->id;
+        $points = [];
+        $counter = 0;
+
+        foreach ($tags as $tag) {
+            $query = DB::select('select sum(cb.point) as sum_ from citizen c, citizen_buyers cb where ' .
+                'c.id = cb.project_id and c.tag_id = ' . $tag->id . ' and cb.user_id = ' . $uId);
+            $points[$counter++] = ["point" => ($query[0]->sum_ == null) ? 0 : $query[0]->sum_,
+                "id" => $tag->id];
+        }
+
+        return json_encode(["status" => "ok", "points" => $points]);
+    }
 }

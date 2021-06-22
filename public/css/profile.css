@@ -241,18 +241,7 @@
     top: 21px;
     right: 18px;
 }
-.healthPoint {
-    width: 56px;
-}
-.behaviorPoint {
-    width: 546px;
-}
-.thinkPoint {
-    width: 406px;
-}
-.karestonPoint {
-    width: 190px;
-}
+
 .pr_scoreFieldBox {
     width: 75px;
     height: 75px;

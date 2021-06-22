@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
 Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
+    Route::post('getMyCitizenPoints', ['as' => 'getMyCitizenPoints', 'uses' => 'StudentController@getMyCitizenPoints']);
 
     Route::post('addAdv', ['as' => 'addAdv', 'uses' => 'StudentController@addAdv']);
 

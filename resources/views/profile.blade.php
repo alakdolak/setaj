@@ -5,7 +5,7 @@
 
     <link rel="stylesheet" href="{{URL::asset('css/usersActivities.css?v=1.3')}}">
     <link rel="stylesheet" href="{{URL::asset('css/abbreviations.css?v=1.3')}}">
-    <link rel="stylesheet" href="{{URL::asset('css/profile.css?v=1.3')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/profile.css?v=1.4')}}">
     <link rel="stylesheet" href="{{URL::asset('css/card.css?v=1.3')}}">
 
     <style>
@@ -65,46 +65,46 @@
                 <div class="pr_scoreBody">
                     <div class="pr_arrows leftArrow"></div>
                     <div class="pr_scoreBox">
-                        <div class="pr_scoreRow">
-                            <div class="pr_scoreText">تندرستی</div>
-                            <div class="pr_scoreIcone healthIcone"></div>
-                            <div class="pr_scorePointBox">
-                                <div class="pr_scorePoint healthPoint"></div>
+                        @foreach($tags as $tag)
+                            <div class="pr_scoreRow">
+                                <div class="pr_scoreText">{{$tag->second_name}}</div>
+                                @if($tag->second_name == "تندرستی")
+                                    <div class="pr_scoreIcone healthIcone"></div>
+                                @elseif($tag->second_name == "تفکـــــر")
+                                    <div class="pr_scoreIcone thinkIcone"></div>
+                                @else
+                                    <div class="pr_scoreIcone behaviorIcone"></div>
+                                @endif
+                                <div class="pr_scorePointBox">
+                                    <div id="score_{{$tag->id}}" class="pr_scorePoint"></div>
+                                </div>
+
+                                <?php
+                                    $class = "pr_scoreHealthyBox";
+
+                                    if($tag->second_name == "تفکـــــر")
+                                        $class = "pr_scoreThinkBox";
+                                    elseif($tag->second_name == "کــــردار")
+                                        $class = "pr_scoreBehaviorBox";
+                                ?>
+
+                                <div class="pr_scoreFieldBox {{$class}}">
+                                    <div id="curr_score_{{$tag->id}}" class="pr_scoreNum"></div>
+                                </div>
                             </div>
-                            <div class="pr_scoreFieldBox pr_scoreHealthyBox">
-                                <div class="pr_scoreNum">10</div>
-                            </div>
-                        </div>
-                        <div class="pr_scoreRow">
-                            <div class="pr_scoreText">تفکـــــر</div>
-                            <div class="pr_scoreIcone behaviorIcone"></div>
-                            <div class="pr_scorePointBox">
-                                <div class="pr_scorePoint behaviorPoint"></div>
-                            </div>
-                            <div class="pr_scoreFieldBox pr_scoreBehaviorBox">
-                                <div class="pr_scoreNum">100</div>
-                            </div>
-                        </div>
-                        <div class="pr_scoreRow">
-                            <div class="pr_scoreText">کــــردار</div>
-                            <div class="pr_scoreIcone thinkIcone"></div>
-                            <div class="pr_scorePointBox">
-                                <div class="pr_scorePoint thinkPoint"></div>
-                            </div>
-                            <div class="pr_scoreFieldBox pr_scoreThinkBox">
-                                <div class="pr_scoreNum">80</div>
-                            </div>
-                        </div>
+                        @endforeach
+
                         <div class="pr_scoreRow">
                             <div class="pr_scoreText">دست‌رنج</div>
                             <div class="pr_scoreIcone karestonIcone"></div>
                             <div class="pr_scorePointBox">
-                                <div class="pr_scorePoint karestonPoint"></div>
+                                <div id="score_karestoon" class="pr_scorePoint"></div>
                             </div>
                             <div class="pr_scoreFieldBox pr_scoreKarestonBox">
-                                <div class="pr_scoreNum">30</div>
+                                <div id="curr_score_karestoon" class="pr_scoreNum"></div>
                             </div>
                         </div>
+
                     </div>
                     <div class="pr_arrows rightArrow"></div>
                 </div>
@@ -427,6 +427,41 @@
                 $(element).nextAll().removeClass('onClick');
                 $(element).prevAll().removeClass('onClick');
             }
+
+            var total = '{{$total}}';
+
+            $(document).ready(function () {
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{route('getMyCitizenPoints')}}',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content'),
+                        'Accept': 'application/json'
+                    },
+                    success: function (res) {
+
+                        res = JSON.parse(res);
+                        if(res.status === "nok")
+                            return;
+
+                        for(var i = 0; i < res.points.length; i++) {
+                            $("#score_" + res.points[i].id).animate({
+                                width: res.points[i].point + "%"
+                            });
+
+                            $("#curr_score_" + res.points[i].id).append(res.points[i].point);
+                        }
+
+                        $("#score_karestoon").animate({
+                            width: total + "%"
+                        });
+
+                        $("#curr_score_karestoon").append(total);
+                    }
+                });
+            });
+
         </script>
     </div>
 

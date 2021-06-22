@@ -195,7 +195,7 @@ class HomeController extends Controller {
         }
 
         return view('profile', ['myBuys' => $myBuys, "myServices" => $myServices,
-            "myProducts" => $myProducts, 'myProjects' => $myProjects]);
+            "myProducts" => $myProducts, 'myProjects' => $myProjects, 'tags' => Tag::whereType("CITIZEN")->get()]);
     }
 
     public function faq() {
