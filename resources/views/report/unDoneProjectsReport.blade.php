@@ -110,7 +110,7 @@
                         @if($project->adv == null)
                             <td>فایلی بارگذاری نشده</td>
                         @else
-                            <td><a download href="{{$project->adv}}">دانلود فایل</a></td>
+                            <td><a id="adv_download_{{$project->id}}" download href="{{$project->adv}}">دانلود فایل</a></td>
                         @endif
                         <td id="adv_status_{{$project->id}}">
                             @if($project->adv_status == 1)
@@ -125,7 +125,7 @@
                         @if($project->file == null)
                             <td>فایلی بارگذاری نشده</td>
                         @else
-                            <td><a download href="{{$project->file}}">دانلود فایل</a></td>
+                            <td><a id="file_download_{{$project->id}}" download href="{{$project->file}}">دانلود فایل</a></td>
                         @endif
 
                         <td id="file_status_{{$project->id}}">{{($project->file_status == 1) ? "تایید شده" : ($project->file_status == 0) ? "تایید نشده" : "رد شده"}}</td>
@@ -187,6 +187,8 @@
                             $("#adv_status_" + pbId).empty().append("تایید شده");
                         }
                         else {
+                            $("#accept_adv_" + pbId).remove();
+                            $("#adv_download_" + pbId).remove();
                             $("#reject_adv_" + pbId).remove();
                             $("#adv_status_" + pbId).empty().append("رد شده");
                         }
@@ -218,7 +220,9 @@
                             $("#file_status_" + pbId).empty().append("تایید شده");
                         }
                         else {
+                            $("#file_download_" + pbId).remove();
                             $("#reject_file_" + pbId).remove();
+                            $("#accept_file_" + pbId).remove();
                             $("#file_status_" + pbId).empty().append("رد شده");
                         }
                     }

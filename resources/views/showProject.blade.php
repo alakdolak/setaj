@@ -284,14 +284,6 @@
                     <div class="uploadHeader_images uploadHeader_img3"></div>
                     <div class="uploadHeader_images uploadHeader_img4"></div>
                 </div>
-{{--                <div class="uploadDescript">--}}
-{{--                    <div class="uploadTitleText">بارگزاری فایل تبلیغ</div>--}}
-{{--                    <div>فایل های خود را اینجا بکشـــید و <br>یا فایل خود را با کلیک انتخاب کنید</div>--}}
-{{--                    <form action="{{route('addAdv')}}" class="dropzone uploadBtn" id="my-awesome-dropzone">--}}
-{{--                        {{csrf_field()}}--}}
-{{--                        <input type="hidden" name="id" value="{{$project->pbId}}">--}}
-{{--                    </form>--}}
-{{--                </div>--}}
                 <div class="uploadBodyBox">
                     <div class="uploadTitleText">بارگزاری فایل تبلیغ</div>
                     <form action="{{route('addAdv')}}" class="dropzone uploadBox" id="my-awesome-dropzone">
@@ -306,53 +298,29 @@
 
             </div>
         </div>
-{{--        <div class="modal-dialog">--}}
-{{--            <div id="confirmationModalDialog" class="modal-content">--}}
-{{--                <div class="modal-header">--}}
-{{--                    <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
-{{--                    <h4 class="modal-title">انتخاب پروژه</h4>--}}
-{{--                </div>--}}
-{{--                <div class="modal-body">--}}
-{{--                    <p>آیا از انتخاب این پروژه مطمئنید؟!</p>--}}
-{{--                </div>--}}
-{{--                <div class="modal-footer">--}}
-{{--                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>--}}
-{{--                    <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">--}}
-{{--                <div class="modal-body">--}}
-{{--                    <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
-{{--                    <div id="alertText"></div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
     </div>
 
     <div id="contentModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">افزودن محتوا</h4>
+        <div class="uploadBody">
+            <div class="uploadBorder">
+                <div class="uploadHeader">
+                    <div class="uploadHeader_images uploadHeader_img1"></div>
+                    <div class="uploadHeader_images uploadHeader_img2"></div>
+                    <div class="uploadHeader_images uploadHeader_img3"></div>
+                    <div class="uploadHeader_images uploadHeader_img4"></div>
+                </div>
+                <div class="uploadBodyBox">
+                    <div class="uploadTitleText">بارگزاری فایل محتوا</div>
+                    <form action="{{route('addFile')}}" class="dropzone uploadBox" id="my-awesome-dropzone">
+                        {{csrf_field()}}
+                        <input type="hidden" name="id" value="{{$project->pbId}}">
+                    </form>
+                    <div class="uploadّFileAllowed">حداکثر فایل مجاز: 100 مگابایت</div>
+                </div>
+                <div class="uploadfooter_image">
+                    <div class="uploadfooter_img1"></div>
                 </div>
 
-                <form action="{{route('addFile')}}" class="dropzone" id="my-awesome-dropzone">
-                    {{csrf_field()}}
-                    <input type="hidden" name="id" value="{{$project->pbId}}">
-                </form>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success">بله</button>
-                    <button type="button" id="closeContentModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-                </div>
-            </div>
-
-            <div class="modal-content alertDiv hidden">
-                <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
             </div>
         </div>
     </div>

@@ -19,6 +19,7 @@ class StudentController extends Controller {
 
             $path = $request->file->store("public/advs");
             $b->adv = str_replace("public/advs/", "", $path);
+            $b->adv_status = 0;
             $b->save();
             return "ok";
         }
@@ -37,6 +38,7 @@ class StudentController extends Controller {
 
             $path = $request->file->store("public/contents");
             $b->file = str_replace("public/contents/", "", $path);
+            $b->file_status = 0;
             $b->save();
 
         }
