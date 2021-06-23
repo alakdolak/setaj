@@ -42,6 +42,7 @@ Route::get('showCitizen/{id}', ['as' => 'showCitizen', 'uses' => 'HomeController
 
 Route::get('showProduct/{id}', ['as' => 'showProduct', 'uses' => 'HomeController@showProduct']);
 
+Route::get("showTutorial/{id}", ['as' => 'showTutorial', 'uses' => 'HomeController@showTutorial']);
 
 Route::group(['middleware' => ['notLogin']], function () {
 

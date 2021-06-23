@@ -1,4 +1,4 @@
-@extends("layouts.siteStructure3")
+@extends("layouts.siteStructure4")
 
 
 @section("header")
@@ -20,52 +20,52 @@
 
     <div class="shopBox row">
 
-            <div class="weekContainer shopEachRow col-xs-12">
+        <div class="weekContainer shopEachRow col-xs-12">
 
-                <div class="shopEachRow col-xs-12">
+            <div class="shopEachRow col-xs-12">
 
-                    @if($canBuy)
-                        <center>
-                            <button onclick="buy()" class="btn btn-primary">خرید</button>
-                        </center>
-                    @endif
+                @if($canBuy)
+                    <center>
+                        <button onclick="buy()" class="btn btn-primary">خرید</button>
+                    </center>
+                @endif
 
-                    @foreach($products as $product)
+                @foreach($products as $product)
 
-                        <div onclick="document.location.href = '{{route('showProduct', ['id' => $product->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
+                    <div onclick="document.location.href = '{{route('showProduct', ['id' => $product->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
 
-                            <div class="sh_mainBox">
+                        <div class="sh_mainBox">
 
-                                @if($product->adv_status)
-                                    <div class="sh_advPic"></div>
-                                @endif
+                            @if($product->adv_status)
+                                <div class="sh_advPic"></div>
+                            @endif
 
-                                <div style="background-image: url('{{$product->pic}}')" class="sh_mainPic"></div>
-                                <div class="sh_descript">
-                                    <div class="sh_descriptRow sh_title">{{$product->name}}</div>
-                                    <div class="sh_descriptRow sh_priceBox">
-                                        <div class="priceIcons coinIcon"></div>
-                                        <div class="priceText">قیمت: {{$product->price}} سکه</div>
-                                    </div>
-                                    <div class="sh_descriptRow sh_priceBox">
-                                        <div class="priceIcons starIcon"></div>
-                                        <div class="priceText">ستاره ی دریافتی: {{$product->star}}</div>
-                                    </div>
-
+                            <div style="background-image: url('{{$product->pic}}')" class="sh_mainPic"></div>
+                            <div class="sh_descript">
+                                <div class="sh_descriptRow sh_title">{{$product->name}}</div>
+                                <div class="sh_descriptRow sh_priceBox">
+                                    <div class="priceIcons coinIcon"></div>
+                                    <div class="priceText">قیمت: {{$product->price}} سکه</div>
+                                </div>
+                                <div class="sh_descriptRow sh_priceBox">
+                                    <div class="priceIcons starIcon"></div>
+                                    <div class="priceText">ستاره ی دریافتی: {{$product->star}}</div>
                                 </div>
 
                             </div>
 
-                            <div class="sh_ownerBox">
-                                <div>تولیدکننده: {{$product->owner}}</div>
-                            </div>
-
                         </div>
 
-                    @endforeach
+                        <div class="sh_ownerBox">
+                            <div>تولیدکننده: {{$product->owner}}</div>
+                        </div>
 
-                </div>
+                    </div>
+
+                @endforeach
+
             </div>
+        </div>
     </div>
 
     <script>

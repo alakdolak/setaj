@@ -203,6 +203,16 @@ class HomeController extends Controller {
             "myProducts" => $myProducts, 'myProjects' => $myProjects, 'tags' => Tag::whereType("CITIZEN")->get()]);
     }
 
+    public function showTutorial($id) {
+
+        $tutorial = Tutorial::whereId($id);
+        if($tutorial == null)
+            return Redirect::route('faq');
+
+        $tutorial->path = URL::asset("storage/tutorials/" . $tutorial->path);
+        return view('showTutorial', ['tutorial' => $tutorial]);
+    }
+
     public function faq() {
 
         $categories = FAQCategory::all();
@@ -218,8 +228,6 @@ class HomeController extends Controller {
                 $tutorial->pic = URL::asset("storage/tutorials/" . $tutorial->pic);
             else
                 $tutorial->pic = null;
-
-            $tutorial->path = URL::asset("storage/tutorials/" . $tutorial->path);
         }
 
         return view('FAQ', ['categories' => $categories, 'tutorials' => $tutorials]);
@@ -884,7 +892,6 @@ class HomeController extends Controller {
 
         return view('productsInner', ['products' => $products, 'canBuy' => $canBuy,
             'projectId' => $projectId, 'grade' => $gradeId]);
-
     }
 
     public function buyUnPhysicalProduct() {

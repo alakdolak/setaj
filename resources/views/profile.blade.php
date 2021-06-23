@@ -67,10 +67,10 @@
                     <div class="pr_scoreBox">
                         @foreach($tags as $tag)
                             <div class="pr_scoreRow">
-                                <div class="pr_scoreText">{{$tag->second_name}}</div>
-                                @if($tag->second_name == "تندرستی")
+                                <div class="pr_scoreText">{{$tag->name}}</div>
+                                @if($tag->name == "تندرستی")
                                     <div class="pr_scoreIcone healthIcone"></div>
-                                @elseif($tag->second_name == "تفکـــــر")
+                                @elseif($tag->name == "تفکـــــر")
                                     <div class="pr_scoreIcone thinkIcone"></div>
                                 @else
                                     <div class="pr_scoreIcone behaviorIcone"></div>
@@ -82,9 +82,9 @@
                                 <?php
                                     $class = "pr_scoreHealthyBox";
 
-                                    if($tag->second_name == "تفکـــــر")
+                                    if($tag->name == "تفکـــــر")
                                         $class = "pr_scoreThinkBox";
-                                    elseif($tag->second_name == "کــــردار")
+                                    elseif($tag->name == "کــــردار")
                                         $class = "pr_scoreBehaviorBox";
                                 ?>
 
