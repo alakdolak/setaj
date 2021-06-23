@@ -916,9 +916,19 @@ class HomeController extends Controller {
             if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= $totalBuys)
                 return "nok7";
 
-            $buys = DB::select("select p.physical, t.created_at from transactions t, product p where t.created_at > date_sub(t.created_at, interval 1 day) and p.id = t.product_id and t.user_id = " . $user->id);
+            $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(t.created_at, interval 1 day) and p.id = t.product_id and t.user_id = " . $user->id);
 
             if(count($buys) > 0) {
+
+                $time = getToday()["time"];
+                if($time[0] == "0") {
+                    $time = (int)substr($time, 1);
+                    if (
+                        ($time >= 800 && $time < 805) ||
+                        ($time >= 805 && $time <= 810 && count($buys) > 1)
+                    )
+                        return "nok8";
+                }
 
                 $allow = false;
                 foreach ($buys as $buy) {
@@ -1205,20 +1215,26 @@ class HomeController extends Controller {
             }
 
             $date = getToday()["date"];
-            if($project->start_reg > $date || $project->end_reg < $date) {
-                echo "nok4";
-                return;
-            }
+            if($project->start_reg > $date || $project->end_reg < $date)
+                return "nok4";
 
-            $capacity = ConfigModel::first()->project_limit;
-            $openProjects = DB::select("select p.physical from project_buyers pb, project p where pb.status = false and pb.user_id = " . Auth::user()->id);
+            $capacity = ConfigModel::first()->project_limit + 10;
+            $openProjects = DB::select("select p.physical, pb.id from project_buyers pb, project p where pb.created_at > date_sub(pb.created_at, interval 1 day) and pb.status = false and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
 
-            if($capacity - count($openProjects) <= 0) {
-                echo "nok6";
-                return;
-            }
+            if($capacity - count($openProjects) <= 0)
+                return "nok6";
 
             if(count($openProjects) > 0) {
+
+                $time = getToday()["time"];
+                if($time[0] == "0") {
+                    $time = (int)substr($time, 1);
+                    if (
+                        ($time >= 800 && $time < 805) ||
+                        ($time >= 805 && $time <= 810 && count($openProjects) > 1)
+                    )
+                        return "nok8";
+                }
 
                 $allow = false;
 
@@ -1229,11 +1245,8 @@ class HomeController extends Controller {
                     }
                 }
 
-                if(!$allow) {
-                    echo "nok9";
-                    return;
-                }
-
+                if(!$allow)
+                    return "nok9";
             }
 
             try {
@@ -1245,13 +1258,12 @@ class HomeController extends Controller {
                 $user->money -= $project->price;
                 $user->save();
 
-                echo "ok";
-                return;
+                return "ok";
             }
             catch (\Exception $x) {}
         }
 
-        echo "nok5";
+        return "nok5";
     }
 
     public function buyProduct() {
@@ -1283,6 +1295,16 @@ class HomeController extends Controller {
 
             if(count($buys) > 0) {
 
+                $time = getToday()["time"];
+                if($time[0] == "0") {
+                    $time = (int)substr($time, 1);
+                    if (
+                        ($time >= 800 && $time < 805) ||
+                        ($time >= 805 && $time <= 810 && count($buys) > 1)
+                    )
+                        return "nok8";
+                }
+
                 $allow = false;
 
                 foreach ($buys as $buy) {
@@ -1295,6 +1317,8 @@ class HomeController extends Controller {
                 if(!$allow)
                     return "nok9";
             }
+
+
 
             try {
                 $tmp = new Transaction();
