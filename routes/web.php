@@ -32,6 +32,16 @@ Route::get('showAllCitizens/{grade?}', ['as' => 'showAllCitizens', 'uses' => 'Ho
 
 Route::get('showAllProducts/{grade?}', ['as' => 'showAllProducts', 'uses' => 'HomeController@showAllProducts']);
 
+Route::get('showAllProductsInner/{projectId}/{gradeId}', ['as' => 'showAllProductsInner', 'uses' => 'HomeController@showAllProductsInner']);
+
+Route::get('showService/{id}', ['as' => 'showService', 'uses' => 'HomeController@showService']);
+
+Route::get('showProject/{id}', ['as' => 'showProject', 'uses' => 'HomeController@showProject']);
+
+Route::get('showCitizen/{id}', ['as' => 'showCitizen', 'uses' => 'HomeController@showCitizen']);
+
+Route::get('showProduct/{id}', ['as' => 'showProduct', 'uses' => 'HomeController@showProduct']);
+
 
 Route::group(['middleware' => ['notLogin']], function () {
 
@@ -63,18 +73,6 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
     Route::post("reloadMsgs", ["as" => "reloadMsgs", "uses" => "HomeController@reloadMsgs"]);
 
 
-    Route::get('showService/{id}', ['as' => 'showService', 'uses' => 'HomeController@showService']);
-
-
-
-
-    Route::get('showProject/{id}', ['as' => 'showProject', 'uses' => 'HomeController@showProject']);
-
-    Route::get('showCitizen/{id}', ['as' => 'showCitizen', 'uses' => 'HomeController@showCitizen']);
-
-    Route::get('showProduct/{id}', ['as' => 'showProduct', 'uses' => 'HomeController@showProduct']);
-
-
 
     Route::get("downloadAllProjectAttaches/{pId}", ["as" => "downloadAllProjectAttaches", "uses" => "HomeController@downloadAllProjectAttaches"]);
 
@@ -82,6 +80,7 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
     Route::post('convertStarToCoin', ['as' => 'convertStarToCoin', 'uses' => 'HomeController@convertStarToCoin']);
 
+    Route::post('buyUnPhysicalProduct', ['as' => 'buyUnPhysicalProduct', 'uses' => 'HomeController@buyUnPhysicalProduct']);
 
     Route::post('buyProject', ['as' => 'buyProject', 'uses' => 'HomeController@buyProject']);
 

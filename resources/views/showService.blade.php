@@ -40,13 +40,16 @@
                     <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.jpg")}}');" id="pr_mainPic" class="pr_mainPic"></div>
                 @endif
             </div>
-            @if($oldBuy)
-                <div class="shopBtn doneBtn">قبلا پذیرفته اید</div>
-            @else
-                @if($canBuy)
-                    <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب همیاری و دریافت آموزش</div>
+
+            @if(\Illuminate\Support\Facades\Auth::check())
+                @if($oldBuy)
+                    <div class="shopBtn doneBtn">قبلا پذیرفته اید</div>
                 @else
-                    <div class="shopBtn doneBtn">شما امکان خرید ندارید</div>
+                    @if($canBuy)
+                        <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب همیاری و دریافت آموزش</div>
+                    @else
+                        <div class="shopBtn doneBtn">شما امکان خرید ندارید</div>
+                    @endif
                 @endif
             @endif
         </div>

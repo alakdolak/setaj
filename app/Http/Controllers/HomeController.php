@@ -286,6 +286,9 @@ class HomeController extends Controller {
 
     public function showAllServices($grade = -1) {
 
+        if(Auth::check() && Auth::user()->level == 1)
+            $grade = Auth::user()->grade_id;
+
         if($grade == -1)
             $grade = Grade::first()->id;
 
@@ -340,27 +343,28 @@ class HomeController extends Controller {
     public function showService($id) {
 
         $service = Service::whereId($id);
-        $grade = Auth::user()->grade_id;
 
         if($service == null || $service->hide) {
             return Redirect::route('home');
         }
 
-        if(Auth::user()->level == getValueInfo('studentLevel')) {
-
-            $grades = ServiceGrade::whereServiceId($service->id)->get();
-            $allow = false;
-
-            foreach ($grades as $itr) {
-                if ($itr->grade_id == $grade) {
-                    $allow = true;
-                    break;
-                }
-            }
-
-            if(!$allow)
-                return Redirect::route('home');
-        }
+//        $grade = Auth::user()->grade_id;
+//
+//        if(Auth::user()->level == getValueInfo('studentLevel')) {
+//
+//            $grades = ServiceGrade::whereServiceId($service->id)->get();
+//            $allow = false;
+//
+//            foreach ($grades as $itr) {
+//                if ($itr->grade_id == $grade) {
+//                    $allow = true;
+//                    break;
+//                }
+//            }
+//
+//            if(!$allow)
+//                return Redirect::route('home');
+//        }
 
         $tmpPics = ServicePic::whereServiceId($service->id)->get();
         $pics = [];
@@ -395,14 +399,18 @@ class HomeController extends Controller {
 
         $service->attaches = $pics;
 
-        $canBuy = true;
-        $oldBuy = ServiceBuyer::whereServiceId($id)->whereUserId(Auth::user()->id)->count();
+        $canBuy = (Auth::check()) ? true : false;
+        if($canBuy) {
+            $oldBuy = ServiceBuyer::whereServiceId($id)->whereUserId(Auth::user()->id)->count();
 
-        if(
-            ($service->capacity != -1 && ServiceBuyer::whereServiceId($id)->count() == $service->capacity) ||
-            $oldBuy > 0
-        )
-            $canBuy = false;
+            if (
+                ($service->capacity != -1 && ServiceBuyer::whereServiceId($id)->count() == $service->capacity) ||
+                $oldBuy > 0
+            )
+                $canBuy = false;
+        }
+        else
+            $oldBuy = false;
 
         return view('showService', ['canBuy' => $canBuy,
             'service' => $service, 'oldBuy' => $oldBuy]);
@@ -417,6 +425,9 @@ class HomeController extends Controller {
 
 //        if($grade == -1)
 //            $grade = Auth::user()->grade_id;
+
+        if(Auth::check() && Auth::user()->level == 1)
+            $grade = Auth::user()->grade_id;
 
         if($grade == -1)
             $grade = Grade::first()->id;
@@ -483,27 +494,28 @@ class HomeController extends Controller {
     public function showProject($id) {
 
         $project = Project::whereId($id);
-        $grade = Auth::user()->grade_id;
 
         if($project == null || $project->hide) {
             return Redirect::route('showAllProjects');
         }
 
-        if(Auth::user()->level == getValueInfo('studentLevel')) {
+//        $grade = Auth::user()->grade_id;
 
-            $grades = ProjectGrade::whereProjectId($project->id)->get();
-            $allow = false;
-
-            foreach ($grades as $itr) {
-                if ($itr->grade_id == $grade) {
-                    $allow = true;
-                    break;
-                }
-            }
-
-            if(!$allow)
-                return Redirect::route('home');
-        }
+//        if(Auth::user()->level == getValueInfo('studentLevel')) {
+//
+//            $grades = ProjectGrade::whereProjectId($project->id)->get();
+//            $allow = false;
+//
+//            foreach ($grades as $itr) {
+//                if ($itr->grade_id == $grade) {
+//                    $allow = true;
+//                    break;
+//                }
+//            }
+//
+//            if(!$allow)
+//                return Redirect::route('home');
+//        }
 
 
         $tmpPics = ProjectPic::whereProjectId($project->id)->get();
@@ -537,13 +549,12 @@ class HomeController extends Controller {
 
         $project->attach = $pics;
 
-
         if($project->price == 0)
             $project->price = "رایگان";
         else
             $project->price = number_format($project->price);
 
-        $canBuy = true;
+        $canBuy = (Auth::check()) ? true : false;
         $canAddAdv = false;
         $canAddFile = false;
         $advStatus = -2;
@@ -551,38 +562,38 @@ class HomeController extends Controller {
 
         $date = getToday()["date"];
 
-        $pb = ProjectBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->first();
-        if($pb != null) {
-            $canBuy = false;
-            if(!$pb->status) {
-                if($pb->adv == null)
-                    $canAddAdv = true;
-                if(!$project->physical && $pb->file == null)
-                    $canAddFile = true;
+        if($canBuy) {
+            $pb = ProjectBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->first();
+            if ($pb != null) {
+                $canBuy = false;
+                if (!$pb->status) {
+                    if ($pb->adv == null)
+                        $canAddAdv = true;
+                    if (!$project->physical && $pb->file == null)
+                        $canAddFile = true;
+                }
+
+                $project->pbId = $pb->id;
+
+                if ((!$canAddAdv && $pb->adv != null) || $pb->adv_status != 0)
+                    $advStatus = $pb->adv_status;
+
+                if ((!$canAddFile && $pb->file != null) || $pb->file_status != 0)
+                    $fileStatus = $pb->file_status;
+            } else if ($project->start_reg > $date || $project->end_reg < $date)
+                $canBuy = false;
+
+            if ($canBuy && $project->capacity != -1) {
+                $canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
             }
 
-            $project->pbId = $pb->id;
+            $capacity = ConfigModel::first()->project_limit;
+            $nums = DB::select("select count(*) as countNum from project_buyers where status = false and user_id = " . Auth::user()->id)[0]->countNum;
 
-            if((!$canAddAdv && $pb->adv != null) || $pb->adv_status != 0)
-                $advStatus = $pb->adv_status;
-
-            if((!$canAddFile && $pb->file != null) || $pb->file_status != 0)
-                $fileStatus = $pb->file_status;
+            $reminder = $capacity - $nums;
+            if ($reminder <= 0 && $canBuy)
+                $canBuy = false;
         }
-
-        else if($project->start_reg > $date || $project->end_reg < $date)
-            $canBuy = false;
-
-        if($canBuy && $project->capacity != -1) {
-            $canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
-        }
-
-        $capacity = ConfigModel::first()->project_limit;
-        $nums = DB::select("select count(*) as countNum from project_buyers where status = false and user_id = " . Auth::user()->id)[0]->countNum;
-
-        $reminder = $capacity - $nums;
-        if($reminder <= 0 && $canBuy)
-            $canBuy = false;
 
         return view('showProject', ['canBuy' => $canBuy, 'project' => $project,
             "canAddAdv" => $canAddAdv, "canAddFile" => $canAddFile,
@@ -591,6 +602,9 @@ class HomeController extends Controller {
 
 
     public function showAllCitizens($grade = -1) {
+
+        if(Auth::check() && Auth::user()->level == 1)
+            $grade = Auth::user()->grade_id;
 
         if($grade == -1)
             $grade = Grade::first()->id;
@@ -646,22 +660,22 @@ class HomeController extends Controller {
         if($project == null || $project->hide)
             return Redirect::route('showAllCitizens');
 
-        $grade = Auth::user()->grade_id;
-        if(Auth::user()->level == getValueInfo('studentLevel')) {
-
-            $grades = CitizenGrade::whereProjectId($project->id)->get();
-            $allow = false;
-
-            foreach ($grades as $itr) {
-                if ($itr->grade_id == $grade) {
-                    $allow = true;
-                    break;
-                }
-            }
-
-            if(!$allow)
-                return Redirect::route('home');
-        }
+//        $grade = Auth::user()->grade_id;
+//        if(Auth::user()->level == getValueInfo('studentLevel')) {
+//
+//            $grades = CitizenGrade::whereProjectId($project->id)->get();
+//            $allow = false;
+//
+//            foreach ($grades as $itr) {
+//                if ($itr->grade_id == $grade) {
+//                    $allow = true;
+//                    break;
+//                }
+//            }
+//
+//            if(!$allow)
+//                return Redirect::route('home');
+//        }
 
         $tmpPics = CitizenPic::whereProjectId($project->id)->get();
         $pics = [];
@@ -693,10 +707,10 @@ class HomeController extends Controller {
 
         $project->attach = $pics;
 
-        $canBuy = true;
+        $canBuy = (Auth::check()) ? true : false;
         $date = getToday()["date"];
 
-        if(
+        if($canBuy &&
             CitizenBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->count() > 0 ||
             $project->start_reg > $date || $project->end_reg < $date
         )
@@ -708,28 +722,76 @@ class HomeController extends Controller {
 
     public function showAllProducts($grade = -1) {
 
-        if(Auth::check())
+        if(Auth::check() && Auth::user()->level == 1) {
             $grade = Auth::user()->grade_id;
+            $gradeName = Grade::whereId($grade)->name;
+        }
 
-        if($grade == -1)
-            $grade = Grade::first()->id;
+        if($grade == -1) {
+            $g = Grade::first();
+            $grade = $g->id;
+            $gradeName = $g->name;
+        }
 
         $today = getToday()["date"];
-        $products = DB::select('select pb.adv, pb.adv_status, pb.file, pb.file_status, ' .
-            'p.id, name, description, price, star, p.project_id, ' .
-            'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
-            ' from product p, users u, project_buyers pb  where ' .
-            'p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
+
+        $unVisualProducts = DB::select('select (select count(*) from product where project_id = project.id and hide = false and grade_id = ' . $grade . ') as total, title as name, created_at, id' .
+            ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
+            ' and hide = false group by(id) having total > 0');
 
         $mainDiff = findDiffWithSiteStart();
 
-        foreach ($products as $product) {
+        foreach ($unVisualProducts as $product) {
 
-            if($product->adv_status && $product->adv != null &&
-                file_exists(__DIR__ . '/../../../public/storage/advs/' . $product->adv))
-                $product->adv = true;
+            $date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
+            $date = convertDateToString2($date, "-");
+            $diff = 0;
+
+            if ($today != $date) {
+
+                for ($i = 1; $i <= 63; $i++) {
+                    if (
+                        ($i == 1 && $date == getPast("- " . $i . ' day')) ||
+                        ($i > 1 && $date == getPast("- " . $i . ' days'))
+                    ) {
+                        $diff = $i;
+                        break;
+                    }
+                }
+            }
+
+            $product->week = floor(($mainDiff - $diff) / 7);
+            $tmpPic = ProjectPic::whereProjectId($product->id)->first();
+
+            if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/projectPic/' . $tmpPic->name))
+                $product->pic = URL::asset('projectPic/defaultPic.jpg');
             else
-                $product->adv = null;
+                $product->pic = URL::asset('projectPic/' . $tmpPic->name);
+
+            $product->price = "رایگان";
+            $product->tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $product->id);
+
+            $str = "-";
+            foreach ($product->tags as $tag)
+                $str .= $tag->id . '-';
+
+            $product->buyers = DB::select("select count(*) as count_ from transactions t, product p where product_id = p.id and p.grade_id = " . $grade . " and p.project_id = " . $product->id)[0]->count_;
+            $product->reminder = $product->total - $product->buyers;
+            $product->tagStr = $str;
+            $product->adv_status = false;
+            $product->star = 0;
+            $product->physical = 0;
+            $product->canBuy = (Auth::check() && $product->reminder > 0) ? true : false;
+            $product->owner = "پایه " . $gradeName;
+        }
+
+        $visualProducts = DB::select('select pb.adv_status, ' .
+            'p.id, name, description, p.physical, price, star, p.project_id, ' .
+            'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+            ' from product p, users u, project_buyers pb where p.physical = 1 and ' .
+            'p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
+
+        foreach ($visualProducts as $product) {
 
             $date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
             $date = convertDateToString2($date, "-");
@@ -746,6 +808,20 @@ class HomeController extends Controller {
                         $diff = $i;
                         break;
                     }
+                }
+
+                if($diff == 0) {
+
+                    for ($i = 1; $i <= 63; $i++) {
+                        if (
+                            ($i == 1 && $date == getPast("+ " . $i . ' day')) ||
+                            ($i > 1 && $date == getPast("+ " . $i . ' days'))
+                        ) {
+                            $diff = -$i;
+                            break;
+                        }
+                    }
+
                 }
             }
 
@@ -775,8 +851,111 @@ class HomeController extends Controller {
             $product->canBuy = (Transaction::whereProductId($product->id)->count() == 0);
         }
 
-        return view('products', ['products' => $products, 'tags' => Tag::whereType("PROJECT")->get(), 'grade' => $grade]);
+        return view('products', ['products' => array_merge($unVisualProducts, $visualProducts),
+            'tags' => Tag::whereType("PROJECT")->get(), 'grade' => $grade]);
 
+    }
+
+    public function showAllProductsInner($projectId, $gradeId) {
+
+        $products = DB::select('select pb.adv_status, ' .
+            'p.id, name, description, price, star, p.project_id, ' .
+            'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+            ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId .
+            ' and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.id desc');
+
+        foreach ($products as $product) {
+
+            $tmpPic = ProductPic::whereProductId($product->id)->first();
+
+            if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
+                $product->pic = URL::asset('productPic/defaultPic.jpg');
+            else
+                $product->pic = URL::asset('productPic/' . $tmpPic->name);
+
+            if($product->price == 0)
+                $product->price = "رایگان";
+            else
+                $product->price = number_format($product->price);
+        }
+
+        $buyers = DB::select("select count(*) as count_ from transactions t, product p where product_id = p.id and p.grade_id = " . $gradeId . " and p.project_id = " . $projectId)[0]->count_;
+        $canBuy = (Auth::check()) ? (count($products) - $buyers > 0) : false;
+
+        return view('productsInner', ['products' => $products, 'canBuy' => $canBuy,
+            'projectId' => $projectId, 'grade' => $gradeId]);
+
+    }
+
+    public function buyUnPhysicalProduct() {
+
+        if(isset($_POST["projectId"]) && isset($_POST["gradeId"])) {
+
+            $projectId = makeValidInput($_POST["projectId"]);
+            $gradeId = makeValidInput($_POST["gradeId"]);
+
+            $user = Auth::user();
+
+            if($gradeId != $user->grade_id)
+                return "nok4";
+
+            $product = DB::select(
+                ' select id, price, star, user_id from product where physical = 0 and project_id = ' . $projectId .
+                ' and grade_id = ' . $gradeId . ' and hide = false ' .
+                'and id not in (select product_id from transactions) order by price asc limit 0, 1');
+
+            if($product == null || count($product) == 0)
+                return "nok2";
+
+            $product = $product[0];
+
+            if($product->price > $user->money)
+                return "nok3";
+
+            $totalBuys = Transaction::whereUserId($user->id)->count();
+            if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= $totalBuys)
+                return "nok7";
+
+            $buys = DB::select("select p.physical, t.created_at from transactions t, product p where t.created_at > date_sub(t.created_at, interval 1 day) and p.id = t.product_id and t.user_id = " . $user->id);
+
+            if(count($buys) > 0) {
+
+                $allow = false;
+                foreach ($buys as $buy) {
+                    if($buy->physical) {
+                        $allow = true;
+                        break;
+                    }
+                }
+
+                if(!$allow)
+                    return "nok9";
+            }
+
+            try {
+                $tmp = new Transaction();
+                $tmp->user_id = $user->id;
+                $tmp->product_id = $product->id;
+                $tmp->follow_code = generateActivationCode();
+                $tmp->save();
+
+                $user->money -= $product->price;
+                $user->stars += $product->star;
+                $user->save();
+
+                $tmpUser = User::whereId($product->user_id);
+
+                if($tmpUser != null) {
+                    $tmpUser->money += $product->price;
+                    $tmpUser->save();
+                }
+
+                return "ok";
+            }
+            catch (\Exception $x) {}
+        }
+
+        return "nok";
     }
 
     public function showProduct($id) {
@@ -785,20 +964,20 @@ class HomeController extends Controller {
             'p.* from product p, project_buyers pb where ' .
             'p.project_id = pb.project_id and pb.user_id = p.user_id and p.id = ' . $id . ' and hide = false order by p.id desc');
 
-        $grade = Auth::user()->grade_id;
-
         if($product == null || count($product) == 0)
             return Redirect::route('showAllProducts');
+
+//        $grade = Auth::user()->grade_id;
 
         $product = $product[0];
         $u = User::whereId($product->user_id);
         $product->owner = $u->first_name . ' ' . $u->last_name;
 
-        $product->grade_id = User::whereId($product->user_id)->grade_id;
+//        $product->grade_id = $u->grade_id;
 
-        if(Auth::user()->level == getValueInfo('studentLevel') && $grade != $product->grade_id) {
-            return Redirect::route('showAllProducts');
-        }
+//        if(Auth::user()->level == getValueInfo('studentLevel') && $grade != $product->grade_id) {
+//            return Redirect::route('showAllProducts');
+//        }
 
         $tmpPics = ProductPic::whereProductId($product->id)->get();
         $pics = [];
@@ -830,7 +1009,6 @@ class HomeController extends Controller {
 
         $product->attach = $pics;
 
-
         $tmpPics = ProductTrailer::whereProductId($product->id)->get();
         $pics = [];
 
@@ -849,20 +1027,41 @@ class HomeController extends Controller {
 
         $product->trailer = $pics;
 
+        if(Auth::check() && !$product->physical && $product->file_status &&
+            $product->file != null &&
+            file_exists(__DIR__ . '/../../../public/storage/contents/' . $product->file)) {
+
+            $me = Auth::user();
+            $buys = DB::select('select count(*) as count_ from transactions t, product p where t.user_id = ' . $me->id
+                . ' and t.product_id = p.id and project_id = ' . $product->project_id
+                . ' and p.grade_id = ' . $me->grade_id
+            )[0]->count_;
+
+            if ($buys > 0)
+                $product->file = URL::asset("storage/contents/" . $product->file);
+            else
+                $product->file = null;
+        }
+        else
+            $product->file = null;
 
         if($product->price == 0)
             $product->price = "رایگان";
         else
             $product->price = number_format($product->price);
 
-        $canBuy = true;
+        $canBuy = (Auth::check()) ? true : false;
 
-        $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
-        if($myReminder < 0)
-            $canBuy = false;
+        if($canBuy) {
+            $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
+            if ($myReminder < 0)
+                $canBuy = false;
 
-        if(Transaction::whereProductId($id)->count() > 0)
-            $canBuy = false;
+            if (Transaction::whereProductId($id)->count() > 0)
+                $canBuy = false;
+        }
+        else
+            $myReminder = 0;
 
         if($product->adv_status && $product->adv != null &&
             file_exists(__DIR__ . '/../../../public/storage/advs/' . $product->adv))
@@ -870,11 +1069,11 @@ class HomeController extends Controller {
         else
             $product->adv = null;
 
-        if($product->file_status && $product->file != null &&
-            file_exists(__DIR__ . '/../../../public/storage/advs/' . $product->file))
-            $product->file = URL::asset("storage/contents/" . $product->file);
-        else
-            $product->file = null;
+//        if($product->file_status && $product->file != null &&
+//            file_exists(__DIR__ . '/../../../public/storage/advs/' . $product->file))
+//            $product->file = URL::asset("storage/contents/" . $product->file);
+//        else
+//            $product->file = null;
 
         return view('showProduct', ['canBuy' => $canBuy,
             'product' => $product, 'myReminder' => $myReminder]);
@@ -1060,52 +1259,41 @@ class HomeController extends Controller {
         if(isset($_POST["id"])) {
 
             $product = Product::whereId(makeValidInput($_POST["id"]));
+
+            if($product == null || $product->hide || !$product->physical)
+                return "nok1";
+
             $user = Auth::user();
-
-            if($product == null || $product->hide) {
-                echo "nok1";
-                return;
-            }
-
             $product->grade_id = User::whereId($product->user_id)->grade_id;
 
-            if($product->grade_id != $user->grade_id) {
-                echo "nok1";
-                return;
-            }
+            if($product->grade_id != $user->grade_id)
+                return "nok1";
 
-            if(Transaction::whereProductId($product->id)->count() > 0) {
-                echo "nok2";
-                return;
-            }
+            if($product->price > $user->money)
+                return "nok3";
 
-            $buys = DB::select("select p.physical from transactions t, product p where p.id = t.product_id and t.user_id = " . $user->id);
+            if(Transaction::whereProductId($product->id)->count() > 0)
+                return "nok2";
 
-            if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= count($buys)) {
-                echo "nok7";
-                return;
-            }
+            $totalBuys = Transaction::whereUserId($user->id)->count();
+            if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= $totalBuys)
+                return "nok7";
 
-            if($product->price > $user->money) {
-                echo "nok3";
-                return;
-            }
+            $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(t.created_at, interval 1 day ) and p.id = t.product_id and t.user_id = " . $user->id);
 
             if(count($buys) > 0) {
 
                 $allow = false;
 
                 foreach ($buys as $buy) {
-                    if($buy->physical) {
+                    if(!$buy->physical) {
                         $allow = true;
                         break;
                     }
                 }
 
-                if(!$allow) {
-                    echo "nok9";
-                    return;
-                }
+                if(!$allow)
+                    return "nok9";
             }
 
             try {
@@ -1126,8 +1314,7 @@ class HomeController extends Controller {
                     $tmpUser->save();
                 }
 
-                echo "ok";
-                return;
+                return "ok";
             }
             catch (\Exception $x) {}
         }

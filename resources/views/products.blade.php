@@ -49,10 +49,10 @@
                                 @continue
                             @endif
 
-                            <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{route('showProduct', ['id' => $product->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
+                            <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{($product->physical) ? route('showProduct', ['id' => $product->id]) : route('showAllProductsInner', ['projectId' => $product->id, 'gradeId' => $grade])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
                                 <div class="sh_mainBox">
 
-                                    @if($product->adv != null)
+                                    @if($product->adv_status)
                                         <div class="sh_advPic"></div>
                                     @endif
 
@@ -68,12 +68,29 @@
                                             <div class="priceText">ستاره ی دریافتی: {{$product->star}}</div>
                                         </div>
 
-{{--                                        <p class="sh_descriptRow sh_title" style="direction: rtl; text-align: right">--}}
-{{--                                            @foreach($product->tags as $tag)--}}
-{{--                                                <span>#{{$tag->name}}</span>--}}
-{{--                                                <span>&nbsp;&nbsp;</span>--}}
-{{--                                            @endforeach--}}
-{{--                                        </p>--}}
+                                        @if(!$product->physical)
+                                            <p class="sh_descriptRow sh_title" style="direction: rtl; text-align: right">
+                                                <span>کل ظرفیت: {{$product->total}}</span>
+                                            </p>
+                                            <p class="sh_descriptRow sh_title" style="direction: rtl; text-align: right">
+                                                <span>خریداری شده: {{$product->buyers}}</span>
+                                            </p>
+                                            <p class="sh_descriptRow sh_title" style="direction: rtl; text-align: right">
+                                                <span>ظرفیت باقی مانده: {{$product->reminder}}</span>
+                                            </p>
+                                        @endif
+
+                                        <p class="sh_descriptRow sh_title" style="direction: rtl; text-align: right">
+                                            @foreach($product->tags as $tag)
+                                                <span>{{$tag->name}}</span>
+                                            @endforeach
+                                            <span>-</span>
+                                            @if($product->physical)
+                                                <span>عینی</span>
+                                            @else
+                                                <span>غیر عینی</span>
+                                            @endif
+                                        </p>
                                     </div>
 
                                 </div>
