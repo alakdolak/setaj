@@ -4,6 +4,16 @@
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
 
+    <style>
+        .descriptArea {
+            margin: 12px 0 0px;
+            width: 100%;
+            height: 150px;
+            padding: 5px 10px;
+            border-radius: 7px;
+        }
+    </style>
+
 @stop
 
 @section("content")
@@ -33,17 +43,30 @@
         </div>
         <div class="pr_picsBox col-sm-5 col-xs-12">
             <div class="pr_pics">
-                <div class="pr_otherPics">
-                    @foreach($project->pics as $pic)
-                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>
-                    @endforeach
-                </div>
+{{--                <div class="pr_otherPics">--}}
+{{--                    @foreach($project->pics as $pic)--}}
+{{--                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
                 @if(count($project->pics) > 0)
-                    <div style="background-image: url('{{$project->pics[0]}}');" id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{$project->pics[0]}}');" id="pr_mainPic" class="pr_bigPic"></div>
                 @else
-                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_bigPic"></div>
                 @endif
             </div>
+
+{{--            <div class="pr_pics">--}}
+{{--                <div class="pr_otherPics">--}}
+{{--                    @foreach($project->pics as $pic)--}}
+{{--                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
+{{--                @if(count($project->pics) > 0)--}}
+{{--                    <div style="background-image: url('{{$project->pics[0]}}');" id="pr_mainPic" class="pr_mainPic"></div>--}}
+{{--                @else--}}
+{{--                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_mainPic"></div>--}}
+{{--                @endif--}}
+{{--            </div>--}}
 
             @if($canBuy)
                 <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انجام دادم</div>
@@ -110,10 +133,10 @@
                 </div>
                 <div class="modal-body">
                     <p>توضیحی میخوای بنویسی؟</p>
-                    <textarea id="desc" maxlength="1000" placeholder="حداکثر 1000 کاراکتر"></textarea>
+                    <textarea id="desc" class="descriptArea" maxlength="1000" placeholder="حداکثر 1000 کاراکتر"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="buy()" type="button" class="btn btn-success">بله</button>
+                    <button onclick="buy()" type="button" class="btn btn-success">تایید و گرفتن امتیاز پروژه</button>
                     <button type="button" id="closeConfirmationModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
                 </div>
             </div>
