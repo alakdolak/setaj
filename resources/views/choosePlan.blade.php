@@ -17,6 +17,7 @@
     <div>
         <div class="swiper-container swiper-container-autoheight">
             <div class="swiper-wrapper">
+                <div class="swiper-slide advertiseBanner advertiseBanner12"></div>
                 <div class="swiper-slide advertiseBanner advertiseBanner11"></div>
 {{--                <div class="swiper-slide advertiseBanner advertiseBanner10"></div>--}}
 {{--                <div class="swiper-slide advertiseBanner advertiseBanner9"></div>--}}
