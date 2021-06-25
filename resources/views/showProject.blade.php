@@ -379,7 +379,7 @@
                             $("#alertText").empty().append("<div>شما قبلا این محصول را خریداری کرده اید</div>");
                         }
                         else if(res === "nok9") {
-                            $("#alertText").empty().append("<div>شما ا</div>");
+                            $("#alertText").empty().append("<div>ظرفیت خرید پروژه های عینی شما به پایان رسیده و شما فقط می‌توانید پروژه غیرعینی خریداری کنید</div>");
                         }
                         else if(res === "nok3") {
                             $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه را ندارید</div>");

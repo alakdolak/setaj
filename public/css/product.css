@@ -1,4 +1,5 @@
 .eachProduct {
+    min-height: 57vh;
     margin: 50px 12% 0 !important;
 }
 .pr_picsBox {
