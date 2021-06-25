@@ -8,6 +8,7 @@
             border-right: 25px solid #a1a1a1;
             border-left: 25px solid #a1a1a1;
             margin: 20px 0;
+            cursor: pointer;
         }
         .prInner_buyBtn {
             line-height: 70px;
@@ -41,12 +42,9 @@
             <div class="shopEachRow col-xs-12">
 
                 @if($canBuy)
-                    <div class="prInner_buyBtnBox">
+                    <div onclick="buy()" class="prInner_buyBtnBox">
                         <div class="prInner_buyBtn">خرید مجموعه</div>
                     </div>
-{{--                    <div>--}}
-{{--                        <button onclick="buy()" class="btn btn-primary">خرید</button>--}}
-{{--                    </div>--}}
                 @endif
 
                 @foreach($products as $product)
@@ -75,10 +73,15 @@
 
                         </div>
 
-                        <div class="sh_ownerBox">
-                            <div>تولیدکننده: {{$product->owner}}</div>
-                        </div>
-
+                        @if(!$product->sold)
+                            <div class="sh_ownerBox">
+                                <div>تولیدکننده: {{$product->owner}}</div>
+                            </div>
+                        @else
+                            <div class="sh_ownerBox_finish">
+                                <div>تولیدکننده: {{$product->owner}}</div>
+                            </div>
+                        @endif
                     </div>
 
                 @endforeach

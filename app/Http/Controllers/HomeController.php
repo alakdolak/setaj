@@ -96,7 +96,7 @@ class HomeController extends Controller {
             $tmpPic = ProductPic::whereProductId($myBuy->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
-                $myBuy->pic = URL::asset('productPic/defaultPic.jpg');
+                $myBuy->pic = URL::asset('productPic/defaultPic.png');
             else
                 $myBuy->pic = URL::asset('productPic/' . $tmpPic->name);
 
@@ -130,7 +130,7 @@ class HomeController extends Controller {
             $tmpPic = ProductPic::whereProductId($myBuy->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
-                $myBuy->pic = URL::asset('productPic/defaultPic.jpg');
+                $myBuy->pic = URL::asset('productPic/defaultPic.png');
             else
                 $myBuy->pic = URL::asset('productPic/' . $tmpPic->name);
 
@@ -173,7 +173,7 @@ class HomeController extends Controller {
             $tmpPic = ProjectPic::whereProjectId($myProject->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/projectPic/' . $tmpPic->name))
-                $myProject->pic = URL::asset('projectPic/defaultPic.jpg');
+                $myProject->pic = URL::asset('projectPic/defaultPic.png');
             else
                 $myProject->pic = URL::asset('projectPic/' . $tmpPic->name);
 
@@ -193,7 +193,7 @@ class HomeController extends Controller {
             $tmpPic = ServicePic::whereServiceId($myService->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/servicePic/' . $tmpPic->name))
-                $myService->pic = URL::asset('servicePic/defaultPic.jpg');
+                $myService->pic = URL::asset('servicePic/defaultPic.png');
             else
                 $myService->pic = URL::asset('servicePic/' . $tmpPic->name);
 
@@ -333,7 +333,7 @@ class HomeController extends Controller {
             $tmpPic = ServicePic::whereServiceId($service->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/servicePic/' . $tmpPic->name))
-                $service->pic = URL::asset('servicePic/defaultPic.jpg');
+                $service->pic = URL::asset('servicePic/defaultPic.png');
             else
                 $service->pic = URL::asset('servicePic/' . $tmpPic->name);
 
@@ -470,7 +470,7 @@ class HomeController extends Controller {
             $tmpPic = ProjectPic::whereProjectId($project->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/projectPic/' . $tmpPic->name))
-                $project->pic = URL::asset('projectPic/defaultPic.jpg');
+                $project->pic = URL::asset('projectPic/defaultPic.png');
             else
                 $project->pic = URL::asset('projectPic/' . $tmpPic->name);
 
@@ -647,7 +647,7 @@ class HomeController extends Controller {
             $tmpPic = CitizenPic::whereProjectId($project->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/citizenPic/' . $tmpPic->name))
-                $project->pic = URL::asset('citizenPic/defaultPic.jpg');
+                $project->pic = URL::asset('citizenPic/defaultPic.png');
             else
                 $project->pic = URL::asset('citizenPic/' . $tmpPic->name);
 
@@ -772,25 +772,29 @@ class HomeController extends Controller {
             $tmpPic = ProjectPic::whereProjectId($product->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/projectPic/' . $tmpPic->name))
-                $product->pic = URL::asset('projectPic/defaultPic.jpg');
+                $product->pic = URL::asset('projectPic/defaultPic.png');
             else
                 $product->pic = URL::asset('projectPic/' . $tmpPic->name);
 
-            $product->price = "رایگان";
             $product->tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $product->id);
 
             $str = "-";
             foreach ($product->tags as $tag)
                 $str .= $tag->id . '-';
 
-            $product->buyers = DB::select("select count(*) as count_ from transactions t, product p where product_id = p.id and p.grade_id = " . $grade . " and p.project_id = " . $product->id)[0]->count_;
-            $product->reminder = $product->total - $product->buyers;
+            $tmp = DB::select("select count(*) as count_, min(price) as minPrice, min(star) as minStar from product where " .
+                "id not in (select product_id from transactions where 1) and grade_id = " .
+                $grade . " and project_id = " . $product->id . " and hide = false group by(project_id)")[0];
+
+            $reminder = $tmp->count_;
             $product->tagStr = $str;
             $product->adv_status = false;
-            $product->star = 0;
+            $product->star = $tmp->minStar;
+            $product->price = $tmp->minPrice;
+
             $product->physical = 0;
-            $product->canBuy = (Auth::check() && $product->reminder > 0) ? true : false;
-            $product->owner = "پایه " . $gradeName;
+            $product->canBuy = (Auth::check() && $reminder > 0) ? true : false;
+            $product->owner = "ظرفیت باقی مانده: " . $reminder;
         }
 
         $visualProducts = DB::select('select pb.adv_status, ' .
@@ -839,7 +843,7 @@ class HomeController extends Controller {
             $tmpPic = ProductPic::whereProductId($product->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
-                $product->pic = URL::asset('productPic/defaultPic.jpg');
+                $product->pic = URL::asset('productPic/defaultPic.png');
             else
                 $product->pic = URL::asset('productPic/' . $tmpPic->name);
 
@@ -867,17 +871,17 @@ class HomeController extends Controller {
     public function showAllProductsInner($projectId, $gradeId) {
 
         $products = DB::select('select pb.adv_status, ' .
-            'p.id, name, description, price, star, p.project_id, ' .
+            'p.id, name, description, price, star, p.project_id, (select count(*) from transactions where product_id = p.id) > 0 as sold, ' .
             'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
             ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId .
-            ' and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.id desc');
+            ' and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.price asc');
 
         foreach ($products as $product) {
 
             $tmpPic = ProductPic::whereProductId($product->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
-                $product->pic = URL::asset('productPic/defaultPic.jpg');
+                $product->pic = URL::asset('productPic/defaultPic.png');
             else
                 $product->pic = URL::asset('productPic/' . $tmpPic->name);
 
@@ -887,8 +891,11 @@ class HomeController extends Controller {
                 $product->price = number_format($product->price);
         }
 
-        $buyers = DB::select("select count(*) as count_ from transactions t, product p where product_id = p.id and p.grade_id = " . $gradeId . " and p.project_id = " . $projectId)[0]->count_;
-        $canBuy = (Auth::check()) ? (count($products) - $buyers > 0) : false;
+        $reminder = DB::select("select count(*) as count_ from product where " .
+            "id not in (select product_id from transactions where 1) and grade_id = " .
+            $gradeId . " and project_id = " . $projectId . " and hide = false group by(project_id)")[0]->count_;
+
+        $canBuy = (Auth::check()) ? $reminder : false;
 
         return view('productsInner', ['products' => $products, 'canBuy' => $canBuy,
             'projectId' => $projectId, 'grade' => $gradeId]);

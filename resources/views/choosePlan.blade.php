@@ -70,7 +70,7 @@
 
         <div class="otherAdvertise">
             <div class="twoAdvBox">
-                <div class="otherAdv rightAdv"></div>
+                <div onclick="document.location.href = '{{route('faq')}}'" class="otherAdv rightAdv"></div>
                 <div class="otherAdv leftAdv"></div>
             </div>
             <div class="horizontalAdv"></div>
