@@ -153,7 +153,8 @@
 .horizontalAdv {
     padding-top: 16%;
     margin: 3% 0;
-    background-image: url(../images/horizontalAdv.jpg);
+    /*background-image: url(../images/horizontalAdv.jpg);*/
+    background-image: url(../images/horizontalAdv2.jpg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
