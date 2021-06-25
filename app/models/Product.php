@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property integer $price
  * @property integer $project_id
+ * @property string $start_show
+ * @property string $start_time
  * @method static \Illuminate\Database\Query\Builder|\App\models\Product whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\Product whereProjectId($value)
  */

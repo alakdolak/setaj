@@ -67,10 +67,12 @@ class HomeController extends Controller {
         if(Auth::user()->level == getValueInfo('operatorLevel'))
             return view('adminProfile');
 
+        $uId = Auth::user()->id;
+
         $myBuys = DB::select("select p.id, t.status, p.name, concat(u.first_name, ' ', u.last_name) as seller, " .
             "pb.project_id, p.price, p.star, t.follow_code, t.created_at from transactions t, product p, project_buyers pb, users u where " .
             " u.id = pb.user_id and pb.project_id = p.project_id and p.user_id = u.id and " .
-            " t.product_id = p.id and t.user_id = " . Auth::user()->id);
+            " t.product_id = p.id and t.user_id = " . $uId);
 
         foreach ($myBuys as $myBuy) {
 
@@ -103,8 +105,7 @@ class HomeController extends Controller {
         }
 
 
-        $myProducts = DB::select("select * from product where " .
-            "user_id = " . Auth::user()->id);
+        $myProducts = DB::select("select * from product where user_id = " . $uId);
 
         foreach ($myProducts as $myBuy) {
 
@@ -147,7 +148,7 @@ class HomeController extends Controller {
 
 
         $myProjects = DB::select("select p.*, pb.status from project p, project_buyers pb where " .
-            "p.id = pb.project_id and pb.user_id = " . Auth::user()->id);
+            "p.id = pb.project_id and pb.user_id = " . $uId);
 
         foreach ($myProjects as $myProject) {
 
@@ -184,6 +185,38 @@ class HomeController extends Controller {
         }
 
 
+        $myCitizens = DB::select("select p.* from citizen p, citizen_buyers pb where " .
+            "p.id = pb.project_id and pb.user_id = " . $uId);
+
+        foreach ($myCitizens as $myProject) {
+
+            $myProject->date = getCustomDate($myProject->created_at);
+
+            $tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $myProject->id);
+
+            $str = "";
+            $first = true;
+
+            foreach ($tags as $tag) {
+                if($first) {
+                    $str .= "#" . $tag->name;
+                    $first = false;
+                }
+                else {
+                    $str .= " #" . $tag->name;
+                }
+            }
+
+            $myProject->tagStr = $str;
+
+            $tmpPic = CitizenPic::whereProjectId($myProject->id)->first();
+
+            if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/citizenPic/' . $tmpPic->name))
+                $myProject->pic = URL::asset('citizenPic/defaultPic.png');
+            else
+                $myProject->pic = URL::asset('citizenPic/' . $tmpPic->name);
+        }
+
 
         $myServices = DB::select("select s.id, sb.status, sb.star myStar, s.star, s.title from service_buyer sb, service s where " .
             " sb.service_id = s.id and sb.user_id = " . Auth::user()->id);
@@ -200,6 +233,7 @@ class HomeController extends Controller {
         }
 
         return view('profile', ['myBuys' => $myBuys, "myServices" => $myServices,
+            "myCitizens" => $myCitizens,
             "myProducts" => $myProducts, 'myProjects' => $myProjects, 'tags' => Tag::whereType("CITIZEN")->get()]);
     }
 
@@ -617,11 +651,13 @@ class HomeController extends Controller {
         if($grade == -1)
             $grade = Grade::first()->id;
 
-        $date = getToday()["date"];
+        $today = getToday();
+        $date = $today["date"];
+        $time = (int)$today["time"];
 
         $projects = DB::select('select citizen.id, title, tag_id, description, point, tag.name as tag, start_reg, end_reg from citizen, tag where ' .
             'tag.id = tag_id and (select count(*) from citizen_grade where project_id = citizen.id and grade_id = ' . $grade . ' ) > 0' .
-            ' and hide = false order by citizen.id desc');
+            ' and hide = false and (start_show < ' . $date . ' or (start_show = ' . $date . ' and start_time <= ' . $time . ')) order by citizen.id desc');
 
         $mainDiff = findDiffWithSiteStart();
 
@@ -952,16 +988,16 @@ class HomeController extends Controller {
                         return "nok8";
                 }
 
-                $allow = false;
-                foreach ($buys as $buy) {
-                    if($buy->physical) {
-                        $allow = true;
-                        break;
-                    }
-                }
-
-                if(!$allow)
-                    return "nok9";
+//                $allow = false;
+//                foreach ($buys as $buy) {
+//                    if($buy->physical) {
+//                        $allow = true;
+//                        break;
+//                    }
+//                }
+//
+//                if(!$allow)
+//                    return "nok9";
             }
 
             try {

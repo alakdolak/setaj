@@ -65,6 +65,8 @@
                                 <th scope="col">عملیات</th>
                                 <th scope="col">نام</th>
                                 <th scope="col">پایه تحصیلی</th>
+                                <th scope="col">تاریخ شروع نمایش</th>
+                                <th scope="col">زمان شروع نمایش</th>
                                 <th scope="col">تاریخ شروع امکان خرید</th>
                                 <th scope="col">تاریخ پایان امکان خرید</th>
                                 <th scope="col">تصویر</th>
@@ -115,6 +117,8 @@
                                         </div>
                                     </td>
 
+                                    <td>{{$itr->startShow}}</td>
+                                    <td>{{$itr->startTime}}</td>
                                     <td>{{$itr->startReg}}</td>
                                     <td>{{$itr->endReg}}</td>
                                     <td><img width="100px" src="{{$itr->pic}}"></td>
@@ -167,6 +171,21 @@
                     </select>
 
                     <div>
+                        <span>تاریخ شروع نمایش</span>
+                        <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="show_date_btn">
+                        <br/>
+                        <input type="text" name="start_show" id="date_input_show" readonly>
+                        <script>
+                            Calendar.setup({
+                                inputField: "date_input_show",
+                                button: "show_date_btn",
+                                ifFormat: "%Y/%m/%d",
+                                dateType: "jalali"
+                            });
+                        </script>
+                    </div>
+
+                    <div>
                         <span>تاریخ شروع امکان خرید</span>
                         <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="date_btn">
                         <br/>
@@ -194,6 +213,11 @@
                                 dateType: "jalali"
                             });
                         </script>
+                    </div>
+
+                    <div style="margin: 10px">
+                        <span>زمان شروع نمایش</span>
+                        <input type="time" name="start_time">
                     </div>
 
                     <h5>توضیح پروژه</h5>

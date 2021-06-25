@@ -218,6 +218,35 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                @foreach($myCitizens as $buy)
+                                    <div class="shopOneBox col-lg-4 col-xs-6">
+                                        <div onclick="document.location.href = '{{route('showCitizen', ['id' => $buy->id])}}'" class="sh_mainBox">
+                                            <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
+                                            <div class="sh_descript">
+                                                <div class="sh_descriptRow sh_title">{{$buy->title}}</div>
+
+                                                <div class="sh_descriptRow sh_priceBox">
+                                                    <div class="priceIcons coinIcon"></div>
+                                                    <div class="priceText">امتیاز: {{$buy->point}} </div>
+                                                </div>
+
+                                                <div class="sh_descriptRow sh_priceBox">
+                                                    <div class="priceIcons statusIcon"></div>
+                                                    <div class="priceText">وضعیت: انجام شد</div>
+                                                </div>
+
+                                                <div class="sh_descriptRow sh_priceBox">
+                                                    <div class="priceIcons calenderIcon"></div>
+                                                    <div class="priceText" style="font-size: 0.9em">تاریخ انجام پروژه: {{$buy->date}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="sh_ownerBox_finish">
+                                            <div style="font-size: 0.9em">سفارش مدرسه سراج</div>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
 
                             <div id="advModal" class="modal fade" role="dialog">

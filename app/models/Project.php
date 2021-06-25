@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $capacity
  * @property string $end_reg
  * @property integer $price
+ * @property string $start_show
+ * @property string $start_time
  * @method static \Illuminate\Database\Query\Builder|\App\models\Project whereGradeId($value)
  */
 

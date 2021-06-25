@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $hide
  * @property string $description
  * @property string $start_reg
+ * @property string $start_show
+ * @property string $start_time
  * @property string $end_reg
  * @property integer $point
  * @property integer $tag_id

@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $capacity
  * @property boolean $hide
  * @property string $title
+ * @property string $start_show
+ * @property string $start_time
  * @property string $description
  * @method static \Illuminate\Database\Query\Builder|\App\models\Service whereHide($value)
  */

@@ -41,6 +41,17 @@
             <h5 style="padding-right: 5%;">امتیاز پروژه</h5>
             <input value="{{$project->point}}" type="number" name="point" required min="0">
 
+            <h5>دسته پروژه</h5>
+            <select name="tagId">
+                @foreach($tags as $tag)
+                    @if($tag->id == $project->tag_id)
+                        <option selected value="{{$tag->id}}">{{$tag->name}}</option>
+                    @else
+                        <option value="{{$tag->id}}">{{$tag->name}}</option>
+                    @endif
+                @endforeach
+            </select>
+
             <div>
                 <span>تاریخ شروع امکان خرید</span>
                 <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="date_btn">
@@ -69,6 +80,26 @@
                         dateType: "jalali"
                     });
                 </script>
+            </div>
+
+            <div>
+                <span>تاریخ شروع نمایش</span>
+                <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="show_date_btn">
+                <br/>
+                <input value="{{$project->start_show}}" type="text" name="start_show" id="date_input_show" readonly>
+                <script>
+                    Calendar.setup({
+                        inputField: "date_input_show",
+                        button: "show_date_btn",
+                        ifFormat: "%Y/%m/%d",
+                        dateType: "jalali"
+                    });
+                </script>
+            </div>
+
+            <div style="margin: 10px">
+                <span>زمان شروع نمایش</span>
+                <input type="time" name="start_time" value="{{$project->start_time}}">
             </div>
 
             <h5>توضیح پروژه</h5>

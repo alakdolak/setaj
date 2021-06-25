@@ -274,7 +274,21 @@ function convertDateToString2($date, $delimeter) {
     return $subStrD[0] . $subStrD[1] . $subStrD[2];
 }
 
+function convertTimeToString($date) {
+
+    $subStrD = explode(":", $date);
+
+    if($subStrD[0][0] == "0")
+        $subStrD[0] = $subStrD[0][1];
+
+    return $subStrD[0] . $subStrD[1];
+}
+
 function convertStringToTime($time) {
+
+    if(strlen($time) == 3)
+        return "0" . $time[0] . ":" . $time[1] . $time[2];
+
     return $time[0] . $time[1] . ":" . $time[2] . $time[3];
 }
 

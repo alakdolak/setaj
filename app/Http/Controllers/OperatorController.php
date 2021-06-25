@@ -139,6 +139,9 @@ class OperatorController extends Controller {
             else
                 $service->pic = URL::asset('servicePic/' . $tmpPic->name);
 
+            $service->start_show = convertStringToDate($service->start_show);
+            $service->start_time = convertStringToTime($service->start_time);
+
             $service->hide = (!$service->hide) ? "آشکار" : "مخفی";
             $service->date = MiladyToShamsi('', explode('-', explode(' ', $service->created_at)[0]));
         }
@@ -167,6 +170,8 @@ class OperatorController extends Controller {
                 $product->pic = URL::asset('productPic/' . $tmpPic->name);
 
             $product->date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
+            $product->start_show = convertStringToDate($product->start_show);
+            $product->start_time = convertStringToTime($product->start_time);
 
             $t = Transaction::whereProductId($product->id)->select('user_id')->get();
 
@@ -278,6 +283,8 @@ class OperatorController extends Controller {
                 $project->pic = URL::asset('projectPic/' . $tmpPic->name);
 
             $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));
+            $project->start_show = convertStringToDate($project->start_show);
+            $project->start_time = convertStringToTime($project->start_time);
 
             $project->buyers = ProjectBuyers::whereProjectId($project->id)->count();
 
@@ -319,8 +326,10 @@ class OperatorController extends Controller {
             $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));
             $project->buyers = CitizenBuyers::whereProjectId($project->id)->count();
 
+            $project->startShow = convertStringToDate($project->start_show);
             $project->startReg = convertStringToDate($project->start_reg);
             $project->endReg = convertStringToDate($project->end_reg);
+            $project->startTime = convertStringToTime($project->start_time);
 
             $project->hide = (!$project->hide) ? "آشکار" : "مخفی";
             $project->tag = Tag::whereId($project->tag_id)->name;
@@ -947,6 +956,7 @@ class OperatorController extends Controller {
         if(isset($_POST["name"]) && isset($_POST["description"])
             && isset($_POST["point"]) && isset($_POST["gradeId"])
             && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
+            && isset($_POST["start_show"]) && isset($_POST["start_time"])
             && isset($_POST["tagId"])
         ) {
 
@@ -956,7 +966,9 @@ class OperatorController extends Controller {
             $project->point = makeValidInput($_POST["point"]);
             $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
+            $project->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
             $project->tag_id = makeValidInput($_POST["tagId"]);
+            $project->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
 
             try {
 
@@ -1257,6 +1269,8 @@ class OperatorController extends Controller {
         if($project == null)
             return Redirect::route('admin');
 
+        $project->start_show = convertStringToDate($project->start_show);
+        $project->start_time = convertStringToTime($project->start_time);
         $project->start_reg = convertStringToDate($project->start_reg);
         $project->end_reg = convertStringToDate($project->end_reg);
 
@@ -1273,6 +1287,7 @@ class OperatorController extends Controller {
 
         if(isset($_POST["name"]) && isset($_POST["description"])
             && isset($_POST["price"]) && isset($_POST["capacity"])
+            && isset($_POST["start_show"]) && isset($_POST["start_time"])
             && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
         ) {
 
@@ -1282,6 +1297,8 @@ class OperatorController extends Controller {
             $project->price = makeValidInput($_POST["price"]);
             $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
+            $project->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
+            $project->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
 
             try {
 
@@ -1411,10 +1428,12 @@ class OperatorController extends Controller {
         if($project == null)
             return Redirect::route('admin');
 
+        $project->start_show = convertStringToDate($project->start_show);
+        $project->start_time = convertStringToTime($project->start_time);
         $project->start_reg = convertStringToDate($project->start_reg);
         $project->end_reg = convertStringToDate($project->end_reg);
 
-        return view('operator.editCitizen', ['project' => $project]);
+        return view('operator.editCitizen', ['project' => $project, 'tags' => Tag::whereType("CITIZEN")->get()]);
     }
 
     public function doEditCitizen($id) {
@@ -1426,14 +1445,18 @@ class OperatorController extends Controller {
 
 
         if(isset($_POST["name"]) && isset($_POST["description"])
-            && isset($_POST["point"])
+            && isset($_POST["point"]) && isset($_POST["tagId"])
+            && isset($_POST["start_show"]) && isset($_POST["start_time"])
             && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
         ) {
 
             $project->title = makeValidInput($_POST["name"]);
             $project->description = $_POST["description"];
             $project->point = makeValidInput($_POST["point"]);
+            $project->tag_id = makeValidInput($_POST["tagId"]);
             $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
+            $project->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
+            $project->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
 
             try {
@@ -1562,12 +1585,16 @@ class OperatorController extends Controller {
         if($service == null)
             return Redirect::route('admin');
 
+        $service->start_show = convertStringToDate($service->start_show);
+        $service->start_time = convertStringToTime($service->start_time);
+
         return view('operator.editService', ['service' => $service]);
     }
 
     public function doEditService($id) {
 
         if(isset($_POST["name"]) && isset($_POST["description"])
+            && isset($_POST["start_show"]) && isset($_POST["start_time"])
             && isset($_POST["star"]) && isset($_POST["capacity"])
         ) {
 
@@ -1580,6 +1607,8 @@ class OperatorController extends Controller {
             $service->description = $_POST["description"];
             $service->star = makeValidInput($_POST["star"]);
             $service->capacity = makeValidInput($_POST["capacity"]);
+            $service->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
+            $service->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
 
             try {
 
@@ -1705,6 +1734,9 @@ class OperatorController extends Controller {
         if($product == null)
             return Redirect::route('admin');
 
+        $product->start_show = convertStringToDate($product->start_show);
+        $product->start_time = convertStringToTime($product->start_time);
+
         return view('operator.editProduct', ['product' => $product]);
 
     }
@@ -1712,6 +1744,7 @@ class OperatorController extends Controller {
     public function doEditProduct($id) {
 
         if(isset($_POST["name"]) && isset($_POST["description"])
+            && isset($_POST["start_show"]) && isset($_POST["start_time"])
             && isset($_POST["price"]) && isset($_POST["star"])
         ) {
 
@@ -1725,6 +1758,8 @@ class OperatorController extends Controller {
             $product->description = $_POST["description"];
             $product->price = makeValidInput($_POST["price"]);
             $product->star = makeValidInput($_POST["star"]);
+            $product->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
+            $product->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
 
             try {
 

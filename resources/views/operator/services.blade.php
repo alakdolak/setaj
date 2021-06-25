@@ -162,6 +162,8 @@
                                 <th scope="col">ردیف</th>
                                 <th scope="col">نام</th>
                                 <th scope="col">پایه تحصیلی</th>
+                                <th scope="col">تاریخ شروع خدمت</th>
+                                <th scope="col">زمان شروع خدمت</th>
                                 <th scope="col">موجودی</th>
                                 <td scope="col">تصویر</td>
                                 <th scope="col" style="width:450px !important">توضیح</th>
@@ -196,6 +198,9 @@
                                             <button onclick="showGrades('{{$itr->id}}')" class="btn btn-default">افزودن پایه تحصیلی جدید</button>
                                         </div>
                                     </td>
+
+                                    <td>{{$itr->start_show}}</td>
+                                    <td>{{$itr->start_time}}</td>
 
                                     <td>{{$itr->capacity}}</td>
                                     <td><img width="100px" src="{{$itr->pic}}"></td>
