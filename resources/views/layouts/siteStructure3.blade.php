@@ -17,7 +17,7 @@
 
         <link rel="icon" href="{{\Illuminate\Support\Facades\URL::asset("images/logo.png")}}" sizes="16x16" type="image/png">
 
-        <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.3")}}">
+        <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.4")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/banner.css?v=1.3")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/header.css?v=1.3")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/footer.css?v=1.4")}}">
@@ -44,6 +44,12 @@
     <center>
 
         @if(!\Illuminate\Support\Facades\Auth::check() || \Illuminate\Support\Facades\Auth::user()->level != 1)
+
+            @if($grade != 9)
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default">اول</button>
+            @else
+                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">اول</button>
+            @endif
 
             @if($grade != 4)
                 <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default">دوم</button>
@@ -75,11 +81,11 @@
                 <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">ششم</button>
             @endif
 
-            @if($grade != 3)
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default">هفتم</button>
-            @else
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">هفتم</button>
-            @endif
+{{--            @if($grade != 3)--}}
+{{--                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default">هفتم</button>--}}
+{{--            @else--}}
+{{--                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">هفتم</button>--}}
+{{--            @endif--}}
 
         @endif
     </center>

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{URL::asset('css/usersActivities.css?v=1.3')}}">
     <link rel="stylesheet" href="{{URL::asset('css/abbreviations.css?v=1.3')}}">
     <link rel="stylesheet" href="{{URL::asset('css/profile.css?v=1.4')}}">
-    <link rel="stylesheet" href="{{URL::asset('css/card.css?v=1.3')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/card.css?v=1.4')}}">
 
     <style>
         .userActivitiesPhotos {
@@ -112,12 +112,12 @@
             <div class="mainDivContainerProfilePage row">
                 <div class="col-sm-12" style="margin-top: 40px; padding: 0 !important;">
                     <div class="rightColBoxes col-md-4 col-xs-12">
-                        <div class="honorsMainDiv col-md-12 col-xs-12">
+                        <div class="hidden honorsMainDiv col-md-12 col-xs-12">
                             <div class="honors_headerBox"></div>
-                            <div class="honors_titleBox">جعبه‌ي افتخارات</div>
+                            <div class="honors_titleBox">جعبه‌ی افتخارات</div>
                             <div class="honors_picBox">
                                 <div class="honors_pic"></div>
-                                <div class="honors_picText">مجوز موقت شهروندي</div>
+                                <div class="honors_picText"></div>
                             </div>
                             <div class="honors_footerBox"></div>
                         </div>
@@ -439,7 +439,7 @@
                 $(element).prevAll().removeClass('onClick');
             }
 
-            var total = '{{$total}}';
+            var total = '{{\Illuminate\Support\Facades\Auth::user()->stars}}';
 
             $(document).ready(function () {
 
@@ -455,6 +455,12 @@
                         res = JSON.parse(res);
                         if(res.status === "nok")
                             return;
+
+                        if(res.medal != null) {
+                            $(".honorsMainDiv ").removeClass('hidden');
+                            $(".honors_pic").css("background-image", 'url("' + res.medal.pic + '")');
+                            $(".honors_picText").append(res.medal.name);
+                        }
 
                         for(var i = 0; i < res.points.length; i++) {
                             $("#score_" + res.points[i].id).animate({

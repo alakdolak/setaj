@@ -175,6 +175,7 @@
     background-color: #f1f1f1;
     font-size: 1.2em;
     padding: 5px 0;
+    min-height: 145px;
 }
 
 .sh_descriptRow {
