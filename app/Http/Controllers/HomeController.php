@@ -871,10 +871,10 @@ class HomeController extends Controller {
     public function showAllProductsInner($projectId, $gradeId) {
 
         $products = DB::select('select pb.adv_status, ' .
-            'p.id, name, description, price, star, p.project_id, ' .
+            'p.id, name, description, price, star, p.project_id, (select count(*) from transactions where product_id = p.id) > 0 as sold, ' .
             'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
             ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId .
-            ' and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.id desc');
+            ' and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.price asc');
 
         foreach ($products as $product) {
 
@@ -891,8 +891,11 @@ class HomeController extends Controller {
                 $product->price = number_format($product->price);
         }
 
-        $buyers = DB::select("select count(*) as count_ from transactions t, product p where product_id = p.id and p.grade_id = " . $gradeId . " and p.project_id = " . $projectId)[0]->count_;
-        $canBuy = (Auth::check()) ? (count($products) - $buyers > 0) : false;
+        $reminder = DB::select("select count(*) as count_ from product where " .
+            "id not in (select product_id from transactions where 1) and grade_id = " .
+            $gradeId . " and project_id = " . $projectId . " and hide = false group by(project_id)")[0]->count_;
+
+        $canBuy = (Auth::check()) ? $reminder : false;
 
         return view('productsInner', ['products' => $products, 'canBuy' => $canBuy,
             'projectId' => $projectId, 'grade' => $gradeId]);
