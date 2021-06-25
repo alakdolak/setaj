@@ -100,6 +100,16 @@
             background-repeat: no-repeat;
             background-size: contain;
         }
+
+        .alertText {
+            text-align: center;
+        }
+        .acceptAlertText {
+            color: darkgreen;
+        }
+        .refuseAlertText {
+            color: darkred;
+        }
 </style>
 
     <script src="{{\Illuminate\Support\Facades\URL::asset('dropzone/dropzone.js')}}"></script>
@@ -164,20 +174,20 @@
             @endif
 
             @if($advStatus == 1)
-                <p>تبلیغ شما به تایید معلم راهنما رسید.</p>
+                <p class="alertText acceptAlertText">تبلیغ شما به تایید معلم راهنما رسید.</p>
             @elseif($advStatus == 0)
-                <p>تبلیغ شما در حال بررسی توسط معلم راهنما می باشد.</p>
+                <p class="alertText acceptAlertText">تبلیغ شما در حال بررسی توسط معلم راهنما می باشد.</p>
             @elseif($advStatus == -1)
-                <p>تبلیغ شما توسط معلم راهنما رد گردید.</p>
+                <p class="alertText refuseAlertText">تبلیغ شما توسط معلم راهنما تایید نشد.</p>
             @endif
 
 
             @if($fileStatus == 1)
-                <p>محتوا شما به تایید معلم راهنما رسید.</p>
+                <p class="alertText acceptAlertText">محتوا شما به تایید معلم راهنما رسید.</p>
             @elseif($fileStatus == 0)
-                <p>محتوا شما در حال بررسی توسط معلم راهنما می باشد.</p>
+                <p class="alertText acceptAlertText">محتوا شما در حال بررسی توسط معلم راهنما می باشد.</p>
             @elseif($fileStatus == -1)
-                <p>محتوا شما توسط معلم راهنما رد گردید.</p>
+                <p class="alertText refuseAlertText">محتوا شما توسط معلم راهنما تایید نشد.</p>
             @endif
 
         </div>
@@ -369,10 +379,10 @@
                             $("#alertText").empty().append("<div>شما قبلا این محصول را خریداری کرده اید</div>");
                         }
                         else if(res === "nok9") {
-                            $("#alertText").empty().append("<div>حتما باید یه عینی بخری</div>");
+                            $("#alertText").empty().append("<div>شما ا</div>");
                         }
                         else if(res === "nok3") {
-                            $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه ندارید</div>");
+                            $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه را ندارید</div>");
                         }
                         else {
                             $("#alertText").empty().append("<div>عملیات مورد نظر غیرمجاز است</div>");
