@@ -67,6 +67,7 @@
                                 <th scope="col">پایه تحصیلی</th>
                                 <th scope="col">تاریخ شروع نمایش</th>
                                 <th scope="col">زمان شروع نمایش</th>
+                                <th scope="col">زمان شروع خرید</th>
                                 <th scope="col">تاریخ شروع امکان خرید</th>
                                 <th scope="col">تاریخ پایان امکان خرید</th>
                                 <th scope="col">تصویر</th>
@@ -119,6 +120,7 @@
 
                                     <td>{{$itr->startShow}}</td>
                                     <td>{{$itr->startTime}}</td>
+                                    <td>{{$itr->start_reg_time}}</td>
                                     <td>{{$itr->startReg}}</td>
                                     <td>{{$itr->endReg}}</td>
                                     <td><img width="100px" src="{{$itr->pic}}"></td>

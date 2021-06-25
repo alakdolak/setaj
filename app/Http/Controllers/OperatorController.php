@@ -1455,6 +1455,7 @@ class OperatorController extends Controller {
 
         $project->start_show = convertStringToDate($project->start_show);
         $project->start_time = convertStringToTime($project->start_time);
+        $project->start_reg_time = convertStringToTime($project->start_reg_time);
         $project->start_reg = convertStringToDate($project->start_reg);
         $project->end_reg = convertStringToDate($project->end_reg);
 
@@ -1472,6 +1473,7 @@ class OperatorController extends Controller {
         if(isset($_POST["name"]) && isset($_POST["description"])
             && isset($_POST["point"]) && isset($_POST["tagId"])
             && isset($_POST["start_show"]) && isset($_POST["start_time"])
+            && isset($_POST["start_reg_time"])
             && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
         ) {
 
@@ -1482,6 +1484,7 @@ class OperatorController extends Controller {
             $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
             $project->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
             $project->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
+            $project->start_reg_time = convertTimeToString(makeValidInput($_POST["start_reg_time"]));
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
 
             try {

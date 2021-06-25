@@ -675,8 +675,12 @@ class HomeController extends Controller {
 
     public function showAllCitizens($grade = -1) {
 
-        if(Auth::check() && Auth::user()->level == 1)
+        if(Auth::check() && Auth::user()->level == 1) {
             $grade = Auth::user()->grade_id;
+            $canBuy = true;
+        }
+        else
+            $canBuy = false;
 
         if($grade == -1)
             $grade = Grade::first()->id;
@@ -685,7 +689,7 @@ class HomeController extends Controller {
         $date = $today["date"];
         $time = (int)$today["time"];
 
-        $projects = DB::select('select citizen.id, title, tag_id, description, point, tag.name as tag, start_reg, end_reg from citizen, tag where ' .
+        $projects = DB::select('select citizen.id, title, tag_id, description, point, tag.name as tag, start_reg, end_reg, start_reg_time from citizen, tag where ' .
             'tag.id = tag_id and (select count(*) from citizen_grade where project_id = citizen.id and grade_id = ' . $grade . ' ) > 0' .
             ' and hide = false and (start_show < ' . $date . ' or (start_show = ' . $date . ' and start_time <= ' . $time . ')) order by citizen.id desc');
 
@@ -717,11 +721,16 @@ class HomeController extends Controller {
             else
                 $project->pic = URL::asset('citizenPic/' . $tmpPic->name);
 
-            $project->canBuy = true;
-            if($project->canBuy) {
-                if($project->start_reg > $date || $project->end_reg < $date)
+            if($canBuy) {
+                if ($project->start_reg > $date || $project->end_reg < $date ||
+                    ($project->start_reg == $date && $project->start_reg_time > $time)
+                )
                     $project->canBuy = false;
+                else
+                    $project->canBuy = true;
             }
+            else
+                $project->canBuy = false;
         }
 
         return view('citizens', ['projects' => $projects, 'tags' => Tag::whereType("CITIZEN")->get(), 'grade' => $grade]);
@@ -729,7 +738,15 @@ class HomeController extends Controller {
 
     public function showCitizen($id) {
 
+        $today = getToday();
+        $date = $today["date"];
+        $time = (int)$today["time"];
+
         $project = Citizen::whereId($id);
+
+        if($project == null || $project->hide || $project->start_show > $date ||
+            ($project->start_show == $date && $project->start_time > $time))
+            return Redirect::route('showAllCitizens');
 
         if($project == null || $project->hide)
             return Redirect::route('showAllCitizens');
@@ -786,7 +803,8 @@ class HomeController extends Controller {
 
         if($canBuy &&
             CitizenBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->count() > 0 ||
-            $project->start_reg > $date || $project->end_reg < $date
+            $project->start_reg > $date || $project->end_reg < $date ||
+            ($project->start_reg == $date && $project->start_reg_time > $time)
         )
             $canBuy = false;
 
@@ -1233,10 +1251,15 @@ class HomeController extends Controller {
 
         if(isset($_POST["id"])) {
 
+            $today = getToday();
+            $date = $today["date"];
+            $time = (int)$today["time"];
+
             $project = Citizen::whereId(makeValidInput($_POST["id"]));
             $user = Auth::user();
 
-            if($project == null || $project->hide)
+            if($project == null || $project->hide || $project->start_show > $date ||
+                ($project->start_show == $date && $project->start_time > $time))
                 return "nok1";
 
             if(Auth::user()->level == getValueInfo('studentLevel')) {
