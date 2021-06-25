@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $hide
  * @property string $description
  * @property string $start_reg
+ * @property string $start_reg_time
  * @property string $start_show
  * @property string $start_time
  * @property string $end_reg

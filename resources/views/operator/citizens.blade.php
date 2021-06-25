@@ -185,6 +185,16 @@
                         </script>
                     </div>
 
+                    <div style="margin: 10px">
+                        <span>زمان شروع نمایش</span>
+                        <input type="time" name="start_time">
+                    </div>
+
+                    <div style="margin: 10px">
+                        <span>زمان شروع خرید</span>
+                        <input type="time" name="start_reg_time">
+                    </div>
+
                     <div>
                         <span>تاریخ شروع امکان خرید</span>
                         <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="date_btn">
@@ -213,11 +223,6 @@
                                 dateType: "jalali"
                             });
                         </script>
-                    </div>
-
-                    <div style="margin: 10px">
-                        <span>زمان شروع نمایش</span>
-                        <input type="time" name="start_time">
                     </div>
 
                     <h5>توضیح پروژه</h5>

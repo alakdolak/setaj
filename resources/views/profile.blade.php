@@ -112,7 +112,7 @@
             <div class="mainDivContainerProfilePage row">
                 <div class="col-sm-12" style="margin-top: 40px; padding: 0 !important;">
                     <div class="rightColBoxes col-md-4 col-xs-12">
-                        <div class="hidden honorsMainDiv col-md-12 col-xs-12">
+                        <div class="honorsMainDiv col-md-12 col-xs-12">
                             <div class="honors_headerBox"></div>
                             <div class="honors_titleBox">جعبه‌ی افتخارات</div>
                             <div class="honors_picBox">
@@ -485,11 +485,8 @@
                         if(res.status === "nok")
                             return;
 
-                        if(res.medal != null) {
-                            $(".honorsMainDiv ").removeClass('hidden');
-                            $(".honors_pic").css("background-image", 'url("' + res.medal.pic + '")');
-                            $(".honors_picText").append(res.medal.name);
-                        }
+                        $(".honors_pic").css("background-image", 'url("' + res.medal.pic + '")');
+                        $(".honors_picText").append(res.medal.name);
 
                         for(var i = 0; i < res.points.length; i++) {
                             $("#score_" + res.points[i].id).animate({

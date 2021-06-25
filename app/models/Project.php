@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $physical
  * @property string $description
  * @property string $start_reg
+ * @property string $start_reg_time
  * @property integer $capacity
  * @property string $end_reg
  * @property integer $price

@@ -475,16 +475,23 @@ class HomeController extends Controller {
 //        if($grade == -1)
 //            $grade = Auth::user()->grade_id;
 
-        if(Auth::check() && Auth::user()->level == 1)
+        if(Auth::check() && Auth::user()->level == 1) {
             $grade = Auth::user()->grade_id;
+            $canBuy = true;
+        }
+        else
+            $canBuy = false;
 
         if($grade == -1)
             $grade = Grade::first()->id;
 
-        $date = getToday()["date"];
+        $today = getToday();
+        $date = $today["date"];
+        $time = (int)$today["time"];
 
-        $projects = DB::select('select id, title, physical, description, price, capacity, start_reg, end_reg from project where ' .
+        $projects = DB::select('select id, title, physical, description, price, capacity, start_reg_time, start_reg, end_reg from project where ' .
             '(select count(*) from project_grade where project_id = project.id and grade_id = ' . $grade . ' ) > 0' .
+            ' and (start_show < ' . $date . ' or (start_show = ' . $date . ' and start_time <= ' . $time . '))' .
             ' and hide = false order by id desc');
 
         $mainDiff = findDiffWithSiteStart();
@@ -520,15 +527,20 @@ class HomeController extends Controller {
             else
                 $project->price = number_format($project->price);
 
-            if($project->capacity == -1)
-                $project->canBuy = true;
-            else
-                $project->canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
+            if($canBuy) {
 
-            if($project->canBuy) {
-                if($project->start_reg > $date || $project->end_reg < $date)
+                if ($project->start_reg > $date || $project->end_reg < $date ||
+                    ($project->start_reg == $date && $project->start_reg_time > $time)
+                )
                     $project->canBuy = false;
+
+                if ($project->canBuy) {
+                    if ($project->capacity != -1)
+                        $project->canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
+                }
             }
+            else
+                $project->canBuy = false;
 
             $project->tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $project->id);
             $str = "-";
@@ -542,11 +554,15 @@ class HomeController extends Controller {
 
     public function showProject($id) {
 
+        $today = getToday();
+        $date = $today["date"];
+        $time = (int)$today["time"];
+
         $project = Project::whereId($id);
 
-        if($project == null || $project->hide) {
+        if($project == null || $project->hide || $project->start_show > $date ||
+            ($project->start_show == $date && $project->start_time > $time))
             return Redirect::route('showAllProjects');
-        }
 
 //        $grade = Auth::user()->grade_id;
 
@@ -612,6 +628,7 @@ class HomeController extends Controller {
         $date = getToday()["date"];
 
         if($canBuy) {
+
             $pb = ProjectBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->first();
             if ($pb != null) {
                 $canBuy = false;
@@ -629,10 +646,16 @@ class HomeController extends Controller {
 
                 if ((!$canAddFile && $pb->file != null) || $pb->file_status != 0)
                     $fileStatus = $pb->file_status;
-            } else if ($project->start_reg > $date || $project->end_reg < $date)
+            }
+
+            if ($canBuy && (
+                $project->start_reg > $date || $project->end_reg < $date ||
+                    ($project->start_reg == $date && $project->start_reg_time > $time)
+                )
+            )
                 $canBuy = false;
 
-            if ($canBuy && $project->capacity != -1) {
+            elseif ($canBuy && $project->capacity != -1) {
                 $canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
             }
 
@@ -1004,8 +1027,8 @@ class HomeController extends Controller {
                 if($time[0] == "0") {
                     $time = (int)substr($time, 1);
                     if (
-                        ($time >= 800 && $time < 805) ||
-                        ($time >= 805 && $time <= 810 && count($buys) > 1)
+                        ($time >= 1200 && $time < 1205) ||
+                        ($time >= 1205 && $time <= 1210 && count($buys) > 1)
                     )
                         return "nok8";
                 }
@@ -1261,13 +1284,18 @@ class HomeController extends Controller {
 
         if(isset($_POST["id"])) {
 
+            $today = getToday();
+            $date = $today["date"];
+            $time = (int)$today["time"];
+
             $project = Project::whereId(makeValidInput($_POST["id"]));
             $user = Auth::user();
 
-            if($project == null || $project->hide) {
-                echo "nok1";
-                return;
-            }
+            if($project == null || $project->hide || $project->start_reg > $date ||
+                ($project->start_reg == $date && $project->start_reg_time > $time) ||
+                $project->end_reg < $date
+            )
+                return "nok1";
 
             if(Auth::user()->level == getValueInfo('studentLevel')) {
 
@@ -1281,28 +1309,19 @@ class HomeController extends Controller {
                     }
                 }
 
-                if(!$allow) {
-                    echo "nok1";
-                    return;
-                }
+                if(!$allow)
+                    return "nok1";
             }
-
 
             if($project->capacity != -1 &&
-                ProjectBuyers::whereProjectId($project->id)->count() >= $project->capacity) {
-                echo "nok7";
-                return;
-            }
+                ProjectBuyers::whereProjectId($project->id)->count() >= $project->capacity)
+                return "nok7";
 
-            if(ProjectBuyers::whereUserId($user->id)->whereProjectId($project->id)->count() > 0) {
-                echo "nok2";
-                return;
-            }
+            if(ProjectBuyers::whereUserId($user->id)->whereProjectId($project->id)->count() > 0)
+                return "nok2";
 
-            if($project->price > $user->money) {
-                echo "nok3";
-                return;
-            }
+            if($project->price > $user->money)
+                return "nok3";
 
             $date = getToday()["date"];
             if($project->start_reg > $date || $project->end_reg < $date)
@@ -1320,8 +1339,8 @@ class HomeController extends Controller {
                 if($time[0] == "0") {
                     $time = (int)substr($time, 1);
                     if (
-                        ($time >= 800 && $time < 805) ||
-                        ($time >= 805 && $time <= 810 && count($openProjects) > 1)
+                        ($time >= 1000 && $time < 1005) ||
+                        ($time >= 1005 && $time <= 1010 && count($openProjects) > 1)
                     )
                         return "nok8";
                 }
@@ -1389,8 +1408,8 @@ class HomeController extends Controller {
                 if($time[0] == "0") {
                     $time = (int)substr($time, 1);
                     if (
-                        ($time >= 800 && $time < 805) ||
-                        ($time >= 805 && $time <= 810 && count($buys) > 1)
+                        ($time >= 1200 && $time < 1205) ||
+                        ($time >= 1205 && $time <= 1210 && count($buys) > 1)
                     )
                         return "nok8";
                 }
