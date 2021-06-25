@@ -335,8 +335,11 @@
                         else if(res === "nok3") {
                             $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه ندارید</div>");
                         }
+                        else if(res === "nok8") {
+                            $("#alertText").empty().append("<div>برای خرید پروژه دوم می بایست از ساعت 10:05 و برای خرید پروژه سوم از ساعت 10:10 اقدام فرمایید</div>");
+                        }
                         else if(res === "nok9") {
-                            $("#alertText").empty().append("<div>حتما باید یه عینی بخری</div>");
+                            $("#alertText").empty().append("<div>ظرفیت خرید پروژه های عینی شما به پایان رسیده و شما فقط می‌توانید پروژه غیرعینی خریداری کنید</div>");
                         }
                         else {
                             $("#alertText").empty().append("<div>عملیات مورد نظر غیرمجاز است</div>");
