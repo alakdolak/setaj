@@ -10,7 +10,8 @@
 @section('content')
 
     <div class="faqBody">
-        <div class="faqContents row">
+{{--کد مربوط به قسمت پرسش و پاسخ--}}
+        <div class="faqContents row" style="display: none">
             <div style="float: right; margin-bottom: 10%" class="col-lg-4 col-sm-6 col-xs-12">
                 <?php $i = 0; ?>
                 @foreach($categories as $category)
@@ -38,7 +39,6 @@
                     <?php $i++; ?>
                 @endforeach
             </div>
-
             <div style="display: none" class="col-lg-4 col-sm-6 col-xs-12">
                 <?php $i = 0; ?>
                 @foreach($categories as $category)
@@ -66,7 +66,6 @@
                     <?php $i++; ?>
                 @endforeach
             </div>
-
             <div style="display: none" class="col-lg-4 col-sm-6 col-xs-12">
                     <?php $i = 0; ?>
                     @foreach($categories as $category)
@@ -95,23 +94,23 @@
                     @endforeach
                 </div>
         </div>
-    </div>
 
-    <div class="shopEachRow col-xs-12">
-
-        @foreach($tutorials as $tutorial)
-
-            <div onclick="document.location.href = '{{route('showTutorial', ['id' => $tutorial->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
-                <div class="sh_mainBox">
-                    <div style="background-image: url('{{$tutorial->pic}}')" class="sh_mainPic"></div>
-                    <div class="sh_descript">
-                        <div class="sh_descriptRow sh_title">{{$tutorial->title}}</div>
-                        <div class="sh_descriptRow sh_title">{!! html_entity_decode($tutorial->description) !!}</div>
+        {{--کد مربوط به قسمت فیلم های آموزشی--}}
+        <div class="shopEachRow col-xs-12" style="margin-bottom: 50px">
+            @foreach($tutorials as $tutorial)
+                <div onclick="document.location.href = '{{route('showTutorial', ['id' => $tutorial->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
+                    <div class="sh_mainBox">
+                        <div style="background-image: url('{{$tutorial->pic}}')" class="sh_mainPic"></div>
+                        <div class="sh_descript">
+                            <div class="sh_descriptRow sh_title">{{$tutorial->title}}</div>
+                            <div class="sh_descriptRow sh_title">{!! html_entity_decode($tutorial->description) !!}</div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-        @endforeach
+                </div>
+            @endforeach
+        </div>
 
     </div>
+
 @stop
