@@ -777,9 +777,11 @@ class HomeController extends Controller {
             $gradeName = $g->name;
         }
 
-        $today = getToday()["date"];
+        $today = getToday();
+        $time = $today["time"];
+        $today = $today["date"];
 
-        $unVisualProducts = DB::select('select (select count(*) from product where project_id = project.id and hide = false and grade_id = ' . $grade . ') as total, title as name, created_at, id' .
+        $unVisualProducts = DB::select('select (select count(*) from product where (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and project_id = project.id and hide = false and grade_id = ' . $grade . ') as total, title as name, created_at, id' .
             ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
             ' and hide = false group by(id) having total > 0');
 
@@ -837,7 +839,7 @@ class HomeController extends Controller {
             'p.id, name, description, p.physical, price, star, p.project_id, ' .
             'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
             ' from product p, users u, project_buyers pb where p.physical = 1 and ' .
-            'p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
+            '(start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
 
         foreach ($visualProducts as $product) {
 
@@ -1028,8 +1030,13 @@ class HomeController extends Controller {
 
     public function showProduct($id) {
 
+        $today = getToday();
+        $time = $today["time"];
+        $today = $today["date"];
+
         $product = DB::select('select pb.adv, pb.adv_status, pb.file, pb.file_status, ' .
             'p.* from product p, project_buyers pb where ' .
+            '(start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
             'p.project_id = pb.project_id and pb.user_id = p.user_id and p.id = ' . $id . ' and hide = false order by p.id desc');
 
         if($product == null || count($product) == 0)
@@ -1119,17 +1126,22 @@ class HomeController extends Controller {
             $product->price = number_format($product->price);
 
         $canBuy = (Auth::check()) ? true : false;
+        $myReminder = 0;
 
         if($canBuy) {
-            $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
-            if ($myReminder < 0)
+
+            if($product->start_date_buy > $today || $product->start_time_buy > $time)
                 $canBuy = false;
 
-            if (Transaction::whereProductId($id)->count() > 0)
-                $canBuy = false;
+            else {
+                $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
+                if ($myReminder < 0)
+                    $canBuy = false;
+
+                if (Transaction::whereProductId($id)->count() > 0)
+                    $canBuy = false;
+            }
         }
-        else
-            $myReminder = 0;
 
         if($product->adv_status && $product->adv != null &&
             file_exists(__DIR__ . '/../../../public/storage/advs/' . $product->adv))

@@ -173,6 +173,9 @@ class OperatorController extends Controller {
             $product->start_show = convertStringToDate($product->start_show);
             $product->start_time = convertStringToTime($product->start_time);
 
+            $product->start_date_buy = convertStringToDate($product->start_date_buy);
+            $product->start_time_buy = convertStringToTime($product->start_time_buy);
+
             $t = Transaction::whereProductId($product->id)->select('user_id')->get();
 
             if($product->price == 0)
@@ -789,6 +792,7 @@ class OperatorController extends Controller {
         if(isset($_POST["name"]) && isset($_POST["description"])
             && isset($_POST["price"]) && isset($_POST["project"])
             && isset($_POST["star"]) && isset($_POST["username"])
+            && isset($_POST["start_show"]) && isset($_POST["start_time"])
         ) {
 
             $project = Project::whereId(makeValidInput($_POST["project"]));
@@ -796,7 +800,7 @@ class OperatorController extends Controller {
                 return Redirect::route('products', ['err' => 1]);
 
             $username = makeValidInput($_POST["username"]);
-            $user = DB::select("select id from users where nid = " . $username . ' or username = ' . $username);
+            $user = DB::select("select id, grade_id from users where nid = " . $username . ' or username = ' . $username);
 
             if($user == null || count($user) == 0)
                 return Redirect::route('products', ['err' => 1]);
@@ -811,6 +815,14 @@ class OperatorController extends Controller {
             $product->user_id = $user[0]->id;
             $product->project_id = $project->id;
             $product->physical = $project->physical;
+            $product->grade_id = $user[0]->grade_id;
+
+            $product->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
+            $product->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
+
+            $product->start_time_buy = convertTimeToString(makeValidInput($_POST["start_time_buy"]));
+            $product->start_date_buy = convertDateToString(makeValidInput($_POST["start_date_buy"]));
+
 
             try {
 
@@ -1737,6 +1749,9 @@ class OperatorController extends Controller {
         $product->start_show = convertStringToDate($product->start_show);
         $product->start_time = convertStringToTime($product->start_time);
 
+        $product->start_date_buy = convertStringToDate($product->start_date_buy);
+        $product->start_time_buy = convertStringToTime($product->start_time_buy);
+
         return view('operator.editProduct', ['product' => $product]);
 
     }
@@ -1745,6 +1760,7 @@ class OperatorController extends Controller {
 
         if(isset($_POST["name"]) && isset($_POST["description"])
             && isset($_POST["start_show"]) && isset($_POST["start_time"])
+            && isset($_POST["start_date_buy"]) && isset($_POST["start_time_buy"])
             && isset($_POST["price"]) && isset($_POST["star"])
         ) {
 
@@ -1760,6 +1776,9 @@ class OperatorController extends Controller {
             $product->star = makeValidInput($_POST["star"]);
             $product->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
             $product->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
+
+            $product->start_date_buy = convertDateToString(makeValidInput($_POST["start_date_buy"]));
+            $product->start_time_buy = convertTimeToString(makeValidInput($_POST["start_time_buy"]));
 
             try {
 
