@@ -4,6 +4,7 @@
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
 
+{{--    the css of upload box--}}
     <style>
         .uploadBody {
             position: fixed;
@@ -53,29 +54,6 @@
         .uploadHeader_img4 {
             background-image: url("../../public/images/uploadPics/file.png");
         }
-        /*.uploadBtn {*/
-        /*    line-height: 60px;*/
-        /*    background-image: linear-gradient(to bottom right, #ffc438, red) !important;*/
-        /*    border: none !important;*/
-        /*    border-radius: 100px !important;*/
-        /*    box-shadow: 0px 0px 20px 5px #ff8900;*/
-        /*    color: white;*/
-        /*    padding: 0px !important;*/
-        /*    min-height: 0px !important;*/
-        /*    margin: 35px;*/
-        /*    font-size: 1.75em;*/
-        /*    font-weight: 500;*/
-        /*    text-align: center;*/
-        /*}*/
-        /*.uploadDescript {*/
-        /*    padding: 50px 70px;*/
-        /*    text-align: center;*/
-        /*}*/
-        /*.uploadTitleText {*/
-        /*    font-size: 1.5em;*/
-        /*    font-weight: 700;*/
-        /*    padding: 10px;*/
-        /*}*/
         .uploadBodyBox {
             text-align: center;
             padding: 50px 70px;

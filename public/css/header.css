@@ -53,9 +53,9 @@
     font-weight: 700;
 }
 
-.headerNavbar:last-child {
-    margin-left: 0 !important;
-}
+/*.headerNavbar:last-child {*/
+/*    margin-left: 0 !important;*/
+/*}*/
 
 .headerNavbar:hover {
     padding-bottom: 5px;
@@ -68,7 +68,31 @@
     margin-left: 0 !important;
 }
 
-/*the css of profle Icon*/
+/*the css of Login button*/
+.headerLogin {
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.headerLoginIcone{
+    color: #68cda5;
+    background-color: #ffffff;
+    padding: 5px;
+    border-radius: 0 7px 7px 0;
+}
+
+.headerLoginText{
+    color: #ffffff;
+    background-color: #68cda5;
+    padding: 5px;
+    border-radius: 7px 0 0 7px;
+}
+
+/*the css of profile Icon*/
  .profileIconBox {
      padding: 3px;
      border: 1px solid #ffd568;
@@ -185,12 +209,25 @@
     .headerNavbar {
         font-size: 1.05em;
     }
+    .headerLogin {
+        font-size: 1.05em;
+    }
 }
 
+@media only screen and (max-width:835px) {
+    .headerNavbar {
+        font-size: .95em;
+        margin-right: 5px;
+    }
+    .headerLogin {
+        font-size: .95em;
+        margin-right: 5px;
+    }
+}
 
 @media only screen and (max-width:767px) {
     .header {
-        height: 150px;
+        height: 155px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -227,7 +264,7 @@
 
 @media only screen and (max-width:480px) {
     .header {
-        height: 135px;
+        height: 145px;
     }
 
     .logoDiv {
@@ -240,6 +277,9 @@
     }
 
     .headerNavbar {
+        font-size: 0.9em;
+    }
+    .headerLogin {
         font-size: 0.9em;
     }
 }
@@ -262,5 +302,9 @@
     .headerNavbar {
         font-size: 0.75em;
         margin: 0 5px;
+    }
+    .headerLogin {
+        font-size: 0.75em;
+        margin-right: 5px;
     }
 }

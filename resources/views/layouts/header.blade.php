@@ -40,9 +40,13 @@
                 </div>
             </div>
         @else
-            <a href="{{route('login')}}" style="display: block !important;" class="phoneMode">ورود</a>
+            <div onclick="document.location.href='{{route('login')}}'" class="headerLogin">
+                <div class="headerLoginIcone">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                </div>
+                <div class="headerLoginText">ورود</div>
+            </div>
         @endif
-
-        {{--            <div onclick="document.location.href = '{{route('profile')}}'" class="myNavbar">پروفایل</div>--}}
+        {{--<div onclick="document.location.href = '{{route('profile')}}'" class="myNavbar">پروفایل</div>--}}
     </div>
 </div>

@@ -43,7 +43,21 @@
     margin: 0 !important;
     background-color: #f9f9f9;
     padding: 5% 12%;
-    display: flex;
+}
+
+.citizenShip {
+    padding-top: 32%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    position: relative;
+    background-image: url(../images/citizenShip.jpg);
+    background-position: center;
+}
+
+.citizenShip:hover {
+    opacity: 0.85;
+    font-size: 1.05em;
 }
 
 .planes {
@@ -85,14 +99,22 @@
     opacity: 0.85;
 }
 
-.planeText {
+.planeTextBox {
     width: 100%;
     text-align: center;
     font-size: 2em;
     font-weight: 500;
-    color: white;
     position: absolute;
+}
+
+.planeText {
+    color: white;
     top: 25px;
+}
+
+.citizenShipText {
+    color: #d4944a;
+    bottom: 12%;
 }
 
 .otherAdvertise {
@@ -116,10 +138,11 @@
     background-position: center;
 }
 .leftAdv {
-    background-image: url(../images/leftAdv.jpg);
+    background-image: url(../images/leftAdv2.png);
 }
 .rightAdv {
-    background-image: url(../images/rightAdv.jpg);
+    background-image: url(../images/tutorial_rightAdv.png);
+    cursor: pointer;
 }
 .horizontalAdv {
     padding-top: 16%;
@@ -135,8 +158,10 @@
     .choosePlane {
         padding: 5% 10%;
     }
-    .planeText {
+    .planeTextBox {
         font-size: 1.75em;
+    }
+    .planeText {
         top: 15px;
     }
     .otherAdvertise {
@@ -149,7 +174,7 @@
     .choosePlane {
         padding: 5%;
     }
-    .planeText {
+    .planeTextBox {
         font-size: 1.5em;
     }
     .otherAdvertise {
@@ -167,11 +192,14 @@
         padding-top: 30.2%;
     }
 
-    .planeText {
+    .planeTextBox {
         top: 50%;
         padding-right: 50px;
         text-align: right;
         font-size: 2.1em;
+    }
+    .citizenShip {
+        background-image: url(../images/citizenShipBanner2.png);
     }
     .projects {
         border-top: 7px solid #f8aba6;
@@ -193,7 +221,7 @@
 
 
 @media only screen and (max-width:480px) {
-    .planeText {
+    .planeTextBox {
         top: 45%;
         padding-right: 15px;
         text-align: right;

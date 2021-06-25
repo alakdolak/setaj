@@ -175,11 +175,11 @@
     }
 }
 
-/*end of header of prifile page*/
+/*end of header of profile page*/
 
 
-/*body of a a part of medal of profile page*/
-
+/*points & medal styles*/
+    /*points styles*/
 .pr_scoreBodyBox {
     background-color: #feebcd;
     padding: 0 12% !important;
@@ -389,9 +389,92 @@
         font-size: 1em;
     }
 }
+    /*end of points styles*/
+
+    /*medals styles*/
+.honorsMainDiv {
+    position: relative;
+    margin: 0 0 30px;
+    padding: 0 !important;
+}
+.honors_headerBox {
+    width: 100%;
+    height: 75px;
+    background-color: #04c582;
+    border-radius: 5px;
+}
+.honors_titleBox {
+    position: absolute;
+    top: 40px;
+    right: 50%;
+    margin-right: -30%;
+    width: 60%;
+    line-height: 60px;
+    background-image: linear-gradient(to bottom right, #ffc438, red) !important;
+    border-radius: 30px;
+    box-shadow: 0 0 20px 5px #ff8900;
+    color: white;
+    font-size: 1.75em;
+    font-weight: 500;
+    text-align: center;
+}
+.honors_picBox {
+    min-height: 200px;
+    background-color: #f5f5f5;
+    margin: -5px 0;
+    padding: 60px 0 30px;
+    border-right: 2px solid #ccc;
+    border-left: 2px solid #ccc;
+}
+.honors_pic {
+    width: 50%;
+    margin: auto;
+    padding-top: 48%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("../images/6.png");
+}
+.honors_picText {
+    color: #a1a1a1;
+    padding: 10px 20px 0;
+    font-size: 1.5em;
+    font-weight: 700;
+    text-align: center;
+}
+.honors_footerBox {
+    width: 100%;
+    height: 20px;
+    background-color: #a1a1a1;
+    border-radius: 5px;
+}
 
 
-/*end of body of a a part of medal of profile page*/
+@media only screen and (max-width:1200px) {
+    .honors_titleBox {
+        font-size: 1.5em;
+    }
+    .honors_picText {
+        font-size: 1.25em;
+    }
+}
+
+
+@media only screen and (max-width:992px) {
+
+}
+
+
+@media only screen and (max-width:480px) {
+
+}
+
+
+@media only screen and (max-width:380px) {
+
+}
+    /*end of medals styles*/
+/*end of points & medal styles*/
+
 
 
 /*body of profile page*/

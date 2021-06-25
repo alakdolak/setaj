@@ -9,8 +9,8 @@
 
     <div class="banner">
         <div class="bannerGrayBox"></div>
-        <div class="bannerBorderBox bannerLightRedBox"></div>
-        <div class="bannerMainBox projectsBanner"></div>
+        <div class="bannerBorderBox bannerLightBrownBox"></div>
+        <div class="bannerMainBox citizenBanner"></div>
     </div>
 
 @stop

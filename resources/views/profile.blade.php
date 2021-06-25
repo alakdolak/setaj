@@ -111,51 +111,62 @@
             </div>
             <div class="mainDivContainerProfilePage row">
                 <div class="col-sm-12" style="margin-top: 40px; padding: 0 !important;">
-                    <div class="userProfileDetailsMainDiv rightColBoxes col-md-4 col-xs-12">
-                        <div class="profileDescript col-md-12 col-xs-6" style="float: right;">
-                            <div class="mainDivHeaderText">
-                                <h3>مشخصات کاربر</h3>
+                    <div class="rightColBoxes col-md-4 col-xs-12">
+                        <div class="honorsMainDiv col-md-12 col-xs-12">
+                            <div class="honors_headerBox"></div>
+                            <div class="honors_titleBox">جعبه‌ي افتخارات</div>
+                            <div class="honors_picBox">
+                                <div class="honors_pic"></div>
+                                <div class="honors_picText">مجوز موقت شهروندي</div>
                             </div>
-                            <div style="width: 100%; height: 100px;">
-
-                                <div class="personalFieldsBox col-xs-6">
-                                    <div class="personalFields">نام</div>
-                                    <div class="personalFields">نام خانوادگی</div>
-                                    <div class="personalFields">کدملی</div>
-                                    <div class="personalFields">نام کاربری</div>
-                                </div>
-
-                                <div class="col-xs-6">
-                                    <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->first_name}}</div>
-                                    <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->last_name}}</div>
-                                    <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->nid}}</div>
-                                    <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->username}}</div>
-                                </div>
-
-                            </div>
+                            <div class="honors_footerBox"></div>
                         </div>
-                        <div class="profileDescript col-md-12 col-xs-6">
-                            <div class="medalsMainBox">
-                                <div>
-                                    <img src="{{URL::asset('images/coin.png')}}">
-                                    <span>{{\Illuminate\Support\Facades\Auth::user()->money}}</span>
+                        <div class="userProfileDetailsMainDiv rightColBox col-md-12 col-xs-12">
+                            <div class="profileDescript col-md-12 col-xs-6" style="float: right;">
+                                <div class="mainDivHeaderText">
+                                    <h3>مشخصات کاربر</h3>
                                 </div>
-                                <div>
-                                    <img src="{{URL::asset('images/star.png')}}">
-                                    <span>{{\Illuminate\Support\Facades\Auth::user()->stars}}</span>
+                                <div style="width: 100%; height: 100px;">
+
+                                    <div class="personalFieldsBox col-xs-6">
+                                        <div class="personalFields">نام</div>
+                                        <div class="personalFields">نام خانوادگی</div>
+                                        <div class="personalFields">کدملی</div>
+                                        <div class="personalFields">نام کاربری</div>
+                                    </div>
+
+                                    <div class="col-xs-6">
+                                        <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->first_name}}</div>
+                                        <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->last_name}}</div>
+                                        <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->nid}}</div>
+                                        <div class="personalFields">{{\Illuminate\Support\Facades\Auth::user()->username}}</div>
+                                    </div>
+
                                 </div>
                             </div>
-                            <div class="pointDescript">
-                                <?php
-                                $per = \App\models\ConfigModel::first()->change_rate;
-                                $total = floor((\Illuminate\Support\Facades\Auth::user()->money - 2000) / $per) + \Illuminate\Support\Facades\Auth::user()->stars;
-                                ?>
-                                <div style="line-height: 30px">هر {{$per}} سکه معادل یک ستاره می باشد</div>
-                                <div style="display: flex;align-items: center;justify-content: space-evenly;line-height: 30px;">
-                                    <div>بنابراین امتیاز فعلی شما:</div>
-                                    <div style="display: flex; align-items: center">
+                            <div class="profileDescript col-md-12 col-xs-6">
+                                <div class="medalsMainBox">
+                                    <div>
+                                        <img src="{{URL::asset('images/coin.png')}}">
+                                        <span>{{\Illuminate\Support\Facades\Auth::user()->money}}</span>
+                                    </div>
+                                    <div>
                                         <img src="{{URL::asset('images/star.png')}}">
-                                        <span class="pointNumber">{{$total}}</span>
+                                        <span>{{\Illuminate\Support\Facades\Auth::user()->stars}}</span>
+                                    </div>
+                                </div>
+                                <div class="pointDescript">
+                                    <?php
+                                    $per = \App\models\ConfigModel::first()->change_rate;
+                                    $total = floor((\Illuminate\Support\Facades\Auth::user()->money - 2000) / $per) + \Illuminate\Support\Facades\Auth::user()->stars;
+                                    ?>
+                                    <div style="line-height: 30px">هر {{$per}} سکه معادل یک ستاره می باشد</div>
+                                    <div style="display: flex;align-items: center;justify-content: space-evenly;line-height: 30px;">
+                                        <div>بنابراین امتیاز فعلی شما:</div>
+                                        <div style="display: flex; align-items: center">
+                                            <img src="{{URL::asset('images/star.png')}}">
+                                            <span class="pointNumber">{{$total}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

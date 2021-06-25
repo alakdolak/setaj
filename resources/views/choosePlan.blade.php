@@ -38,28 +38,40 @@
         </div>
 
 
+{{--        <div class="citizenShipBox row">--}}
+{{--            <div class="col-sm-12 col-xs-12">--}}
+{{--                <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="planes citizenShip">--}}
+{{--                    <div class="planeText">شهروندی</div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
         <div class="choosePlane row">
-            <div class="col-sm-4 col-xs-12">
-                <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="planes projects">
-                    <div class="planeText">انتخاب پروژه‌ها</div>
-                </div>
-            </div>
-            <div class="col-sm-4 col-xs-12">
-                <div onclick="document.location.href = '{{route('showAllServices')}}'" class="planes services">
-                    <div class="planeText">پروژه‌های همیاری</div>
+            <div class="col-sm-12 col-xs-12" style="padding-bottom: 30px">
+                <div onclick="document.location.href = '{{route('showAllCitizens')}}'" class="citizenShip">
+                    <div class="planeTextBox citizenShipText">شهروندی</div>
                 </div>
             </div>
             <div class="col-sm-4 col-xs-12">
                 <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="planes products">
-                    <div class="planeText">خرید محصولات</div>
+                    <div class="planeTextBox planeText">خرید محصولات</div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div onclick="document.location.href = '{{route('showAllServices')}}'" class="planes services">
+                    <div class="planeTextBox planeText">پروژه‌های همیاری</div>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="planes projects">
+                    <div class="planeTextBox planeText">انتخاب پروژه‌ها</div>
                 </div>
             </div>
         </div>
 
         <div class="otherAdvertise">
             <div class="twoAdvBox">
-                <div class="otherAdv leftAdv"></div>
                 <div class="otherAdv rightAdv"></div>
+                <div class="otherAdv leftAdv"></div>
             </div>
             <div class="horizontalAdv"></div>
         </div>
