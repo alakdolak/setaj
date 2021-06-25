@@ -28,7 +28,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/chatbox.css")}}">
-
+        <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/login.css?v=1.4")}}">
 
         <style>
             .should_be_iransans {
@@ -63,6 +63,47 @@
 
 @yield("content")
 
+@if(!\Illuminate\Support\Facades\Auth::check())
+
+    <div class="loginBody">
+        <div class="loginTitle">
+            <div class="loginTitleImg"></div>
+        </div>
+
+        <form id="loginForm" action="{{route('doLogin')}}" method="post">
+            {{csrf_field()}}
+            <div>
+                <div class="loginInputDiv">
+                    <div class="loginIconDiv">
+                        <i class="fa fa-user loginIcon" aria-hidden="true"></i>
+                    </div>
+                    <input class="loginInput" name="username" type="text" placeholder="نام کاربری">
+                </div>
+                <div class="loginInputDiv">
+                    <div class="loginIconDiv">
+                        <i class="fa fa-lock loginIcon" aria-hidden="true"></i>
+                    </div>
+                    <input onkeyup="handleEnter(event)" class="loginInput" name="password" type="password" placeholder="رمز عبور">
+                </div>
+                <div class="relative">
+                    <input name="remember" class="absolute" type="checkbox">
+                    <div class="rememberMe">مرا به خاطر بسپار</div>
+                </div>
+            </div>
+            <div class="loginBtnDiv">
+                <div class="loginBtn">ورود</div>
+            </div>
+            <div class="loginErr">
+                <p id="loginErr"></p>
+            </div>
+        </form>
+
+        <div class="loginDownArrow">
+            <i class="fa fa-lock fa-sort-desc loginDownArrowIcon" aria-hidden="true"></i>
+        </div>
+    </div>
+
+@endif
 
 @include("layouts.footer")
 @if(\Illuminate\Support\Facades\Auth::check())
