@@ -776,21 +776,25 @@ class HomeController extends Controller {
             else
                 $product->pic = URL::asset('projectPic/' . $tmpPic->name);
 
-            $product->price = "رایگان";
             $product->tags = DB::select("select t.name, t.id from tag t, project_tag p where t.id = p.tag_id and p.project_id = " . $product->id);
 
             $str = "-";
             foreach ($product->tags as $tag)
                 $str .= $tag->id . '-';
 
-            $product->buyers = DB::select("select count(*) as count_ from transactions t, product p where product_id = p.id and p.grade_id = " . $grade . " and p.project_id = " . $product->id)[0]->count_;
-            $product->reminder = $product->total - $product->buyers;
+            $tmp = DB::select("select count(*) as count_, min(price) as minPrice, min(star) as minStar from product where " .
+                "id not in (select product_id from transactions where 1) and grade_id = " .
+                $grade . " and project_id = " . $product->id . " and hide = false group by(project_id)")[0];
+
+            $reminder = $tmp->count_;
             $product->tagStr = $str;
             $product->adv_status = false;
-            $product->star = 0;
+            $product->star = $tmp->minStar;
+            $product->price = $tmp->minPrice;
+
             $product->physical = 0;
-            $product->canBuy = (Auth::check() && $product->reminder > 0) ? true : false;
-            $product->owner = "پایه " . $gradeName;
+            $product->canBuy = (Auth::check() && $reminder > 0) ? true : false;
+            $product->owner = "ظرفیت باقی مانده: " . $reminder;
         }
 
         $visualProducts = DB::select('select pb.adv_status, ' .

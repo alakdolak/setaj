@@ -59,45 +59,42 @@
                                     <div style="background-image: url('{{$product->pic}}')" class="sh_mainPic"></div>
                                     <div class="sh_descript">
                                         <div class="sh_descriptRow sh_title">{{$product->name}}</div>
+
                                         <div class="sh_descriptRow sh_priceBox">
                                             <div class="priceIcons coinIcon"></div>
                                             <div class="priceText">قیمت: {{$product->price}} سکه</div>
                                         </div>
+
                                         <div class="sh_descriptRow sh_priceBox">
                                             <div class="priceIcons starIcon"></div>
                                             <div class="priceText">ستاره ی دریافتی: {{$product->star}}</div>
                                         </div>
 
-                                        @if(!$product->physical)
-                                            <p class="sh_descriptRow sh_title" style="direction: rtl; text-align: right">
-                                                <span>کل ظرفیت: {{$product->total}}</span>
-                                            </p>
-                                            <p class="sh_descriptRow sh_title" style="direction: rtl; text-align: right">
-                                                <span>خریداری شده: {{$product->buyers}}</span>
-                                            </p>
-                                            <p class="sh_descriptRow sh_title" style="direction: rtl; text-align: right">
-                                                <span>ظرفیت باقی مانده: {{$product->reminder}}</span>
-                                            </p>
-                                        @endif
-
-                                        <p class="sh_descriptRow sh_title" style="direction: rtl; text-align: right">
-                                            @foreach($product->tags as $tag)
-                                                <span>{{$tag->name}}</span>
-                                            @endforeach
-                                            <span>-</span>
-                                            @if($product->physical)
-                                                <span>عینی</span>
-                                            @else
-                                                <span>غیر عینی</span>
-                                            @endif
-                                        </p>
+                                        <div class="sh_descriptRow sh_priceBox">
+                                            <div class="priceIcons categoryIcon"></div>
+                                            <div class="priceText">دسته:
+                                                @foreach($product->tags as $tag)
+                                                    <span>{{$tag->name}}</span>
+                                                @endforeach
+                                                <span>-</span>
+                                                @if($product->physical)
+                                                    <span>عینی</span>
+                                                @else
+                                                    <span>غیر عینی</span>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
 
                                 @if($product->canBuy)
                                     <div class="sh_ownerBox">
-                                        <div>تولیدکننده: {{$product->owner}}</div>
+                                        @if($product->physical)
+                                            <div>تولیدکننده: {{$product->owner}}</div>
+                                        @else
+                                            <div>{{$product->owner}}</div>
+                                        @endif
                                     </div>
                                 @else
                                     <div class="sh_ownerBox_finish">
