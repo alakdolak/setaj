@@ -73,7 +73,7 @@ class StudentController extends Controller {
 
         if($medal != null && count($medal) > 0) {
             $medal = $medal[0];
-            $medal->pic = URL::asset("medals/" . $medal->pic);
+            $medal->pic = URL::asset("images/" . $medal->pic);
         }
         else
             $medal = null;
