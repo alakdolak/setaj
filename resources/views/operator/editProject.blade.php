@@ -45,6 +45,10 @@
             <input value="{{$project->capacity}}" type="number" name="capacity" required>
             <p>اگر می خواهید ظرفیت این پروژه بی نهایت باشد، 1- را وارد نمایید.</p>
 
+            <div style="margin: 10px">
+                <span>زمان شروع خرید</span>
+                <input type="time" name="start_reg_time" value="{{$project->start_reg_time}}">
+            </div>
 
             <div>
                 <span>تاریخ شروع امکان خرید</span>
@@ -74,6 +78,26 @@
                         dateType: "jalali"
                     });
                 </script>
+            </div>
+
+            <div>
+                <span>تاریخ شروع نمایش</span>
+                <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="show_date_btn">
+                <br/>
+                <input value="{{$project->start_show}}" type="text" name="start_show" id="date_input_show" readonly>
+                <script>
+                    Calendar.setup({
+                        inputField: "date_input_show",
+                        button: "show_date_btn",
+                        ifFormat: "%Y/%m/%d",
+                        dateType: "jalali"
+                    });
+                </script>
+            </div>
+
+            <div style="margin: 10px">
+                <span>زمان شروع نمایش</span>
+                <input type="time" name="start_time" value="{{$project->start_time}}">
             </div>
 
             <h5>توضیح پروژه</h5>

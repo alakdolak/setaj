@@ -286,8 +286,10 @@ class OperatorController extends Controller {
                 $project->pic = URL::asset('projectPic/' . $tmpPic->name);
 
             $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));
+
             $project->start_show = convertStringToDate($project->start_show);
             $project->start_time = convertStringToTime($project->start_time);
+            $project->start_reg_time = convertStringToTime($project->start_reg_time);
 
             $project->buyers = ProjectBuyers::whereProjectId($project->id)->count();
 
@@ -333,6 +335,7 @@ class OperatorController extends Controller {
             $project->startReg = convertStringToDate($project->start_reg);
             $project->endReg = convertStringToDate($project->end_reg);
             $project->startTime = convertStringToTime($project->start_time);
+            $project->start_reg_time = convertStringToTime($project->start_reg_time);
 
             $project->hide = (!$project->hide) ? "آشکار" : "مخفی";
             $project->tag = Tag::whereId($project->tag_id)->name;
@@ -669,8 +672,10 @@ class OperatorController extends Controller {
     public function addProject() {
 
         if(isset($_POST["name"]) && isset($_POST["description"])
-            && isset($_POST["price"]) && isset($_POST["gradeId"]) && isset($_POST["capacity"])
+            && isset($_POST["price"]) && isset($_POST["gradeId"])
+            && isset($_POST["capacity"]) && isset($_POST["start_reg_time"])
             && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
+            && isset($_POST["start_show"]) && isset($_POST["start_time"])
         ) {
 
             $project = new Project();
@@ -682,6 +687,10 @@ class OperatorController extends Controller {
             $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
 
+            $project->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
+            $project->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
+
+            $project->start_reg_time = convertTimeToString(makeValidInput($_POST["start_reg_time"]));
 
             try {
 
@@ -969,7 +978,7 @@ class OperatorController extends Controller {
             && isset($_POST["point"]) && isset($_POST["gradeId"])
             && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
             && isset($_POST["start_show"]) && isset($_POST["start_time"])
-            && isset($_POST["tagId"])
+            && isset($_POST["tagId"]) && isset($_POST["start_reg_time"])
         ) {
 
             $project = new Citizen();
@@ -981,6 +990,7 @@ class OperatorController extends Controller {
             $project->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
             $project->tag_id = makeValidInput($_POST["tagId"]);
             $project->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
+            $project->start_reg_time = convertTimeToString(makeValidInput($_POST["start_reg_time"]));
 
             try {
 
@@ -1283,6 +1293,7 @@ class OperatorController extends Controller {
 
         $project->start_show = convertStringToDate($project->start_show);
         $project->start_time = convertStringToTime($project->start_time);
+        $project->start_reg_time = convertStringToTime($project->start_reg_time);
         $project->start_reg = convertStringToDate($project->start_reg);
         $project->end_reg = convertStringToDate($project->end_reg);
 
@@ -1301,6 +1312,7 @@ class OperatorController extends Controller {
             && isset($_POST["price"]) && isset($_POST["capacity"])
             && isset($_POST["start_show"]) && isset($_POST["start_time"])
             && isset($_POST["start_reg"]) && isset($_POST["end_reg"])
+            && isset($_POST["start_reg_time"])
         ) {
 
             $project->title = makeValidInput($_POST["name"]);
@@ -1311,6 +1323,7 @@ class OperatorController extends Controller {
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
             $project->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
             $project->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
+            $project->start_reg_time = convertTimeToString(makeValidInput($_POST["start_reg_time"]));
 
             try {
 

@@ -298,7 +298,7 @@ class AdminController extends Controller {
 
         foreach ($users as $user) {
 
-            if(count($user) != 4)
+            if(count($user) != 5)
                 continue;
 
 //            if(User::whereNid($user[1])->count() > 0 || !_custom_check_national_code($user[1]))
@@ -311,31 +311,39 @@ class AdminController extends Controller {
             $config = ConfigModel::first();
 
             $tmp = new User();
-            $tmp->first_name = explode(" ", $user[0])[0];
-            $sss = explode(" ", $user[0]);
-            $reminder = "";
-            $first = true;
+            $tmp->first_name = $user[0];
+            $tmp->last_name = $user[1];
 
-            for($i = 1; $i < count($sss); $i++) {
-                if($first) {
-                    $reminder .= $sss[$i];
-                    $first = false;
-                }
-                else
-                    $reminder .= ' ' . $sss[$i];
-            }
+//            $tmp->first_name = explode(" ", $user[0])[0];
+//            $sss = explode(" ", $user[0]);
+//            $reminder = "";
+//            $first = true;
+//
+//            for($i = 1; $i < count($sss); $i++) {
+//                if($first) {
+//                    $reminder .= $sss[$i];
+//                    $first = false;
+//                }
+//                else
+//                    $reminder .= ' ' . $sss[$i];
+//            }
 
-            $tmp->last_name = $reminder;
+//            $tmp->last_name = $reminder;
+
             $tmp->level = $mode;
             $tmp->money = $config->initial_point;
             $tmp->stars = $config->initial_star;
 
-            $tmp->username = $user[2];
-            $tmp->password = Hash::make($user[1]);
+//            $tmp->username = $user[2];
+            $tmp->username = $user[3];
+//            $tmp->password = Hash::make($user[1]);
+            $tmp->password = Hash::make($user[2]);
             $tmp->status = true;
-            $tmp->nid = $user[1];
+//            $tmp->nid = $user[1];
+            $tmp->nid = $user[2];
             $tmp->grade_id = $gradeId;
-            $tmp->pic = $user[3];
+//            $tmp->pic = $user[3] . '.png';
+            $tmp->pic = $user[4] . '.png';
 
             try {
                 $tmp->save();
@@ -388,7 +396,7 @@ class AdminController extends Controller {
                     $lastRow = $workSheet->getHighestRow();
                     $cols = $workSheet->getHighestColumn();
 
-                    if ($cols < 'D') {
+                    if ($cols < 'E') {
                         unlink($path);
                         $err = "تعداد ستون های فایل شما معتبر نمی باشد";
                     }
@@ -403,6 +411,7 @@ class AdminController extends Controller {
                             $users[$row - 1][1] = $workSheet->getCell('B' . $row)->getValue();
                             $users[$row - 1][2] = $workSheet->getCell('C' . $row)->getValue();
                             $users[$row - 1][3] = $workSheet->getCell('D' . $row)->getValue();
+                            $users[$row - 1][4] = $workSheet->getCell('E' . $row)->getValue();
                         }
 
                         unlink($path);

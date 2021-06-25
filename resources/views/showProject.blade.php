@@ -75,7 +75,9 @@
                     <div data-toggle="modal" data-target="#contentModal" class="shopBtn shopDownloadBtn">افزودن محتوا</div>
                 @endif
 
-                <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>
+                @if(count($project->attach) > 0)
+                    <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>
+                @endif
             @endif
 
             @if($advStatus == 1)
@@ -249,6 +251,15 @@
             maxFilesize: 2, // MB
             accept: function(file, done) {
                 done();
+            },
+            init: function () {
+                // Set up any event handlers
+                this.on('completemultiple', function () {
+                    location.reload();
+                });
+                this.on("queuecomplete", function (file) {
+                    location.reload();
+                });
             }
         };
 

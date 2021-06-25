@@ -75,8 +75,12 @@ class StudentController extends Controller {
             $medal = $medal[0];
             $medal->pic = URL::asset("images/" . $medal->pic);
         }
-        else
-            $medal = null;
+        else {
+            $medal = [
+                "pic" => URL::asset("images/0.png"),
+                "name" => "شما با کسب 20 امتیاز در هر سه حوزه شهروندی، اولین نشان را کسب خواهید کرد."
+            ];
+        }
 
         return json_encode(["status" => "ok", "points" => $points, 'medal' => $medal]);
     }
