@@ -117,6 +117,8 @@
         }
     </style>
 
+    <script src="//cdn.ckeditor.com/4.10.1/full/ckeditor.js"></script>
+
 @stop
 
 @section('content')
@@ -201,6 +203,9 @@
                     <h5 style="padding-right: 5%;">عنوان</h5>
                     <input type="text" name="name" required maxlength="100">
 
+                    <h5>توضیح آموزش</h5>
+                    <textarea id="editor1" cols="80" name="description" required></textarea>
+
                     <h5 style="padding-right: 5%;">فایل آموزشی</h5>
                     <input type="file" name="file">
 
@@ -218,6 +223,8 @@
     </div>
 
     <script>
+
+        CKEDITOR.replace('editor1');
 
         var itemId;
 

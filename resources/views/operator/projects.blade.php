@@ -66,7 +66,10 @@
                                 <th scope="col">نام</th>
                                 <th scope="col">پایه تحصیلی</th>
                                 <th scope="col">ظرفیت</th>
+                                <th scope="col">تاریخ شروع نمایش</th>
+                                <th scope="col">زمان شروع نمایش</th>
                                 <th scope="col">تاریخ شروع امکان خرید</th>
+                                <th scope="col">تاریخ پایان امکان خرید</th>
                                 <th scope="col">تاریخ پایان امکان خرید</th>
                                 <th scope="col">تصویر</th>
                                 <th scope="col" style="width:450px !important">توضیح</th>
@@ -118,6 +121,10 @@
                                     </td>
 
                                     <td>{{$itr->capacity}}</td>
+
+                                    <td>{{$itr->startShow}}</td>
+                                    <td>{{$itr->startTime}}</td>
+
                                     <td>{{$itr->startReg}}</td>
                                     <td>{{$itr->endReg}}</td>
                                     <td><img width="100px" src="{{$itr->pic}}"></td>

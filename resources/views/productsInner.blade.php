@@ -45,6 +45,10 @@
                     <div data-toggle="modal" data-target="#confirmationModal" class="prInner_buyBtnBox">
                         <div class="prInner_buyBtn">خرید مجموعه</div>
                     </div>
+                @else
+                    <div style="cursor: auto;" class="prInner_buyBtnBox">
+                        <div style="background-color: red !important;" class="prInner_buyBtn">شما امکان خرید ندارید</div>
+                    </div>
                 @endif
 
                 @foreach($products as $product)

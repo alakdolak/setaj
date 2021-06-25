@@ -3,6 +3,7 @@
 @section('header')
     @parent
     <link href="{{URL::asset('pages/css/faq-rtl.min.css')}}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.4")}}">
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/faq.css?v=1")}}">
 @stop
 
@@ -96,14 +97,21 @@
         </div>
     </div>
 
-    <div>
+    <div class="shopEachRow col-xs-12">
+
         @foreach($tutorials as $tutorial)
-            <center onclick="document.location.href = '{{route('showTutorial', ['id' => $tutorial->id])}}'" style="padding: 20px; margin: 20px; border: 3px solid; cursor: pointer">
-                <p>{{$tutorial->title}}</p>
-                @if($tutorial->pic != null)
-                    <img src="{{$tutorial->pic}}" width="100px">
-                @endif
-            </center>
+
+            <div onclick="document.location.href = '{{route('showTutorial', ['id' => $tutorial->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
+                <div class="sh_mainBox">
+                    <div style="background-image: url('{{$tutorial->pic}}')" class="sh_mainPic"></div>
+                    <div class="sh_descript">
+                        <div class="sh_descriptRow sh_title">{{$tutorial->title}}</div>
+                        <div class="sh_descriptRow sh_title">{!! html_entity_decode($tutorial->description) !!}</div>
+                    </div>
+                </div>
+
+            </div>
         @endforeach
+
     </div>
 @stop

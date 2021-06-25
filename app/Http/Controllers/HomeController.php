@@ -244,6 +244,13 @@ class HomeController extends Controller {
             return Redirect::route('faq');
 
         $tutorial->path = URL::asset("storage/tutorials/" . $tutorial->path);
+
+        if($tutorial->pic != null &&
+            file_exists(__DIR__ . '/../../../public/storage/tutorials/' . $tutorial->pic))
+            $tutorial->pic = URL::asset("storage/tutorials/" . $tutorial->pic);
+        else
+            $tutorial->pic = URL::asset("images/defaultTutorial.jpg");
+
         return view('showTutorial', ['tutorial' => $tutorial]);
     }
 
@@ -261,7 +268,7 @@ class HomeController extends Controller {
                 file_exists(__DIR__ . '/../../../public/storage/tutorials/' . $tutorial->pic))
                 $tutorial->pic = URL::asset("storage/tutorials/" . $tutorial->pic);
             else
-                $tutorial->pic = null;
+                $tutorial->pic = URL::asset("images/defaultTutorial.jpg");
         }
 
         return view('FAQ', ['categories' => $categories, 'tutorials' => $tutorials]);
@@ -908,11 +915,20 @@ class HomeController extends Controller {
 
     public function showAllProductsInner($projectId, $gradeId) {
 
+        $today = getToday();
+        $time = $today["time"];
+        $today = $today["date"];
+
         $products = DB::select('select pb.adv_status, ' .
-            'p.id, name, description, price, star, p.project_id, (select count(*) from transactions where product_id = p.id) > 0 as sold, ' .
+            'p.id, name, description, price, star, p.project_id, p.start_date_buy, p.start_time_buy, ' .
+            '(select count(*) from transactions where product_id = p.id) > 0 as sold, ' .
             'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
             ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId .
-            ' and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.price asc');
+            ' and (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
+            ' p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.price asc');
+
+        if($products == null || count($products) == 0)
+            return Redirect::route("showAllProducts");
 
         foreach ($products as $product) {
 
@@ -933,15 +949,19 @@ class HomeController extends Controller {
             "id not in (select product_id from transactions where 1) and grade_id = " .
             $gradeId . " and project_id = " . $projectId . " and hide = false group by(project_id)")[0]->count_;
 
-        $canBuy = (Auth::check()) ? $reminder : false;
+        $canBuy = (Auth::check()) ? ($reminder > 0) : false;
+        $myReminder = 0;
 
         if($canBuy) {
-            $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
-            if ($myReminder < 0)
+            $uId = Auth::user()->id;
+            if($products[0]->start_date_buy > $today || $products[0]->start_time_buy > $time)
                 $canBuy = false;
+            else {
+                $myReminder = ProjectBuyers::whereUserId($uId)->whereStatus(true)->count() - Transaction::whereUserId($uId)->count() - 1;
+                if ($myReminder < 0)
+                    $canBuy = false;
+            }
         }
-        else
-            $myReminder = 0;
 
         return view('productsInner', ['products' => $products, 'canBuy' => $canBuy,
             'projectId' => $projectId, 'grade' => $gradeId, 'myReminder' => $myReminder]);

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $id
  * @property string $title
  * @property string $path
+ * @property string $description
  * @property string $pic
  */
 

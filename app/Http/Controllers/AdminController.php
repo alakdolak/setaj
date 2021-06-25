@@ -90,7 +90,7 @@ class AdminController extends Controller {
                 file_exists(__DIR__ . '/../../../public/storage/tutorials/' . $tutorial->pic))
                 $tutorial->pic = URL::asset("storage/tutorials/" . $tutorial->pic);
             else
-                $tutorial->pic = null;
+                $tutorial->pic = URL::asset("images/defaultTutorial.jpg");
         }
 
         return view('operator.tutorials', ['tutorials' => $tutorials]);
@@ -99,11 +99,17 @@ class AdminController extends Controller {
     public function addTutorial(Request $request) {
 
         if($request->has("name") && $request->hasFile("file") &&
-            $request->hasFile("pic")) {
+            $request->hasFile("description")) {
 
             $tmp = new Tutorial();
             $tmp->title = $request["name"];
-            $tmp->pic = str_replace("public/tutorials/", "", $request->pic->store("public/tutorials"));
+            $tmp->description = $request["description"];
+
+            if($request->hasFile("pic"))
+                $tmp->pic = str_replace("public/tutorials/", "", $request->pic->store("public/tutorials"));
+            else
+                $tmp->pic = null;
+
             $tmp->path = str_replace("public/tutorials/", "", $request->file->store("public/tutorials"));
             $tmp->save();
 
