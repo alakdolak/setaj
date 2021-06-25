@@ -897,8 +897,16 @@ class HomeController extends Controller {
 
         $canBuy = (Auth::check()) ? $reminder : false;
 
+        if($canBuy) {
+            $myReminder = ProjectBuyers::whereUserId(Auth::user()->id)->whereStatus(true)->count() - Transaction::whereUserId(Auth::user()->id)->count() - 1;
+            if ($myReminder < 0)
+                $canBuy = false;
+        }
+        else
+            $myReminder = 0;
+
         return view('productsInner', ['products' => $products, 'canBuy' => $canBuy,
-            'projectId' => $projectId, 'grade' => $gradeId]);
+            'projectId' => $projectId, 'grade' => $gradeId, 'myReminder' => $myReminder]);
     }
 
     public function buyUnPhysicalProduct() {
@@ -1331,8 +1339,6 @@ class HomeController extends Controller {
                 if(!$allow)
                     return "nok9";
             }
-
-
 
             try {
                 $tmp = new Transaction();
