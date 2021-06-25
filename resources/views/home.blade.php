@@ -20,7 +20,7 @@
 
 <div class="homeBody">
 
-    <div class="homeBodyDiv">
+    <div class="homeBodyDiv blur">
 
         <div class="homePic"></div>
 
@@ -85,9 +85,9 @@
             </div>
         </form>
 
-        <div class="loginDownArrow">
-            <i class="fa fa-lock fa-sort-desc loginDownArrowIcon" aria-hidden="true"></i>
-        </div>
+{{--        <div class="loginDownArrow">--}}
+{{--            <i class="fa fa-lock fa-sort-desc loginDownArrowIcon" aria-hidden="true"></i>--}}
+{{--        </div>--}}
     </div>
 
 </div>

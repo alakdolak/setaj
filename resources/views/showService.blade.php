@@ -29,17 +29,30 @@
         </div>
         <div class="pr_picsBox col-sm-5 col-xs-12">
             <div class="pr_pics">
-                <div class="pr_otherPics">
-                    @foreach($service->pics as $pic)
-                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>
-                    @endforeach
-                </div>
+{{--                <div class="pr_otherPics">--}}
+{{--                    @foreach($service->pics as $pic)--}}
+{{--                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
                 @if(count($service->pics) > 0)
-                    <div style="background-image: url('{{$service->pics[0]}}');" id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{$service->pics[0]}}');" id="pr_mainPic" class="pr_bigPic"></div>
                 @else
-                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_bigPic"></div>
                 @endif
             </div>
+
+{{--            <div class="pr_pics">--}}
+{{--                <div class="pr_otherPics">--}}
+{{--                    @foreach($service->pics as $pic)--}}
+{{--                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
+{{--                @if(count($service->pics) > 0)--}}
+{{--                    <div style="background-image: url('{{$service->pics[0]}}');" id="pr_mainPic" class="pr_mainPic"></div>--}}
+{{--                @else--}}
+{{--                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_mainPic"></div>--}}
+{{--                @endif--}}
+{{--            </div>--}}
 
             @if(\Illuminate\Support\Facades\Auth::check())
                 @if($oldBuy)

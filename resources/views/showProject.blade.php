@@ -4,114 +4,6 @@
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
 
-{{--    the css of upload box--}}
-    <style>
-        .uploadBody {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 30em;
-            height: 36em;
-            margin-top: -18em;
-            margin-left: -15em;
-            background-color: white;
-            border-radius: 7px;
-            border-bottom: 15px solid #04c582;
-        }
-        .uploadBorder {
-            width: 100%;
-            height: -webkit-fill-available;
-            border-top: 40px solid #f9f9f9;
-            border-bottom: 40px solid #f9f9f9;
-            border-radius: 7px;
-        }
-        .uploadHeader {
-            width: 60%;
-            height: 70px;
-            background-color: #ffc20e;
-            margin: -40px auto 0;
-            border-radius: 0 0 10px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-evenly;
-        }
-        .uploadHeader_images {
-            width: 50px;
-            height: 40px;
-            background-repeat: no-repeat;
-            /*background-size: 100% 100%;*/
-            background-size: contain;
-        }
-        .uploadHeader_img1 {
-            background-image: url("../../public/images/uploadPics/sound.png");
-        }
-        .uploadHeader_img2 {
-            background-image: url("../../public/images/uploadPics/pic.png");
-        }
-        .uploadHeader_img3 {
-            background-image: url("../../public/images/uploadPics/video.png");
-        }
-        .uploadHeader_img4 {
-            background-image: url("../../public/images/uploadPics/file.png");
-        }
-        .uploadBodyBox {
-            text-align: center;
-            padding: 50px 70px;
-        }
-        .uploadTitleText {
-            line-height: 60px;
-            background-image: linear-gradient(to bottom right, #ffc438, red) !important;
-            border-radius: 25px 25px 0 0 !important;
-            box-shadow: 0px 0px 20px 5px #ff8900;
-            color: white;
-            padding: 0px !important;
-            min-height: 0px !important;
-            font-size: 1.75em;
-            font-weight: 500;
-            text-align: center;
-        }
-        .uploadBox {
-            border: 1px solid orange !important;
-            box-shadow: 0px 0px 20px 5px #ff8900;
-            border-radius: 0 0 25px 25px !important;
-            padding: 0 !important;
-        }
-        .dropzone .dz-message {
-            margin: 3em 0 !important;
-        }
-        .uploadّFileAllowed {
-            margin: 30px 0;
-        }
-        .uploadfooter_image {
-            width: 65px;
-            height: 65px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: -50px auto 0px;
-            background-color: #f9f9f9;
-            border-radius: 50%;
-            box-shadow: 0px 0px 10px 2px #fff;
-        }
-        .uploadfooter_img1 {
-            background-image: url("../../public/images/uploadPics/laptop.png");
-            width: 50px;
-            height: 35px;
-            background-repeat: no-repeat;
-            background-size: contain;
-        }
-
-        .alertText {
-            text-align: center;
-        }
-        .acceptAlertText {
-            color: darkgreen;
-        }
-        .refuseAlertText {
-            color: darkred;
-        }
-</style>
-
     <script src="{{\Illuminate\Support\Facades\URL::asset('dropzone/dropzone.js')}}"></script>
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("dropzone/dropzone.css")}}">
 @stop
@@ -147,17 +39,30 @@
         </div>
         <div class="pr_picsBox col-sm-5 col-xs-12">
             <div class="pr_pics">
-                <div class="pr_otherPics">
-                    @foreach($project->pics as $pic)
-                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>
-                    @endforeach
-                </div>
+{{--                <div class="pr_otherPics">--}}
+{{--                    @foreach($project->pics as $pic)--}}
+{{--                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
                 @if(count($project->pics) > 0)
-                    <div style="background-image: url('{{$project->pics[0]}}');" id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{$project->pics[0]}}');" id="pr_mainPic" class="pr_bigPic"></div>
                 @else
-                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_mainPic"></div>
+                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_bigPic"></div>
                 @endif
             </div>
+
+{{--            <div class="pr_pics">--}}
+{{--                <div class="pr_otherPics">--}}
+{{--                    @foreach($project->pics as $pic)--}}
+{{--                        <div data-url="{{$pic}}" style="background-image: url('{{$pic}}');" class="pr_eachOtherPics"></div>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
+{{--                @if(count($project->pics) > 0)--}}
+{{--                    <div style="background-image: url('{{$project->pics[0]}}');" id="pr_mainPic" class="pr_mainPic"></div>--}}
+{{--                @else--}}
+{{--                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_mainPic"></div>--}}
+{{--                @endif--}}
+{{--            </div>--}}
 
             @if($canBuy)
                 <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">انتخاب پروژه و دریافت آموزش</div>

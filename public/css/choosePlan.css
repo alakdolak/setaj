@@ -1,6 +1,6 @@
 .advertiseBanner {
     width: 100%;
-    padding-top: 31%;
+    padding-top: 40%;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -37,6 +37,9 @@
 }
 .advertiseBanner10 {
     background-image: url(../images/advertise10.jpg);
+}
+.advertiseBanner11 {
+    background-image: url(../images/advertise11.jpg);
 }
 
 .choosePlane {
