@@ -96,7 +96,7 @@ class HomeController extends Controller {
             $tmpPic = ProductPic::whereProductId($myBuy->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
-                $myBuy->pic = URL::asset('productPic/defaultPic.jpg');
+                $myBuy->pic = URL::asset('productPic/defaultPic.png');
             else
                 $myBuy->pic = URL::asset('productPic/' . $tmpPic->name);
 
@@ -130,7 +130,7 @@ class HomeController extends Controller {
             $tmpPic = ProductPic::whereProductId($myBuy->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
-                $myBuy->pic = URL::asset('productPic/defaultPic.jpg');
+                $myBuy->pic = URL::asset('productPic/defaultPic.png');
             else
                 $myBuy->pic = URL::asset('productPic/' . $tmpPic->name);
 
@@ -173,7 +173,7 @@ class HomeController extends Controller {
             $tmpPic = ProjectPic::whereProjectId($myProject->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/projectPic/' . $tmpPic->name))
-                $myProject->pic = URL::asset('projectPic/defaultPic.jpg');
+                $myProject->pic = URL::asset('projectPic/defaultPic.png');
             else
                 $myProject->pic = URL::asset('projectPic/' . $tmpPic->name);
 
@@ -193,7 +193,7 @@ class HomeController extends Controller {
             $tmpPic = ServicePic::whereServiceId($myService->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/servicePic/' . $tmpPic->name))
-                $myService->pic = URL::asset('servicePic/defaultPic.jpg');
+                $myService->pic = URL::asset('servicePic/defaultPic.png');
             else
                 $myService->pic = URL::asset('servicePic/' . $tmpPic->name);
 
@@ -333,7 +333,7 @@ class HomeController extends Controller {
             $tmpPic = ServicePic::whereServiceId($service->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/servicePic/' . $tmpPic->name))
-                $service->pic = URL::asset('servicePic/defaultPic.jpg');
+                $service->pic = URL::asset('servicePic/defaultPic.png');
             else
                 $service->pic = URL::asset('servicePic/' . $tmpPic->name);
 
@@ -470,7 +470,7 @@ class HomeController extends Controller {
             $tmpPic = ProjectPic::whereProjectId($project->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/projectPic/' . $tmpPic->name))
-                $project->pic = URL::asset('projectPic/defaultPic.jpg');
+                $project->pic = URL::asset('projectPic/defaultPic.png');
             else
                 $project->pic = URL::asset('projectPic/' . $tmpPic->name);
 
@@ -647,7 +647,7 @@ class HomeController extends Controller {
             $tmpPic = CitizenPic::whereProjectId($project->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/citizenPic/' . $tmpPic->name))
-                $project->pic = URL::asset('citizenPic/defaultPic.jpg');
+                $project->pic = URL::asset('citizenPic/defaultPic.png');
             else
                 $project->pic = URL::asset('citizenPic/' . $tmpPic->name);
 
@@ -772,7 +772,7 @@ class HomeController extends Controller {
             $tmpPic = ProjectPic::whereProjectId($product->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/projectPic/' . $tmpPic->name))
-                $product->pic = URL::asset('projectPic/defaultPic.jpg');
+                $product->pic = URL::asset('projectPic/defaultPic.png');
             else
                 $product->pic = URL::asset('projectPic/' . $tmpPic->name);
 
@@ -843,7 +843,7 @@ class HomeController extends Controller {
             $tmpPic = ProductPic::whereProductId($product->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
-                $product->pic = URL::asset('productPic/defaultPic.jpg');
+                $product->pic = URL::asset('productPic/defaultPic.png');
             else
                 $product->pic = URL::asset('productPic/' . $tmpPic->name);
 
@@ -881,7 +881,7 @@ class HomeController extends Controller {
             $tmpPic = ProductPic::whereProductId($product->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
-                $product->pic = URL::asset('productPic/defaultPic.jpg');
+                $product->pic = URL::asset('productPic/defaultPic.png');
             else
                 $product->pic = URL::asset('productPic/' . $tmpPic->name);
 
