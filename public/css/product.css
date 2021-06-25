@@ -8,6 +8,14 @@
 .pr_pics {
     display: flex;
 }
+/*.pr_bigPic {*/
+/*    width: 100%;*/
+/*    padding-top: 100%;*/
+/*    border: 3px solid #acacac;*/
+/*    background-size: cover !important;*/
+/*    background-repeat: no-repeat;*/
+/*    background-position: center;*/
+/*}*/
 .pr_mainPic {
     width: 74%;
     padding-top: 72%;
