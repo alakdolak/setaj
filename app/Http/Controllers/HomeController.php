@@ -533,11 +533,11 @@ class HomeController extends Controller {
                     ($project->start_reg == $date && $project->start_reg_time > $time)
                 )
                     $project->canBuy = false;
+                else if ($project->capacity != -1)
+                    $project->canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
+                else
+                    $project->canBuy = true;
 
-                if ($project->canBuy) {
-                    if ($project->capacity != -1)
-                        $project->canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
-                }
             }
             else
                 $project->canBuy = false;
@@ -1368,17 +1368,20 @@ class HomeController extends Controller {
                         return "nok8";
                 }
 
-                $allow = false;
+                if(!$project->physical) {
 
-                foreach($openProjects as $openProject) {
-                    if($openProject->physical) {
-                        $allow = true;
-                        break;
+                    $allow = false;
+
+                    foreach ($openProjects as $openProject) {
+                        if ($openProject->physical) {
+                            $allow = true;
+                            break;
+                        }
                     }
-                }
 
-                if(!$allow)
-                    return "nok9";
+                    if (!$allow)
+                        return "nok9";
+                }
             }
 
             try {

@@ -106,7 +106,7 @@ mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
    php_value max_input_time 240
    php_value max_input_vars 1000
    php_value memory_limit 512M
-   php_value post_max_size 100M
+   php_value post_max_size 200M
    php_value session.gc_maxlifetime 1440
    php_value session.save_path "/var/cpanel/php/sessions/ea-php72"
    php_value upload_max_filesize 100M

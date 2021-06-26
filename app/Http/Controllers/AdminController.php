@@ -99,7 +99,7 @@ class AdminController extends Controller {
     public function addTutorial(Request $request) {
 
         if($request->has("name") && $request->hasFile("file") &&
-            $request->hasFile("description")) {
+            $request->has("description")) {
 
             $tmp = new Tutorial();
             $tmp->title = $request["name"];

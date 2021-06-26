@@ -296,7 +296,7 @@ function findDiffWithSiteStart() {
 
     for($i = 2; $i <= 63; $i++) {
 
-        if("14000320" == getPast("- " . $i . ' days')) {
+        if("14000402" == getPast("- " . $i . ' days')) {
             return $i;
         }
     }

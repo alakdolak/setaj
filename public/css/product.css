@@ -295,6 +295,9 @@
 
 .alertText {
     text-align: center;
+    margin: 15px;
+    font-size: 1.2em;
+    font-weight: 600;
 }
 .acceptAlertText {
     color: darkgreen;
