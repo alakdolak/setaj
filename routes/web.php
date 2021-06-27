@@ -315,8 +315,11 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
     Route::post('toggleHideProduct', ['as' => 'toggleHideProduct', 'uses' => 'OperatorController@toggleHideProduct']);
 
 
+    Route::post('physicalReportAPI', ['as' => 'physicalReportAPI', 'uses' => 'ReportController@physicalReportAPI']);
 
-    Route::get("unDoneProjectsReport/{gradeId?}", ["as" => "unDoneProjectsReport", "uses" => "ReportController@unDoneProjectsReport"]);
+    Route::get("physicalReport/{gradeId?}", ["as" => "physicalReport", "uses" => "ReportController@physicalReport"]);
+
+    Route::get("unDoneProjectsReport/{gradeId?}/{pre?}", ["as" => "unDoneProjectsReport", "uses" => "ReportController@unDoneProjectsReport"]);
 
     Route::get("unDoneProjectsReportExcel/{gradeId}", ["as" => "unDoneProjectsReportExcel", "uses" => "ReportController@unDoneProjectsReportExcel"]);
 

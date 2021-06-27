@@ -9,6 +9,7 @@ use App\models\Service;
 use App\models\ServiceBuyer;
 use App\models\Transaction;
 use App\models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
@@ -143,7 +144,66 @@ class ReportController extends Controller {
         return view('report.operatorReport', ['users' => $students]);
     }
 
+    public function physicalReport($gradeId = -1) {
 
+        if($gradeId == -1)
+            return view('report.usersReport', ['grades' => Grade::all(),
+                "path" => route("physicalReport")]);
+
+        return view('report.physicalReport', ['gradeId' => $gradeId]);
+    }
+
+    public function physicalReportAPI(Request $request) {
+
+        $request->validate(
+            ["pre" => "required|integer|min:1"],
+            ["gradeId" => "required|integer|min:1"]
+        );
+
+        $pre = makeValidInput($request["pre"]);
+        $gradeId = makeValidInput($request["gradeId"]);
+
+        $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
+            "from project_buyers pb, project p, users u where p.physical = true and p.id = pb.project_id" .
+            " and pb.user_id = u.id and pb.created_at >= date_sub(pb.created_at, interval " . $pre . " day) and " .
+            "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
+        );
+
+        $users = [];
+        foreach ($projects as $project) {
+            $users[$project->id] = [
+                "name" => $project->name,
+                "physical" => $project->count,
+                "unphysical" => 0
+            ];
+        }
+
+        $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
+            "from project_buyers pb, project p, users u where p.physical = false and p.id = pb.project_id" .
+            " and pb.user_id = u.id and pb.created_at >= date_sub(pb.created_at, interval " . $pre . " day) and " .
+            "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
+        );
+
+        foreach ($projects as $project) {
+
+            if(array_key_exists($project->id, $users))
+                $users[$project->id]["unphysical"] = $project->count;
+            else {
+                $users[$project->id] = [
+                    "name" => $project->name,
+                    "physical" => 0,
+                    "unphysical" => $project->count
+                ];
+            }
+        }
+
+        $output = [];
+        $counter = 0;
+        foreach($users as $user)
+            $output[$counter++] = $user;
+
+        return json_encode(["status" => "ok", "result" => $output]);
+    }
 
     public function unDoneProjectsReport($gradeId = -1) {
 

@@ -328,6 +328,12 @@
                             </li>
 
                             <li class="nav-item  ">
+                                <a href="{{route('physicalReport')}}" class="nav-link">
+                                    <span class="title">مبتنی بر عینی/غیرعینی</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item  ">
                                 <a href="{{route('productsReport')}}" class="nav-link">
                                     <span class="title">رصد بازار خرید و فروش</span>
                                 </a>
