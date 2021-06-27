@@ -675,8 +675,12 @@ class HomeController extends Controller {
 
     public function showAllCitizens($grade = -1) {
 
-        if(Auth::check() && Auth::user()->level == 1) {
-            $grade = Auth::user()->grade_id;
+        if(Auth::check()) {
+            if(Auth::user()->level == 1)
+                $grade = Auth::user()->grade_id;
+            else if($grade == -1)
+                $grade = Grade::first()->id;
+
             $canBuy = true;
         }
         else
@@ -1368,12 +1372,12 @@ class HomeController extends Controller {
                         return "nok8";
                 }
 
-                if(!$project->physical) {
+                if($project->physical) {
 
                     $allow = false;
 
                     foreach ($openProjects as $openProject) {
-                        if ($openProject->physical) {
+                        if (!$openProject->physical) {
                             $allow = true;
                             break;
                         }
