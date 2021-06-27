@@ -201,7 +201,8 @@ class OperatorController extends Controller {
     public function healthReport($gradeId = -1) {
 
         if($gradeId == -1)
-            return view('operator.chooseGradeHealth');
+            return view('report.usersReport', ['grades' => Grade::all(),
+                "path" => route("healthReport")]);
 
         $tags = Tag::whereType("CITIZEN")->get();
         $users = User::select(["id", "first_name", "last_name"])->whereGradeId($gradeId)->get();
