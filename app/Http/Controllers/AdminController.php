@@ -457,7 +457,7 @@ class AdminController extends Controller {
                     $lastRow = $workSheet->getHighestRow();
                     $cols = $workSheet->getHighestColumn();
 
-                    if ($cols < 'D') {
+                    if ($cols < 'E') {
                         unlink($path);
                         $err = "تعداد ستون های فایل شما معتبر نمی باشد";
                     }
@@ -472,6 +472,7 @@ class AdminController extends Controller {
                             $users[$row - 1][1] = $workSheet->getCell('B' . $row)->getValue();
                             $users[$row - 1][2] = $workSheet->getCell('C' . $row)->getValue();
                             $users[$row - 1][3] = $workSheet->getCell('D' . $row)->getValue();
+                            $users[$row - 1][4] = $workSheet->getCell('E' . $row)->getValue();
                         }
 
                         unlink($path);
