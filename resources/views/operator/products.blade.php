@@ -370,7 +370,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 },
-                url: '{{route('getOpenProject')}}',
+                url: '{{route('getOpenProjects')}}',
                 data: {
                     username: username
                 },

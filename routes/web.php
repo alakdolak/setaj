@@ -251,8 +251,6 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::post('toggleHideService', ['as' => 'toggleHideService', 'uses' => 'OperatorController@toggleHideService']);
 
-    Route::post('getOpenProject', ['as' => 'getOpenProject', 'uses' => 'OperatorController@getOpenProject']);
-
 
 
     Route::post('addGradeProject', ['as' => 'addGradeProject', 'uses' => 'OperatorController@addGradeProject']);
@@ -284,6 +282,8 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
+
+    Route::post('getOpenProjects', ['as' => 'getOpenProjects', 'uses' => 'OperatorController@getOpenProject']);
 
     Route::post('setAdvStatus', ['as' => 'setAdvStatus', 'uses' => 'OperatorController@setAdvStatus']);
 
