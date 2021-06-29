@@ -101,9 +101,9 @@
                 <div onclick="document.location.href = '{{route('showTutorial', ['id' => $tutorial->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
                     <div class="sh_mainBox">
                         <div style="background-image: url('{{$tutorial->pic}}')" class="sh_mainPic"></div>
-                        <div class="sh_descript">
+                        <div class="sh_descript" style="min-height: 120px !important;">
                             <div class="sh_descriptRow sh_title">{{$tutorial->title}}</div>
-                            <div class="sh_descriptRow sh_title">{!! html_entity_decode($tutorial->description) !!}</div>
+                            <div class="sh_descriptRow">{!! html_entity_decode($tutorial->description) !!}</div>
                         </div>
                     </div>
 
