@@ -118,6 +118,15 @@ class AdminController extends Controller {
         return Redirect::route('tutorials');
     }
 
+    public function editTutorial($id) {
+
+        $t = Tutorial::whereId($id);
+        if($t == null)
+            return Redirect::route("home");
+
+        return view('operator.editTutorial', ['tutorial' => $t]);
+    }
+
     public function deleteTutorial($id) {
         try {
 

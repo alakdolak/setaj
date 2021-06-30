@@ -108,6 +108,10 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::get('tutorials', ['as' => 'tutorials', 'uses' => 'AdminController@tutorials']);
 
+    Route::get('editTutorial/{id}', ['as' => 'editTutorial', 'uses' => 'AdminController@editTutorial']);
+
+    Route::post('doEditTutorial/{id}', ['as' => 'doEditTutorial', 'uses' => 'AdminController@doEditTutorial']);
+
     Route::delete('tutorial/{id}', ['as' => 'deleteTutorial', 'uses' => 'AdminController@deleteTutorial']);
 
     Route::post('addTutorial', ['as' => 'addTutorial', 'uses' => 'AdminController@addTutorial']);

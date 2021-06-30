@@ -235,16 +235,16 @@
     background-size: contain;
 }
 .uploadHeader_img1 {
-    background-image: url("../../public/images/uploadPics/sound.png");
+    background-image: url("../images/uploadPics/sound.png");
 }
 .uploadHeader_img2 {
-    background-image: url("../../public/images/uploadPics/pic.png");
+    background-image: url("../images/uploadPics/pic.png");
 }
 .uploadHeader_img3 {
-    background-image: url("../../public/images/uploadPics/video.png");
+    background-image: url("../images/uploadPics/video.png");
 }
 .uploadHeader_img4 {
-    background-image: url("../../public/images/uploadPics/file.png");
+    background-image: url("../images/uploadPics/file.png");
 }
 .uploadBodyBox {
     text-align: center;
@@ -286,7 +286,7 @@
     box-shadow: 0px 0px 10px 2px #fff;
 }
 .uploadfooter_img1 {
-    background-image: url("../../public/images/uploadPics/laptop.png");
+    background-image: url("../images/uploadPics/laptop.png");
     width: 50px;
     height: 35px;
     background-repeat: no-repeat;

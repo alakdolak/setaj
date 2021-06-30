@@ -261,7 +261,7 @@ class HomeController extends Controller {
         foreach ($categories as $category)
             $category->items = CommonQuestion::whereCategoryId($category->id)->get();
 
-        $tutorials = Tutorial::all();
+        $tutorials = Tutorial::orderBy('id', 'desc')->get();
         foreach ($tutorials as $tutorial) {
 
             if($tutorial->pic != null &&

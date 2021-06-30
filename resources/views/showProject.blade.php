@@ -2,7 +2,7 @@
 
 @section('header')
     @parent
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.4")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.5")}}">
 
     <script src="{{\Illuminate\Support\Facades\URL::asset('dropzone/dropzone.js')}}"></script>
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("dropzone/dropzone.css")}}">
@@ -249,6 +249,8 @@
         Dropzone.options.myAwesomeDropzone = {
             paramName: "file", // The name that will be used to transfer the file
             maxFilesize: 100, // MB
+            timeout: 180000,
+            parallelUploads: 100,
             accept: function(file, done) {
                 done();
             },

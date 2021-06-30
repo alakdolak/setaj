@@ -173,9 +173,15 @@
                                     <td><a download href="{{\Illuminate\Support\Facades\URL::asset('storage/tutorials/' . $itr->path)}}">دانلود فایل</a></td>
 
                                     <td>
+
                                         <button onclick="removeTutorial('{{$itr->id}}', '{{route('deleteTutorial', ['id' => $itr->id])}}')" class="btn btn-danger" data-toggle="tooltip" title="حذف">
                                             <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-trash"></span>
                                         </button>
+
+                                        <a href="{{route('editTutorial', ['id' => $itr->id])}}" class="btn btn-primary" data-toggle="tooltip" title="ویرایش">
+                                            <span style="font-family: 'Glyphicons Halflings' !important;" class="glyphicon glyphicon-edit"></span>
+                                        </a>
+
                                     </td>
                                 </tr>
                                 <?php $i += 1; ?>
