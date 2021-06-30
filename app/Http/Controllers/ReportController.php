@@ -395,7 +395,11 @@ class ReportController extends Controller {
             if($allowAdd)
                 $allTitles[count($allTitles)] = $project->title;
 
-            $project->adv = URL::asset('storage/adv/' . $project->adv);
+            if(file_exists(__DIR__ . '/../../../public/storage/advs/' . $project->adv))
+                $project->adv = URL::asset("storage/advs/" . $project->adv);
+            else
+                $project->adv = null;
+
             $project->Bdate = getCustomDate($project->created_at);
             $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));
             $project->time = explode(' ', $project->created_at)[1];

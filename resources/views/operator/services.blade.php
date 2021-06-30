@@ -287,6 +287,26 @@
                         <input type="time" name="start_time">
                     </div>
 
+                    <div>
+                        <span>تاریخ شروع خرید</span>
+                        <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="buy_date_btn">
+                        <br/>
+                        <input type="text" name="start_buy" id="date_input_buy" readonly>
+                        <script>
+                            Calendar.setup({
+                                inputField: "date_input_buy",
+                                button: "buy_date_btn",
+                                ifFormat: "%Y/%m/%d",
+                                dateType: "jalali"
+                            });
+                        </script>
+                    </div>
+
+                    <div style="margin: 10px">
+                        <span>زمان شروع خرید</span>
+                        <input type="time" name="buy_time">
+                    </div>
+
                     <h5>توضیح خدمت</h5>
                     <textarea id="editor1" cols="80" name="description" required></textarea>
 

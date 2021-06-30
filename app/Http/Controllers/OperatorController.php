@@ -554,8 +554,11 @@ class OperatorController extends Controller {
 
     public function addService() {
 
-        if(isset($_POST["name"]) && isset($_POST["description"])
-            && isset($_POST["star"]) && isset($_POST["gradeId"]) && isset($_POST["capacity"])
+        if(isset($_POST["name"]) && isset($_POST["description"]) &&
+            isset($_POST["star"]) && isset($_POST["gradeId"]) &&
+            isset($_POST["capacity"]) && isset($_POST["start_buy"]) &&
+            isset($_POST["buy_time"]) && isset($_POST["start_time"]) &&
+            isset($_POST["start_show"])
         ) {
 
             $service = new Service();
@@ -563,6 +566,12 @@ class OperatorController extends Controller {
             $service->description = $_POST["description"];
             $service->star = makeValidInput($_POST["star"]);
             $service->capacity = makeValidInput($_POST["capacity"]);
+
+            $service->buy_time = convertTimeToString(makeValidInput($_POST["buy_time"]));
+            $service->start_buy = convertDateToString(makeValidInput($_POST["start_buy"]));
+
+            $service->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
+            $service->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
 
             try {
 

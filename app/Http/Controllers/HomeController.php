@@ -335,6 +335,10 @@ class HomeController extends Controller {
 
     public function showAllServices($grade = -1) {
 
+        $today = getToday();
+        $date = $today["date"];
+        $time = (int)$today["time"];
+
         if(Auth::check() && Auth::user()->level == 1)
             $grade = Auth::user()->grade_id;
 
@@ -343,6 +347,7 @@ class HomeController extends Controller {
 
         $services = DB::select('select id, title, description, star, capacity, created_at from service where ' .
             '(select count(*) from service_grade where service_id = service.id and grade_id = ' . $grade . ' ) > 0'.
+            ' and (start_show < ' . $date . ' or (start_show = ' . $date . ' and start_time <= ' . $time . '))' .
             ' and hide = false order by id desc');
 
         $today = getToday()["date"];
