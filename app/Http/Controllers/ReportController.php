@@ -370,6 +370,42 @@ class ReportController extends Controller {
         return view("report.reminderProductsReport", ["products" => $products, 'gradeId' => $gradeId]);
     }
 
+    public function advReport($gradeId = -1) {
+
+        if($gradeId == -1)
+            return view('report.usersReport', ['grades' => Grade::all(),
+                "path" => route("advReport")]);
+
+        $projects = DB::select('select pb.created_at, pb.id, p.title, concat(u.first_name, " ", u.last_name) as name, ' .
+            'pb.adv_status, pb.adv from project_buyers pb, project p, users u where p.id = pb.project_id and ' .
+            'pb.user_id = u.id and u.grade_id = ' . $gradeId . ' and pb.adv is not null'
+        );
+
+        $allTitles = [];
+        foreach ($projects as $project) {
+
+            $allowAdd = true;
+            foreach ($allTitles as $title) {
+                if($project->title == $title) {
+                    $allowAdd = false;
+                    break;
+                }
+            }
+
+            if($allowAdd)
+                $allTitles[count($allTitles)] = $project->title;
+
+            $project->adv = URL::asset('storage/adv/' . $project->adv);
+            $project->Bdate = getCustomDate($project->created_at);
+            $project->date = MiladyToShamsi('', explode('-', explode(' ', $project->created_at)[0]));
+            $project->time = explode(' ', $project->created_at)[1];
+
+        }
+
+        return view('report.advReport', ['projects' => $projects,
+            'allTitles' => $allTitles]);
+    }
+
     public function productsReportExcel($gradeId) {
 
         $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .

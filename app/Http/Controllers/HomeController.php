@@ -632,16 +632,16 @@ class HomeController extends Controller {
             $pb = ProjectBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->first();
             if ($pb != null) {
                 $canBuy = false;
-                if (!$pb->status) {
-                    if ($pb->adv == null)
-                        $canAddAdv = true;
-                    if (!$project->physical && $pb->file == null)
-                        $canAddFile = true;
-                }
+
+                if (!$pb->status && !$project->physical && $pb->file == null)
+                    $canAddFile = true;
+
+                if ($pb->adv == null)
+                    $canAddAdv = true;
 
                 $project->pbId = $pb->id;
 
-                if ((!$canAddAdv && $pb->adv != null) || $pb->adv_status != 0)
+                if ($pb->adv != null || $pb->adv_status != 0)
                     $advStatus = $pb->adv_status;
 
                 if ((!$canAddFile && $pb->file != null) || $pb->file_status != 0)

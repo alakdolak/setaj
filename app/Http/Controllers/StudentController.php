@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\models\Product;
 use App\models\ProjectBuyers;
 use App\models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 
 class StudentController extends Controller {
@@ -17,8 +17,24 @@ class StudentController extends Controller {
         if($request->hasFile("file") && $request->has("id")) {
 
             $b = ProjectBuyers::whereId($request->get("id"));
-            if($b == null || $b->user_id != Auth::user()->id || $b->status)
+            if($b == null || $b->user_id != Auth::user()->id || $b->adv_status == 1)
                 return "nok";
+
+            if($b->status) {
+
+                $p = Product::whereUserId(Auth::user()->id)->whereProjectId($b->project_id)->first();
+                if ($p == null)
+                    return "nok";
+
+                $today = getToday();
+                $time = $today["time"];
+                $today = $today["date"];
+
+                if($p->start_show < $today ||
+                    ($p->start_show == $today && $p->start_time < $time)
+                )
+                    return "nok";
+            }
 
             $path = $request->file->store("public/advs");
             $b->adv = str_replace("public/advs/", "", $path);
@@ -36,17 +52,19 @@ class StudentController extends Controller {
         if($request->hasFile("file") && $request->has("id")) {
 
             $b = ProjectBuyers::whereId($request->get("id"));
-            if($b == null || $b->user_id != Auth::user()->id || $b->status)
-                return Redirect::route('profile');
+            if($b == null || $b->user_id != Auth::user()->id || $b->status ||
+                $b->file_status == 1
+            )
+                return "nok";
 
             $path = $request->file->store("public/contents");
             $b->file = str_replace("public/contents/", "", $path);
             $b->file_status = 0;
             $b->save();
-
+            return "ok";
         }
 
-        return Redirect::route('profile');
+        return "nok";
     }
 
 

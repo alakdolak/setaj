@@ -334,6 +334,12 @@
                             </li>
 
                             <li class="nav-item  ">
+                                <a href="{{route('advReport')}}" class="nav-link">
+                                    <span class="title">تبلیغات</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item  ">
                                 <a href="{{route('productsReport')}}" class="nav-link">
                                     <span class="title">رصد بازار خرید و فروش</span>
                                 </a>

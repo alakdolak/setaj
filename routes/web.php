@@ -323,6 +323,8 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
     Route::get("physicalReport/{gradeId?}", ["as" => "physicalReport", "uses" => "ReportController@physicalReport"]);
 
+    Route::get("advReport/{gradeId?}", ["as" => "advReport", "uses" => "ReportController@advReport"]);
+
     Route::get("unDoneProjectsReport/{gradeId?}/{pre?}", ["as" => "unDoneProjectsReport", "uses" => "ReportController@unDoneProjectsReport"]);
 
     Route::get("unDoneProjectsReportExcel/{gradeId}", ["as" => "unDoneProjectsReportExcel", "uses" => "ReportController@unDoneProjectsReportExcel"]);

@@ -148,6 +148,10 @@
 
             <div class="portlet-body">
 
+                @if(isset($err) && $err == 2)
+                    <h1 style="color: red">شما اجازه تعریف محصول را ندارید چون هنوز محتوایی برای پروژه غیرعینی ایشان بارگذاری نشده است.</h1>
+                @endif
+
                 @if(count($products) == 0)
                     <h3>محصولی تعریف نشده است</h3>
                 @else

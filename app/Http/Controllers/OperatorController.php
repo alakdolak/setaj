@@ -815,7 +815,17 @@ class OperatorController extends Controller {
             if($user == null || count($user) == 0)
                 return Redirect::route('products', ['err' => 1]);
 
-            DB::update("update project_buyers set status = true where user_id = " . $user[0]->id . " and project_id = " . $project->id);
+            $pb = ProjectBuyers::whereUserId($user[0]->id)->whereProjectId($project->id)->first();
+            if($pb == null)
+                return Redirect::route('products', ['err' => 1]);
+
+            if(!$project->physical &&
+                ($pb->file_status != 1 || $pb->file == null)
+            )
+                return Redirect::route('products', ['err' => 2]);
+
+            $pb->status = true;
+            $pb->save();
 
             $product = new Product();
             $product->name = makeValidInput($_POST["name"]);
@@ -1215,6 +1225,12 @@ class OperatorController extends Controller {
             $p = Product::whereId(makeValidInput($_POST["id"]));
 
             if($p != null) {
+
+                $pb = ProjectBuyers::whereUserId($p->user_id)->whereProjectId($p->project_id)->first();
+                if($pb != null) {
+                    $pb->status = 0;
+                    $pb->save();
+                }
 
                 $pics = ProductPic::whereProductId($p->id)->get();
 
