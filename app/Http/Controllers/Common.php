@@ -1,5 +1,7 @@
 <?php
 
+use App\models\ConfigModel;
+
 function translatePersian($str) {
 
     $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
@@ -117,6 +119,30 @@ function upload($target_file, $name, $section) {
 
 function generateActivationCode() {
     return rand(10000, 99999);
+}
+
+function getProjectLimit($gradeId) {
+
+    $config = ConfigModel::first();
+
+    switch ($gradeId) {
+        case 3:
+        default:
+            return $config->project_limit_7;
+        case 4:
+            return $config->project_limit_2;
+        case 5:
+            return $config->project_limit_3;
+        case 6:
+            return $config->project_limit_4;
+        case 7:
+            return $config->project_limit_5;
+        case 8:
+            return $config->project_limit_6;
+        case 9:
+            return $config->project_limit_1;
+    }
+
 }
 
 function getToday() {

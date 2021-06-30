@@ -46,8 +46,38 @@
             </div>
 
             <div>
-                <label for="project_limit">محدودیت تعداد خرید پروژه ها در هفته</label>
-                <input value="{{$config->project_limit}}" id="project_limit" name="project_limit" type="number">
+                <label for="project_limit_7">محدودیت تعداد خرید پروژه ها در هفته برای هفتمی ها</label>
+                <input value="{{$config->project_limit_7}}" id="project_limit_7" name="project_limit_7" type="number">
+            </div>
+
+            <div>
+                <label for="project_limit_6">محدودیت تعداد خرید پروژه ها در هفته  برای ششمی ها</label>
+                <input value="{{$config->project_limit_6}}" id="project_limit_6" name="project_limit_6" type="number">
+            </div>
+
+            <div>
+                <label for="project_limit_5">محدودیت تعداد خرید پروژه ها در هفته  برای پنجمی ها</label>
+                <input value="{{$config->project_limit_5}}" id="project_limit_5" name="project_limit_5" type="number">
+            </div>
+
+            <div>
+                <label for="project_limit_4">محدودیت تعداد خرید پروژه ها در هفته  برای چهارمی ها</label>
+                <input value="{{$config->project_limit_4}}" id="project_limit_4" name="project_limit_4" type="number">
+            </div>
+
+            <div>
+                <label for="project_limit_3">محدودیت تعداد خرید پروژه ها در هفته  برای سومی ها</label>
+                <input value="{{$config->project_limit_3}}" id="project_limit_3" name="project_limit_3" type="number">
+            </div>
+
+            <div>
+                <label for="project_limit_2">محدودیت تعداد خرید پروژه ها در هفته  برای دومی ها</label>
+                <input value="{{$config->project_limit_2}}" id="project_limit_2" name="project_limit_2" type="number">
+            </div>
+
+            <div>
+                <label for="project_limit_1">محدودیت تعداد خرید پروژه ها در هفته  برای اولی ها</label>
+                <input value="{{$config->project_limit_1}}" id="project_limit_1" name="project_limit_1" type="number">
             </div>
 
             <div>

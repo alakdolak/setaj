@@ -659,7 +659,7 @@ class HomeController extends Controller {
                 $canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
             }
 
-            $capacity = ConfigModel::first()->project_limit;
+            $capacity = getProjectLimit(Auth::user()->grade_id);
             $nums = DB::select("select count(*) as countNum from project_buyers where status = false and user_id = " . Auth::user()->id)[0]->countNum;
 
             $reminder = $capacity - $nums;
@@ -1324,7 +1324,7 @@ class HomeController extends Controller {
             )
                 return "nok1";
 
-            if(Auth::user()->level == getValueInfo('studentLevel')) {
+            if($user->level == getValueInfo('studentLevel')) {
 
                 $grades = ProjectGrade::whereProjectId($project->id)->get();
                 $allow = false;
@@ -1354,7 +1354,7 @@ class HomeController extends Controller {
             if($project->start_reg > $date || $project->end_reg < $date)
                 return "nok4";
 
-            $capacity = ConfigModel::first()->project_limit + 10;
+            $capacity = getProjectLimit($user->grade_id);
             $openProjects = DB::select("select p.physical, pb.id from project_buyers pb, project p where pb.created_at > date_sub(pb.created_at, interval 1 day) and pb.status = false and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
 
             if($capacity - count($openProjects) <= 0)

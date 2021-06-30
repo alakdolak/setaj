@@ -26,14 +26,23 @@ class AdminController extends Controller {
     public function doConfig() {
 
         if(isset($_POST["initial_point"]) && isset($_POST["initial_star"]) &&
-            isset($_POST["change_rate"]) && isset($_POST["project_limit"]) &&
-            isset($_POST["rev_change_rate"]) && isset($_POST["service_limit"])
+            isset($_POST["change_rate"]) && isset($_POST["project_limit_7"]) &&
+            isset($_POST["rev_change_rate"]) && isset($_POST["service_limit"]) &&
+            isset($_POST["project_limit_4"]) && isset($_POST["project_limit_1"]) &&
+            isset($_POST["project_limit_5"]) && isset($_POST["project_limit_2"]) &&
+            isset($_POST["project_limit_6"]) && isset($_POST["project_limit_3"])
         ) {
             $tmp = ConfigModel::first();
             $tmp->initial_point = makeValidInput($_POST["initial_point"]);
             $tmp->initial_star = makeValidInput($_POST["initial_star"]);
             $tmp->change_rate = makeValidInput($_POST["change_rate"]);
-            $tmp->project_limit = makeValidInput($_POST["project_limit"]);
+            $tmp->project_limit_7 = makeValidInput($_POST["project_limit_7"]);
+            $tmp->project_limit_6 = makeValidInput($_POST["project_limit_6"]);
+            $tmp->project_limit_5 = makeValidInput($_POST["project_limit_5"]);
+            $tmp->project_limit_4 = makeValidInput($_POST["project_limit_4"]);
+            $tmp->project_limit_3 = makeValidInput($_POST["project_limit_3"]);
+            $tmp->project_limit_2 = makeValidInput($_POST["project_limit_2"]);
+            $tmp->project_limit_1 = makeValidInput($_POST["project_limit_1"]);
             $tmp->rev_change_rate = makeValidInput($_POST["rev_change_rate"]);
             $tmp->service_limit = makeValidInput($_POST["service_limit"]);
             $tmp->save();
@@ -305,6 +314,8 @@ class AdminController extends Controller {
 
         $errs = '';
 
+        $config = ConfigModel::first();
+
         foreach ($users as $user) {
 
             if(count($user) != 5)
@@ -316,8 +327,6 @@ class AdminController extends Controller {
             $gradeTmp = Grade::whereId($gradeId);
             if($gradeTmp == null)
                 continue;
-
-            $config = ConfigModel::first();
 
             $tmp = new User();
             $tmp->first_name = $user[0];
