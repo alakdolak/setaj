@@ -33,8 +33,12 @@
             <h5 style="padding-right: 5%;">عنوان آموزش</h5>
             <input value="{{$tutorial->title}}" type="text" name="title" required maxlength="100">
 
-            <h5 style="padding-right: 5%;">تصویر آموزش</h5>
-            <img src="">
+            <h5 style="padding-right: 5%;">تصویر فعلی آموزش</h5>
+            @if($tutorial->pic != null)
+                <img width="200" src="{{\Illuminate\Support\Facades\URL::asset("storage/tutorials/" . $tutorial->pic)}}">
+            @else
+                <img width="200" src="{{\Illuminate\Support\Facades\URL::asset("images/defaultTutorial.jpg")}}">
+            @endif
 
             <h5>توضیح آموزش</h5>
             <textarea id="editor1" cols="80" name="description" required>
@@ -43,6 +47,9 @@
 
             <h5 style="padding-right: 5%;">فایل آموزش</h5>
             <input type="file" name="file">
+
+            <h5 style="padding-right: 5%;">تصویر آموزش</h5>
+            <input type="file" name="pic" accept="image/png, image/gif, image/jpeg image/jpg">
 
             <h3 style="color: red">در صورت آپلود فایل جدید برای آموزش، موارد قبلی حذف خواهند شد.</h3>
 

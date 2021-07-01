@@ -7,15 +7,19 @@ use App\models\ConfigModel;
 use App\models\FAQCategory;
 use App\models\Grade;
 use App\models\ProjectBuyers;
+use App\models\ServiceAttach;
+use App\models\ServicePic;
 use App\models\Tag;
 use App\models\Tutorial;
 use App\models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use PHPExcel_IOFactory;
+use ZipArchive;
 
 class AdminController extends Controller {
 
@@ -134,6 +138,48 @@ class AdminController extends Controller {
             return Redirect::route("home");
 
         return view('operator.editTutorial', ['tutorial' => $t]);
+    }
+
+    public function doEditTutorial(Request $request, $id) {
+
+        if($request->has("title") && $request->has("description")) {
+
+            $tutorial = Tutorial::whereId($id);
+            if($tutorial == null)
+                return Redirect::route("home");
+
+            $tutorial->title = makeValidInput($request["title"]);
+            $tutorial->description = $request["description"];
+
+            try {
+
+                if($request->hasFile("file")) {
+
+                    if(!empty($tutorial->path) &&
+                        file_exists(__DIR__ . '/../../../storage/app/public/tutorials/' . $tutorial->path))
+                        unlink(__DIR__ . '/../../../storage/app/public/tutorials/' . $tutorial->path);
+
+                    $tutorial->path = str_replace("public/tutorials/", "", $request->file->store("public/tutorials"));
+                }
+
+                if($request->hasFile("pic")) {
+
+                    if($tutorial->pic != null && !empty($tutorial->pic) &&
+                        file_exists(__DIR__ . '/../../../storage/app/public/tutorials/' . $tutorial->pic))
+                        unlink(__DIR__ . '/../../../storage/app/public/tutorials/' . $tutorial->pic);
+
+                    $tutorial->pic = str_replace("public/tutorials/", "", $request->pic->store("public/tutorials"));
+                }
+
+                $tutorial->save();
+            }
+
+            catch (\Exception $x) {
+                dd($x);
+            }
+        }
+
+        return Redirect::route("tutorials");
     }
 
     public function deleteTutorial($id) {
