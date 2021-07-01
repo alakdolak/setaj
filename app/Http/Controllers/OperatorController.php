@@ -811,7 +811,7 @@ class OperatorController extends Controller {
         return Redirect::route('projects');
     }
 
-    public function addProduct() {
+    public function addProduct($gradeId = -1) {
 
         if(isset($_POST["name"]) && isset($_POST["description"])
             && isset($_POST["price"]) && isset($_POST["project"])
@@ -824,19 +824,34 @@ class OperatorController extends Controller {
                 return Redirect::route('products', ['err' => 1]);
 
             $username = makeValidInput($_POST["username"]);
-            $user = DB::select("select id, grade_id from users where nid = " . $username . ' or username = ' . $username);
 
-            if($user == null || count($user) == 0)
-                return Redirect::route('products', ['err' => 1]);
+            if($gradeId == -1) {
+                $user = DB::select("select id, grade_id from users where nid = " . $username . ' or username = ' . $username);
 
-            $pb = ProjectBuyers::whereUserId($user[0]->id)->whereProjectId($project->id)->first();
+                if ($user == null || count($user) == 0)
+                    return Redirect::route('products', ['err' => 1]);
+
+                $user = $user[0];
+            }
+            else {
+                $user = User::whereId($username);
+                if ($user == null)
+                    return Redirect::route('products', ['err' => 1]);
+            }
+
+            $pb = ProjectBuyers::whereUserId($user->id)->whereProjectId($project->id)->first();
             if($pb == null)
                 return Redirect::route('products', ['err' => 1]);
 
             if(!$project->physical &&
                 ($pb->file_status != 1 || $pb->file == null)
-            )
-                return Redirect::route('products', ['err' => 2]);
+            ) {
+                if($gradeId == -1)
+                    return Redirect::route('products', ['err' => 2]);
+
+                return Redirect::route('unDoneProjectsReport', ['gradeId' => $gradeId, 'err' => 2]);
+
+            }
 
             $pb->status = true;
             $pb->save();
@@ -846,10 +861,10 @@ class OperatorController extends Controller {
             $product->description = $_POST["description"];
             $product->price = makeValidInput($_POST["price"]);
             $product->star = makeValidInput($_POST["star"]);
-            $product->user_id = $user[0]->id;
+            $product->user_id = $user->id;
             $product->project_id = $project->id;
             $product->physical = $project->physical;
-            $product->grade_id = $user[0]->grade_id;
+            $product->grade_id = $user->grade_id;
 
             $product->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
             $product->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
@@ -994,7 +1009,10 @@ class OperatorController extends Controller {
 
         }
 
-        return Redirect::route('products');
+        if($gradeId == -1)
+            return Redirect::route('products');
+
+        return Redirect::route('unDoneProjectsReport', ['gradeId' => $gradeId]);
     }
 
     public function addCitizen() {

@@ -10,6 +10,9 @@
             border: 1px solid #444;
         }
 
+        .calendar {
+            z-index: 1000000000000 !important;
+        }
     </style>
 
 
@@ -20,6 +23,8 @@
     <link rel="stylesheet" href="{{URL::asset('css/standalone.css')}}">
     <link rel="stylesheet" href= {{URL::asset("css/calendar-green.css") }}>
 
+    <script src="//cdn.ckeditor.com/4.10.1/full/ckeditor.js"></script>
+
 @stop
 
 @section('content')
@@ -27,6 +32,10 @@
     <div class="col-sm-12" style="margin-top: 100px">
 
         <center>
+
+            @if(isset($err) && $err == 2)
+                <h1 style="color: red">شما اجازه تعریف محصول را ندارید چون هنوز محتوایی برای پروژه غیرعینی ایشان بارگذاری نشده است.</h1>
+            @endif
 
             <h3>
                 <a href="{{route('unDoneProjectsReportExcel', ['gradeId' => $gradeId])}}">دریافت فایل اکسل</a>
@@ -133,6 +142,7 @@
                         <td>{{$project->Bdate . '    ساعت     ' . $project->time}}</td>
                         <td>
                             <button class="btn btn-danger" onclick="deleteBuyProject('{{$project->id}}')">بازپس گیری پروژه</button>
+                            <button class="btn btn-default" onclick="addProduct('{{$project->projectId}}', '{{$project->title}}', '{{$project->user_id}}')">تعریف محصول برای این پروژه</button>
 
                             @if($project->adv != null &&
                                 ($project->adv_status == 0 || $project->adv_status == -1)
@@ -165,7 +175,105 @@
 
     </div>
 
+    <div id="myAddModal" class="modal">
+
+        <form action="{{route('addProduct', ['gradeId' => $gradeId])}}" method="post" enctype="multipart/form-data">
+
+            {{ csrf_field() }}
+
+            <div class="modal-content" style="width: 75% !important;">
+
+                <center>
+
+                    <input type="hidden" name="username" id="hiddenUsername">
+
+                    <h5 style="padding-right: 5%;">نام محصول</h5>
+                    <input type="text" name="name" id="projectName" required maxlength="100">
+
+                    <h5 style="padding-right: 5%;">قیمت محصول</h5>
+                    <input type="number" name="price" required min="0">
+
+                    <h5 style="padding-right: 5%;">ستاره های محصول</h5>
+                    <input type="number" name="star" required min="0">
+
+                    <input type="hidden" id="projectId" name="project">
+
+                    <div>
+                        <span>تاریخ شروع نمایش</span>
+                        <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="show_date_btn">
+                        <br/>
+                        <input type="text" name="start_show" id="date_input_show" readonly>
+                        <script>
+                            Calendar.setup({
+                                inputField: "date_input_show",
+                                button: "show_date_btn",
+                                ifFormat: "%Y/%m/%d",
+                                dateType: "jalali"
+                            });
+                        </script>
+                    </div>
+
+                    <div style="margin: 10px">
+                        <span>زمان شروع نمایش</span>
+                        <input type="time" name="start_time">
+                    </div>
+
+
+                    <div>
+                        <span>تاریخ شروع خرید</span>
+                        <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="buy_date_btn">
+                        <br/>
+                        <input type="text" name="start_date_buy" id="date_input_buy" readonly>
+                        <script>
+                            Calendar.setup({
+                                inputField: "date_input_buy",
+                                button: "buy_date_btn",
+                                ifFormat: "%Y/%m/%d",
+                                dateType: "jalali"
+                            });
+                        </script>
+                    </div>
+
+                    <div style="margin: 10px">
+                        <span>زمان شروع خرید</span>
+                        <input value="12:00" type="time" name="start_time_buy">
+                    </div>
+
+                    <h5>توضیح محصول</h5>
+                    <textarea id="editor1" cols="80" name="description"></textarea>
+
+                    <h5 style="padding-right: 5%;">تصاویر محصول(اختیاری)</h5>
+                    <input type="file" name="file" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
+
+                    <h5 style="padding-right: 5%;">آموزش محصول(اختیاری)</h5>
+                    <input type="file" name="attach" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
+
+                    <h5 style="padding-right: 5%;">تبلیغات محصول(اختیاری)</h5>
+                    <input type="file" name="trailer" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
+
+                </center>
+
+                <div style="margin-top: 20px">
+                    <input type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
+                    <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('myAddModal').style.display = 'none'">
+                </div>
+            </div>
+        </form>
+    </div>
+
     <script>
+
+        function addProduct(pId, name, userId) {
+            $("#projectId").val(pId);
+            $("#projectName").val(name);
+            $("#hiddenUsername").val(userId);
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+
+            CKEDITOR.replace('editor1');
+
+            document.getElementById('myAddModal').style.display = 'block';
+        }
 
         function setAdvStatus(pbId, status) {
 

@@ -205,13 +205,13 @@ class ReportController extends Controller {
         return json_encode(["status" => "ok", "result" => $output]);
     }
 
-    public function unDoneProjectsReport($gradeId = -1) {
+    public function unDoneProjectsReport($gradeId = -1, $err = -1) {
 
         if($gradeId == -1)
             return view('report.usersReport', ['grades' => Grade::all(),
                 "path" => route("unDoneProjectsReport")]);
 
-        $projects = DB::select("select p.physical, p.title, concat(u.first_name, ' ', u.last_name) as name, " .
+        $projects = DB::select("select p.physical, p.id as projectId, p.title, concat(u.first_name, ' ', u.last_name) as name, u.id as user_id, " .
             "pb.id, pb.created_at, pb.adv, pb.file, pb.adv_status, pb.file_status " .
             "from project_buyers pb, project p, users u where p.id = pb.project_id" .
             " and pb.user_id = u.id and pb.status = false and u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 order by pb.created_at desc"
@@ -249,7 +249,7 @@ class ReportController extends Controller {
         }
 
         return view("report.unDoneProjectsReport", ["projects" => $projects,
-            'gradeId' => $gradeId, 'allTitles' => $allTitles]);
+            'gradeId' => $gradeId, 'allTitles' => $allTitles, 'err' => $err]);
     }
 
     public function unDoneProjectsReportExcel($gradeId) {

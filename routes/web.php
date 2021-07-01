@@ -299,7 +299,7 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
     Route::get('products/{err?}', ['as' => 'products', 'uses' => 'OperatorController@products']);
 
-    Route::post('addProduct', ['as' => 'addProduct', 'uses' => 'OperatorController@addProduct']);
+    Route::post('addProduct/{gradeId?}', ['as' => 'addProduct', 'uses' => 'OperatorController@addProduct']);
 
 
     Route::get('citizensReport', ['as' => 'citizensReport', 'uses' => 'OperatorController@citizensReport']);
@@ -325,7 +325,7 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
     Route::get("advReport/{gradeId?}", ["as" => "advReport", "uses" => "ReportController@advReport"]);
 
-    Route::get("unDoneProjectsReport/{gradeId?}/{pre?}", ["as" => "unDoneProjectsReport", "uses" => "ReportController@unDoneProjectsReport"]);
+    Route::get("unDoneProjectsReport/{gradeId?}/{err?}", ["as" => "unDoneProjectsReport", "uses" => "ReportController@unDoneProjectsReport"]);
 
     Route::get("unDoneProjectsReportExcel/{gradeId}", ["as" => "unDoneProjectsReportExcel", "uses" => "ReportController@unDoneProjectsReportExcel"]);
 

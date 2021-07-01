@@ -395,7 +395,8 @@
 
                     $("#hiddenUsername").val(username);
                     $("#projects").empty().append(newElem);
-                    document.getElementById('preModal').style.display = 'none'
+
+                    document.getElementById('preModal').style.display = 'none';
                     document.getElementById('myAddModal').style.display = 'block';
                 }
             });
