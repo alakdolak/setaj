@@ -879,17 +879,31 @@ class HomeController extends Controller {
 
             $tmp = DB::select("select count(*) as count_, min(price) as minPrice, min(star) as minStar from product where " .
                 "id not in (select product_id from transactions where 1) and grade_id = " .
-                $grade . " and project_id = " . $product->id . " and hide = false group by(project_id)")[0];
+                $grade . " and project_id = " . $product->id . " and hide = false group by(project_id)");
 
-            $reminder = $tmp->count_;
             $product->tagStr = $str;
-            $product->adv_status = false;
-            $product->star = $tmp->minStar;
-            $product->price = $tmp->minPrice;
 
+            if($tmp != null && count($tmp) > 0) {
+                $tmp = $tmp[0];
+                $reminder = $tmp->count_;
+                $product->star = $tmp->minStar;
+                $product->price = $tmp->minPrice;
+                $product->canBuy = (Auth::check() && $reminder > 0) ? true : false;
+                $product->owner = "ظرفیت باقی مانده: " . $reminder;
+            }
+            else {
+
+                $tmp = DB::select("select max(price) as maxPrice, max(star) as maxStar from product where " .
+                    "grade_id = " . $grade . " and project_id = " . $product->id . " and hide = false group by(project_id)")[0];
+
+                $product->star = $tmp->maxStar;
+                $product->price = $tmp->maxPrice;
+                $product->canBuy = false;
+                $product->owner = "ظرفیت باقی مانده: 0";
+            }
+
+            $product->adv_status = false;
             $product->physical = 0;
-            $product->canBuy = (Auth::check() && $reminder > 0) ? true : false;
-            $product->owner = "ظرفیت باقی مانده: " . $reminder;
         }
 
         $visualProducts = DB::select('select pb.adv_status, ' .
@@ -997,7 +1011,12 @@ class HomeController extends Controller {
 
         $reminder = DB::select("select count(*) as count_ from product where " .
             "id not in (select product_id from transactions where 1) and grade_id = " .
-            $gradeId . " and project_id = " . $projectId . " and hide = false group by(project_id)")[0]->count_;
+            $gradeId . " and project_id = " . $projectId . " and hide = false group by(project_id)");
+
+        if($reminder != null && count($reminder) > 0)
+            $reminder = $reminder[0]->count_;
+        else
+            $reminder = 0;
 
         $canBuy = (Auth::check()) ? ($reminder > 0) : false;
         $myReminder = 0;
@@ -1030,7 +1049,7 @@ class HomeController extends Controller {
                 return "nok4";
 
             $product = DB::select(
-                ' select id, price, star, user_id from product where physical = 0 and project_id = ' . $projectId .
+                ' select * from product where physical = 0 and project_id = ' . $projectId .
                 ' and grade_id = ' . $gradeId . ' and hide = false ' .
                 'and id not in (select product_id from transactions) order by price asc limit 0, 1');
 
@@ -1038,6 +1057,17 @@ class HomeController extends Controller {
                 return "nok2";
 
             $product = $product[0];
+
+            $today = getToday();
+            $date = $today["date"];
+            $time = (int)$today["time"];
+
+            if(
+                ($product->start_date_buy == $date && $product->start_time_buy > $time) ||
+                $product->start_date_buy > $date
+            )
+                return "nok1";
+
 
             if($product->price > $user->money)
                 return "nok3";
@@ -1049,27 +1079,12 @@ class HomeController extends Controller {
             $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(t.created_at, interval 1 day) and p.id = t.product_id and t.user_id = " . $user->id);
 
             if(count($buys) > 0) {
-
-                $time = getToday()["time"];
-                if($time[0] == "0") {
-                    $time = (int)substr($time, 1);
-                    if (
-                        ($time >= 1200 && $time < 1205) ||
-                        ($time >= 1205 && $time <= 1210 && count($buys) > 1)
-                    )
-                        return "nok8";
-                }
-
-//                $allow = false;
-//                foreach ($buys as $buy) {
-//                    if($buy->physical) {
-//                        $allow = true;
-//                        break;
-//                    }
-//                }
-//
-//                if(!$allow)
-//                    return "nok9";
+                $time = (int)$time;
+                if (
+                    ($time >= 1200 && $time < 1205) ||
+                    ($time >= 1205 && $time <= 1210 && count($buys) > 1)
+                )
+                    return "nok8";
             }
 
             try {
@@ -1368,14 +1383,13 @@ class HomeController extends Controller {
             if(count($openProjects) > 0) {
 
                 $time = getToday()["time"];
-                if($time[0] == "0") {
-                    $time = (int)substr($time, 1);
-                    if (
-                        ($time >= 1000 && $time < 1005) ||
-                        ($time >= 1005 && $time <= 1010 && count($openProjects) > 1)
-                    )
-                        return "nok8";
-                }
+
+                $time = (int)$time;
+                if (
+                    ($time >= 1000 && $time < 1005) ||
+                    ($time >= 1005 && $time <= 1010 && count($openProjects) > 1)
+                )
+                    return "nok8";
 
                 if($project->physical) {
 
@@ -1419,6 +1433,16 @@ class HomeController extends Controller {
             if($product == null || $product->hide || !$product->physical)
                 return "nok1";
 
+            $today = getToday();
+            $date = $today["date"];
+            $time = (int)$today["time"];
+
+            if(
+                ($product->start_date_buy == $date && $product->start_time_buy > $time) ||
+                $product->start_date_buy > $date
+            )
+                return "nok1";
+
             $user = Auth::user();
             $product->grade_id = User::whereId($product->user_id)->grade_id;
 
@@ -1439,15 +1463,12 @@ class HomeController extends Controller {
 
             if(count($buys) > 0) {
 
-                $time = getToday()["time"];
-                if($time[0] == "0") {
-                    $time = (int)substr($time, 1);
-                    if (
-                        ($time >= 1200 && $time < 1205) ||
-                        ($time >= 1205 && $time <= 1210 && count($buys) > 1)
-                    )
-                        return "nok8";
-                }
+                $time = (int)$time;
+                if (
+                    ($time >= 1200 && $time < 1205) ||
+                    ($time >= 1205 && $time <= 1210 && count($buys) > 1)
+                )
+                    return "nok8";
 
                 $allow = false;
 
@@ -1485,8 +1506,7 @@ class HomeController extends Controller {
             catch (\Exception $x) {}
         }
 
-        echo "nok5";
-
+        return "nok5";
     }
 
     public function buyService() {
@@ -1496,10 +1516,18 @@ class HomeController extends Controller {
             $service = Service::whereId(makeValidInput($_POST["id"]));
             $user = Auth::user();
 
-            if($service == null || $service->hide) {
-                echo "nok1";
-                return;
-            }
+            if($service == null || $service->hide)
+                return "nok1";
+
+            $today = getToday();
+            $date = $today["date"];
+            $time = (int)$today["time"];
+
+            if(
+                ($service->start_buy == $date && $service->buy_time > $time) ||
+                $service->start_buy > $date
+            )
+                return "nok1";
 
             $grades = ServiceGrade::whereServiceId($service->id)->get();
             $allow = false;
@@ -1511,25 +1539,17 @@ class HomeController extends Controller {
                 }
             }
 
-            if(!$allow) {
-                echo "nok1";
-                return;
-            }
+            if(!$allow)
+                return "nok1";
 
-            if(ServiceBuyer::whereUserId($user->id)->whereStatus(false)->count() >= ConfigModel::first()->service_limit) {
-                echo "nok7";
-                return;
-            }
+            if(ServiceBuyer::whereUserId($user->id)->whereStatus(false)->count() >= ConfigModel::first()->service_limit)
+                return "nok7";
 
-            if(ServiceBuyer::whereServiceId($service->id)->count() == $service->capacity) {
-                echo "nok2";
-                return;
-            }
+            if(ServiceBuyer::whereServiceId($service->id)->count() == $service->capacity)
+                return "nok2";
 
-            if(ServiceBuyer::whereServiceId($service->id)->whereUserId($user->id)->count() > 0) {
-                echo "nok3";
-                return;
-            }
+            if(ServiceBuyer::whereServiceId($service->id)->whereUserId($user->id)->count() > 0)
+                return "nok3";
 
             try {
                 $tmp = new ServiceBuyer();
@@ -1537,16 +1557,14 @@ class HomeController extends Controller {
                 $tmp->service_id = $service->id;
                 $tmp->save();
 
-                echo "ok";
-                return;
+                return "ok";
             }
             catch (\Exception $x) {
                 dd($x);
             }
         }
 
-        echo "nok5";
-
+        return "nok5";
     }
 
     public function reloadMsgs() {

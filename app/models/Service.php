@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $start_buy
  * @property string $buy_time
  * @property string $description
+ * @property boolean $physical
  * @method static \Illuminate\Database\Query\Builder|\App\models\Service whereHide($value)
  */
 

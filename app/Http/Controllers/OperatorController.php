@@ -142,6 +142,9 @@ class OperatorController extends Controller {
             $service->start_show = convertStringToDate($service->start_show);
             $service->start_time = convertStringToTime($service->start_time);
 
+            $service->start_buy = convertStringToDate($service->start_buy);
+            $service->buy_time = convertStringToTime($service->buy_time);
+
             $service->hide = (!$service->hide) ? "آشکار" : "مخفی";
             $service->date = MiladyToShamsi('', explode('-', explode(' ', $service->created_at)[0]));
         }
@@ -566,6 +569,8 @@ class OperatorController extends Controller {
             $service->description = $_POST["description"];
             $service->star = makeValidInput($_POST["star"]);
             $service->capacity = makeValidInput($_POST["capacity"]);
+
+            $service->physical = isset($_POST["physical"]);
 
             $service->buy_time = convertTimeToString(makeValidInput($_POST["buy_time"]));
             $service->start_buy = convertDateToString(makeValidInput($_POST["start_buy"]));
@@ -1642,6 +1647,9 @@ class OperatorController extends Controller {
         $service->start_show = convertStringToDate($service->start_show);
         $service->start_time = convertStringToTime($service->start_time);
 
+        $service->start_buy = convertStringToDate($service->start_buy);
+        $service->buy_time = convertStringToTime($service->buy_time);
+
         return view('operator.editService', ['service' => $service]);
     }
 
@@ -1649,6 +1657,7 @@ class OperatorController extends Controller {
 
         if(isset($_POST["name"]) && isset($_POST["description"])
             && isset($_POST["start_show"]) && isset($_POST["start_time"])
+            && isset($_POST["start_buy"]) && isset($_POST["buy_time"])
             && isset($_POST["star"]) && isset($_POST["capacity"])
         ) {
 
@@ -1661,8 +1670,14 @@ class OperatorController extends Controller {
             $service->description = $_POST["description"];
             $service->star = makeValidInput($_POST["star"]);
             $service->capacity = makeValidInput($_POST["capacity"]);
+
+            $service->physical = isset($_POST["physical"]);
+
             $service->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
             $service->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
+
+            $service->start_buy = convertDateToString(makeValidInput($_POST["start_buy"]));
+            $service->buy_time = convertTimeToString(makeValidInput($_POST["buy_time"]));
 
             try {
 

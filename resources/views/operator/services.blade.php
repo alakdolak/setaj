@@ -171,9 +171,15 @@
                             <tr>
                                 <th scope="col">ردیف</th>
                                 <th scope="col">نام</th>
+                                <th scope="col">عینی/غیرعینی</th>
                                 <th scope="col">پایه تحصیلی</th>
-                                <th scope="col">تاریخ شروع خدمت</th>
-                                <th scope="col">زمان شروع خدمت</th>
+
+                                <th scope="col">تاریخ شروع نمایش خدمت</th>
+                                <th scope="col">زمان شروع نمایش خدمت</th>
+
+                                <th scope="col">تاریخ شروع خرید خدمت</th>
+                                <th scope="col">زمان شروع خرید خدمت</th>
+
                                 <th scope="col">موجودی</th>
                                 <td scope="col">تصویر</td>
                                 <th scope="col" style="width:450px !important">توضیح</th>
@@ -197,6 +203,8 @@
                                     <td>{{$i}}</td>
                                     <td>{{$itr->title}}</td>
 
+                                    <td>{{($itr->physical) ? "عینی" : "غیرعینی"}}</td>
+
                                     <td>
                                         @foreach($itr->grades as $grade)
                                             <button id="grade_{{$grade->id}}" onclick="removeGrade('{{$grade->id}}')" style="margin: 4px" class="btn btn-info">
@@ -211,6 +219,9 @@
 
                                     <td>{{$itr->start_show}}</td>
                                     <td>{{$itr->start_time}}</td>
+
+                                    <td>{{$itr->start_buy}}</td>
+                                    <td>{{$itr->buy_time}}</td>
 
                                     <td>{{$itr->capacity}}</td>
                                     <td><img width="100px" src="{{$itr->pic}}"></td>
@@ -259,6 +270,9 @@
 
                     <h5 style="padding-right: 5%;">موجودی</h5>
                     <input type="number" name="capacity" required min="1">
+
+                    <h5 style="padding-right: 5%;">آیا پروژه عینی است؟</h5>
+                    <input type="checkbox" name="physical" checked>
 
                     <h5 style="padding-right: 5%;">پایه تحصیلی</h5>
                     <select name="gradeId" required>
