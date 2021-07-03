@@ -1470,17 +1470,22 @@ class HomeController extends Controller {
                 )
                     return "nok8";
 
-                $allow = false;
+                $countNum = DB::select("select count(*) as count_num from product where physical = 0 and id not in"
+                    . " (select product_id from transactions where 1)")[0]->count_num;
 
-                foreach ($buys as $buy) {
-                    if(!$buy->physical) {
-                        $allow = true;
-                        break;
+                if($countNum > 0) {
+
+                    $allow = false;
+                    foreach ($buys as $buy) {
+                        if (!$buy->physical) {
+                            $allow = true;
+                            break;
+                        }
                     }
-                }
 
-                if(!$allow)
-                    return "nok9";
+                    if (!$allow)
+                        return "nok9";
+                }
             }
 
             try {

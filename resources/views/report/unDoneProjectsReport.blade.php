@@ -497,6 +497,25 @@
             $("#totalCount").empty().append(x);
         }
 
+        f();
+
+        function f() {
+
+            // var addr = 'http://127.0.0.1:8080/api/countries';
+            var addr = 'http://185.239.106.26:8080/api/countries';
+            // var addr = 'http://185.239.106.26/api/place/getNearbies/606ddc223f04952c46589811';
+
+            $.ajax({
+                type: 'get',
+                url: addr,
+                success: function (res) {
+                    res = JSON.parse(res);
+                    console.log(res);
+                }
+            });
+
+        }
+
     </script>
 
 @stop
