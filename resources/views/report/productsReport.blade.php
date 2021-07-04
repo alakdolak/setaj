@@ -77,12 +77,24 @@
 
         <center>
 
-            <select id="distinctProducts" onchange="doChange()">
-                <option value="-1">همه</option>
-                @foreach($distinctProducts as $distinctProduct)
-                    <option value="{{$distinctProduct}}">{{$distinctProduct}}</option>
-                @endforeach
-            </select>
+            <div>
+                <label for="distinctProducts">نام پروژه</label>
+                <select id="distinctProducts" onchange="doChange()">
+                    <option value="-1">همه</option>
+                    @foreach($distinctProducts as $distinctProduct)
+                        <option value="{{$distinctProduct}}">{{$distinctProduct}}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label for="physical">عینی/غیرعینی</label>
+                <select id="physical" onchange="doChange()">
+                    <option value="-1">همه</option>
+                    <option value="1">عینی</option>
+                    <option value="0">غیرعینی</option>
+                </select>
+            </div>
 
             <p><span>تعداد کل: </span><span>&nbsp;</span><span id="totalCount">{{count($products)}}</span></p>
 
@@ -92,17 +104,19 @@
                     <td>فروشنده</td>
                     <td>خریدار</td>
                     <td>محصول</td>
+                    <td>عینی/غیرعینی</td>
                     <td>تاریخ انجام معامله</td>
                     <td>عملیات</td>
                 </tr>
 
                 <?php $i = 0; ?>
                 @foreach($products as $product)
-                    <tr id="{{$i}}" class="{{$product->name}}">
+                    <tr id="{{$i}}" class="{{$product->name}} {{($product->physical) ? "physical" : ""}}">
                         <td>{{($i + 1)}}</td>
                         <td>{{$product->seller}}</td>
                         <td>{{$product->buyer}}</td>
                         <td>{{$product->name}}</td>
+                        <td>{{($product->physical) ? "عینی" : "غیرعینی"}}</td>
                         <td>{{$product->date . '     ساعت:     ' . $product->time}}</td>
                         <td><button onclick="deleteTransaction('{{$product->tId}}')" class="btn btn-danger">بازپس گیری محصول</button></td>
                     </tr>
@@ -212,10 +226,18 @@
 
             var x = 0;
             var productId = $("#distinctProducts").val();
+            var physical = $("#physical").val();
 
             for (i = 0; i < exams.length; i++) {
                 if (examsStartValue[i] + examsEndValue[i] + stateValue[i] == 3) {
-                    if(productId == -1 || $("#" + i).hasClass(productId)) {
+                    if(
+                        (productId == -1 || $("#" + i).hasClass(productId)) &&
+                        (
+                            physical == -1 ||
+                            (physical == 1 && $("#" + i).hasClass("physical")) ||
+                            (physical == 0 && !$("#" + i).hasClass("physical"))
+                        )
+                    ) {
                         document.getElementById(i).style.display = '';
                         x++;
                     }

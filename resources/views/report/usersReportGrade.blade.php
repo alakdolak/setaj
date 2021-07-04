@@ -28,9 +28,13 @@
                 <a href="{{route('usersReportExcel', ['gradeId' => $gradeId])}}" download>دانلود فایل اکسل</a>
             </h3>
 
-            <button onclick="addItem()" class="btn btn-success">افزودن کاربر</button>
-            <button onclick="cancelAllSuperActivation()" class="btn btn-success">لغو کردن دسترسی فراتر همه دانش آموزان</button>
-            <button onclick="onAllSuperActivation()" class="btn btn-success">روشن کردن دسترسی فراتر همه دانش آموزان</button>
+            <?php $isAdmin = \Illuminate\Support\Facades\Auth::user()->level == getValueInfo("adminLevel"); ?>
+
+            @if($isAdmin)
+                <button onclick="addItem()" class="btn btn-success">افزودن کاربر</button>
+            @endif
+{{--            <button onclick="cancelAllSuperActivation()" class="btn btn-success">لغو کردن دسترسی فراتر همه دانش آموزان</button>--}}
+{{--            <button onclick="onAllSuperActivation()" class="btn btn-success">روشن کردن دسترسی فراتر همه دانش آموزان</button>--}}
 
             <table style="margin-top: 20px">
                 <tr>
@@ -59,29 +63,32 @@
                         <td>{{$user->money}}</td>
                         <td>{{$user->total}}</td>
                         <td>
-                            @if($user->status)
-                                <button id="toggle_{{$user->id}}" onclick="toggleStatus('{{$user->id}}')" class="btn btn-danger col-xs-6">غیرفعال کردن کاربر</button>
-                            @else
-                                <button id="toggle_{{$user->id}}" onclick="toggleStatus('{{$user->id}}')" class="btn btn-success col-xs-6">فعال کردن کاربر</button>
+
+                            @if($isAdmin)
+                                @if($user->status)
+                                    <button id="toggle_{{$user->id}}" onclick="toggleStatus('{{$user->id}}')" class="btn btn-danger col-xs-6">غیرفعال کردن کاربر</button>
+                                @else
+                                    <button id="toggle_{{$user->id}}" onclick="toggleStatus('{{$user->id}}')" class="btn btn-success col-xs-6">فعال کردن کاربر</button>
+                                @endif
                             @endif
 
-
-                            @if($user->super_active)
-                                <button id="toggle_super_{{$user->id}}" onclick="toggleSuperStatus('{{$user->id}}')" class="btn btn-danger col-xs-6">غیرفعال کردن دسترسی فراتر کاربر</button>
-                            @else
-                                <button id="toggle_super_{{$user->id}}" onclick="toggleSuperStatus('{{$user->id}}')" class="btn btn-success col-xs-6">فعال کردن دسترسی فراتر کاربر</button>
-                            @endif
+{{--                            @if($user->super_active)--}}
+{{--                                <button id="toggle_super_{{$user->id}}" onclick="toggleSuperStatus('{{$user->id}}')" class="btn btn-danger col-xs-6">غیرفعال کردن دسترسی فراتر کاربر</button>--}}
+{{--                            @else--}}
+{{--                                <button id="toggle_super_{{$user->id}}" onclick="toggleSuperStatus('{{$user->id}}')" class="btn btn-success col-xs-6">فعال کردن دسترسی فراتر کاربر</button>--}}
+{{--                            @endif--}}
 
                             <button onclick="editMoney('{{$user->id}}', '{{$user->money}}', '{{$user->stars}}')" class="btn btn-info col-xs-6">ویرایش سکه/ستاره کاربر</button>
-                            {{--                            <button onclick="document.location.href = '{{route('userBookmarks', ['uId' => $user->id])}}'" class="btn btn-info col-xs-6">اقلام مورد علاقه کاربر</button>--}}
 
                             <button onclick="document.location.href = '{{route('userBuys', ['uId' => $user->id])}}'" class="btn btn-basic col-xs-6">اقلام خریداری شده کاربر</button>
-                            <button onclick="document.location.href = '{{route('userServices', ['uId' => $user->id])}}'" style="background-color: #8940b5; color: white;" class="btn col-xs-6">خدمات انجام شده</button>
+                            <button onclick="document.location.href = '{{route('userServices', ['uId' => $user->id])}}'" style="background-color: #8940b5; color: white;" class="btn col-xs-6">پروژه های همیاری انجام شده</button>
                             <button onclick="document.location.href = '{{route('userProjects', ['uId' => $user->id])}}'" class="btn btn-warning col-xs-6">پروژه ها</button>
+                            <button onclick="document.location.href = '{{route('userProjects', ['uId' => $user->id])}}'" class="btn btn-warning col-xs-6">پروژه های شهروندی</button>
 
 
                             <button data-toggle="modal" data-target="#assignProjectModal" onclick="chooseSelectedUser('{{$user->id}}')" style="background-color: #0b4d3f; color: white;" class="btn col-xs-6">برداشتن پروژه برای کاربر</button>
-                            <button data-toggle="modal" data-target="#assignServiceModal" onclick="chooseSelectedUser('{{$user->id}}')" style="background-color: #1d7d86; color: white;" class="btn col-xs-6">برداشتن خدمت برای کاربر</button>
+                            <button data-toggle="modal" data-target="#assignServiceModal" onclick="chooseSelectedUser('{{$user->id}}')" style="background-color: #1d7d86; color: white;" class="btn col-xs-6">برداشتن پروژه همیاری برای کاربر</button>
+                            <button data-toggle="modal" data-target="#assignCitizenModal" onclick="chooseSelectedUser('{{$user->id}}')" style="background-color: #1d7d86; color: white;" class="btn col-xs-6">برداشتن پروژه شهروندی برای کاربر</button>
                             <button data-toggle="modal" data-target="#assignProductModal" onclick="chooseSelectedUser('{{$user->id}}')" style="background-color: #862c24; color: white;" class="btn btn-warning col-xs-6">خرید محصول برای کاربر</button>
 
                         </td>
@@ -149,6 +156,28 @@
 
     </div>
 
+    <div id="assignCitizenModal" class="modal">
+
+        <div class="modal-content">
+
+            <center>
+
+                <h5 style="padding-right: 5%;">پروژه مورد نظر</h5>
+                <select id="citizens">
+                    @foreach($citizens as $project)
+                        <option value="{{$project->id}}">{{$project->title}}</option>
+                    @endforeach
+                </select>
+            </center>
+
+            <div style="margin-top: 20px">
+                <input onclick="assignCitizen()" type="submit" value="تایید" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
+                <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" data-dismiss="modal">
+            </div>
+        </div>
+
+    </div>
+
     <div id="assignProductModal" class="modal">
 
         <div class="modal-content">
@@ -182,28 +211,6 @@
 
             <div style="margin-top: 20px">
                 <input onclick="assignService()" type="submit" value="تایید" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
-                <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" data-dismiss="modal">
-            </div>
-        </div>
-
-    </div>
-
-    <div id="assignServiceModal" class="modal">
-
-        <div class="modal-content">
-
-            <center>
-
-                <h5 style="padding-right: 5%;">پروژه مورد نظر</h5>
-                <select id="projects">
-                    @foreach($projects as $project)
-                        <option value="{{$project->id}}">{{$project->title}}</option>
-                    @endforeach
-                </select>
-            </center>
-
-            <div style="margin-top: 20px">
-                <input onclick="assignProject()" type="submit" value="تایید" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
                 <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" data-dismiss="modal">
             </div>
         </div>
@@ -292,6 +299,39 @@
                 url: '{{route('assignProjectToUser')}}',
                 data: {
                     projectId: $("#projects").val(),
+                    userId: userId
+                },
+                success: function (res) {
+                    if(res === "ok")
+                        alert("عملیات مورد نظر باموفقیت انجام شد.");
+                    else if(res === "nok1")
+                        alert("این پروژه در مقطع تحصیلی دانش آموز مورد نظر نیست.");
+                    else if(res === "nok2")
+                        alert("دانش آموز مورد نظر قبلا این پروژه را برداشته است.");
+                    else if(res === "nok3")
+                        alert("عملیات مورد نظر مجاز نیست.");
+                    else if(res === "nok4")
+                        alert("سکه های فرد مورد نظر برای این کار کافی نیست.");
+                    else if(res === "nok5")
+                        alert("ظرفیت پروژه مورد نظر به اتمام رسیده است.");
+                }
+            });
+
+        }
+
+        function assignCitizen() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'post',
+                url: '{{route('assignCitizenToUser')}}',
+                data: {
+                    projectId: $("#citizens").val(),
                     userId: userId
                 },
                 success: function (res) {

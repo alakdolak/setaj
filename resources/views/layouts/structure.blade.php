@@ -276,16 +276,16 @@
                             </a>
                         </li>
 
-
-                        <li class="nav-item  ">
-                            <a href="{{route('chats')}}" class="nav-link nav-toggle">
-                                <i class="icon-diamond"></i>
-                                <span class="title">پیام ها</span>
-                                <span class="arrow"></span>
-                            </a>
-                        </li>
-
                     @endif
+
+
+                    <li class="nav-item  ">
+                        <a href="{{route('chats')}}" class="nav-link nav-toggle">
+                            <i class="icon-diamond"></i>
+                            <span class="title">پیام ها</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
 
                     <li class="nav-item  ">
                         <a href="{{route('products')}}" class="nav-link nav-toggle">

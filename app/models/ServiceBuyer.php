@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $id
  * @property integer $user_id
  * @property integer $star
+ * @property string $file
  * @property integer $service_id
+ * @property integer $file_status
  * @property boolean $status
  * @method static \Illuminate\Database\Query\Builder|\App\models\ServiceBuyer whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\ServiceBuyer whereServiceId($value)

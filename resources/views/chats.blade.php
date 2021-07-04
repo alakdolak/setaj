@@ -30,9 +30,19 @@
         @else
 
             @foreach($chats as $chat)
-                <div class="col-xs-4">
-                    <p onclick="document.location.href = '{{route('msgs', ['chatId' => $chat->id])}}'" class="gradeBox">{{$chat->name}}<span style="font-size: 0.8em; color: red; margin-right: 7px">{{$chat->countNum}}</span></p>
-                </div>
+                <center onclick="document.location.href = '{{route('msgs', ['chatId' => $chat->id])}}'" class="col-xs-4 gradeBox">
+                    <p>
+                        <span>{{$chat->name}}</span>
+                        <span style="font-size: 1.2em; color: red; margin-right: 7px">
+                            <span>پیام های دیده نشده: </span>
+                            <span>{{$chat->unseen}}</span>
+                        </span>
+                    </p>
+                    <p>
+                        <span>تعداد کل پیام ها:</span>
+                        <span>{{$chat->total}}</span>
+                    </p>
+                </center>
             @endforeach
 
         @endif

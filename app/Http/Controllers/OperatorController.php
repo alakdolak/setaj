@@ -51,6 +51,12 @@ class OperatorController extends Controller {
 
                 try {
 
+                    $s = Service::whereId($buyer->service_id);
+                    if(!$s->physical &&
+                        ($buyer->file == null || $buyer->file_status != 1)
+                    )
+                        return "nok2";
+
                     $user = User::whereId($buyer->user_id);
                     $star = makeValidInput($_POST["star"]);
 
@@ -60,15 +66,14 @@ class OperatorController extends Controller {
                         $buyer->save();
                         $user->stars += $star;
                         $user->save();
-                        echo "ok";
-                        return;
+                        return "ok";
                     }
                 }
                 catch (\Exception $x) {}
             }
         }
 
-        echo "nok";
+        return "nok";
     }
 
     public function setFileStatus() {
@@ -92,6 +97,34 @@ class OperatorController extends Controller {
             }
 
             $pb->save();
+            return "ok";
+        }
+
+        return "nok";
+    }
+
+    public function setServiceFileStatus() {
+
+        if(isset($_POST["sbId"]) && isset($_POST["status"])) {
+
+            $sb = ServiceBuyer::whereId(makeValidInput($_POST["sbId"]));
+            if($sb == null)
+                return "nok";
+
+            $status = makeValidInput($_POST["status"]);
+            if($status != -1 && $status != 1)
+                return "nok";
+
+            $sb->file_status = $status;
+            if($status == -1) {
+
+                if(file_exists(__DIR__ . '/../../../public/storage/service_contents/' . $sb->file))
+                    unlink(__DIR__ . '/../../../public/storage/service_contents/' . $sb->file);
+
+                $sb->file = null;
+            }
+
+            $sb->save();
             return "ok";
         }
 
@@ -494,12 +527,40 @@ class OperatorController extends Controller {
 
 
 
-    public function chats() {
+    public function chats($gradeId = -1) {
 
-        DB::delete("delete from chat where created_at < DATE_SUB(NOW(), INTERVAL 6 HOUR)");
+        if($gradeId == -1) {
 
-        $chats = DB::select("select m.chat_id as id, concat(u.first_name, ' ', u.last_name) as name, count(*) as countNum from chat c, users u, msg m where "
-            . " c.created_at > DATE_SUB(NOW(), INTERVAL 6 HOUR) and c.user_id = u.id and c.id = chat_id group by(m.chat_id) having countNum > 0");
+            $chats = DB::select("select u.grade_id, count(*) as countNum from chat c, users u where "
+                . " c.user_id = u.id group by(u.grade_id) having countNum > 0");
+
+            $grades = Grade::all();
+            foreach ($grades as $grade) {
+                $add = false;
+                foreach ($chats as $chat) {
+                    if($grade->id == $chat->grade_id) {
+                        $grade->chats = $chat->countNum;
+                        $add = true;
+                        break;
+                    }
+                }
+
+                if(!$add)
+                    $grade->chats = 0;
+            }
+
+            return view('report.preChat', ['grades' => $grades]);
+        }
+
+//        DB::delete("delete from chat where created_at < DATE_SUB(NOW(), INTERVAL 6 HOUR)");
+
+//        $chats = DB::select("select m.chat_id as id, concat(u.first_name, ' ', u.last_name) as name, count(*) as countNum from chat c, users u, msg m where "
+//            . " c.created_at > DATE_SUB(NOW(), INTERVAL 6 HOUR) and c.user_id = u.id and c.id = chat_id group by(m.chat_id) having countNum > 0");
+
+        $chats = DB::select("select c.id, (select count(*) from msg where chat_id = c.id and seen = false) as unseen, " .
+            "(select count(*) from msg where chat_id = c.id) as total," .
+            "concat(u.first_name, ' ', u.last_name) as name from chat c, users u where "
+            . " c.user_id = u.id and u.grade_id = " . $gradeId);
 
         return view("chats", ["chats" => $chats]);
     }
@@ -2114,6 +2175,55 @@ class OperatorController extends Controller {
         }
 
         echo "nok3";
+    }
+
+    public function assignCitizenToUser() {
+
+        if(isset($_POST["projectId"]) && isset($_POST["userId"])) {
+
+            $pId = makeValidInput($_POST["projectId"]);
+            $uId = makeValidInput($_POST["userId"]);
+
+            if(CitizenBuyers::whereUserId($uId)->whereProjectId($pId)->count() > 0)
+                return "nok2";
+
+            $project = Citizen::whereId($pId);
+
+            if($project == null)
+                return "nok3";
+
+            $user = User::whereId($uId);
+
+            if($user == null)
+                return "nok3";
+
+            $grades = CitizenGrade::whereProjectId($project->id)->get();
+            $allow = false;
+
+            foreach ($grades as $itr) {
+                if ($itr->grade_id == $user->grade_id) {
+                    $allow = true;
+                    break;
+                }
+            }
+
+            if(!$allow)
+                return "nok1";
+
+            try {
+                $tmp = new CitizenBuyers();
+                $tmp->user_id = $user->id;
+                $tmp->project_id = $project->id;
+                $tmp->point = $project->point;
+                $tmp->save();
+
+                return "ok";
+            }
+            catch (\Exception $x) {}
+
+        }
+
+        return "nok3";
     }
 
     public function assignServiceToUser() {

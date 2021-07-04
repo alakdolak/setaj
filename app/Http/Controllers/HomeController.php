@@ -69,7 +69,8 @@ class HomeController extends Controller {
 
         $uId = Auth::user()->id;
 
-        $myBuys = DB::select("select p.id, t.status, p.name, concat(u.first_name, ' ', u.last_name) as seller, " .
+        $myBuys = DB::select("select p.id, p.grade_id, p.physical, ".
+            "t.status, p.name, concat(u.first_name, ' ', u.last_name) as seller, " .
             "pb.project_id, p.price, p.star, t.follow_code, t.created_at from transactions t, product p, project_buyers pb, users u where " .
             " u.id = pb.user_id and pb.project_id = p.project_id and p.user_id = u.id and " .
             " t.product_id = p.id and t.user_id = " . $uId);
@@ -396,29 +397,16 @@ class HomeController extends Controller {
 
     public function showService($id) {
 
+        $today = getToday();
+        $date = $today["date"];
+        $time = (int)$today["time"];
+
         $service = Service::whereId($id);
 
-        if($service == null || $service->hide) {
+        if($service == null || $service->hide  || $service->start_show > $date ||
+            ($service->start_show == $date && $service->start_time > $time)) {
             return Redirect::route('home');
         }
-
-//        $grade = Auth::user()->grade_id;
-//
-//        if(Auth::user()->level == getValueInfo('studentLevel')) {
-//
-//            $grades = ServiceGrade::whereServiceId($service->id)->get();
-//            $allow = false;
-//
-//            foreach ($grades as $itr) {
-//                if ($itr->grade_id == $grade) {
-//                    $allow = true;
-//                    break;
-//                }
-//            }
-//
-//            if(!$allow)
-//                return Redirect::route('home');
-//        }
 
         $tmpPics = ServicePic::whereServiceId($service->id)->get();
         $pics = [];
@@ -431,7 +419,6 @@ class HomeController extends Controller {
         }
 
         $service->pics = $pics;
-
 
         $tmpPics = ServiceAttach::whereServiceId($service->id)->get();
         $pics = [];
@@ -454,20 +441,41 @@ class HomeController extends Controller {
         $service->attaches = $pics;
 
         $canBuy = (Auth::check()) ? true : false;
+        $canAddFile = false;
+        $fileStatus = -2;
+        $sbId = -1;
+        $content = null;
+
         if($canBuy) {
-            $oldBuy = ServiceBuyer::whereServiceId($id)->whereUserId(Auth::user()->id)->count();
+
+            $sb = ServiceBuyer::whereServiceId($id)->whereUserId(Auth::user()->id)->first();
+
+            if ($sb != null && !$sb->status && !$service->physical && $sb->file == null) {
+                $canAddFile = true;
+                $sbId = $sb->id;
+            }
+
+            if (!$canAddFile && $sb != null && !$service->physical && $sb->file != null &&
+                file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $sb->file))
+                $content = URL::asset("storage/service_contents/" . $sb->file);
+
+            $oldBuy = ($sb != null);
 
             if (
-                ($service->capacity != -1 && ServiceBuyer::whereServiceId($id)->count() == $service->capacity) ||
-                $oldBuy > 0
+                $sb != null ||
+                ($service->capacity != -1 && ServiceBuyer::whereServiceId($id)->count() == $service->capacity)
             )
                 $canBuy = false;
+
+            if ((!$canAddFile && $sb->file != null) || $sb->file_status != 0)
+                $fileStatus = $sb->file_status;
+
         }
         else
             $oldBuy = false;
 
-        return view('showService', ['canBuy' => $canBuy,
-            'service' => $service, 'oldBuy' => $oldBuy]);
+        return view('showService', ['canBuy' => $canBuy, 'canAddFile' => $canAddFile, 'content' => $content,
+            'fileStatus' => $fileStatus, 'service' => $service, 'oldBuy' => $oldBuy, 'sbId' => $sbId]);
     }
 
 
@@ -569,25 +577,6 @@ class HomeController extends Controller {
             ($project->start_show == $date && $project->start_time > $time))
             return Redirect::route('showAllProjects');
 
-//        $grade = Auth::user()->grade_id;
-
-//        if(Auth::user()->level == getValueInfo('studentLevel')) {
-//
-//            $grades = ProjectGrade::whereProjectId($project->id)->get();
-//            $allow = false;
-//
-//            foreach ($grades as $itr) {
-//                if ($itr->grade_id == $grade) {
-//                    $allow = true;
-//                    break;
-//                }
-//            }
-//
-//            if(!$allow)
-//                return Redirect::route('home');
-//        }
-
-
         $tmpPics = ProjectPic::whereProjectId($project->id)->get();
         $pics = [];
 
@@ -599,7 +588,6 @@ class HomeController extends Controller {
         }
 
         $project->pics = $pics;
-
 
         $tmpPics = ProjectAttach::whereProjectId($project->id)->get();
         $pics = [];
@@ -1215,7 +1203,8 @@ class HomeController extends Controller {
 
         if($canBuy) {
 
-            if($product->start_date_buy > $today || $product->start_time_buy > $time)
+            if($product->start_date_buy > $today ||
+                ($product->start_date_buy == $today && $product->start_time_buy > $time))
                 $canBuy = false;
 
             else {

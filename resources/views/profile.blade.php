@@ -249,48 +249,10 @@
                                 @endforeach
                             </div>
 
-                            <div id="advModal" class="modal fade" role="dialog">
-
-                                <div id="confirmationModalDialogAlert" class="modal-content alertDiv hidden">
-                                    <div class="modal-body">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <div id="alertText"></div>
-                                    </div>
-                                </div>
-
-                                <form id="advForm" method="post" action="{{route('addAdv')}}" enctype="multipart/form-data">
-
-                                    <input type="hidden" name="id" id="advId">
-                                    {{csrf_field()}}
-
-                                    <div class="modal-dialog">
-                                        <div class="modal-content" style="width: 100% !important;">
-
-                                            <div class="modal-header">
-                                                <button id="closeAdvBtn" type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">افزودن تبلیغ</h4>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <p>فایل مورد نظر</p>
-                                                <input type="file" name="file">
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button onclick="$('#advForm').submit()" type="button" class="btn btn-success">بله</button>
-                                                <button id="closeBtn" type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </form>
-
-                            </div>
-
                             <div class="photosAndVideosMainDiv display-none" id="myProducts">
                                 @foreach($myProducts as $buy)
-                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-lg-4 col-xs-6">
 
+                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-lg-4 col-xs-6">
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
                                             <div class="sh_descript">
@@ -369,7 +331,12 @@
 
                             <div class="photosAndVideosMainDiv display-none" id="myCarts">
                                 @foreach($myBuys as $buy)
-                                    <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-lg-4 col-xs-6">
+
+                                    @if($buy->physical)
+                                        <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-lg-4 col-xs-6">
+                                    @else
+                                        <div onclick="document.location.href = '{{route("showAllProductsInner", ["projectId" => $buy->project_id, 'gradeId' => $buy->grade_id])}}'" class="shopOneBox col-lg-4 col-xs-6">
+                                    @endif
 
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>

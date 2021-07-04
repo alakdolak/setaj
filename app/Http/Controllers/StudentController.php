@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\models\Product;
 use App\models\ProjectBuyers;
+use App\models\ServiceBuyer;
 use App\models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,27 @@ class StudentController extends Controller {
 
             $path = $request->file->store("public/contents");
             $b->file = str_replace("public/contents/", "", $path);
+            $b->file_status = 0;
+            $b->save();
+            return "ok";
+        }
+
+        return "nok";
+    }
+
+
+    public function addServiceFile(Request $request) {
+
+        if($request->hasFile("file") && $request->has("id")) {
+
+            $b = ServiceBuyer::whereId($request->get("id"));
+            if($b == null || $b->user_id != Auth::user()->id || $b->status ||
+                $b->file_status == 1
+            )
+                return "nok";
+
+            $path = $request->file->store("public/service_contents");
+            $b->file = str_replace("public/service_contents/", "", $path);
             $b->file_status = 0;
             $b->save();
             return "ok";

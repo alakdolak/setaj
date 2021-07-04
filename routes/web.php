@@ -65,6 +65,8 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
     Route::post('addAdv', ['as' => 'addAdv', 'uses' => 'StudentController@addAdv']);
 
+    Route::post('addServiceFile', ['as' => 'addServiceFile', 'uses' => 'StudentController@addServiceFile']);
+
     Route::post('addFile', ['as' => 'addFile', 'uses' => 'StudentController@addFile']);
 
     Route::get('profile', ['as' => 'profile', 'uses' => 'HomeController@profile']);
@@ -179,35 +181,15 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
 Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
-    Route::get('usersReport/{gradeId?}', ['as' => 'usersReport', 'uses' => 'ReportController@usersReport']);
-
-    Route::get('usersReportExcel/{gradeId}', ['as' => 'usersReportExcel', 'uses' => 'ReportController@usersReportExcel']);
-
-
-    Route::post("assignProjectToUser", ["as" => "assignProjectToUser", "uses" => "OperatorController@assignProjectToUser"]);
-
-    Route::post("assignServiceToUser", ["as" => "assignServiceToUser", "uses" => "OperatorController@assignServiceToUser"]);
-
-    Route::post("assignProductToUser", ["as" => "assignProductToUser", "uses" => "OperatorController@assignProductToUser"]);
-
-
 
     Route::post('cancelAllSuperActivation', ['as' => 'cancelAllSuperActivation', 'uses' => 'AdminController@cancelAllSuperActivation']);
 
     Route::post('onAllSuperActivation', ['as' => 'onAllSuperActivation', 'uses' => 'AdminController@onAllSuperActivation']);
 
 
-
-    Route::get('userBookmarks/{uId}', ['as' => 'userBookmarks', 'uses' => 'ReportController@userBookmarks']);
-
-    Route::post('editMoney', ['as' => 'editMoney', 'uses' => 'AdminController@editMoney']);
-
-
-
     Route::post('addTagProject', ['as' => 'addTagProject', 'uses' => 'OperatorController@addTagProject']);
 
     Route::post('deleteTagProject', ['as' => 'deleteTagProject', 'uses' => 'OperatorController@deleteTagProject']);
-
 
 
     Route::get('services/{err?}', ['as' => 'services', 'uses' => 'OperatorController@services']);
@@ -276,20 +258,38 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::get("operators", ["as" => "operators", 'uses' => "ReportController@operators"]);
 
-
-    Route::get("msgs/{chatId}", ["as" => "msgs", "uses" => "OperatorController@msgs"]);
-
-    Route::get("chats", ["as" => "chats", "uses" => "OperatorController@chats"]);
-
-    Route::post("sendRes", ["as" => "sendRes", "uses" => "OperatorController@sendRes"]);
-
 });
 
 Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
+    Route::get("msgs/{chatId}", ["as" => "msgs", "uses" => "OperatorController@msgs"]);
+
+    Route::get("chats/{gradeId?}", ["as" => "chats", "uses" => "OperatorController@chats"]);
+
+    Route::post("sendRes", ["as" => "sendRes", "uses" => "OperatorController@sendRes"]);
+
+
+    Route::get('usersReport/{gradeId?}', ['as' => 'usersReport', 'uses' => 'ReportController@usersReport']);
+
+    Route::get('usersReportExcel/{gradeId}', ['as' => 'usersReportExcel', 'uses' => 'ReportController@usersReportExcel']);
+
+
+    Route::post("assignProjectToUser", ["as" => "assignProjectToUser", "uses" => "OperatorController@assignProjectToUser"]);
+
+    Route::post("assignCitizenToUser", ["as" => "assignCitizenToUser", "uses" => "OperatorController@assignCitizenToUser"]);
+
+    Route::post("assignServiceToUser", ["as" => "assignServiceToUser", "uses" => "OperatorController@assignServiceToUser"]);
+
+    Route::post("assignProductToUser", ["as" => "assignProductToUser", "uses" => "OperatorController@assignProductToUser"]);
+
+    Route::post('editMoney', ['as' => 'editMoney', 'uses' => 'AdminController@editMoney']);
+
+
     Route::post('getOpenProjects', ['as' => 'getOpenProjects', 'uses' => 'OperatorController@getOpenProject']);
 
     Route::post('setAdvStatus', ['as' => 'setAdvStatus', 'uses' => 'OperatorController@setAdvStatus']);
+
+    Route::post('setServiceFileStatus', ['as' => 'setServiceFileStatus', 'uses' => 'OperatorController@setServiceFileStatus']);
 
     Route::post('setFileStatus', ['as' => 'setFileStatus', 'uses' => 'OperatorController@setFileStatus']);
 

@@ -47,10 +47,10 @@ class ReportController extends Controller {
 
         $projects = DB::select("select p.id, p.title from project p where (select count(*) from project_grade where grade_id = " . $gradeId . " and project_id = p.id) > 0");
         $services = DB::select("select s.id, s.title from service s where (select count(*) from service_grade where grade_id = " . $gradeId . " and service_id = s.id) > 0");
-
+        $citizens = DB::select("select c.id, c.title from citizen c where (select count(*) from citizen_grade where grade_id = " . $gradeId . " and project_id = c.id) > 0");
 
         return view('report.usersReportGrade', ['users' => $students, 'gradeId' => $gradeId,
-            'projects' => $projects, 'services' => $services]);
+            'projects' => $projects, 'services' => $services, 'citizens' => $citizens]);
     }
 
     public function usersReportExcel($gradeId) {
@@ -336,7 +336,8 @@ class ReportController extends Controller {
             return view('report.usersReport', ['grades' => Grade::all(),
                 "path" => route("productsReport")]);
 
-        $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
+        $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, " .
+            "concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, p.physical, " .
             "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
             "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
             "t.user_id = u1.id and u1.grade_id = " . $gradeId . " order by t.id desc"
@@ -412,7 +413,8 @@ class ReportController extends Controller {
 
     public function productsReportExcel($gradeId) {
 
-        $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, " .
+        $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, " .
+            "concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, p.physical, " .
             "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
             "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
             "t.user_id = u1.id and u1.grade_id = " . $gradeId . " order by t.id desc"
@@ -437,7 +439,8 @@ class ReportController extends Controller {
 
         $objPHPExcel->setActiveSheetIndex(0);
 
-        $objPHPExcel->getActiveSheet()->setCellValue('D1', 'تاریخ انجام معامله');
+        $objPHPExcel->getActiveSheet()->setCellValue('E1', 'تاریخ انجام معامله');
+        $objPHPExcel->getActiveSheet()->setCellValue('D1', 'عینی/غیرعینی');
         $objPHPExcel->getActiveSheet()->setCellValue('C1', 'محصول');
         $objPHPExcel->getActiveSheet()->setCellValue('B1', 'خریدار');
         $objPHPExcel->getActiveSheet()->setCellValue('A1', 'فروشنده');
@@ -448,7 +451,8 @@ class ReportController extends Controller {
 
             $bDate = $product->date . '  -  ' . $product->time;
 
-            $objPHPExcel->getActiveSheet()->setCellValue('D' . ($i + 2), $bDate);
+            $objPHPExcel->getActiveSheet()->setCellValue('E' . ($i + 2), $bDate);
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . ($i + 2), ($product->physical) ? "عینی" : "غیرعینی");
             $objPHPExcel->getActiveSheet()->setCellValue('C' . ($i + 2), $product->name);
             $objPHPExcel->getActiveSheet()->setCellValue('B' . ($i + 2), $product->buyer);
             $objPHPExcel->getActiveSheet()->setCellValue('A' . ($i + 2), $product->seller);
@@ -628,9 +632,12 @@ class ReportController extends Controller {
                     $tmp[count($tmp)] =
                         ["name" => $u->first_name . ' ' . $u->last_name,
                         "id" => $u->id,
+                        "sbId" => $itr->id,
                         'gradeName' => $grade->name,
                         'grade' => $u->grade_id,
                         "status" => $itr->status,
+                        "file_status" => $itr->file_status,
+                        "file" => ($itr->file != null && file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $itr->file)) ? URL::asset('storage/service_contents/' . $itr->file) : null,
                         "date" => MiladyToShamsi('', explode('-', explode(' ', $itr->created_at)[0])),
                         "time" => explode(' ', $itr->created_at)[1],
                         "star" => $itr->star];
@@ -641,7 +648,7 @@ class ReportController extends Controller {
         }
 
         return view('report.serviceBuyers', ['buyers' => $buyers, 'grades' => $grades,
-            "star" => $service->star, 'id' => $id]);
+            "star" => $service->star, 'id' => $id, 'physical' => $service->physical]);
 
     }
 

@@ -133,10 +133,6 @@
 
     <div style="margin-top: 100px">
 
-        <div style="margin: 20px">
-            <button onclick="addProduct()" class="btn btn-primary">افزودن محصول جدید</button>
-        </div>
-
         <div class="portlet box purple">
 
             <div class="portlet-title">
@@ -237,109 +233,6 @@
 
     </div>
 
-    <div id="preModal" class="modal">
-
-        <div class="modal-content" style="height: 300px">
-            <div>
-
-                <h5 style="padding-right: 5%;">کد ملی صاحب محصول</h5>
-                <input type="text" id="username" name="username" required>
-
-            </div>
-
-            <div style="margin-top: 20px">
-                <input onclick="getDetail()" type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
-                <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('preModal').style.display = 'none'">
-            </div>
-        </div>
-
-    </div>
-
-    <div id="myAddModal" class="modal">
-
-        <form action="{{route('addProduct')}}" method="post" enctype="multipart/form-data">
-            {{ csrf_field() }}
-            <div class="modal-content" style="width: 75% !important;">
-
-                <center>
-
-                    <input type="hidden" name="username" id="hiddenUsername">
-
-                    <h5 style="padding-right: 5%;">نام محصول</h5>
-                    <input type="text" name="name" required maxlength="100">
-
-                    <h5 style="padding-right: 5%;">قیمت محصول</h5>
-                    <input type="number" name="price" required min="0">
-
-                    <h5 style="padding-right: 5%;">ستاره های محصول</h5>
-                    <input type="number" name="star" required min="0">
-
-                    <h5 style="padding-right: 5%;">پروژه مورد نظر</h5>
-                    <select name="project" id="projects"></select>
-
-                    <div>
-                        <span>تاریخ شروع نمایش</span>
-                        <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="show_date_btn">
-                        <br/>
-                        <input type="text" name="start_show" id="date_input_show" readonly>
-                        <script>
-                            Calendar.setup({
-                                inputField: "date_input_show",
-                                button: "show_date_btn",
-                                ifFormat: "%Y/%m/%d",
-                                dateType: "jalali"
-                            });
-                        </script>
-                    </div>
-
-                    <div style="margin: 10px">
-                        <span>زمان شروع نمایش</span>
-                        <input type="time" name="start_time">
-                    </div>
-
-
-                    <div>
-                        <span>تاریخ شروع خرید</span>
-                        <input type="button" style="border: none; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;" id="buy_date_btn">
-                        <br/>
-                        <input type="text" name="start_date_buy" id="date_input_buy" readonly>
-                        <script>
-                            Calendar.setup({
-                                inputField: "date_input_buy",
-                                button: "buy_date_btn",
-                                ifFormat: "%Y/%m/%d",
-                                dateType: "jalali"
-                            });
-                        </script>
-                    </div>
-
-                    <div style="margin: 10px">
-                        <span>زمان شروع خرید</span>
-                        <input type="time" name="start_time_buy">
-                    </div>
-
-                    <h5>توضیح محصول</h5>
-                    <textarea id="editor1" cols="80" name="description" required></textarea>
-
-                    <h5 style="padding-right: 5%;">تصاویر محصول(اختیاری)</h5>
-                    <input type="file" name="file" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
-
-                    <h5 style="padding-right: 5%;">آموزش محصول(اختیاری)</h5>
-                    <input type="file" name="attach" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
-
-                    <h5 style="padding-right: 5%;">تبلیغات محصول(اختیاری)</h5>
-                    <input type="file" name="trailer" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
-
-                </center>
-
-                <div style="margin-top: 20px">
-                    <input type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
-                    <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('myAddModal').style.display = 'none'">
-                </div>
-            </div>
-        </form>
-    </div>
-
     <script>
 
         function filter(id) {
@@ -352,54 +245,6 @@
                 $(".tr_" + id).removeClass('hidden');
             }
 
-        }
-
-        CKEDITOR.replace('editor1');
-
-        function addProduct() {
-            document.getElementById('preModal').style.display = 'block';
-        }
-
-        function getDetail() {
-
-            var username = $("#username").val();
-
-            if(username.length === 0) {
-                alert("لطفا کد ملی دانش آموز مورد نظر خود را وارد نمایید.");
-                return;
-            }
-
-            $.ajax({
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: '{{route('getOpenProjects')}}',
-                data: {
-                    username: username
-                },
-                success: function (res) {
-
-                    res = JSON.parse(res);
-
-                    if(res.length === 0) {
-                        alert("دانش آموز مورد نظر پروژه بازی ندارد.");
-                        return;
-                    }
-
-                    var newElem = "";
-
-                    for(var i = 0; i < res.length; i++) {
-                        newElem += "<option value='" + res[i].id + "'>" + res[i].title + "</option>";
-                    }
-
-                    $("#hiddenUsername").val(username);
-                    $("#projects").empty().append(newElem);
-
-                    document.getElementById('preModal').style.display = 'none';
-                    document.getElementById('myAddModal').style.display = 'block';
-                }
-            });
         }
 
         function removeProduct(id) {
