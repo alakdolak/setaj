@@ -456,8 +456,20 @@ class HomeController extends Controller {
             }
 
             if (!$canAddFile && $sb != null && !$service->physical && $sb->file != null &&
-                file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $sb->file))
-                $content = URL::asset("storage/service_contents/" . $sb->file);
+                file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $sb->file)) {
+                if($sb->complete_upload_file)
+                    $content = URL::asset("storage/service_contents/" . $sb->file);
+                else {
+                    unlink(__DIR__ . '/../../../storage/app/public/service_contents/' . $sb->file);
+                    $sb->file = null;
+                    $sb->file_status = 0;
+                    $sb->start_uploading = null;
+                    $sb->save();
+
+                    if(!$sb->status)
+                        $canAddFile = true;
+                }
+            }
 
             $oldBuy = ($sb != null);
 
@@ -467,7 +479,8 @@ class HomeController extends Controller {
             )
                 $canBuy = false;
 
-            if ((!$canAddFile && $sb->file != null) || $sb->file_status != 0)
+            if ($sb != null &&
+                ((!$canAddFile && $sb->file != null) || $sb->file_status != 0))
                 $fileStatus = $sb->file_status;
 
         }
@@ -617,12 +630,15 @@ class HomeController extends Controller {
         $canAddFile = false;
         $advStatus = -2;
         $fileStatus = -2;
+        $content = null;
+        $advContent = null;
 
         $date = getToday()["date"];
 
         if($canBuy) {
 
             $pb = ProjectBuyers::whereUserId(Auth::user()->id)->whereProjectId($id)->first();
+
             if ($pb != null) {
                 $canBuy = false;
 
@@ -633,6 +649,37 @@ class HomeController extends Controller {
                     $canAddAdv = true;
 
                 $project->pbId = $pb->id;
+
+                if (!$canAddFile && !$project->physical && $pb->file != null &&
+                    file_exists(__DIR__ . '/../../../storage/app/public/contents/' . $pb->file)) {
+                    if($pb->complete_upload_file)
+                        $content = URL::asset("storage/contents/" . $pb->file);
+                    else {
+                        unlink(__DIR__ . '/../../../storage/app/public/contents/' . $pb->file);
+                        $pb->file = null;
+                        $pb->start_uploading = null;
+                        $pb->file_status = 0;
+                        $pb->save();
+
+                        if(!$pb->status)
+                            $canAddFile = true;
+                    }
+                }
+
+                if (!$canAddAdv && $pb->adv != null &&
+                    file_exists(__DIR__ . '/../../../storage/app/public/advs/' . $pb->adv)) {
+
+                    if($pb->complete_upload_adv)
+                        $advContent = URL::asset("storage/advs/" . $pb->adv);
+                    else {
+                        unlink(__DIR__ . '/../../../storage/app/public/advs/' . $pb->adv);
+                        $pb->adv = null;
+                        $pb->start_uploading_adv = null;
+                        $pb->adv_status = 0;
+                        $pb->save();
+                        $canAddAdv = true;
+                    }
+                }
 
                 if ($pb->adv != null || $pb->adv_status != 0)
                     $advStatus = $pb->adv_status;
@@ -661,8 +708,8 @@ class HomeController extends Controller {
         }
 
         return view('showProject', ['canBuy' => $canBuy, 'project' => $project,
-            "canAddAdv" => $canAddAdv, "canAddFile" => $canAddFile,
-            "advStatus" => $advStatus, "fileStatus" => $fileStatus]);
+            "canAddAdv" => $canAddAdv, "canAddFile" => $canAddFile, 'content' => $content,
+            'advContent' => $advContent, "advStatus" => $advStatus, "fileStatus" => $fileStatus]);
     }
 
 

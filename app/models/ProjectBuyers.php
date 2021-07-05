@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $status
  * @property int $adv_status
  * @property int $file_status
+ * @property boolean $complete_upload_file
+ * @property boolean $complete_upload_adv
+ * @property string $start_uploading
+ * @property string $start_uploading_adv
  * @method static \Illuminate\Database\Query\Builder|\App\models\ProjectBuyers whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\ProjectBuyers whereProjectId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\ProjectBuyers whereStatus($value)

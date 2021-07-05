@@ -211,6 +211,30 @@ class ReportController extends Controller {
             return view('report.usersReport', ['grades' => Grade::all(),
                 "path" => route("unDoneProjectsReport")]);
 
+        $preThreeHours = time() - 10800;
+
+        $unCompleted = DB::select("select file, id from project_buyers where file is not null and file_status <> 1 and ".
+            "complete_upload_file = 0 and start_uploading is not null and start_uploading < " . $preThreeHours);
+
+        foreach ($unCompleted as $itr) {
+
+            if(file_exists(__DIR__ . '/../../../storage/app/public/contents/' . $itr->file))
+                unlink(__DIR__ . '/../../../storage/app/public/contents/' . $itr->file);
+
+            DB::update("update project_buyers set file = null, start_uploading = null, file_status = 0 where id = " . $itr->id);
+        }
+
+        $unCompleted = DB::select("select adv, id from project_buyers where adv is not null and adv_status <> 1 and ".
+            "complete_upload_adv = 0 and start_uploading_adv is not null and start_uploading_adv < " . $preThreeHours);
+
+        foreach ($unCompleted as $itr) {
+
+            if(file_exists(__DIR__ . '/../../../storage/app/public/advs/' . $itr->file))
+                unlink(__DIR__ . '/../../../storage/app/public/advs/' . $itr->file);
+
+            DB::update("update project_buyers set adv = null, start_uploading_adv = null, adv_status = 0 where id = " . $itr->id);
+        }
+
         $projects = DB::select("select p.physical, p.id as projectId, p.title, concat(u.first_name, ' ', u.last_name) as name, u.id as user_id, " .
             "pb.id, pb.created_at, pb.adv, pb.file, pb.adv_status, pb.file_status " .
             "from project_buyers pb, project p, users u where p.id = pb.project_id" .
@@ -232,13 +256,13 @@ class ReportController extends Controller {
                 }
             }
 
-            if($project->adv != null &&
+            if($project->adv != null && $project->complete_upload_adv &&
                 file_exists(__DIR__ . '/../../../public/storage/advs/' . $project->adv))
                 $project->adv = URL::asset("storage/advs/" . $project->adv);
             else
                 $project->adv = null;
 
-            if($project->file != null &&
+            if($project->file != null && $project->complete_upload_file &&
                 file_exists(__DIR__ . '/../../../public/storage/contents/' . $project->file))
                 $project->file = URL::asset("storage/contents/" . $project->file);
             else
@@ -608,6 +632,19 @@ class ReportController extends Controller {
 
     public function serviceBuyers($id) {
 
+        $preThreeHours = time() - 10800;
+
+        $unCompleted = DB::select("select file, id from service_buyer where file is not null and file_status <> 1 and ".
+        "complete_upload_file = 0 and start_uploading is not null and start_uploading < " . $preThreeHours);
+
+        foreach ($unCompleted as $itr) {
+
+            if(file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $itr->file))
+                unlink(__DIR__ . '/../../../storage/app/public/service_contents/' . $itr->file);
+
+            DB::update("update service_buyer set file = null, start_uploading = null, file_status = 0 where id = " . $itr->id);
+        }
+
         $service = Service::whereId($id);
         if($service == null)
             return Redirect::route("admin");
@@ -637,7 +674,7 @@ class ReportController extends Controller {
                         'grade' => $u->grade_id,
                         "status" => $itr->status,
                         "file_status" => $itr->file_status,
-                        "file" => ($itr->file != null && file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $itr->file)) ? URL::asset('storage/service_contents/' . $itr->file) : null,
+                        "file" => ($itr->file != null && $itr->complete_upload_file && file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $itr->file)) ? URL::asset('storage/service_contents/' . $itr->file) : null,
                         "date" => MiladyToShamsi('', explode('-', explode(' ', $itr->created_at)[0])),
                         "time" => explode(' ', $itr->created_at)[1],
                         "star" => $itr->star];

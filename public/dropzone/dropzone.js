@@ -47,6 +47,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // to events.
 // It is strongly based on component's emitter class, and I removed the
 // functionality because of the dependency hell with different frameworks.
+
 var Emitter =
 /*#__PURE__*/
 function () {
@@ -2944,6 +2945,12 @@ function (_Emitter) {
       this._updateFilesUploadProgress(files);
 
       if (!(200 <= xhr.status && xhr.status < 300)) {
+          if(xhr.status == 401) {
+              myPreventionFlag = true;
+              Dropzone.CANCELED = true;
+              this._finished(files, 401, null);
+              return;
+          }
         this._handleUploadError(files, xhr, response);
       } else {
         if (files[0].upload.chunked) {
@@ -2977,6 +2984,13 @@ function (_Emitter) {
   }, {
     key: "submitRequest",
     value: function submitRequest(xhr, formData, files) {
+
+        if(myPreventionFlag) {
+            Dropzone.CANCELED = true;
+            this._finished(files, 401, null);
+            return;
+        }
+
       xhr.send(formData);
     } // Called internally when processing is finished.
     // Individual callbacks have to be called in the appropriate sections.

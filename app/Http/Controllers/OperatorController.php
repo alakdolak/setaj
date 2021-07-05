@@ -93,6 +93,8 @@ class OperatorController extends Controller {
                 if(file_exists(__DIR__ . '/../../../public/storage/contents/' . $pb->file))
                     unlink(__DIR__ . '/../../../public/storage/contents/' . $pb->file);
 
+                $pb->complete_upload_file = false;
+                $pb->start_uploading = null;
                 $pb->file = null;
             }
 
@@ -121,6 +123,8 @@ class OperatorController extends Controller {
                 if(file_exists(__DIR__ . '/../../../public/storage/service_contents/' . $sb->file))
                     unlink(__DIR__ . '/../../../public/storage/service_contents/' . $sb->file);
 
+                $sb->complete_upload_file = false;
+                $sb->start_uploading = null;
                 $sb->file = null;
             }
 
@@ -148,6 +152,8 @@ class OperatorController extends Controller {
                 if(file_exists(__DIR__ . '/../../../public/storage/advs/' . $pb->adv))
                     unlink(__DIR__ . '/../../../public/storage/advs/' . $pb->adv);
 
+                $pb->complete_upload_adv = false;
+                $pb->start_uploading_adv = null;
                 $pb->adv = null;
             }
 

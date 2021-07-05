@@ -15,78 +15,180 @@ class StudentController extends Controller {
 
     public function addAdv(Request $request) {
 
-        if($request->hasFile("file") && $request->has("id")) {
+        if(
+            $request->hasFile("file") &&
+            $request->has("dzchunkindex") &&
+            $request->has("dztotalchunkcount") &&
+            $request->has("id")
+        ) {
+
+            $idx = $request->get("dzchunkindex");
+            $total = $request->get("dztotalchunkcount");
+
+            if($idx >= $total)
+                return response()->json(["status" => "nok"], 401);
 
             $b = ProjectBuyers::whereId($request->get("id"));
-            if($b == null || $b->user_id != Auth::user()->id || $b->adv_status == 1)
-                return "nok";
 
-            if($b->status) {
+            if($b == null || $b->user_id != Auth::user()->id ||
+                $b->adv_status == 1 || $b->complete_upload_adv)
+                return response()->json(["status" => "nok"], 401);
 
-                $p = Product::whereUserId(Auth::user()->id)->whereProjectId($b->project_id)->first();
-                if ($p == null)
+            if($idx == 0) {
+
+                if($b->status) {
+
+                    $p = Product::whereUserId(Auth::user()->id)->whereProjectId($b->project_id)->first();
+                    if ($p == null)
+                        return response()->json(["status" => "nok"], 401);
+
+                    $today = getToday();
+                    $time = $today["time"];
+                    $today = $today["date"];
+
+                    if($p->start_show < $today ||
+                        ($p->start_show == $today && $p->start_time < $time)
+                    )
+                        return response()->json(["status" => "nok"], 401);
+                }
+
+                $path = $request->file->store("public/advs");
+                $b->adv = str_replace("public/advs/", "", $path);
+                $b->adv_status = 0;
+                $b->start_uploading_adv = time();
+
+                if($idx == $total - 1)
+                    $b->complete_upload_adv = true;
+
+                $b->save();
+            }
+            else {
+
+                $path = __DIR__ . '/../../../storage/app/public/advs/' . $b->adv;
+                if(!file_exists($path))
                     return "nok";
 
-                $today = getToday();
-                $time = $today["time"];
-                $today = $today["date"];
+                file_put_contents($path, $request->file("file")->get(), FILE_APPEND);
 
-                if($p->start_show < $today ||
-                    ($p->start_show == $today && $p->start_time < $time)
-                )
-                    return "nok";
+                if($idx == $total - 1) {
+                    $b->complete_upload_adv = true;
+                    $b->save();
+                }
             }
 
-            $path = $request->file->store("public/advs");
-            $b->adv = str_replace("public/advs/", "", $path);
-            $b->adv_status = 0;
-            $b->save();
             return "ok";
         }
 
-        return "nok";
+        return response()->json(["status" => "nok"], 401);
     }
 
 
     public function addFile(Request $request) {
 
-        if($request->hasFile("file") && $request->has("id")) {
+        if(
+            $request->hasFile("file") &&
+            $request->has("dzchunkindex") &&
+            $request->has("dztotalchunkcount") &&
+            $request->has("id")
+        ) {
+
+            $idx = $request->get("dzchunkindex");
+            $total = $request->get("dztotalchunkcount");
+
+            if($idx >= $total)
+                return response()->json(["status" => "nok"], 401);
 
             $b = ProjectBuyers::whereId($request->get("id"));
+
             if($b == null || $b->user_id != Auth::user()->id || $b->status ||
                 $b->file_status == 1
             )
-                return "nok";
+                return response()->json(["status" => "nok"], 401);
 
-            $path = $request->file->store("public/contents");
-            $b->file = str_replace("public/contents/", "", $path);
-            $b->file_status = 0;
-            $b->save();
+            if($idx == 0) {
+                $path = $request->file->store("public/contents");
+                $b->file = str_replace("public/contents/", "", $path);
+                $b->file_status = 0;
+                $b->start_uploading = time();
+
+                if($idx == $total - 1)
+                    $b->complete_upload_file = true;
+
+                $b->save();
+            }
+            else {
+
+                $path = __DIR__ . '/../../../storage/app/public/contents/' . $b->file;
+                if(!file_exists($path))
+                    return response()->json(["status" => "nok"], 401);
+
+                file_put_contents($path, $request->file("file")->get(), FILE_APPEND);
+
+                if($idx == $total - 1) {
+                    $b->complete_upload_file = true;
+                    $b->save();
+                }
+
+            }
+
             return "ok";
         }
 
-        return "nok";
+        return response()->json(["status" => "nok"], 401);
     }
 
 
     public function addServiceFile(Request $request) {
 
-        if($request->hasFile("file") && $request->has("id")) {
+        if(
+            $request->hasFile("file") &&
+            $request->has("dzchunkindex") &&
+            $request->has("dztotalchunkcount") &&
+            $request->has("id")
+        ) {
+
+            $idx = $request->get("dzchunkindex");
+            $total = $request->get("dztotalchunkcount");
+
+            if($idx >= $total)
+                return response()->json(["status" => "nok"], 401);
 
             $b = ServiceBuyer::whereId($request->get("id"));
-            if($b == null || $b->user_id != Auth::user()->id || $b->status ||
-                $b->file_status == 1
-            )
-                return "nok";
 
-            $path = $request->file->store("public/service_contents");
-            $b->file = str_replace("public/service_contents/", "", $path);
-            $b->file_status = 0;
-            $b->save();
+            if($b == null || $b->user_id != Auth::user()->id || $b->status ||
+                $b->file_status == 1 || $b->complete_upload_file
+            )
+                return response()->json(["status" => "nok"], 401);
+
+            if($idx == 0) {
+                $path = $request->file->store("public/service_contents");
+                $b->file = str_replace("public/service_contents/", "", $path);
+                $b->file_status = 0;
+                $b->start_uploading = time();
+
+                if($idx == $total - 1)
+                    $b->complete_upload_file = true;
+
+                $b->save();
+            }
+            else {
+
+                $path = __DIR__ . '/../../../storage/app/public/service_contents/' . $b->file;
+                if(!file_exists($path))
+                    return response()->json(["status" => "nok"], 401);
+
+                file_put_contents($path, $request->file("file")->get(), FILE_APPEND);
+
+                if($idx == $total - 1) {
+                    $b->complete_upload_file = true;
+                    $b->save();
+                }
+            }
+
             return "ok";
         }
 
-        return "nok";
+        return response()->json(["status" => "nok"], 401);
     }
 
 
