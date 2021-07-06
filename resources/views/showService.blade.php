@@ -169,7 +169,7 @@
                     <div class="uploadHeader_images uploadHeader_img4"></div>
                 </div>
                 <div class="uploadBodyBox">
-                    <div class="uploadTitleText">بارگزاری فایل محتوا</div>
+                    <div class="uploadTitleText">بارگذاری فایل محتوا</div>
                     <form action="{{route('addServiceFile')}}" class="dropzone uploadBox" id="my-awesome-dropzone">
                         {{csrf_field()}}
                         <input type="hidden" name="id" value="{{$sbId}}">

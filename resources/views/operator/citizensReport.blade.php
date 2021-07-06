@@ -3,6 +3,9 @@
 @section('header')
     @parent
 
+    <link href="{{\Illuminate\Support\Facades\URL::asset('global/plugins/datatables/datatables.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{\Illuminate\Support\Facades\URL::asset('global/plugins/datatables/plugins/bootstrap/datatables.bootstrap-rtl.css')}}" rel="stylesheet" type="text/css" />
+
     <style>
         th, td {
             text-align: center;
@@ -47,38 +50,45 @@
                 </center>
             </div>
 
-            <table style="margin-top: 20px">
-                <tr>
-                    <td>ردیف</td>
-                    <td>نام کاربر</td>
-                    <td>پایه تحصیلی</td>
-                    <td>نام پروژه</td>
-                    <td>دسته پروژه</td>
-                    <td>امتیاز کسب شده</td>
-                    <td>کل امتیاز موجود</td>
-                    <td>زمان انجام</td>
-                    <td>توضیحات</td>
-                    <td>عملیات</td>
-                </tr>
-                <?php $i = 1; ?>
-                @foreach($items as $item)
-                    <tr class="tr proj_{{$item->cId}} grade_{{$item->gradeId}}">
-                        <td>{{$i}}</td>
-                        <td>{{$item->owner}}</td>
-                        <td>{{$item->grade}}</td>
-                        <td>{{$item->title}}</td>
-                        <td>{{$item->tag}}</td>
-                        <td id="point_{{$item->id}}">{{$item->point}}</td>
-                        <td>{{$item->totalPoint}}</td>
-                        <td>{{$item->date}}</td>
-                        <td>{{$item->description}}</td>
-                        <td><button class="btn btn-primary" data-toggle="modal" data-target="#changeModal" onclick="changePoint('{{$item->point}}', '{{$item->totalPoint}}', '{{$item->id}}')">تغییر امتیاز داده شده</button></td>
-                    </tr>
-                    <?php $i++; ?>
-                @endforeach
-            </table>
-        </center>
+            <div class="portlet-body" style="margin-top: 30px">
+                <table  style="margin-top: 20px" class="table table-striped table-bordered table-hover table-header-fixed" id="sample_1">
+                    <thead>
+                        <tr>
+                            <th>ردیف</th>
+                            <th>نام کاربر</th>
+                            <th>پایه تحصیلی</th>
+                            <th>نام پروژه</th>
+                            <th>دسته پروژه</th>
+                            <th>امتیاز کسب شده</th>
+                            <th>کل امتیاز موجود</th>
+                            <th>زمان انجام</th>
+                            <th>توضیحات</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
 
+                    <tbody>
+                        <?php $i = 1; ?>
+                        @foreach($items as $item)
+                            <tr class="tr proj_{{$item->cId}} grade_{{$item->gradeId}}">
+                                <td>{{$i}}</td>
+                                <td>{{$item->owner}}</td>
+                                <td>{{$item->grade}}</td>
+                                <td>{{$item->title}}</td>
+                                <td>{{$item->tag}}</td>
+                                <td id="point_{{$item->id}}">{{$item->point}}</td>
+                                <td>{{$item->totalPoint}}</td>
+                                <td>{{$item->date}}</td>
+                                <td>{{$item->description}}</td>
+                                <td><button class="btn btn-primary" data-toggle="modal" data-target="#changeModal" onclick="changePoint('{{$item->point}}', '{{$item->totalPoint}}', '{{$item->id}}')">تغییر امتیاز داده شده</button></td>
+                            </tr>
+                            <?php $i++; ?>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+        </center>
     </div>
 
 

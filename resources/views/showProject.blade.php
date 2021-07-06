@@ -272,7 +272,7 @@
                     <div class="uploadHeader_images uploadHeader_img4"></div>
                 </div>
                 <div class="uploadBodyBox">
-                    <div class="uploadTitleText">بارگزاری فایل تبلیغ</div>
+                    <div class="uploadTitleText">بارگذاری فایل تبلیغ</div>
                     <form action="{{route('addAdv')}}" class="dropzone uploadBox" id="my-awesome-dropzone">
                         {{csrf_field()}}
                         <input type="hidden" name="id" value="{{$project->pbId}}">
@@ -297,7 +297,7 @@
                     <div class="uploadHeader_images uploadHeader_img4"></div>
                 </div>
                 <div class="uploadBodyBox">
-                    <div class="uploadTitleText">بارگزاری فایل محتوا</div>
+                    <div class="uploadTitleText">بارگذاری فایل محتوا</div>
                     <form action="{{route('addFile')}}" class="dropzone uploadBox" id="my-awesome-dropzone">
                         {{csrf_field()}}
                         <input type="hidden" name="id" value="{{$project->pbId}}">

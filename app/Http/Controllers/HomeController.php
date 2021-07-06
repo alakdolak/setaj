@@ -1506,7 +1506,8 @@ class HomeController extends Controller {
                 )
                     return "nok8";
 
-                $countNum = DB::select("select count(*) as count_num from product where physical = 0 and id not in"
+                $countNum = DB::select("select count(*) as count_num from product where physical = 0 "
+                    . "and grade_id = " . $user->grade_id . " and id not in"
                     . " (select product_id from transactions where 1)")[0]->count_num;
 
                 if($countNum > 0) {
