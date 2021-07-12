@@ -799,10 +799,168 @@ class ReportController extends Controller {
 
     }
 
-    public function serviceReport() {
+    public function serviceReportExcel($gradeId) {
 
-        $services = Service::all();
-        return view('report.serviceReport', ['services' => $services]);
+        $services = DB::select("select s.star, s.id as service_id, s.title, s.physical, sb.complete_upload_file, sb.id as sbId, sb.status, sb.file_status, sb.file, sb.created_at, concat(u.first_name, ' ', u.last_name) as user_name, u.id as uId from service s, service_grade sg, users u, service_buyer sb where " .
+            "s.id = sg.service_id and sg.grade_id = " . $gradeId . " and sb.service_id = s.id and sb.user_id = u.id");
 
+        $tmp = [];
+        $uniques = [];
+        $counter = 0;
+
+        foreach ($services as $itr) {
+
+            $allowAdd = true;
+            foreach($uniques as $unique) {
+                if($unique["id"] == $itr->service_id) {
+                    $allowAdd = false;
+                    break;
+                }
+            }
+
+            if($allowAdd) {
+                $uniques[$counter++] = [
+                    "id" => $itr->service_id,
+                    "title" => $itr->title
+                ];
+            }
+
+            $tmp[count($tmp)] = [
+                "user_name" => $itr->user_name,
+                "id" => $itr->uId,
+                "title" => $itr->title,
+                "physical" => $itr->physical,
+                "service_id" => $itr->service_id,
+                "sbId" => $itr->sbId,
+                "status" => $itr->status,
+                "file_status" => $itr->file_status,
+                "file" => ($itr->file != null && $itr->complete_upload_file && file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $itr->file)) ? URL::asset('storage/service_contents/' . $itr->file) : null,
+                "date" => MiladyToShamsi('', explode('-', explode(' ', $itr->created_at)[0])),
+                "time" => explode(' ', $itr->created_at)[1],
+                "star" => $itr->star
+            ];
+        }
+
+
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->getProperties()->setCreator("Karestoon");
+        $objPHPExcel->getProperties()->setLastModifiedBy("Karestoon");
+        $objPHPExcel->getProperties()->setTitle("Office 2007 XLSX Test Document");
+        $objPHPExcel->getProperties()->setSubject("Office 2007 XLSX Test Document");
+        $objPHPExcel->getProperties()->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.");
+
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        $objPHPExcel->getActiveSheet()->setCellValue('G1', 'تعداد ستاره های داده شده');
+        $objPHPExcel->getActiveSheet()->setCellValue('F1', 'وضعیت انجام');
+        $objPHPExcel->getActiveSheet()->setCellValue('E1', 'وضعیت تایید فایل محتوا');
+        $objPHPExcel->getActiveSheet()->setCellValue('D1', 'تاریخ');
+        $objPHPExcel->getActiveSheet()->setCellValue('C1', 'خریدار');
+        $objPHPExcel->getActiveSheet()->setCellValue('B1', 'عینی/غیرعینی');
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', 'نام پروژه');
+
+        $i = 0;
+
+        foreach ($tmp as $itr) {
+
+            $fileStatus = "تایید نشده";
+            if($itr["file_status"] == 1)
+                $fileStatus = "تایید شده";
+            else if($itr["file_status"] == -1)
+                $fileStatus = "رد شده";
+
+            $objPHPExcel->getActiveSheet()->setCellValue('G' . ($i + 2), ($itr["status"]) ? $itr["star"] : 0);
+            $objPHPExcel->getActiveSheet()->setCellValue('F' . ($i + 2), ($itr["status"]) ? "انجام شده" : "انجام نشده");
+            $objPHPExcel->getActiveSheet()->setCellValue('E' . ($i + 2),  $fileStatus);
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . ($i + 2), $itr["date"] . ' - ' . $itr["time"]);
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . ($i + 2), $itr["user_name"]);
+            $objPHPExcel->getActiveSheet()->setCellValue('B' . ($i + 2), $itr["physical"] ? "عینی" : "غیرعینی");
+            $objPHPExcel->getActiveSheet()->setCellValue('A' . ($i + 2), $itr["title"]);
+            $i++;
+        }
+
+        $fileName = __DIR__ . "/../../../public/tmp/karestoon.xlsx";
+
+        $objPHPExcel->getActiveSheet()->setTitle('گزارش گیری آزمون ها');
+
+        $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save($fileName);
+
+
+        if (file_exists($fileName)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($fileName).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($fileName));
+            readfile($fileName);
+            unlink($fileName);
+        }
+        exit();
+    }
+
+    public function serviceReport($gradeId = -1) {
+
+        if($gradeId == -1)
+            return view('report.usersReport', ['grades' => Grade::all(),
+                "path" => route("serviceReport")]);
+
+        $preThreeHours = time() - 10800;
+
+        $unCompleted = DB::select("select file, id from service_buyer where file is not null and file_status <> 1 and ".
+            "complete_upload_file = 0 and start_uploading is not null and start_uploading < " . $preThreeHours);
+
+        foreach ($unCompleted as $itr) {
+
+            if(file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $itr->file))
+                unlink(__DIR__ . '/../../../storage/app/public/service_contents/' . $itr->file);
+
+            DB::update("update service_buyer set file = null, start_uploading = null, file_status = 0 where id = " . $itr->id);
+        }
+
+        $services = DB::select("select s.star, s.id as service_id, s.title, s.physical, sb.complete_upload_file, sb.id as sbId, sb.status, sb.file_status, sb.file, sb.created_at, concat(u.first_name, ' ', u.last_name) as user_name, u.id as uId from service s, service_grade sg, users u, service_buyer sb where " .
+            "s.id = sg.service_id and sg.grade_id = " . $gradeId . " and sb.service_id = s.id and sb.user_id = u.id");
+
+        $tmp = [];
+        $uniques = [];
+        $counter = 0;
+
+        foreach ($services as $itr) {
+
+            $allowAdd = true;
+            foreach($uniques as $unique) {
+                if($unique["id"] == $itr->service_id) {
+                    $allowAdd = false;
+                    break;
+                }
+            }
+
+            if($allowAdd) {
+                $uniques[$counter++] = [
+                    "id" => $itr->service_id,
+                    "title" => $itr->title
+                ];
+            }
+
+            $tmp[count($tmp)] = [
+                "user_name" => $itr->user_name,
+                "id" => $itr->uId,
+                "title" => $itr->title,
+                "physical" => $itr->physical,
+                "service_id" => $itr->service_id,
+                "sbId" => $itr->sbId,
+                "status" => $itr->status,
+                "file_status" => $itr->file_status,
+                "file" => ($itr->file != null && $itr->complete_upload_file && file_exists(__DIR__ . '/../../../storage/app/public/service_contents/' . $itr->file)) ? URL::asset('storage/service_contents/' . $itr->file) : null,
+                "date" => MiladyToShamsi('', explode('-', explode(' ', $itr->created_at)[0])),
+                "time" => explode(' ', $itr->created_at)[1],
+                "star" => $itr->star
+            ];
+        }
+
+        return view('report.serviceBuyers', ['buyers' => $tmp, 'gradeId' => $gradeId,
+            "uniques" => $uniques]);
     }
 }

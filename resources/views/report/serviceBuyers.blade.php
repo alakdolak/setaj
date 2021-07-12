@@ -17,26 +17,25 @@
 
     <div class="row" style="margin-top: 100px">
 
-        <center>
-            <h2 style="color: red">{{($physical) ? "این پروژه همیاری عینی است" : "این پروژه همیاری غیرعینی است."}}</h2>
-        </center>
-
         @if($buyers == null)
             هنوز خریداری نشده است.
         @else
 
             <center class="col-xs-12">
-                <select id="filter" style="margin: 10px;" onchange='filter(this.value, $("#gradeSelect").val())'>
+
+                <select id="filter" style="margin: 10px;" onchange='filter()'>
                     <option value="0">تمام خریداران</option>
                     <option value="1">تایید شدگان</option>
                     <option value="-1">تایید نشدگان</option>
                 </select>
-                <select id="gradeSelect" style="margin: 10px;" onchange="filter($('#filter').val(), this.value)">
-                    <option value="-1">همه پایه های تحصیلی</option>
-                    @foreach($grades as $grade)
-                        <option value="{{$grade->id}}">{{$grade->name}}</option>
+
+                <select id="projFilter" style="margin: 10px;" onchange="filter()">
+                    <option value="-1">همه پروژه ها</option>
+                    @foreach($uniques as $unique)
+                        <option value="{{$unique["id"]}}">{{$unique["title"]}}</option>
                     @endforeach
                 </select>
+
             </center>
 
         <center class="col-xs-12">
@@ -48,18 +47,17 @@
             </p>
 
 
-            <a class="btn btn-default" style="margin: 5px;" href="{{route('serviceBuyersExcel', ['id' => $id])}}" download>دانلود فایل اکسل</a>
+            <a class="btn btn-default" style="margin: 5px;" href="{{route('serviceBuyersExcel', ['gradeId' => $gradeId])}}" download>دانلود فایل اکسل</a>
 
             <table>
                 <tr>
                     <td>ردیف</td>
-                    <td>نام</td>
-                    <td>پایه تحصیلی</td>
+                    <td>نام پروژه</td>
+                    <td>عینی/غیرعینی</td>
+                    <td>خریدار</td>
                     <td>تاریخ</td>
-                    @if(!$physical)
-                        <td>فایل محتوا</td>
-                        <td>وضعیت تایید فایل محتوا</td>
-                    @endif
+                    <td>فایل محتوا</td>
+                    <td>وضعیت تایید فایل محتوا</td>
                     <td>وضعیت انجام</td>
                     <td>تعداد ستاره های داده شده</td>
                     <td>عملیات</td>
@@ -68,13 +66,14 @@
                 <?php $i = 1 ?>
                 @foreach($buyers as $buyer)
 
-                    <tr class="myBox {{($buyer["status"]) ? 'confirmed' : 'undone'}} grade_{{$buyer["grade"]}}">
+                    <tr class="myBox {{($buyer["status"]) ? 'confirmed' : 'undone'}} proj_{{$buyer["service_id"]}}">
                         <td>{{$i}}</td>
-                        <td>{{$buyer["name"]}}</td>
-                        <td>{{$buyer["gradeName"]}}</td>
+                        <td>{{$buyer["title"]}}</td>
+                        <td>{{($buyer["physical"]) ? "عینی" : "غیرعینی"}}</td>
+                        <td>{{$buyer["user_name"]}}</td>
                         <td>{{$buyer["date"] . '     ساعت:     ' . $buyer["time"]}}</td>
 
-                        @if(!$physical)
+                        @if(!$buyer["physical"])
 
                             <td>
                                 @if($buyer["file"] != null)
@@ -108,16 +107,16 @@
                         </td>
                         <td>
                             @if(!$buyer["status"])
-                                <button onclick="confirmJob('{{$star}}', '{{$buyer["id"]}}', '{{$id}}')" class="btn btn-success">تاییده انجام کار</button>
-                                <button onclick="deleteJob('{{$buyer["id"]}}', '{{$id}}')" class="btn btn-danger">بازپس گیری خدمت</button>
+                                <button onclick="confirmJob('{{$buyer["star"]}}', '{{$buyer["id"]}}', '{{$buyer["service_id"]}}')" class="btn btn-success">تاییده انجام کار</button>
+                                <button onclick="deleteJob('{{$buyer["id"]}}', '{{$buyer["service_id"]}}')" class="btn btn-danger">بازپس گیری خدمت</button>
 
-                                @if($buyer["file"] != null && !$physical &&
+                                @if($buyer["file"] != null && !$buyer["physical"] &&
                                     ($buyer["file_status"] == 0 || $buyer["file_status"] == -1)
                                 )
                                     <button id="accept_file_{{$buyer["sbId"]}}" class="btn btn-primary" onclick="setFileStatus('{{$buyer["sbId"]}}', 1)">تایید محتوا</button>
                                 @endif
 
-                                @if($buyer["file"] != null && !$physical &&
+                                @if($buyer["file"] != null && !$buyer["physical"] &&
                                     ($buyer["file_status"] == 0 || $buyer["file_status"] == 1)
                                 )
                                     <button id="reject_file_{{$buyer["sbId"]}}" class="btn btn-warning" onclick="setFileStatus('{{$buyer["sbId"]}}', -1)">رد محتوا</button>
@@ -194,7 +193,10 @@
 
         }
 
-        function filter(val1, val2) {
+        function filter() {
+
+            var val1 = $("#filter").val();
+            var val2 = $("#projFilter").val();
 
             var counter = 0;
 
@@ -203,7 +205,7 @@
                 if(
                     (val1 == 0 || (val1 == 1 && $(this).hasClass('confirmed')) ||
                         (val1 == -1 && $(this).hasClass('undone'))) &&
-                    (val2 == -1 || $(this).hasClass('grade_' + val2))
+                    (val2 == -1 || $(this).hasClass('proj_' + val2))
                 ) {
                     $(this).removeClass('hidden');
                     counter++;

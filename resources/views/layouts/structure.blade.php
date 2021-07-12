@@ -347,7 +347,7 @@
 
                             <li class="nav-item  ">
                                 <a href="{{route('productProjectReport')}}" class="nav-link">
-                                    <span class="title">پروژه/کالا/خدمت گزارش</span>
+                                    <span class="title">پروژه/کالا/همیاری گزارش</span>
                                 </a>
                             </li>
 
@@ -359,7 +359,7 @@
 
                             <li class="nav-item  ">
                                 <a href="{{route('serviceReport')}}" class="nav-link">
-                                    <span class="title">گزارش گیری خدمات</span>
+                                    <span class="title">گزارش گیری پروژه های همیاری</span>
                                 </a>
                             </li>
 

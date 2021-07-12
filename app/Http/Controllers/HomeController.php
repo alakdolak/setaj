@@ -1428,9 +1428,15 @@ class HomeController extends Controller {
                 $time = getToday()["time"];
 
                 $time = (int)$time;
+//                if (
+//                    ($time >= 1000 && $time < 1005) ||
+//                    ($time >= 1005 && $time <= 1010 && count($openProjects) > 1)
+//                )
+//                    return "nok8";
+
                 if (
-                    ($time >= 1000 && $time < 1005) ||
-                    ($time >= 1005 && $time <= 1010 && count($openProjects) > 1)
+                    ($time >= 1650 && $time < 1605) ||
+                    ($time >= 1605 && $time <= 1610 && count($openProjects) > 1)
                 )
                     return "nok8";
 
