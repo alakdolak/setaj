@@ -21,8 +21,13 @@
         <center>
 
             <div style="margin: 10px">
+                <span>از چند رو قبل رو می خوای؟</span>
+                <input type="number" min="0" id="preFrom">
+            </div>
+
+            <div style="margin: 10px">
                 <span>تا چند رو قبل رو می خوای؟</span>
-                <input type="number" min="0" id="pre">
+                <input type="number" min="0" id="preTo">
             </div>
             <div style="margin: 10px">
                 <button onclick="getData()" class="btn btn-primary">تایید و نمایش نتایج</button>
@@ -49,8 +54,9 @@
 
         function getData() {
 
-            var pre = $("#pre").val();
-            if(pre === "") {
+            var preFrom = $("#preFrom").val();
+            var preTo = $("#preTo").val();
+            if(preFrom === "" || preTo === "") {
                 alert("لطفا فیلد لازم را پر نمایید.");
                 return;
             }
@@ -62,7 +68,8 @@
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 },
                 data: {
-                    pre: pre,
+                    preFrom: preFrom,
+                    preTo: preTo,
                     gradeId: '{{$gradeId}}'
                 },
                 success: function (res) {

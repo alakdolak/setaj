@@ -483,6 +483,12 @@ class HomeController extends Controller {
                 ((!$canAddFile && $sb->file != null) || $sb->file_status != 0))
                 $fileStatus = $sb->file_status;
 
+            if ($canBuy && (
+                    $service->start_buy > $date ||
+                    ($service->start_buy == $date && $service->buy_time > $time)
+                )
+            )
+                $canBuy = false;
         }
         else
             $oldBuy = false;
@@ -912,7 +918,7 @@ class HomeController extends Controller {
             foreach ($product->tags as $tag)
                 $str .= $tag->id . '-';
 
-            $tmp = DB::select("select count(*) as count_, min(price) as minPrice, min(star) as minStar from product where " .
+            $tmp = DB::select("select count(*) as count_, max(price) as maxPrice, max(star) as maxStar from product where " .
                 "id not in (select product_id from transactions where 1) and grade_id = " .
                 $grade . " and project_id = " . $product->id . " and hide = false group by(project_id)");
 
@@ -921,18 +927,18 @@ class HomeController extends Controller {
             if($tmp != null && count($tmp) > 0) {
                 $tmp = $tmp[0];
                 $reminder = $tmp->count_;
-                $product->star = $tmp->minStar;
-                $product->price = $tmp->minPrice;
+                $product->star = $tmp->maxStar;
+                $product->price = $tmp->maxPrice;
                 $product->canBuy = (Auth::check() && $reminder > 0) ? true : false;
                 $product->owner = "ظرفیت باقی مانده: " . $reminder;
             }
             else {
 
-                $tmp = DB::select("select max(price) as maxPrice, max(star) as maxStar from product where " .
+                $tmp = DB::select("select min(price) as minPrice, min(star) as minStar from product where " .
                     "grade_id = " . $grade . " and project_id = " . $product->id . " and hide = false group by(project_id)")[0];
 
-                $product->star = $tmp->maxStar;
-                $product->price = $tmp->maxPrice;
+                $product->star = $tmp->minStar;
+                $product->price = $tmp->minPrice;
                 $product->canBuy = false;
                 $product->owner = "ظرفیت باقی مانده: 0";
             }
@@ -1086,7 +1092,7 @@ class HomeController extends Controller {
             $product = DB::select(
                 ' select * from product where physical = 0 and project_id = ' . $projectId .
                 ' and grade_id = ' . $gradeId . ' and hide = false ' .
-                'and id not in (select product_id from transactions) order by price asc limit 0, 1');
+                'and id not in (select product_id from transactions) order by price desc limit 0, 1');
 
             if($product == null || count($product) == 0)
                 return "nok2";
@@ -1111,7 +1117,7 @@ class HomeController extends Controller {
             if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= $totalBuys)
                 return "nok7";
 
-            $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(t.created_at, interval 1 day) and p.id = t.product_id and t.user_id = " . $user->id);
+            $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(CURDATE(), interval 1 day) and p.id = t.product_id and t.user_id = " . $user->id);
 
             if(count($buys) > 0) {
                 $time = (int)$time;
@@ -1411,7 +1417,7 @@ class HomeController extends Controller {
                 return "nok4";
 
             $capacity = getProjectLimit($user->grade_id);
-            $openProjects = DB::select("select p.physical, pb.id from project_buyers pb, project p where pb.created_at > date_sub(pb.created_at, interval 1 day) and pb.status = false and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
+            $openProjects = DB::select("select p.physical, pb.id from project_buyers pb, project p where pb.created_at > date_sub(CURDATE(), interval 1 day) and pb.status = false and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
 
             if($capacity - count($openProjects) <= 0)
                 return "nok6";
@@ -1495,7 +1501,7 @@ class HomeController extends Controller {
             if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= $totalBuys)
                 return "nok7";
 
-            $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(t.created_at, interval 1 day ) and p.id = t.product_id and t.user_id = " . $user->id);
+            $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(CURDATE(), interval 1 day ) and p.id = t.product_id and t.user_id = " . $user->id);
 
             if(count($buys) > 0) {
 

@@ -302,7 +302,7 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
     Route::post('addProduct/{gradeId?}', ['as' => 'addProduct', 'uses' => 'OperatorController@addProduct']);
 
 
-    Route::get('citizensReport', ['as' => 'citizensReport', 'uses' => 'OperatorController@citizensReport']);
+    Route::get('citizensReport/{gradeId?}', ['as' => 'citizensReport', 'uses' => 'OperatorController@citizensReport']);
 
     Route::get('healthReport/{gradeId?}', ['as' => 'healthReport', 'uses' => 'OperatorController@healthReport']);
 

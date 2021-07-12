@@ -17,6 +17,17 @@
         }
     </style>
 
+    <script src= {{URL::asset("js/calendar.js") }}></script>
+    <script src= {{URL::asset("js/calendar-setup.js") }}></script>
+    <script src= {{URL::asset("js/calendar-fa.js") }}></script>
+    <script src= {{URL::asset("js/jalali.js") }}></script>
+    <link rel="stylesheet" href="{{URL::asset('css/standalone.css')}}">
+    <link rel="stylesheet" href= {{URL::asset("css/calendar-green.css") }}>
+
+    <script>
+        var items = {!! json_encode($items) !!} ;
+    </script>
+
 @stop
 
 @section('content')
@@ -25,26 +36,61 @@
 
         <center>
 
-            <h3><span>تعداد کل</span><span>&nbsp;</span><span>{{count($items)}}</span></h3>
+            <div class="col-xs-12" style="margin: 30px; direction: rtl">
+
+                <div style="display: inline-block; width: auto; margin-right: 10%; margin-left: 5%; float: right;">
+                    <span style="float: right; margin-top: 6%;">    از تاریخ:   </span>
+                    <label style="">
+                        <input type="button"
+                               style="border: none;  margin-top: 5%; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;"
+                               id="date_btn_Start">
+                    </label>
+                    <input type="text" style="max-width: 200px" class="form-detail"
+                           id="date_input_start" onchange="start(); doFilter();" readonly>
+
+                    <script>
+                        Calendar.setup({
+                            inputField: "date_input_start",
+                            button: "date_btn_Start",
+                            ifFormat: "%Y/%m/%d",
+                            dateType: "jalali"
+                        });
+                    </script>
+                </div>
+
+                <div style="display: inline-block; width: auto; margin-left: 5%; float: right">
+                    <span style="float: right; margin-top: 6%;">تا تاریخ:</span>
+                    <label style="">
+                        <input type="button"
+                               style="border: none;  margin-top: 5%; width: 30px;  height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;"
+                               id="date_btn_end">
+                    </label>
+                    <input type="text" style="max-width: 200px" class="form-detail"
+                           id="date_input_end" onchange="end(); doFilter();" readonly>
+
+                    <script>
+                        Calendar.setup({
+                            inputField: "date_input_end",
+                            button: "date_btn_end",
+                            ifFormat: "%Y/%m/%d",
+                            dateType: "jalali"
+                        });
+                    </script>
+                </div>
+
+            </div>
+
+            <h3><span>تعداد کل</span><span>&nbsp;</span><span id="totalCount">{{count($items)}}</span></h3>
 
             <div class="row">
                 <p>فیلتر براساس</p>
-                <center class="col-xs-12 col-md-6">
-                    <label for="gradeFilter">پایه تحصیلی</label>
-                    <select onchange="doFilter()" id="gradeFilter">
-                        <option value="-1">همه</option>
-                        @foreach($grades as $grade)
-                            <option value="{{$grade->id}}">{{$grade->name}}</option>
-                        @endforeach
-                    </select>
-                </center>
 
-                <center class="col-xs-12 col-md-6">
+                <center class="col-xs-12 col-md-12">
                     <label for="projFilter">پروژه</label>
                     <select onchange="doFilter()" id="projFilter">
                         <option value="-1">همه</option>
                         @foreach($all as $itr)
-                            <option value="{{$itr->id}}">{{$itr->title}}</option>
+                            <option value="{{$itr['id']}}">{{$itr['title']}}</option>
                         @endforeach
                     </select>
                 </center>
@@ -56,7 +102,6 @@
                         <tr>
                             <th>ردیف</th>
                             <th>نام کاربر</th>
-                            <th>پایه تحصیلی</th>
                             <th>نام پروژه</th>
                             <th>دسته پروژه</th>
                             <th>امتیاز کسب شده</th>
@@ -70,10 +115,9 @@
                     <tbody>
                         <?php $i = 1; ?>
                         @foreach($items as $item)
-                            <tr class="tr proj_{{$item->cId}} grade_{{$item->gradeId}}">
+                            <tr id="myTr_{{$item->id}}"  class="tr proj_{{$item->cId}} grade_{{$item->gradeId}}">
                                 <td>{{$i}}</td>
                                 <td>{{$item->owner}}</td>
-                                <td>{{$item->grade}}</td>
                                 <td>{{$item->title}}</td>
                                 <td>{{$item->tag}}</td>
                                 <td id="point_{{$item->id}}">{{$item->point}}</td>
@@ -130,6 +174,11 @@
         var selectedId = -1;
         var selectedTotalPoint = -1;
 
+        $(document).ready(function () {
+            $("#sample_1_length").addClass('hidden');
+            $("select[name='sample_1_length']").val(-1).change().addClass('hidden');
+        });
+
         function changePoint(currPoint, totalPoint, id) {
             selectedId = id;
             selectedTotalPoint = totalPoint;
@@ -170,21 +219,19 @@
 
         function doFilter() {
 
-            var grade = $("#gradeFilter").val();
             var proj = $("#projFilter").val();
 
             $(".tr").addClass("hidden").each(function () {
 
-                if(
-                    (grade == -1 || $(this).hasClass("grade_" + grade)) &&
-                    (proj == -1 || $(this).hasClass("proj_" + proj))
-                )
+                if(proj == -1 || $(this).hasClass("proj_" + proj))
                     $(this).removeClass("hidden");
-
             });
 
+            doChangeDateFilter();
         }
 
     </script>
+
+    <script src="{{\Illuminate\Support\Facades\URL::asset("js/dateFilter.js")}}"></script>
 
 @stop

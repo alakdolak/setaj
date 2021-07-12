@@ -287,18 +287,39 @@ class OperatorController extends Controller {
         return view('report.health', ['points' => $usersOut, 'tags' => $tags]);
     }
 
-    public function citizensReport() {
+    public function citizensReport($gradeId = -1) {
+
+        if($gradeId == -1)
+            return view('report.usersReport', ['grades' => Grade::all(),
+                "path" => route("citizensReport")]);
 
         $items = DB::select("select b.created_at, b.description, b.point, c.id as cId, c.title, c.point as totalPoint, " .
-            "b.id, g.name as grade, t.name as tag, g.id as gradeId, concat(u.first_name, ' ', u.last_name) as owner ".
-            "from citizen_buyers b, tag t, citizen c, users u, grade g where c.id = b.project_id " .
-            "and t.id = c.tag_id and b.user_id = u.id and u.grade_id = g.id order by b.id desc");
+            "b.id, t.name as tag, u.grade_id as gradeId, concat(u.first_name, ' ', u.last_name) as owner ".
+            "from citizen_buyers b, tag t, citizen c, users u where c.id = b.project_id " .
+            "and t.id = c.tag_id and b.user_id = u.id and u.grade_id = " . $gradeId . " order by b.id desc");
 
-        foreach ($items as $item)
+        $uniques = [];
+        $counter = 0;
+        foreach ($items as $item) {
             $item->date = MiladyToShamsi('', explode('-', explode(' ', $item->created_at)[0]));
 
+            $allowAdd = true;
+            foreach ($uniques as $unique) {
+                if($unique["id"] == $item->cId) {
+                    $allowAdd = false;
+                    break;
+                }
+            }
+
+            if($allowAdd)
+                $uniques[$counter++] = [
+                    "id" => $item->cId,
+                    "title" => $item->title
+                ];
+        }
+
         return view('operator.citizensReport', ['items' => $items, 'grades' => Grade::all(),
-            "all" => Citizen::select('id', 'title')->get()]);
+            "all" => $uniques]);
     }
 
     public function changePoint() {

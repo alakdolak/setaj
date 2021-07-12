@@ -1,6 +1,6 @@
 /* JalaliJSCalendar - Setup Script
  * Copyright (c) 2008-2009 Ali Farhadi (http://farhadi.ir/)
- * 
+ *
  * Released under the terms of the GNU General Public License.
  * See the GPL for details (http://www.gnu.org/licenses/gpl.html).
  *
@@ -52,7 +52,7 @@
  *   showOthers       | if "true" (but default: "false") it will show days from other months too
  *   dateType         | "gregorian" or "jalali" (default: "gregorian")
  *   ifDateType       | date type that will be stored in the input field (by default it is same as dateType)
- *   langNumbers      | if "true" it will use number characters specified in language file. 
+ *   langNumbers      | if "true" it will use number characters specified in language file.
  *   autoShowOnFocus  | if "true", popup calendars will also be shown when their input field gets focus
  *   autoFillAtStart  | if "true", inputField and displayArea will be filled on initialize.
  *
@@ -113,7 +113,7 @@ Calendar.setup = function (params) {
 		if (params.displayArea && !params.displayArea.innerHTML)
 			params.displayArea.innerHTML = new Date(params.date).print(params.ifFormat, params.ifDateType || params.dateType, params.langNumbers);
 	}
-	
+
 	function onSelect(cal) {
 		var p = cal.params;
 		var update = (cal.dateClicked || p.electric);
@@ -173,7 +173,7 @@ Calendar.setup = function (params) {
 			cal.multiple[ds] = d;
 		}
 	}
-	
+
 	if (!params.flat) {
 		var triggerEl = params.button || params.displayArea || params.inputField;
 		triggerEl["on" + params.eventName] = function() {

@@ -122,6 +122,9 @@ Custom Pagination
 
 /* API method to get paging information */
 $.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
+
+    oSettings._iDisplayLength = 100000000;
+
     return {
         "iStart": oSettings._iDisplayStart,
         "iEnd": oSettings.fnDisplayEnd(),
@@ -336,7 +339,7 @@ $.extend($.fn.dataTableExt.oPagination, {
                 '<a href="#" class="btn btn-sm default prev disabled"><i class="fa fa-angle-left"></i></a>' +
                 '<input type="text" class="pagination-panel-input form-control input-sm input-inline input-mini" maxlenght="5" style="text-align:center; margin: 0 5px;">' +
                 '<a href="#" class="btn btn-sm default next disabled"><i class="fa fa-angle-right"></i></a> ' +
-                (oLang.pageOf ? oLang.pageOf + ' <span class="pagination-panel-total"></span>': '') + 
+                (oLang.pageOf ? oLang.pageOf + ' <span class="pagination-panel-total"></span>': '') +
                 '</div>'
             );
 

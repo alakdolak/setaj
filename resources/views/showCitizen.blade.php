@@ -51,7 +51,7 @@
                 @if(count($project->pics) > 0)
                     <div style="background-image: url('{{$project->pics[0]}}');" id="pr_mainPic" class="pr_bigPic"></div>
                 @else
-                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("productPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_bigPic"></div>
+                    <div style="background-image: url('{{\Illuminate\Support\Facades\URL::asset("citizenPic/defaultPic.png")}}');" id="pr_mainPic" class="pr_bigPic"></div>
                 @endif
             </div>
 

@@ -156,16 +156,19 @@ class ReportController extends Controller {
     public function physicalReportAPI(Request $request) {
 
         $request->validate(
-            ["pre" => "required|integer|min:1"],
+            ["preFrom" => "required|integer|min:1"],
+            ["preTo" => "required|integer|min:1"],
             ["gradeId" => "required|integer|min:1"]
         );
 
-        $pre = makeValidInput($request["pre"]);
+        $preFrom = makeValidInput($request["preFrom"]);
+        $preTo = makeValidInput($request["preTo"]);
         $gradeId = makeValidInput($request["gradeId"]);
 
         $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
             "from project_buyers pb, project p, users u where p.physical = true and p.id = pb.project_id" .
-            " and pb.user_id = u.id and pb.created_at >= date_sub(pb.created_at, interval " . $pre . " day) and " .
+            " and pb.user_id = u.id and pb.created_at >= date_sub(CURDATE(), interval " . $preFrom . " day) and " .
+            "pb.created_at <= date_sub(CURDATE(), interval " . $preTo . " day) and " .
             "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
         );
 
@@ -180,7 +183,8 @@ class ReportController extends Controller {
 
         $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
             "from project_buyers pb, project p, users u where p.physical = false and p.id = pb.project_id" .
-            " and pb.user_id = u.id and pb.created_at >= date_sub(pb.created_at, interval " . $pre . " day) and " .
+            " and pb.user_id = u.id and pb.created_at >= date_sub(pb.created_at, interval " . $preFrom . " day) and " .
+            "pb.created_at <= date_sub(pb.created_at, interval " . $preTo . " day) and " .
             "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
         );
 

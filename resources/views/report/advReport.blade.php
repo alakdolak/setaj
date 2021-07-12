@@ -19,7 +19,9 @@
     <script src= {{URL::asset("js/jalali.js") }}></script>
     <link rel="stylesheet" href="{{URL::asset('css/standalone.css')}}">
     <link rel="stylesheet" href= {{URL::asset("css/calendar-green.css") }}>
-
+    <script>
+        var items = {!! json_encode($projects) !!} ;
+    </script>
 @stop
 
 @section('content')
@@ -48,7 +50,7 @@
                                id="date_btn_Start">
                     </label>
                     <input type="text" style="max-width: 200px" class="form-detail"
-                           id="date_input_start" onchange="start()" readonly>
+                           id="date_input_start" onchange="start(); filter($('#mySelect').val());" readonly>
 
                     <script>
                         Calendar.setup({
@@ -68,7 +70,7 @@
                                id="date_btn_end">
                     </label>
                     <input type="text" style="max-width: 200px" class="form-detail"
-                           id="date_input_end" onchange="end()" readonly>
+                           id="date_input_end" onchange="end(); filter($('#mySelect').val());" readonly>
 
                     <script>
                         Calendar.setup({
@@ -133,6 +135,8 @@
 
     </div>
 
+    <script src="{{\Illuminate\Support\Facades\URL::asset("js/dateFilter.js")}}"></script>
+
     <script>
 
         function setAdvStatus(pbId, status) {
@@ -183,125 +187,8 @@
 
             }
 
-            doChange();
-
-        }
-
-        var start_time;
-        var examsStartValue = [];
-        var examsEndValue = [];
-        var stateValue = [];
-        var end_time;
-        var exams = {!! json_encode($projects) !!} ;
-
-        for (j = 0; j < exams.length; j++) {
-            examsEndValue[j] = 1;
-            examsStartValue[j] = 1;
-            stateValue[j] = 1;
-        }
-
-        function start() {
-            start_time = document.getElementById('date_input_start').value;
-            start_time = start_time.split('/');
-            changeStartTime()
-        }
-
-        function end() {
-            end_time = document.getElementById('date_input_end').value;
-            end_time = end_time.split('/');
-            changeEndTime();
-        }
-
-        function changeStartTime() {
-
-            for (i = 0; i < exams.length; i++) {
-
-                day = parseInt((exams[i].date.split("-")[2]));
-                month = parseInt((exams[i].date.split("-")[1]));
-                year = parseInt((exams[i].date.split("-")[0]));
-
-                if (year == start_time[0]) {
-                    if (month == start_time[1]) {
-                        if (day >= start_time[2]) {
-                            examsStartValue[i] = 1;
-                        }
-                        else {
-                            examsStartValue[i] = 0;
-                        }
-                    }
-                    else if (month > start_time[1]) {
-                        examsStartValue[i] = 1;
-                    }
-                    else {
-                        examsStartValue[i] = 0;
-                    }
-                }
-                else if (year > start_time[0]) {
-                    examsStartValue[i] = 1;
-                }
-                else {
-                    examsStartValue[i] = 0;
-                }
-            }
-
-            filter($("#mySelect").val());
-        }
-
-        function changeEndTime() {
-            for (i = 0; i < exams.length; i++) {
-
-                day = parseInt((exams[i].date.split("-")[2]));
-                month = parseInt((exams[i].date.split("-")[1]));
-                year = parseInt((exams[i].date.split("-")[0]));
-
-                if (year == end_time[0]) {
-                    if (month == end_time[1]) {
-                        if (day <= end_time[2]) {
-                            examsEndValue[i] = 1;
-                        }
-                        else {
-                            examsEndValue[i] = 0;
-                        }
-                    }
-                    else if (month < end_time[1]) {
-                        examsEndValue[i] = 1;
-                    }
-                    else {
-                        examsEndValue[i] = 0;
-                    }
-                }
-                else if (year < end_time[0]) {
-                    examsEndValue[i] = 1;
-                }
-                else {
-                    examsEndValue[i] = 0;
-                }
-            }
-
-            filter($("#mySelect").val());
-        }
-
-        function doChange() {
-
-            var x = 0;
-
-            for (i = 0; i < exams.length; i++) {
-
-                if(!$("#myTr_" + exams[i].id).hasClass('hidden')) {
-
-                    if (examsStartValue[i] + examsEndValue[i] + stateValue[i] != 3) {
-                        $("#myTr_" + exams[i].id).addClass("hidden");
-                    }
-                    else {
-                        x++;
-                    }
-                }
-
-            }
-
-            $("#totalCount").empty().append(x);
+            doChangeDateFilter();
         }
 
     </script>
-
 @stop
