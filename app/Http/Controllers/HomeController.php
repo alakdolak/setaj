@@ -106,7 +106,7 @@ class HomeController extends Controller {
         }
 
 
-        $myProducts = DB::select("select * from product where user_id = " . $uId);
+        $myProducts = DB::select("select * from product where user_id = " . $uId . " order by id desc");
 
         foreach ($myProducts as $myBuy) {
 
@@ -149,7 +149,7 @@ class HomeController extends Controller {
 
 
         $myProjects = DB::select("select p.*, pb.status from project p, project_buyers pb where " .
-            "p.id = pb.project_id and pb.user_id = " . $uId);
+            "p.id = pb.project_id and pb.user_id = " . $uId . " order by id desc");
 
         foreach ($myProjects as $myProject) {
 
@@ -187,7 +187,7 @@ class HomeController extends Controller {
 
 
         $myCitizens = DB::select("select p.* from citizen p, citizen_buyers pb where " .
-            "p.id = pb.project_id and pb.user_id = " . $uId);
+            "p.id = pb.project_id and pb.user_id = " . $uId . " order by id desc");
 
         foreach ($myCitizens as $myProject) {
 
@@ -220,7 +220,7 @@ class HomeController extends Controller {
 
 
         $myServices = DB::select("select s.id, sb.status, sb.star myStar, s.star, s.title from service_buyer sb, service s where " .
-            " sb.service_id = s.id and sb.user_id = " . Auth::user()->id);
+            " sb.service_id = s.id and sb.user_id = " . Auth::user()->id . " order by id desc");
 
         foreach ($myServices as $myService) {
 
@@ -546,6 +546,8 @@ class HomeController extends Controller {
             }
 
             $project->week = floor(($mainDiff - $diff) / 7);
+            if($project->week == 2 && $project->start_reg != "14000417")
+                $project->week = 3;
 
             $tmpPic = ProjectPic::whereProjectId($project->id)->first();
 
@@ -904,6 +906,7 @@ class HomeController extends Controller {
                 }
             }
 
+            $product->name = $product->name . ' ها';
             $product->week = floor(($mainDiff - $diff) / 7);
             $tmpPic = ProjectPic::whereProjectId($product->id)->first();
 
@@ -1030,7 +1033,7 @@ class HomeController extends Controller {
             'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
             ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId .
             ' and (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
-            ' p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.price asc');
+            ' p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.price desc');
 
         if($products == null || count($products) == 0)
             return Redirect::route("showAllProducts");
@@ -1122,8 +1125,8 @@ class HomeController extends Controller {
             if($buys > 0) {
                 $time = (int)$time;
                 if (
-                    ($time >= 1200 && $time < 1205) ||
-                    ($time >= 1205 && $time <= 1210 && $buys > 1)
+                    ($time >= 1200 && $time < 1204) ||
+                    ($time >= 1204 && $time <= 1209 && $buys > 1)
                 )
                     return "nok8";
             }
@@ -1428,15 +1431,9 @@ class HomeController extends Controller {
                 $time = getToday()["time"];
 
                 $time = (int)$time;
-//                if (
-//                    ($time >= 1000 && $time < 1005) ||
-//                    ($time >= 1005 && $time <= 1010 && count($openProjects) > 1)
-//                )
-//                    return "nok8";
-
                 if (
-                    ($time >= 1700 && $time < 1705) ||
-                    ($time >= 1705 && $time <= 1710 && count($openProjects) > 1)
+                    ($time >= 1600 && $time < 1604) ||
+                    ($time >= 1604 && $time <= 1609 && count($openProjects) > 1)
                 )
                     return "nok8";
 
@@ -1508,7 +1505,7 @@ class HomeController extends Controller {
             $doneProjects = ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count();
             $canBuyItems = $doneProjects - $totalBuys;
 
-            if($canBuyItems > 0)
+            if($canBuyItems <= 0)
                 return "nok7";
 
             $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(CURDATE(), interval 2 day) and p.id = t.product_id and t.user_id = " . $user->id);
@@ -1517,8 +1514,8 @@ class HomeController extends Controller {
 
                 $time = (int)$time;
                 if (
-                    ($time >= 1200 && $time < 1205) ||
-                    ($time >= 1205 && $time <= 1210 && count($buys) > 1)
+                    ($time >= 1200 && $time < 1204) ||
+                    ($time >= 1204 && $time <= 1209 && count($buys) > 1)
                 )
                     return "nok8";
 

@@ -279,7 +279,11 @@
                                             @if($buy->buyer == "هنوز به فروش نرسیده است.")
                                                 <div style="font-size: 0.9em">{{$buy->buyer}}</div>
                                             @else
-                                                <div style="font-size: 0.9em">خریدار: {{$buy->buyer}}</div>
+                                                @if($buy->physical)
+                                                    <div style="font-size: 0.9em">خریدار: {{$buy->buyer}}</div>
+                                                @else
+                                                    <div style="font-size: 0.9em">{{$buy->name}}</div>
+                                                @endif
                                             @endif
                                         </div>
 
@@ -341,7 +345,12 @@
                                         <div class="sh_mainBox">
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
                                             <div class="sh_descript">
-                                                <div class="sh_descriptRow sh_title">{{$buy->name}}</div>
+
+                                                @if($buy->physical)
+                                                    <div class="sh_descriptRow sh_title">{{$buy->name}}</div>
+                                                @else
+                                                    <div class="sh_descriptRow sh_title">{{$buy->name}} ها</div>
+                                                @endif
 
                                                 <div class="sh_descriptRow sh_priceBox">
                                                     <div class="priceIcons coinIcon"></div>
@@ -351,6 +360,11 @@
                                                 <div class="sh_descriptRow sh_priceBox">
                                                     <div class="priceIcons starIcon"></div>
                                                     <div class="priceText">ستاره دریافتی: {{$buy->star}} </div>
+                                                </div>
+
+                                                <div class="sh_descriptRow sh_priceBox">
+                                                    <div class="priceIcons calenderIcon"></div>
+                                                    <div class="priceText">تاریخ خرید: {{$buy->date}} </div>
                                                 </div>
 
 {{--                                                <div class="sh_descriptRow sh_priceBox">--}}
@@ -364,7 +378,11 @@
                                             </div>
 
                                             <div class="sh_ownerBox_finish">
-                                                <div style="font-size: 0.9em">فروشنده: {{$buy->seller}}</div>
+                                                @if($buy->physical)
+                                                    <div style="font-size: 0.9em">فروشنده: {{$buy->seller}}</div>
+                                                @else
+                                                    <div style="font-size: 0.9em">{{$buy->name}} ها</div>
+                                                @endif
                                             </div>
                                         </div>
 

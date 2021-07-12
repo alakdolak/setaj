@@ -73,7 +73,7 @@
             <div class="pr_advertiseBox col-xs-12">
                 <div class="pr_iconesBox" style="margin-bottom: 15px">
                     <div class="pr_icons movieIcon"></div>
-                    <div>محتوای فعلی شما:</div>
+                    <div>محتوای ارسالی شما:</div>
                 </div>
                 <div class="pr_advertise col-xs-12">
                     <?php

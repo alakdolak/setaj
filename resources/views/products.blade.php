@@ -98,7 +98,11 @@
                                     </div>
                                 @else
                                     <div class="sh_ownerBox_finish">
-                                        <div>تولیدکننده: {{$product->owner}}</div>
+                                        @if($product->physical)
+                                            <div>تولیدکننده: {{$product->owner}}</div>
+                                        @else
+                                            <div>{{$product->owner}}</div>
+                                        @endif
                                     </div>
                                 @endif
                             </div>

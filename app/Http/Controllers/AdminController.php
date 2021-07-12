@@ -427,13 +427,12 @@ class AdminController extends Controller {
 
             try {
                 ProjectBuyers::destroy(makeValidInput($_POST["id"]));
-                echo "ok";
-                return;
+                return "ok";
             }
             catch (\Exception $x) {}
         }
 
-        echo "nok";
+        return "nok";
     }
 
 

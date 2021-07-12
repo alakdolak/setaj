@@ -20,6 +20,18 @@
             border-right: 25px solid #f1f1f1;
             border-left: 25px solid #f1f1f1;
         }
+
+        /*css of modal*/
+        .modal-body > .close {
+            float: left;
+        }
+
+        .alertDiv {
+            background-color: red;
+            color: white;
+            font-weight: 500;
+        }
+
     </style>
 @stop
 

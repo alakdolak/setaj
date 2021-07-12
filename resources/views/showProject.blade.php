@@ -80,6 +80,7 @@
                 @if(count($project->attach) > 0)
                     <a style="display: block" download href="{{route('downloadAllProjectAttaches', ["pId" => $project->id])}}" class="shopBtn downloadBtn">دانلود آموزش</a>
                 @endif
+
             @endif
 
             @if($advStatus == 1)
@@ -106,7 +107,7 @@
             <div class="pr_advertiseBox col-xs-12">
                 <div class="pr_iconesBox" style="margin-bottom: 15px">
                     <div class="pr_icons movieIcon"></div>
-                    <div>تبلیغ فعلی شما:</div>
+                    <div>تبلیغ ارسالی شما:</div>
                 </div>
                 <div class="pr_advertise col-xs-12">
                     <?php
@@ -151,7 +152,7 @@
             <div class="pr_advertiseBox col-xs-12">
                 <div class="pr_iconesBox" style="margin-bottom: 15px">
                     <div class="pr_icons movieIcon"></div>
-                    <div>محتوای فعلی شما:</div>
+                    <div>محتوای ارسالی شما:</div>
                 </div>
                 <div class="pr_advertise col-xs-12">
                     <?php
@@ -426,6 +427,10 @@
                         }
                         else if(res === "nok9") {
                             $("#alertText").empty().append("<div>ظرفیت خرید پروژه های عینی شما به پایان رسیده و شما فقط می‌توانید پروژه غیرعینی خریداری کنید</div>");
+                        }
+                        else if(res === "nok8") {
+                            // $("#alertText").empty().append("<div>برای دریافت پروژه دوم می بایست از ساعت 10:05 و برای دریافت پروژه سوم از ساعت 10:10 اقدام فرمایید</div>");
+                            $("#alertText").empty().append("<div>برای دریافت پروژه دوم می بایست از ساعت 16:05 و برای دریافت پروژه سوم از ساعت 16:10 اقدام فرمایید</div>");
                         }
                         else if(res === "nok3") {
                             $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه را ندارید</div>");
