@@ -214,6 +214,7 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
     Route::post('deleteProject', ['as' => 'deleteProject', 'uses' => 'OperatorController@deleteProject']);
 
 
+    Route::post("buyCitizenForAll", ["as" => "buyCitizenForAll", "uses" => "OperatorController@buyCitizenForAll"]);
 
     Route::get('citizens', ['as' => 'citizens', 'uses' => 'OperatorController@citizens']);
 

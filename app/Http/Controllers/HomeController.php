@@ -1117,13 +1117,13 @@ class HomeController extends Controller {
             if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= $totalBuys)
                 return "nok7";
 
-            $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(CURDATE(), interval 1 day) and p.id = t.product_id and t.user_id = " . $user->id);
+            $buys = DB::select("select count(*) as countNum from transactions t, product p where t.created_at > date_sub(CURDATE(), interval 1 day) and p.id = t.product_id and t.user_id = " . $user->id)[0]->countNum;
 
-            if(count($buys) > 0) {
+            if($buys > 0) {
                 $time = (int)$time;
                 if (
                     ($time >= 1200 && $time < 1205) ||
-                    ($time >= 1205 && $time <= 1210 && count($buys) > 1)
+                    ($time >= 1205 && $time <= 1210 && $buys > 1)
                 )
                     return "nok8";
             }
@@ -1417,7 +1417,8 @@ class HomeController extends Controller {
                 return "nok4";
 
             $capacity = getProjectLimit($user->grade_id);
-            $openProjects = DB::select("select p.physical, pb.id from project_buyers pb, project p where pb.created_at > date_sub(CURDATE(), interval 1 day) and pb.status = false and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
+//            pb.created_at > date_sub(CURDATE(), interval 1 day) and
+            $openProjects = DB::select("select p.physical, pb.id from project_buyers pb, project p where pb.status = false and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
 
             if($capacity - count($openProjects) <= 0)
                 return "nok6";
@@ -1433,7 +1434,7 @@ class HomeController extends Controller {
                 )
                     return "nok8";
 
-                if($project->physical) {
+                if($project->physical && $capacity - 1 == count($openProjects)) {
 
                     $allow = false;
 
@@ -1498,10 +1499,13 @@ class HomeController extends Controller {
                 return "nok2";
 
             $totalBuys = Transaction::whereUserId($user->id)->count();
-            if(ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count() <= $totalBuys)
+            $doneProjects = ProjectBuyers::whereUserId($user->id)->whereStatus(true)->count();
+            $canBuyItems = $doneProjects - $totalBuys;
+
+            if($canBuyItems > 0)
                 return "nok7";
 
-            $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(CURDATE(), interval 1 day ) and p.id = t.product_id and t.user_id = " . $user->id);
+            $buys = DB::select("select p.physical from transactions t, product p where t.created_at > date_sub(CURDATE(), interval 2 day) and p.id = t.product_id and t.user_id = " . $user->id);
 
             if(count($buys) > 0) {
 
@@ -1512,22 +1516,25 @@ class HomeController extends Controller {
                 )
                     return "nok8";
 
-                $countNum = DB::select("select count(*) as count_num from product where physical = 0 "
-                    . "and grade_id = " . $user->grade_id . " and id not in"
-                    . " (select product_id from transactions where 1)")[0]->count_num;
+                if($canBuyItems == 1) {
 
-                if($countNum > 0) {
+                    $countNum = DB::select("select count(*) as count_num from product where physical = 0 "
+                        . "and grade_id = " . $user->grade_id . " and id not in"
+                        . " (select product_id from transactions where 1)")[0]->count_num;
 
-                    $allow = false;
-                    foreach ($buys as $buy) {
-                        if (!$buy->physical) {
-                            $allow = true;
-                            break;
+                    if ($countNum > 0) {
+
+                        $allow = false;
+                        foreach ($buys as $buy) {
+                            if (!$buy->physical) {
+                                $allow = true;
+                                break;
+                            }
                         }
-                    }
 
-                    if (!$allow)
-                        return "nok9";
+                        if (!$allow)
+                            return "nok9";
+                    }
                 }
             }
 

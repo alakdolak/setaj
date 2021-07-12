@@ -101,6 +101,7 @@
                                         </a>
 
                                         <button class="btn btn-warning" onclick="toggleHide('{{$itr->id}}')"><span>تغییر وضعیت نمایش</span></button>
+                                        <button class="btn btn-success" style="margin-top: 10px" onclick="$('#loadingModal').css('display', 'block'); buyForAll('{{$itr->id}}')"><span>برداشتن پروژه برای همه</span></button>
 
                                     </td>
 
@@ -268,6 +269,18 @@
 
     </div>
 
+    <div id="loadingModal" class="modal">
+
+        <div style="padding: 30px; height: 100px" class="modal-content">
+
+            <div>
+                <h5>در حال انجام عملیات مورد نظر، لطفا شکیبا باشید.</h5>
+            </div>
+
+        </div>
+
+    </div>
+
     <script>
 
         var itemId;
@@ -384,6 +397,31 @@
 
         }
 
+        function buyForAll(id) {
+
+            $.ajax({
+                type: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                url: '{{route('buyCitizenForAll')}}',
+                data: {
+                    id: id
+                },
+                success: function (res) {
+
+                    document.getElementById('loadingModal').style.display = 'none';
+
+                    if(res === "ok")
+                        alert("عملیات مورد نظر با موفقیت انجام شد.");
+                    else if(res === "nok")
+                        alert("عملیات مورد نظر با خطا رو به رو شده است.");
+                    else if(res === "nok2")
+                        alert("دانش آموزی یافت نشد.");
+                }
+            });
+
+        }
     </script>
 
 @stop

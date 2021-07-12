@@ -30,6 +30,7 @@ use App\models\ServiceTag;
 use App\models\Tag;
 use App\models\Transaction;
 use App\models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -410,7 +411,37 @@ class OperatorController extends Controller {
     }
 
 
+    public function buyCitizenForAll(Request $request) {
 
+        $request->validate([
+            "id" => "required"
+        ]);
+
+        $citizen = Citizen::whereId($request["id"]);
+        if($citizen == null)
+            return "nok";
+
+        $users = DB::select("select u.id from users u, citizen_grade cg where " .
+            "u.grade_id = cg.grade_id and cg.project_id = " . $citizen->id .
+            " and u.id not in (select user_id from citizen_buyers where project_id = cg.project_id)");
+
+        if($users == null || count($users) == 0)
+            return "nok2";
+
+        foreach ($users as $user) {
+
+            try {
+                $tmp = new CitizenBuyers();
+                $tmp->user_id = $user->id;
+                $tmp->project_id = $citizen->id;
+                $tmp->point = $citizen->point;
+                $tmp->save();
+            }
+            catch (\Exception $x) {}
+        }
+
+        return "ok";
+    }
 
 
     public function addTagProject() {
