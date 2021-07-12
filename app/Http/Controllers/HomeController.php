@@ -1435,8 +1435,8 @@ class HomeController extends Controller {
 //                    return "nok8";
 
                 if (
-                    ($time >= 1650 && $time < 1605) ||
-                    ($time >= 1605 && $time <= 1610 && count($openProjects) > 1)
+                    ($time >= 1700 && $time < 1705) ||
+                    ($time >= 1705 && $time <= 1710 && count($openProjects) > 1)
                 )
                     return "nok8";
 

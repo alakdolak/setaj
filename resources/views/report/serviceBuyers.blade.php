@@ -47,7 +47,7 @@
             </p>
 
 
-            <a class="btn btn-default" style="margin: 5px;" href="{{route('serviceBuyersExcel', ['gradeId' => $gradeId])}}" download>دانلود فایل اکسل</a>
+            <a class="btn btn-default" style="margin: 5px;" href="{{route('serviceReportExcel', ['gradeId' => $gradeId])}}" download>دانلود فایل اکسل</a>
 
             <table>
                 <tr>
