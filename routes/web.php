@@ -261,6 +261,52 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
 });
 
+Route::get('renameFiles', function () {
+
+    $projects =  \App\models\ProjectBuyers::all();
+    $search = [];
+
+    foreach ($projects as $project) {
+
+        if($project->adv != null && !empty($project->adv)) {
+
+            $ext = explode(".", $project->adv);
+            $ext = $ext[count($ext) - 1];
+            $shouldRename = strlen($project->adv) != mb_strlen($project->adv, 'utf-8');
+
+            if($ext == "aac" || $ext == "bin" || $ext == "qt" || $ext == "opus") {
+                $shouldRename = true;
+                $ext = "mp4";
+            }
+
+            if(!$shouldRename)
+                continue;
+
+            $newName = time() . "." . $ext;
+            $search[$project->adv] = $newName;
+            $project->adv = $newName;
+            $project->save();
+        }
+    }
+
+    echo count($search);
+    $dir = __DIR__ . '/../public/storage/advs';
+    $files = scandir($dir);
+    $counter = 0;
+
+    foreach($files as $file) {
+
+        if (strlen($file) < 3 || !isset($search[$file]))
+            continue;
+
+        echo $file . '<br/>';
+        $counter++;
+        rename($dir . '/' . $file, $dir . '/' . $search[$file]);
+    }
+
+    dd($counter);
+});
+
 Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
     Route::get("msgs/{chatId}", ["as" => "msgs", "uses" => "OperatorController@msgs"]);

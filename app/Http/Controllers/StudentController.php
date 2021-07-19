@@ -52,11 +52,11 @@ class StudentController extends Controller {
                         return response()->json(["status" => "nok"], 401);
                 }
 
-                $filename = $request->file("file")->getClientOriginalName();
-                $filename = str_replace('.' . $request->file('file')->getClientOriginalExtension(), '', $filename);
+//                $filename = $request->file("file")->getClientOriginalName();
+//                $filename = str_replace('.' . $request->file('file')->getClientOriginalExtension(), '', $filename);
 
                 $path = $request->file('file')->storeAs("public/advs",
-                    time() . $filename . "." .
+                    time() . "." .
                     $request->file("file")->getClientOriginalExtension()
                 );
 
@@ -114,11 +114,11 @@ class StudentController extends Controller {
 
             if($idx == 0) {
 
-                $filename = $request->file("file")->getClientOriginalName();
-                $filename = str_replace('.' . $request->file('file')->getClientOriginalExtension(), '', $filename);
+//                $filename = $request->file("file")->getClientOriginalName();
+//                $filename = str_replace('.' . $request->file('file')->getClientOriginalExtension(), '', $filename);
 
                 $path = $request->file('file')->storeAs("public/contents",
-                    time() . $filename . "." .
+                    time() . "." .
                     $request->file("file")->getClientOriginalExtension()
                 );
 
@@ -177,11 +177,11 @@ class StudentController extends Controller {
 
             if($idx == 0) {
 
-                $filename = $request->file("file")->getClientOriginalName();
-                $filename = str_replace('.' . $request->file('file')->getClientOriginalExtension(), '', $filename);
+//                $filename = $request->file("file")->getClientOriginalName();
+//                $filename = str_replace('.' . $request->file('file')->getClientOriginalExtension(), '', $filename);
 
                 $path = $request->file('file')->storeAs("public/service_contents",
-                    time() . $filename . "." .
+                    time() . "." .
                     $request->file("file")->getClientOriginalExtension()
                 );
 

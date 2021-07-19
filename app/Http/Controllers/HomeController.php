@@ -375,7 +375,11 @@ class HomeController extends Controller {
             }
 
             $service->week = floor(($mainDiff - $diff) / 7);
-            if($service->week == 2 && $service->start_show != "14000416")
+
+            if($service->week == 3 && $service->start_show == "14000428")
+                $service->week = 4;
+
+            else if($service->week == 2 && $service->start_show != "14000416")
                 $service->week = 3;
 
             $tmpPic = ServicePic::whereServiceId($service->id)->first();
@@ -1432,8 +1436,8 @@ class HomeController extends Controller {
                 return "nok4";
 
             $capacity = getProjectLimit($user->grade_id);
-//            pb.created_at > date_sub(CURDATE(), interval 1 day) and
-            $openProjects = DB::select("select p.physical, pb.id from project_buyers pb, project p where pb.status = false and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
+
+            $openProjects = DB::select("select p.physical, pb.id from project_buyers pb, project p where pb.created_at > date_sub(CURDATE(), interval 1 day) and pb.status = false and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
 
             if($capacity - count($openProjects) <= 0)
                 return "nok6";
@@ -1444,8 +1448,8 @@ class HomeController extends Controller {
 
                 $time = (int)$time;
                 if (
-                    ($time >= 1600 && $time < 1604) ||
-                    ($time >= 1604 && $time <= 1609 && count($openProjects) > 1)
+                    ($time >= 1000 && $time < 1004) ||
+                    ($time >= 1004 && $time <= 1009 && count($openProjects) > 1)
                 )
                     return "nok8";
 
