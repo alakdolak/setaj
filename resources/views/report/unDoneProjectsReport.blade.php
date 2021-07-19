@@ -137,7 +137,15 @@
                             <td><a id="file_download_{{$project->id}}" download href="{{$project->file}}">دانلود فایل</a></td>
                         @endif
 
-                        <td id="file_status_{{$project->id}}">{{($project->file_status == 1) ? "تایید شده" : ($project->file_status == 0) ? "تایید نشده" : "رد شده"}}</td>
+                        <td id="file_status_{{$project->id}}">
+                            @if($project->file_status == 1)
+                                تایید شده
+                            @elseif($project->file_status == 0)
+                                تایید نشده
+                            @else
+                                رد شده
+                            @endif
+                        </td>
 
                         <td>{{$project->Bdate . '    ساعت     ' . $project->time}}</td>
                         <td>

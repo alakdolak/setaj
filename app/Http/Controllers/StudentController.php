@@ -52,7 +52,14 @@ class StudentController extends Controller {
                         return response()->json(["status" => "nok"], 401);
                 }
 
-                $path = $request->file->store("public/advs");
+                $filename = $request->file("file")->getClientOriginalName();
+                $filename = str_replace('.' . $request->file('file')->getClientOriginalExtension(), '', $filename);
+
+                $path = $request->file('file')->storeAs("public/advs",
+                    time() . $filename . "." .
+                    $request->file("file")->getClientOriginalExtension()
+                );
+
                 $b->adv = str_replace("public/advs/", "", $path);
                 $b->adv_status = 0;
                 $b->start_uploading_adv = time();
@@ -106,7 +113,15 @@ class StudentController extends Controller {
                 return response()->json(["status" => "nok"], 401);
 
             if($idx == 0) {
-                $path = $request->file->store("public/contents");
+
+                $filename = $request->file("file")->getClientOriginalName();
+                $filename = str_replace('.' . $request->file('file')->getClientOriginalExtension(), '', $filename);
+
+                $path = $request->file('file')->storeAs("public/contents",
+                    time() . $filename . "." .
+                    $request->file("file")->getClientOriginalExtension()
+                );
+
                 $b->file = str_replace("public/contents/", "", $path);
                 $b->file_status = 0;
                 $b->start_uploading = time();
@@ -161,7 +176,15 @@ class StudentController extends Controller {
                 return response()->json(["status" => "nok"], 401);
 
             if($idx == 0) {
-                $path = $request->file->store("public/service_contents");
+
+                $filename = $request->file("file")->getClientOriginalName();
+                $filename = str_replace('.' . $request->file('file')->getClientOriginalExtension(), '', $filename);
+
+                $path = $request->file('file')->storeAs("public/service_contents",
+                    time() . $filename . "." .
+                    $request->file("file")->getClientOriginalExtension()
+                );
+
                 $b->file = str_replace("public/service_contents/", "", $path);
                 $b->file_status = 0;
                 $b->start_uploading = time();

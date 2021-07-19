@@ -346,7 +346,7 @@ class HomeController extends Controller {
         if($grade == -1)
             $grade = Grade::first()->id;
 
-        $services = DB::select('select id, title, description, star, capacity, created_at from service where ' .
+        $services = DB::select('select id, title, start_show, description, star, capacity, created_at from service where ' .
             '(select count(*) from service_grade where service_id = service.id and grade_id = ' . $grade . ' ) > 0'.
             ' and (start_show < ' . $date . ' or (start_show = ' . $date . ' and start_time <= ' . $time . '))' .
             ' and hide = false order by id desc');
@@ -375,7 +375,8 @@ class HomeController extends Controller {
             }
 
             $service->week = floor(($mainDiff - $diff) / 7);
-
+            if($service->week == 2 && $service->start_show != "14000416")
+                $service->week = 3;
 
             $tmpPic = ServicePic::whereServiceId($service->id)->first();
 
@@ -546,7 +547,11 @@ class HomeController extends Controller {
             }
 
             $project->week = floor(($mainDiff - $diff) / 7);
-            if($project->week == 2 && $project->start_reg != "14000417")
+
+            if($project->week == 3 && $project->start_reg == "14000429")
+                $project->week = 4;
+
+            else if($project->week == 2 && $project->start_reg != "14000417")
                 $project->week = 3;
 
             $tmpPic = ProjectPic::whereProjectId($project->id)->first();
@@ -881,7 +886,7 @@ class HomeController extends Controller {
         $time = $today["time"];
         $today = $today["date"];
 
-        $unVisualProducts = DB::select('select (select count(*) from product where (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and project_id = project.id and hide = false and grade_id = ' . $grade . ') as total, title as name, created_at, id' .
+        $unVisualProducts = DB::select('select (select count(*) from product where (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and project_id = project.id and hide = false and grade_id = ' . $grade . ') as total, title as name, end_reg, created_at, id' .
             ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
             ' and hide = false group by(id) having total > 0');
 
@@ -908,6 +913,10 @@ class HomeController extends Controller {
 
             $product->name = $product->name . ' ها';
             $product->week = floor(($mainDiff - $diff) / 7);
+
+            if($product->week == 2 && $product->end_reg == 14000428)
+                $product->week = 3;
+
             $tmpPic = ProjectPic::whereProjectId($product->id)->first();
 
             if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/projectPic/' . $tmpPic->name))
@@ -950,7 +959,7 @@ class HomeController extends Controller {
             $product->physical = 0;
         }
 
-        $visualProducts = DB::select('select pb.adv_status, ' .
+        $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
             'p.id, name, description, p.physical, price, star, p.project_id, ' .
             'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
             ' from product p, users u, project_buyers pb where p.physical = 1 and ' .
@@ -992,6 +1001,9 @@ class HomeController extends Controller {
 
             $product->week = floor(($mainDiff - $diff) / 7);
             $product->week--;
+
+            if($product->week == 2 && $product->start_date_buy >= 14000428)
+                $product->week = 3;
 
             $tmpPic = ProductPic::whereProductId($product->id)->first();
 

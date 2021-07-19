@@ -106,9 +106,6 @@
             margin-top: 20px;
             border: none !important;
         }
-    </style>
-
-    <style>
 
         th, td {
             text-align: right;
@@ -126,6 +123,10 @@
     <script src = "{{URL::asset("js/jalali.js") }}"></script>
     <link rel="stylesheet" href = "{{URL::asset("css/calendar-green.css") }}">
     <script src="//cdn.ckeditor.com/4.10.1/full/ckeditor.js"></script>
+
+    <script>
+        var items = {!! json_encode($products) !!} ;
+    </script>
 
 @stop
 
@@ -154,12 +155,62 @@
 
                     <center>
                         <span>پایه تحصیلی مورد نظر</span>
-                        <select onchange="filter(this.value)">
+                        <select id="gradeFilter" onchange="doFilter()">
                             <option value="-1">همه</option>
                             @foreach($grades as $grade)
                                 <option value="{{$grade->id}}">{{$grade->name}}</option>
                             @endforeach
                         </select>
+                    </center>
+
+                    <center>
+
+                        <div class="col-xs-12" style="margin: 30px; direction: rtl">
+
+                            <div style="display: inline-block; width: auto; margin-right: 10%; margin-left: 5%; float: right;">
+                                <span style="float: right; margin-top: 6%;">    از تاریخ:   </span>
+                                <label style="">
+                                    <input type="button"
+                                           style="border: none;  margin-top: 5%; width: 30px; height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;"
+                                           id="date_btn_Start">
+                                </label>
+                                <input type="text" style="max-width: 200px" class="form-detail"
+                                       id="date_input_start" onchange="start(); doFilter();" readonly>
+
+                                <script>
+                                    Calendar.setup({
+                                        inputField: "date_input_start",
+                                        button: "date_btn_Start",
+                                        ifFormat: "%Y/%m/%d",
+                                        dateType: "jalali"
+                                    });
+                                </script>
+                            </div>
+
+                            <div style="display: inline-block; width: auto; margin-left: 5%; float: right">
+                                <span style="float: right; margin-top: 6%;">تا تاریخ:</span>
+                                <label style="">
+                                    <input type="button"
+                                           style="border: none;  margin-top: 5%; width: 30px;  height: 30px; background: url({{ URL::asset('images/calendar-flat.png') }}) repeat 0 0; background-size: 100% 100%;"
+                                           id="date_btn_end">
+                                </label>
+                                <input type="text" style="max-width: 200px" class="form-detail"
+                                       id="date_input_end" onchange="end(); doFilter();" readonly>
+
+                                <script>
+                                    Calendar.setup({
+                                        inputField: "date_input_end",
+                                        button: "date_btn_end",
+                                        ifFormat: "%Y/%m/%d",
+                                        dateType: "jalali"
+                                    });
+                                </script>
+                            </div>
+
+                        </div>
+
+                        <h3><span>تعداد کل</span><span>&nbsp;</span><span id="totalCount">{{count($products)}}</span></h3>
+
                     </center>
 
                     <div class="table-scrollable">
@@ -177,7 +228,7 @@
                                 <th scope="col">زمان شروع نمایش</th>
                                 <th scope="col">تاریخ شروع خرید</th>
                                 <th scope="col">زمان شروع خرید</th>
-                                <td scope="col">تصویر</td>
+                                <th scope="col">تصویر</th>
                                 <th scope="col" style="width:450px !important">توضیح</th>
                                 <th scope="col">قیمت</th>
                                 <th scope="col">ستاره ها</th>
@@ -191,7 +242,7 @@
                             <tbody>
                             <?php $i = 1; ?>
                             @foreach($products as $itr)
-                                <tr class="myTr tr_{{$itr->grade_id}}" id="tr_{{$itr->id}}">
+                                <tr class="tr grade_{{$itr->grade_id}}" id="myTr_{{$itr->id}}">
                                     <td>{{$i}}</td>
                                     <td>{{$itr->name}}</td>
                                     <td>{{$itr->id}}</td>
@@ -235,16 +286,18 @@
 
     <script>
 
-        function filter(id) {
+        function doFilter() {
 
-            if(id == -1) {
-                $(".myTr").removeClass('hidden');
-            }
-            else {
-                $(".myTr").addClass('hidden');
-                $(".tr_" + id).removeClass('hidden');
-            }
+            var id = $("#gradeFilter").val();
 
+            $(".tr").addClass("hidden").each(function () {
+
+                if(id == -1 || $(this).hasClass("grade_" + id))
+                    $(this).removeClass("hidden");
+
+            });
+
+            doChangeDateFilter();
         }
 
         function removeProduct(id) {
@@ -261,7 +314,7 @@
                 success: function (res) {
 
                     if(res === "ok")
-                        $("#tr_" + id).remove();
+                        $("#myTr_" + id).remove();
 
                 }
             });
@@ -291,4 +344,5 @@
 
     </script>
 
+    <script src="{{\Illuminate\Support\Facades\URL::asset("js/dateFilter.js")}}"></script>
 @stop

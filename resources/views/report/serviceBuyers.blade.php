@@ -92,7 +92,9 @@
                                     رد شده
                                 @endif
                             </td>
-
+                        @else
+                            <td></td>
+                            <td></td>
                         @endif
                         <td>
                             <span>{{($buyer["status"]) ? "انجام شده" : "انجام نشده"}}</span>

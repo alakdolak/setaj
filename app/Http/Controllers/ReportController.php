@@ -156,8 +156,8 @@ class ReportController extends Controller {
     public function physicalReportAPI(Request $request) {
 
         $request->validate(
-            ["preFrom" => "required|integer|min:1"],
-            ["preTo" => "required|integer|min:1"],
+            ["preFrom" => "required|integer"],
+            ["preTo" => "required|integer"],
             ["gradeId" => "required|integer|min:1"]
         );
 
@@ -165,12 +165,31 @@ class ReportController extends Controller {
         $preTo = makeValidInput($request["preTo"]);
         $gradeId = makeValidInput($request["gradeId"]);
 
-        $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
-            "from project_buyers pb, project p, users u where p.physical = true and p.id = pb.project_id" .
-            " and pb.user_id = u.id and pb.created_at >= date_sub(CURDATE(), interval " . $preFrom . " day) and " .
-            "pb.created_at <= date_sub(CURDATE(), interval " . $preTo . " day) and " .
-            "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
-        );
+        if($preFrom < 0 || $preTo < 0 || $preTo > $preFrom)
+            return json_encode(["status" => "nok"]);
+
+        if($preFrom == 0) {
+            $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
+                "from project_buyers pb, project p, users u where p.physical = true and p.id = pb.project_id" .
+                " and pb.user_id = u.id and " .
+                "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
+            );
+        }
+        else if($preTo == 0) {
+            $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
+                "from project_buyers pb, project p, users u where p.physical = true and p.id = pb.project_id" .
+                " and pb.user_id = u.id and pb.created_at >= date_sub(CURDATE(), interval " . $preFrom . " day) and " .
+                "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
+            );
+        }
+        else {
+            $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
+                "from project_buyers pb, project p, users u where p.physical = true and p.id = pb.project_id" .
+                " and pb.user_id = u.id and pb.created_at >= date_sub(CURDATE(), interval " . $preFrom . " day) and " .
+                "pb.created_at <= date_sub(CURDATE(), interval " . $preTo . " day) and " .
+                "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
+            );
+        }
 
         $users = [];
         foreach ($projects as $project) {
@@ -181,12 +200,25 @@ class ReportController extends Controller {
             ];
         }
 
-        $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
-            "from project_buyers pb, project p, users u where p.physical = false and p.id = pb.project_id" .
-            " and pb.user_id = u.id and pb.created_at >= date_sub(pb.created_at, interval " . $preFrom . " day) and " .
-            "pb.created_at <= date_sub(pb.created_at, interval " . $preTo . " day) and " .
-            "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
-        );
+        if($preFrom == 0)
+            $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
+                "from project_buyers pb, project p, users u where p.physical = false and p.id = pb.project_id" .
+                " and pb.user_id = u.id and " .
+                "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
+            );
+        else if($preTo == 0)
+            $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
+                "from project_buyers pb, project p, users u where p.physical = false and p.id = pb.project_id" .
+                " and pb.user_id = u.id and pb.created_at >= date_sub(curdate(), interval " . $preFrom . " day) and " .
+                "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
+            );
+        else
+            $projects = DB::select("select count(*) as count, u.id, concat(u.first_name, ' ', u.last_name) as name " .
+                "from project_buyers pb, project p, users u where p.physical = false and p.id = pb.project_id" .
+                " and pb.user_id = u.id and pb.created_at >= date_sub(curdate(), interval " . $preFrom . " day) and " .
+                "pb.created_at <= date_sub(curdate(), interval " . $preTo . " day) and " .
+                "u.grade_id = " . $gradeId . " and (select count(*) from project_grade where project_id = p.id and grade_id = " . $gradeId . ") > 0 group by(u.id)"
+            );
 
         foreach ($projects as $project) {
 
@@ -233,8 +265,8 @@ class ReportController extends Controller {
 
         foreach ($unCompleted as $itr) {
 
-            if(file_exists(__DIR__ . '/../../../storage/app/public/advs/' . $itr->file))
-                unlink(__DIR__ . '/../../../storage/app/public/advs/' . $itr->file);
+            if(file_exists(__DIR__ . '/../../../storage/app/public/advs/' . $itr->adv))
+                unlink(__DIR__ . '/../../../storage/app/public/advs/' . $itr->adv);
 
             DB::update("update project_buyers set adv = null, start_uploading_adv = null, adv_status = 0 where id = " . $itr->id);
         }
@@ -801,8 +833,10 @@ class ReportController extends Controller {
 
     public function serviceReportExcel($gradeId) {
 
-        $services = DB::select("select s.star, s.id as service_id, s.title, s.physical, sb.complete_upload_file, sb.id as sbId, sb.status, sb.file_status, sb.file, sb.created_at, concat(u.first_name, ' ', u.last_name) as user_name, u.id as uId from service s, service_grade sg, users u, service_buyer sb where " .
-            "s.id = sg.service_id and sg.grade_id = " . $gradeId . " and sb.service_id = s.id and sb.user_id = u.id");
+        $services = DB::select("select s.star, s.id as service_id, s.title, s.physical, sb.complete_upload_file, sb.id as sbId, sb.status, sb.file_status, sb.file, sb.created_at, concat(u.first_name, ' ', u.last_name) as user_name, u.id as uId " .
+            "from service s, users u, service_buyer sb where " .
+            "s.id in (select service_id from service_grade where grade_id = " . $gradeId . ") and " .
+            "u.grade_id = " . $gradeId . " and sb.service_id = s.id and sb.user_id = u.id");
 
         $tmp = [];
         $uniques = [];
@@ -920,8 +954,10 @@ class ReportController extends Controller {
             DB::update("update service_buyer set file = null, start_uploading = null, file_status = 0 where id = " . $itr->id);
         }
 
-        $services = DB::select("select s.star, s.id as service_id, s.title, s.physical, sb.complete_upload_file, sb.id as sbId, sb.status, sb.file_status, sb.file, sb.created_at, concat(u.first_name, ' ', u.last_name) as user_name, u.id as uId from service s, service_grade sg, users u, service_buyer sb where " .
-            "s.id = sg.service_id and sg.grade_id = " . $gradeId . " and sb.service_id = s.id and sb.user_id = u.id");
+        $services = DB::select("select s.star, s.id as service_id, s.title, s.physical, sb.complete_upload_file, sb.id as sbId, sb.status, sb.file_status, sb.file, sb.created_at, concat(u.first_name, ' ', u.last_name) as user_name, u.id as uId " .
+            "from service s, users u, service_buyer sb where " .
+            "s.id in (select service_id from service_grade where grade_id = " . $gradeId . ") and " .
+            "u.grade_id = " . $gradeId . " and sb.service_id = s.id and sb.user_id = u.id");
 
         $tmp = [];
         $uniques = [];
