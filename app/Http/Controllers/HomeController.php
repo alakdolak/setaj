@@ -659,7 +659,8 @@ class HomeController extends Controller {
             if ($pb != null) {
                 $canBuy = false;
 
-                if (!$pb->status && !$project->physical && $pb->file == null)
+//                !$pb->status &&
+                if (!$project->physical && $pb->file == null)
                     $canAddFile = true;
 
                 if ($pb->adv == null)
@@ -890,9 +891,16 @@ class HomeController extends Controller {
         $time = $today["time"];
         $today = $today["date"];
 
-        $unVisualProducts = DB::select('select (select count(*) from product where (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and project_id = project.id and hide = false and grade_id = ' . $grade . ') as total, title as name, end_reg, created_at, id' .
-            ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
-            ' and hide = false group by(id) having total > 0');
+        if(Auth::check() && Auth::user()->level != 1) {
+            $unVisualProducts = DB::select('select (select count(*) from product where project_id = project.id and hide = false and grade_id = ' . $grade . ') as total, title as name, end_reg, created_at, id' .
+                ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
+                ' and hide = false group by(id) having total > 0');
+        }
+        else {
+            $unVisualProducts = DB::select('select (select count(*) from product where (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and project_id = project.id and hide = false and grade_id = ' . $grade . ') as total, title as name, end_reg, created_at, id' .
+                ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
+                ' and hide = false group by(id) having total > 0');
+        }
 
         $mainDiff = findDiffWithSiteStart();
 
@@ -963,11 +971,20 @@ class HomeController extends Controller {
             $product->physical = 0;
         }
 
-        $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
-            'p.id, name, description, p.physical, price, star, p.project_id, ' .
-            'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
-            ' from product p, users u, project_buyers pb where p.physical = 1 and ' .
-            '(start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
+        if(Auth::check() && Auth::user()->level != 1) {
+            $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
+                'p.id, name, description, p.physical, price, star, p.project_id, ' .
+                'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                ' from product p, users u, project_buyers pb where p.physical = 1 ' .
+                'and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
+        }
+        else {
+            $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
+                'p.id, name, description, p.physical, price, star, p.project_id, ' .
+                'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                ' from product p, users u, project_buyers pb where p.physical = 1 and ' .
+                '(start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade . ' and hide = false order by p.id desc');
+        }
 
         foreach ($visualProducts as $product) {
 
@@ -1043,13 +1060,23 @@ class HomeController extends Controller {
         $time = $today["time"];
         $today = $today["date"];
 
-        $products = DB::select('select pb.adv_status, ' .
-            'p.id, name, description, price, star, p.project_id, p.start_date_buy, p.start_time_buy, ' .
-            '(select count(*) from transactions where product_id = p.id) > 0 as sold, ' .
-            'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
-            ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId .
-            ' and (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
-            ' p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.price desc');
+        if(Auth::check() && Auth::user()->level != 1) {
+            $products = DB::select('select pb.adv_status, ' .
+                'p.id, name, description, price, star, p.project_id, p.start_date_buy, p.start_time_buy, ' .
+                '(select count(*) from transactions where product_id = p.id) > 0 as sold, ' .
+                'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId . ' and' .
+                ' p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.price desc');
+        }
+        else {
+            $products = DB::select('select pb.adv_status, ' .
+                'p.id, name, description, price, star, p.project_id, p.start_date_buy, p.start_time_buy, ' .
+                '(select count(*) from transactions where product_id = p.id) > 0 as sold, ' .
+                'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId .
+                ' and (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
+                ' p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $gradeId . ' and hide = false order by p.price desc');
+        }
 
         if($products == null || count($products) == 0)
             return Redirect::route("showAllProducts");
@@ -1179,10 +1206,17 @@ class HomeController extends Controller {
         $time = $today["time"];
         $today = $today["date"];
 
-        $product = DB::select('select pb.adv, pb.adv_status, pb.file, pb.file_status, ' .
-            'p.* from product p, project_buyers pb where ' .
-            '(start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
-            'p.project_id = pb.project_id and pb.user_id = p.user_id and p.id = ' . $id . ' and hide = false order by p.id desc');
+        if(Auth::check() && Auth::user()->level != 1) {
+            $product = DB::select('select pb.adv, pb.adv_status, pb.file, pb.file_status, ' .
+                'p.* from product p, project_buyers pb where ' .
+                'p.project_id = pb.project_id and pb.user_id = p.user_id and p.id = ' . $id . ' and hide = false order by p.id desc');
+        }
+        else {
+            $product = DB::select('select pb.adv, pb.adv_status, pb.file, pb.file_status, ' .
+                'p.* from product p, project_buyers pb where ' .
+                '(start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
+                'p.project_id = pb.project_id and pb.user_id = p.user_id and p.id = ' . $id . ' and hide = false order by p.id desc');
+        }
 
         if($product == null || count($product) == 0)
             return Redirect::route('showAllProducts');
@@ -1235,8 +1269,7 @@ class HomeController extends Controller {
         foreach ($tmpPics as $tmpPic) {
 
             $type = explode(".", $tmpPic->name);
-            $type = $type[count($type) - 1];
-
+            $type = strtolower($type[count($type) - 1]);
             if(file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
                 $pics[count($pics)] = [
                     "path" => URL::asset('productPic/' . $tmpPic->name),
@@ -1251,11 +1284,15 @@ class HomeController extends Controller {
             $product->file != null &&
             file_exists(__DIR__ . '/../../../public/storage/contents/' . $product->file)) {
 
-            $me = Auth::user();
-            $buys = DB::select('select count(*) as count_ from transactions t, product p where t.user_id = ' . $me->id
-                . ' and t.product_id = p.id and project_id = ' . $product->project_id
-                . ' and p.grade_id = ' . $me->grade_id
-            )[0]->count_;
+            if(Auth::user()->level == 1) {
+                $me = Auth::user();
+                $buys = DB::select('select count(*) as count_ from transactions t, product p where t.user_id = ' . $me->id
+                    . ' and t.product_id = p.id and project_id = ' . $product->project_id
+                    . ' and p.grade_id = ' . $me->grade_id
+                )[0]->count_;
+            }
+            else
+                $buys = 1;
 
             if ($buys > 0)
                 $product->file = URL::asset("storage/contents/" . $product->file);

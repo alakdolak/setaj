@@ -268,28 +268,56 @@ Route::get('renameFiles', function () {
 
     foreach ($projects as $project) {
 
-        if($project->adv != null && !empty($project->adv)) {
+        if($project->adv != null && !empty($project->adv) && $project->adv_status != -1) {
 
-            $ext = explode(".", $project->adv);
-            $ext = $ext[count($ext) - 1];
-            $shouldRename = strlen($project->adv) != mb_strlen($project->adv, 'utf-8');
+//            $filename = explode(".", $project->file);
+//            $ext = $filename[count($filename) - 1];
+//            $shouldRename = strlen($project->file) != mb_strlen($project->file, 'utf-8');
+//            $shouldRename = false;
+//            if($ext != "mp4" && $ext != "avi" && $ext != "pdf" && $ext != "m4a" && $ext != "docx" &&
+//                $ext != "MOV" && $ext != "zip" && $ext != "mpga" && $ext != "MP4" && $ext != "jpg"
+//                && $ext != "png" && $ext != "" && $ext != "mp3"
+//            )
+//                dd($ext . " " . $project->file . ' ' . $shouldRename);
 
-            if($ext == "aac" || $ext == "bin" || $ext == "qt" || $ext == "opus") {
-                $shouldRename = true;
-                $ext = "mp4";
-            }
+//            if($ext == "aac" || $ext == "asf" || $ext == "bin" ||
+//                $ext == "qt" || $ext == "opus") {
+//                $shouldRename = true;
+//                $ext = "mp4";
+//            }
+//
+//            if(!$shouldRename)
+//                continue;
 
-            if(!$shouldRename)
-                continue;
+            $tmp = \Illuminate\Support\Facades\DB::select("SELECT count(*) as countNum  from project_buyers WHERE id != " . $project->id . " and adv = '" . $project->adv . "'");
+            if($tmp[0]->countNum > 0)
+                $search[count($search)] = $project->id;
 
-            $newName = time() . "." . $ext;
-            $search[$project->adv] = $newName;
-            $project->adv = $newName;
-            $project->save();
+
+//            $newName = time() . "." . $ext;
+//            $search[$filename[0]] = $newName;
+//            $project->adv = $newName;
+//            $project->save();
+//            echo "update project_buyers set adv = '" . $newName . "' where id = " . $project->id . "<br/>";
+//            sleep(2000);
         }
     }
 
-    echo count($search);
+    foreach ($search as $id) {
+
+        $project = \App\models\ProjectBuyers::whereId($id);
+
+        $project->adv_status = 0;
+        $project->adv = null;
+        $project->start_uploading_adv = null;
+        $project->complete_upload_adv = false;
+        $project->save();
+    }
+
+    dd("SA");
+
+    echo count($search) . "<br/>";
+
     $dir = __DIR__ . '/../public/storage/advs';
     $files = scandir($dir);
     $counter = 0;

@@ -107,7 +107,8 @@ class StudentController extends Controller {
 
             $b = ProjectBuyers::whereId($request->get("id"));
 
-            if($b == null || $b->user_id != Auth::user()->id || $b->status ||
+//            || $b->status
+            if($b == null || $b->user_id != Auth::user()->id ||
                 $b->file_status == 1
             )
                 return response()->json(["status" => "nok"], 401);

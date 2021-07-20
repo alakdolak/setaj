@@ -140,13 +140,13 @@
                         <?php
                         $pic["path"] = $product->file;
                         $tmp = explode(".", $product->file);
-                        $pic["type"] = $tmp[count($tmp) - 1];
+                        $pic["type"] = strtolower($tmp[count($tmp) - 1]);
                         ?>
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
                             <div class="eachAdvType col-xs-12">
                                 <img style="width: 100%; float: right" src="{{$pic["path"]}}">
                             </div>
-                        @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v")
+                            @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v" || $pic["type"] == "avi" || $pic["type"] == "wav" || $pic["type"] == "mov")
                             <div class="eachAdvType col-xs-12">
                                 <video style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="video/mp4">
@@ -229,7 +229,7 @@
                             <div class="eachAdvType col-xs-12">
                                 <img style="width: 100%;" src="{{$pic["path"]}}">
                             </div>
-                        @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v")
+                        @elseif($pic["type"] == "mp4" || $pic["type"] == "m4v" || $pic["type"] == "avi" || $pic["type"] == "wav" || $pic["type"] == "mov")
                             <div class="eachAdvType col-xs-12">
                                 <video style="width: 100%" controls>
                                     <source src="{{$pic["path"]}}" type="video/mp4">
