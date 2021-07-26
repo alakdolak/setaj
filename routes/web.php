@@ -20,9 +20,13 @@ Route::get('faq', ['as' => 'faq', 'uses' => 'HomeController@faq']);
 
 Route::get('contactUs', ['as' => 'contactUs', 'uses' => 'HomeController@contactUs']);
 
+Route::any('verifyPayment', ['as' => 'verifyPayment', 'uses' => 'TransactionController@verifyPayment']);
+
 Route::get('rules', ['as' => 'rules', 'uses' => 'HomeController@rules']);
 
 Route::get('choosePlan', ['as' => 'choosePlan', 'uses' => 'HomeController@choosePlan']);
+
+Route::get('showAllGoods/{grade?}', ['as' => 'showAllGoods', 'uses' => 'HomeController@showAllGoods']);
 
 Route::get('showAllServices/{grade?}', ['as' => 'showAllServices', 'uses' => 'HomeController@showAllServices']);
 
@@ -35,6 +39,8 @@ Route::get('showAllProducts/{grade?}', ['as' => 'showAllProducts', 'uses' => 'Ho
 Route::get('showAllProductsInner/{projectId}/{gradeId}', ['as' => 'showAllProductsInner', 'uses' => 'HomeController@showAllProductsInner']);
 
 Route::get('showService/{id}', ['as' => 'showService', 'uses' => 'HomeController@showService']);
+
+Route::get('showGood/{id}', ['as' => 'showGood', 'uses' => 'HomeController@showGood']);
 
 Route::get('showProject/{id}', ['as' => 'showProject', 'uses' => 'HomeController@showProject']);
 
@@ -49,6 +55,16 @@ Route::group(['middleware' => ['notLogin']], function () {
     Route::get('login', ['as' => 'login', 'uses' => 'HomeController@login']);
 
     Route::post('doLogin', ['as' => 'doLogin', 'uses' => 'HomeController@doLogin']);
+
+    Route::post('secondLogin', ['as' => 'secondLogin', 'uses' => 'HomeController@secondLogin']);
+
+    Route::post('getVerificationCode', ['as' => 'getVerificationCode', 'uses' => 'HomeController@getVerificationCode']);
+
+    Route::post('verify', ['as' => 'verify', 'uses' => 'HomeController@verify']);
+
+    Route::post('resend', ['as' => 'resend', 'uses' => 'HomeController@resend']);
+
+    Route::post('signUp', ['as' => 'signUp', 'uses' => 'HomeController@signUp']);
 
 });
 
@@ -82,6 +98,8 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
     Route::get("downloadAllCitizenAttaches/{pId}", ["as" => "downloadAllCitizenAttaches", "uses" => "HomeController@downloadAllCitizenAttaches"]);
 
     Route::post('convertStarToCoin', ['as' => 'convertStarToCoin', 'uses' => 'HomeController@convertStarToCoin']);
+
+    Route::post('buyGood/{goodId}', ['as' => 'buyGood', 'uses' => 'TransactionController@buy']);
 
     Route::post('buyUnPhysicalProduct', ['as' => 'buyUnPhysicalProduct', 'uses' => 'HomeController@buyUnPhysicalProduct']);
 
@@ -212,6 +230,21 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
     Route::post('doEditProject/{id}', ['as' => 'doEditProject', 'uses' => 'OperatorController@doEditProject']);
 
     Route::post('deleteProject', ['as' => 'deleteProject', 'uses' => 'OperatorController@deleteProject']);
+
+
+
+    Route::get('goods', ['as' => 'goods', 'uses' => 'AdminController@goods']);
+
+    Route::post('addGood', ['as' => 'addGood', 'uses' => 'AdminController@addGood']);
+
+    Route::get('editGood/{id}', ['as' => 'editGood', 'uses' => 'AdminController@editGood']);
+
+    Route::post('doEditGood/{id}', ['as' => 'doEditGood', 'uses' => 'AdminController@doEditGood']);
+
+    Route::post('deleteGood', ['as' => 'deleteGood', 'uses' => 'AdminController@deleteGood']);
+
+    Route::post('toggleHideGood', ['as' => 'toggleHideGood', 'uses' => 'AdminController@toggleHideGood']);
+
 
 
     Route::post("buyCitizenForAll", ["as" => "buyCitizenForAll", "uses" => "OperatorController@buyCitizenForAll"]);

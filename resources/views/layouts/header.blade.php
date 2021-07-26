@@ -11,6 +11,7 @@
         <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="headerNavbar">انتخاب پروژه‌ها</div>
         <div onclick="document.location.href = '{{route('showAllServices')}}'" class="headerNavbar">پروژه‌های همیاری</div>
         <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="headerNavbar">خرید محصولات</div>
+        <div onclick="document.location.href = '{{route('showAllGoods')}}'" class="headerNavbar">فروشگاه</div>
 
         @if(\Illuminate\Support\Facades\Auth::check())
             <div class="headerNavbar">

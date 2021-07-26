@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $password
  * @property string $nid
  * @property string $pic
+ * @property string $phone
  * @property boolean $status
  * @property boolean $super_active
  * @property integer $grade_id
@@ -24,6 +25,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property integer $level
  * @method static \Illuminate\Database\Query\Builder|\App\models\User whereUsername($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\User whereNid($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\models\User wherePhone($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\User whereLevel($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\User whereGradeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\User whereStatus($value)

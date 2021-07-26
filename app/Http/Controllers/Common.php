@@ -303,7 +303,6 @@ function convertDateToString2($date, $delimeter) {
 function convertTimeToString($date) {
 
     $subStrD = explode(":", $date);
-
     if($subStrD[0][0] == "0")
         $subStrD[0] = $subStrD[0][1];
 
@@ -325,6 +324,38 @@ function findDiffWithSiteStart() {
         if("14000402" == getPast("- " . $i . ' days')) {
             return $i;
         }
+    }
+
+    return -1;
+}
+
+function sendSMS($destNum, $text, $templateId, $text2 = "", $text3 = "") {
+
+    if($destNum[0] == "0" && $destNum[1] == "9") {
+
+        require __DIR__ . '/../../../vendor/autoload.php';
+
+        try {
+            $api = new \Kavenegar\KavenegarApi("");
+//        $sender = "10000008008080";
+//        $result = $api->Send("30006703323323","09214915905","خدمات پیام کوتاه کاوه نگار");
+            $result = $api->VerifyLookup($destNum, $text, $text2, $text3, $templateId);
+
+            if ($result) {
+                foreach ($result as $r) {
+                    return $r->messageid;
+                }
+            }
+        } catch (\Kavenegar\Exceptions\ApiException $e) {
+            // در صورتی که خروجی وب سرویس 200 نباشد این خطا رخ می دهد
+//            echo $e->errorMessage();
+            return -1;
+        } catch (\Kavenegar\Exceptions\HttpException $e) {
+            // در زمانی که مشکلی در برقرای ارتباط با وب سرویس وجود داشته باشد این خطا رخ می دهد
+//            echo $e->errorMessage();
+            return -1;
+        }
+        return -1;
     }
 
     return -1;

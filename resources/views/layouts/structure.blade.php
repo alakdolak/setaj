@@ -276,6 +276,14 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{route('goods')}}" class="nav-link nav-toggle">
+                                <i class="icon-diamond"></i>
+                                <span class="title">کالا</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+
                     @endif
 
 

@@ -1,3 +1,14 @@
-ALTER TABLE `config` ADD `project_limit_6` INT(1) NOT NULL DEFAULT '2' AFTER `service_limit`, ADD `project_limit_5` INT(1) NOT NULL DEFAULT '2' AFTER `project_limit_6`, ADD `project_limit_4` INT(1) NOT NULL DEFAULT '2' AFTER `project_limit_5`, ADD `project_limit_3` INT(1) NOT NULL DEFAULT '2' AFTER `project_limit_4`, ADD `project_limit_2` INT(1) NOT NULL DEFAULT '2' AFTER `project_limit_3`, ADD `project_limit_1` INT(1) NOT NULL DEFAULT '2' AFTER `project_limit_2`;
-ALTER TABLE `config` CHANGE `project_limit` `project_limit_7` INT(11) NOT NULL;
+CREATE TABLE `good` ( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `owner` VARCHAR(100) NOT NULL , `price` INT NOT NULL , `name` VARCHAR(100) NOT NULL , `hide` BOOLEAN NOT NULL DEFAULT FALSE , `description` LONGTEXT NULL DEFAULT NULL , `code` VARCHAR(100) NOT NULL , `start_show` VARCHAR(8) NOT NULL , `start_time` VARCHAR(4) NOT NULL , `start_date_buy` VARCHAR(8) NOT NULL , `start_time_buy` VARCHAR(4) NOT NULL , PRIMARY KEY (`id`), INDEX (`user_id`)) ENGINE = InnoDB;
+ALTER TABLE `good` ADD `tag` VARCHAR(200) NULL DEFAULT NULL AFTER `start_time_buy`;
+ALTER TABLE `good` ADD `adv` VARCHAR(200) NULL DEFAULT NULL AFTER `tag`;
+CREATE TABLE `good_pic` ( `id` INT NOT NULL AUTO_INCREMENT , `good_id` INT NOT NULL , `name` VARCHAR(200) NOT NULL , PRIMARY KEY (`id`), INDEX (`good_id`)) ENGINE = InnoDB;
+ALTER TABLE `good` ADD `created_at` VARCHAR(20) NOT NULL AFTER `adv`, ADD `updated_at` VARCHAR(20) NOT NULL AFTER `created_at`;
+ALTER TABLE `good` CHANGE `created_at` `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `good` CHANGE `updated_at` `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
+CREATE TABLE `pay_ping_transactions` ( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `good_id` INT NOT NULL , `pay` INT NOT NULL , `status` INT(1) NOT NULL DEFAULT '0' , `ref_id` VARCHAR(100) NULL DEFAULT NULL , `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`), INDEX (`user_id`), INDEX (`good_id`)) ENGINE = InnoDB;
+ALTER TABLE `good_pic` ADD CONSTRAINT `goodPicForeign` FOREIGN KEY (`good_id`) REFERENCES `good`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `users` ADD `phone` VARCHAR(11) NULL DEFAULT NULL AFTER `pic`;
+CREATE TABLE `activation` ( `id` INT NOT NULL AUTO_INCREMENT , `phone` VARCHAR(11) NOT NULL , `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `name` VARCHAR(200) NOT NULL , `last_name` VARCHAR(200) NOT NULL , `code` VARCHAR(6) NOT NULL , `token` VARCHAR(100) NOT NULL , `nid` VARCHAR(10) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `activation` ADD `send_time` VARCHAR(20) NOT NULL AFTER `nid`;
+ALTER TABLE `pay_ping_transactions` ADD `post` BOOLEAN NOT NULL DEFAULT FALSE AFTER `updated_at`;

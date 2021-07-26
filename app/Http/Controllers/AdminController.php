@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\models\CommonQuestion;
 use App\models\ConfigModel;
 use App\models\FAQCategory;
+use App\models\Good;
+use App\models\GoodPic;
 use App\models\Grade;
+use App\models\PayPingTransaction;
 use App\models\ProjectBuyers;
 use App\models\ServiceAttach;
 use App\models\ServicePic;
@@ -641,4 +644,323 @@ class AdminController extends Controller {
         }
 
     }
+
+
+    public function goods() {
+
+        $goods = DB::select("select g.name as grade, g.id as grade_id, concat(u.first_name, ' ', u.last_name) as user_name, gd.* from good gd, users u, grade g where gd.user_id = u.id and u.grade_id = g.id order by gd.id desc");
+
+        foreach ($goods as $good) {
+
+            if($good->adv != null &&
+                file_exists(__DIR__ . '/../../../public/goodAdvs/' . $good->adv))
+                $good->adv = URL::asset("public/goodAdvs/" . $good->adv);
+            else
+                $good->adv = null;
+
+            $tmpPic = GoodPic::whereGoodId($good->id)->first();
+
+            if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/goodPic/' . $tmpPic->name))
+                $good->pic = URL::asset('goodPic/defaultPic.png');
+            else
+                $good->pic = URL::asset('goodPic/' . $tmpPic->name);
+
+            $good->date = MiladyToShamsi('', explode('-', explode(' ', $good->created_at)[0]));
+            $good->start_show = convertStringToDate($good->start_show);
+            $good->start_time = convertStringToTime($good->start_time);
+
+            $good->start_date_buy = convertStringToDate($good->start_date_buy);
+            $good->start_time_buy = convertStringToTime($good->start_time_buy);
+
+            $t = PayPingTransaction::whereGoodId($good->id)->select('user_id')->get();
+
+            if($good->price == 0)
+                $good->price = "رایگان";
+            else
+                $good->price = number_format($good->price);
+
+            $good->hide = (!$good->hide) ? "آشکار" : "مخفی";
+
+            if($t == null || count($t) == 0)
+                $good->buyer = "هنوز خریداری نشده است.";
+            else {
+                $u = User::whereId($t[0]->user_id);
+                $good->buyer = $u->first_name . ' ' . $u->last_name;
+            }
+
+        }
+
+        return view('operator.goods', ['goods' => $goods, 'grades' => Grade::all()]);
+    }
+
+    public function addGood() {
+
+        if(isset($_POST["name"])
+            && isset($_POST["price"]) && isset($_POST["start_show"])
+            && isset($_POST["code"]) && isset($_POST["owner"])
+            && isset($_POST["start_time"]) && isset($_POST["username"])
+            && isset($_POST["start_time_buy"]) && isset($_POST["start_date_buy"])
+        ) {
+
+            $username = makeValidInput($_POST["username"]);
+            $user = User::whereUsername($username)->orWhere('nid', '=', $username)->first();
+
+            if($user == null)
+                return Redirect::route('home');
+
+            $good = new Good();
+            $good->name = makeValidInput($_POST["name"]);
+            $good->owner = makeValidInput($_POST["owner"]);
+
+            if(isset($_POST["description"]))
+                $good->description = $_POST["description"];
+            if(isset($_POST["tag"]))
+                $good->tag = makeValidInput($_POST["tag"]);
+
+            $good->code = makeValidInput($_POST["code"]);
+            $good->price = makeValidInput($_POST["price"]);
+            $good->user_id = $user->id;
+
+            $good->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
+            $good->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
+
+            $good->start_time_buy = convertTimeToString(makeValidInput($_POST["start_time_buy"]));
+            $good->start_date_buy = convertDateToString(makeValidInput($_POST["start_date_buy"]));
+
+            try {
+
+                if(isset($_FILES["adv"]) && !empty($_FILES["adv"]["name"])) {
+
+                    $file = Input::file('adv');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/goodAdvs';
+                    $file->move($destenationpath, $Image);
+
+                    $good->adv = $Image;
+                }
+
+                $good->save();
+
+                if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])) {
+
+                    $file = Input::file('file');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+
+                        $folder = time();
+
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/goodPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new GoodPic();
+                            $tmp->good_id = $good->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+                    }
+                }
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+
+        }
+
+        return Redirect::route('goods');
+    }
+
+    public function toggleHideGood() {
+
+        if(isset($_POST["id"])) {
+            DB::update("update good set hide = not hide where id = " . makeValidInput($_POST["id"]));
+            return "ok";
+        }
+
+        return "nok";
+    }
+
+    public function deleteGood() {
+
+        if(isset($_POST["id"])) {
+
+            $g = Good::whereId(makeValidInput($_POST["id"]));
+
+            if($g != null) {
+
+                $pics = GoodPic::whereGoodId($g->id)->get();
+
+                foreach ($pics as $pic) {
+                    if (file_exists(__DIR__ . '/../../../public/goodPic/' . $pic->name))
+                        unlink(__DIR__ . '/../../../public/goodPic/' . $pic->name);
+                }
+
+                if($g->adv != null && !empty($g->adv) &&
+                    file_exists(__DIR__ . '/../../../public/goodAdvs/' . $g->adv))
+                    unlink(__DIR__ . '/../../../public/goodAdvs/' . $g->adv);
+
+                try {
+                    $g->delete();
+                    return "ok";
+                }
+                catch (\Exception $x) {
+                    dd($x);
+                }
+            }
+        }
+
+        return "nok";
+    }
+
+    public function editGood($id) {
+
+        $good = Good::whereId($id);
+
+        if($good == null)
+            return Redirect::route('admin');
+
+        $good->start_show = convertStringToDate($good->start_show);
+        $good->start_time = convertStringToTime($good->start_time);
+
+        $good->start_date_buy = convertStringToDate($good->start_date_buy);
+        $good->start_time_buy = convertStringToTime($good->start_time_buy);
+
+        return view('operator.editGood', ['good' => $good]);
+
+    }
+
+    public function doEditGood($id) {
+
+        if(isset($_POST["name"])
+            && isset($_POST["price"]) && isset($_POST["start_show"])
+            && isset($_POST["code"]) && isset($_POST["owner"])
+            && isset($_POST["start_time"])
+            && isset($_POST["start_time_buy"]) && isset($_POST["start_date_buy"])
+        ) {
+
+
+            $good = Good::whereId($id);
+
+            if($good == null)
+                return Redirect::route('hone');
+
+            $good->name = makeValidInput($_POST["name"]);
+            $good->owner = makeValidInput($_POST["owner"]);
+
+            if(isset($_POST["description"]))
+                $good->description = $_POST["description"];
+            if(isset($_POST["tag"]))
+                $good->tag = makeValidInput($_POST["tag"]);
+
+            $good->code = makeValidInput($_POST["code"]);
+            $good->price = makeValidInput($_POST["price"]);
+
+            $good->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
+            $good->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
+
+            $good->start_time_buy = convertTimeToString(makeValidInput($_POST["start_time_buy"]));
+            $good->start_date_buy = convertDateToString(makeValidInput($_POST["start_date_buy"]));
+
+            try {
+
+                if(isset($_FILES["adv"]) && !empty($_FILES["adv"]["name"])) {
+
+                    if($good->adv != null && !empty($good->adv) &&
+                        file_exists(__DIR__ . '/../../../public/goodAdvs/' . $good->adv))
+                        unlink(__DIR__ . '/../../../public/goodAdvs/' . $good->adv);
+
+                    $file = Input::file('adv');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/goodAdvs';
+                    $file->move($destenationpath, $Image);
+
+                    $good->adv = $Image;
+                }
+
+                $good->save();
+
+                if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])) {
+
+                    $pics = GoodPic::whereGoodId($id)->get();
+
+                    foreach ($pics as $pic) {
+                        if (file_exists(__DIR__ . '/../../../public/goodPic/' . $pic->name))
+                            unlink(__DIR__ . '/../../../public/goodPic/' . $pic->name);
+                        $pic->delete();
+                    }
+
+                    $file = Input::file('file');
+                    $Image = time() . '_' . $file->getClientOriginalName();
+                    $destenationpath = public_path() . '/tmp';
+                    $file->move($destenationpath, $Image);
+
+                    $zip = new ZipArchive;
+                    $res = $zip->open($destenationpath . '/' . $Image);
+
+                    if ($res === TRUE) {
+
+                        $folder = time();
+
+                        mkdir($destenationpath . '/' . $folder);
+                        $zip->extractTo($destenationpath . '/' . $folder);
+                        $zip->close();
+
+                        $dir = $destenationpath . '/' . $folder;
+                        $q = scandir($dir);
+                        $q = array_diff($q, array('.', '..'));
+                        natsort($q);
+
+                        $vals = [];
+                        foreach ($q as $itr)
+                            $vals[count($vals)] = $itr;
+
+                        $newDest = __DIR__ . '/../../../public/goodPic/';
+
+                        foreach ($vals as $val) {
+                            $tmp = new GoodPic();
+                            $tmp->good_id = $good->id;
+                            $tmp->name = time() . $val;
+                            $tmp->save();
+                            rename($destenationpath . '/' . $folder . '/' . $val,
+                                $newDest . $tmp->name);
+                        }
+
+                        rrmdir($destenationpath . '/' . $folder);
+                        unlink($destenationpath . '/' . $Image);
+                    }
+                }
+            }
+            catch (\Exception $x) {
+                dd($x);
+            }
+
+        }
+
+        return Redirect::route('goods');
+
+    }
+
 }

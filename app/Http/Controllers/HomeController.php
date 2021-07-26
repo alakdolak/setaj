@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\models\Activation;
 use App\models\Bookmark;
 use App\models\Chat;
 use App\models\Citizen;
@@ -13,8 +14,11 @@ use App\models\CitizenPic;
 use App\models\CommonQuestion;
 use App\models\ConfigModel;
 use App\models\FAQCategory;
+use App\models\Good;
+use App\models\GoodPic;
 use App\models\Grade;
 use App\models\Msg;
+use App\models\PayPingTransaction;
 use App\models\Product;
 use App\models\ProductAttach;
 use App\models\ProductPic;
@@ -332,6 +336,22 @@ class HomeController extends Controller {
         return view('home', ['loginErr' => $msg, "reminder" => $x]);
     }
 
+    public function secondLogin() {
+
+        $username = makeValidInput(Input::get('username'));
+        $password = makeValidInput(Input::get('password'));
+
+        if(Auth::attempt(['username' => $username, 'password' => $password], true)) {
+
+            if(!Auth::user()->status)
+                return "nok";
+
+            return "ok";
+        }
+
+        return "nok";
+    }
+
 
 
     public function showAllServices($grade = -1) {
@@ -501,6 +521,124 @@ class HomeController extends Controller {
         return view('showService', ['canBuy' => $canBuy, 'canAddFile' => $canAddFile, 'content' => $content,
             'fileStatus' => $fileStatus, 'service' => $service, 'oldBuy' => $oldBuy, 'sbId' => $sbId]);
     }
+
+
+
+    public function showAllGoods($grade = -1) {
+
+        DB::delete("delete from pay_ping_transactions where status = 0 and created_at < date_sub(CURRENT_TIMESTAMP, interval 10 MINute)");
+
+        if($grade == -1)
+            $grade = Grade::first()->id;
+
+        $today = getToday();
+        $date = $today["date"];
+        $time = (int)$today["time"];
+
+        $goods = DB::select('select good.id, good.name, price, tag, owner, start_date_buy, start_time_buy from good, users where ' .
+            ' grade_id = ' . $grade . ' and users.id = user_id' .
+            ' and (start_show < ' . $date . ' or (start_show = ' . $date . ' and start_time <= ' . $time . '))' .
+            ' and hide = false order by id desc');
+
+        $distinctTags = [];
+
+        foreach ($goods as $good) {
+
+            $tmpPic = GoodPic::whereGoodId($good->id)->first();
+
+            if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/goodPic/' . $tmpPic->name))
+                $good->pic = URL::asset('projectPic/defaultPic.png');
+            else
+                $good->pic = URL::asset('goodPic/' . $tmpPic->name);
+
+            if($good->price == 0)
+                $good->price = "رایگان";
+            else
+                $good->price = number_format($good->price);
+
+            if ($good->start_date_buy > $date ||
+                ($good->start_date_buy == $date && $good->start_time_buy > $time)
+            )
+                $good->canBuy = false;
+            else if(PayPingTransaction::whereGoodId($good->id)->count() > 0)
+                $good->canBuy = false;
+            else
+                $good->canBuy = true;
+
+            $good->tags = explode('-', $good->tag);
+            foreach ($good->tags as $tag) {
+                $distinct = true;
+                foreach ($distinctTags as $distinctTag) {
+                    if($tag == $distinctTag) {
+                        $distinct = false;
+                        break;
+                    }
+                }
+
+                if($distinct)
+                    $distinctTags[count($distinctTags)] = $tag;
+            }
+
+        }
+
+        return view('goods', ['goods' => $goods, 'tags' => $distinctTags, 'grade' => $grade]);
+    }
+
+    public function showGood($id) {
+
+        DB::delete("delete from pay_ping_transactions where status = 0 and created_at < date_sub(CURRENT_TIMESTAMP, interval 10 MINute)");
+
+        $today = getToday();
+        $date = $today["date"];
+        $time = (int)$today["time"];
+
+        $good = Good::whereId($id);
+
+        if($good == null || $good->hide || $good->start_show > $date ||
+            ($good->start_show == $date && $good->start_time > $time))
+            return Redirect::route('showAllGoods');
+
+        $tmpPics = GoodPic::whereGoodId($good->id)->get();
+        $pics = [];
+
+        foreach ($tmpPics as $tmpPic) {
+            if(file_exists(__DIR__ . '/../../../public/goodPic/' . $tmpPic->name))
+                $pics[count($pics)] = URL::asset('goodPic/' . $tmpPic->name);
+        }
+
+        $good->pics = $pics;
+
+        if($good->price == 0)
+            $good->price = "رایگان";
+        else
+            $good->price = number_format($good->price);
+
+        $canBuy = true;
+
+        $date = getToday()["date"];
+
+        if($canBuy) {
+
+            if (
+                $good->start_date_buy > $date ||
+                ($good->start_date_buy == $date && $good->start_time_buy > $time)
+            )
+                $canBuy = false;
+
+            else if(PayPingTransaction::whereGoodId($good->id)->count() > 0)
+                $canBuy = false;
+        }
+
+        if($good->adv != null && !empty($good->adv) &&
+            file_exists(__DIR__ . '/../../../public/goodAdvs/' . $good->adv)
+        )
+            $good->adv = URL::asset('goodAdvs/' . $good->adv);
+        else
+            $good->adv = null;
+
+        return view('showGood', ['canBuy' => $canBuy, 'good' => $good]);
+    }
+
 
 
 
@@ -707,7 +845,7 @@ class HomeController extends Controller {
             }
 
             if ($canBuy && (
-                $project->start_reg > $date || $project->end_reg < $date ||
+                    $project->start_reg > $date || $project->end_reg < $date ||
                     ($project->start_reg == $date && $project->start_reg_time > $time)
                 )
             )
@@ -1813,4 +1951,132 @@ class HomeController extends Controller {
         exit();
     }
 
+
+    public function getVerificationCode() {
+
+        if(isset($_POST["nid"]) && isset($_POST["phone"]) &&
+            isset($_POST["name"]) && isset($_POST["last_name"])) {
+
+            $nid = translatePersian(makeValidInput($_POST["nid"]));
+
+            if(!_custom_check_national_code($nid))
+                return json_encode(["status" => "nok", "msg" => "کد ملی وارد شده معتبر نمی باشد."]);
+
+            $phone = translatePersian(makeValidInput($_POST["phone"]));
+
+            if(!preg_match('/^(?:98|\+98|0098|0)?9[0-9]{9}$/', $phone))
+                return json_encode(["status" => "nok", "msg" => "شماره همراه وارد شده معتبر نمی باشد."]);
+
+            if(User::whereNid($nid)->count() > 0)
+                return json_encode(["status" => "nok", "msg" => "کد ملی وارد شده در سیستم موجود است."]);
+
+            if(User::wherePhone($phone)->count() > 0)
+                return json_encode(["status" => "nok", "msg" => "شماره همراه وارد شده در سیستم موجود است."]);
+
+            $activation = Activation::whereNid($nid)->first();
+
+            if($activation != null && $activation->phone != $phone)
+                return json_encode(["status" => "nok", "msg" => "کد ملی وارد شده در سیستم موجود است."]);
+
+            if($activation == null) {
+                $activation = new Activation();
+                $activation->name = makeValidInput($_POST["name"]);
+                $activation->last_name = makeValidInput($_POST["last_name"]);
+                $activation->nid = $nid;
+                $activation->phone = $phone;
+                $activation->send_time = time();
+
+                $token = str_random(100);
+                $code = rand(10000, 99999);
+
+                $activation->token = $token;
+                $activation->code = $code;
+                $activation->save();
+                sendSMS($phone, $code, "");
+
+                return json_encode(["status" => "ok", "token" => $activation->token]);
+            }
+
+            if(time() - $activation->send_time < 300)
+                return json_encode(["status" => "ok", "token" => $activation->token]);
+
+            $token = str_random(100);
+            $code = rand(10000, 99999);
+
+            $activation->token = $token;
+            $activation->code = $code;
+            $activation->save();
+
+            sendSMS($phone, $code, "");
+            return json_encode(["status" => "ok", "token" => $activation->token]);
+        }
+
+        return json_encode(["status" => "nok", "msg" => "not valid params"]);
+    }
+
+    function resend() {
+
+        if(isset($_POST["token"]) && isset($_POST["phone"])) {
+
+            $phone = translatePersian(makeValidInput($_POST["phone"]));
+            $a = Activation::wherePhone($phone)->first();
+            if ($a == null)
+                return "nok";
+
+            if ($a->token != makeValidInput($_POST["token"]))
+                return "nok";
+
+            if(time() - $a->send_time < 300)
+                return "nok";
+
+            $token = str_random(100);
+            $code = rand(10000, 99999);
+
+            $a->send_time = time();
+            $a->token = $token;
+            $a->code = $code;
+            $a->save();
+
+            sendSMS($phone, $code, "");
+
+            return $token;
+        }
+
+        return "nok";
+    }
+
+    function verify() {
+
+        if(isset($_POST["token"]) && isset($_POST["code"])) {
+
+            $code = translatePersian(makeValidInput($_POST["code"]));
+            $a = Activation::whereCode($code)->first();
+            if($a == null)
+                return "nok1";
+
+            if($a->token != makeValidInput($_POST["token"]))
+                return "nok1";
+
+            $user = new User();
+            $user->first_name = $a->name;
+            $user->last_name = $a->last_name;
+            $user->nid = $a->nid;
+            $user->password = Hash::make($a->nid);
+            $user->username = $a->phone;
+            $user->phone = $a->phone;
+            $user->grade_id = Grade::first()->id;
+            $user->level = 1;
+            $user->status = 1;
+            $user->stars = 0;
+            $user->money = 0;
+            $user->save();
+
+            $a->delete();
+            Auth::attempt(['username' => $user->username, 'password' => $a->nid], true);
+
+            return "ok";
+        }
+
+        return "nok1";
+    }
 }
