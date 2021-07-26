@@ -144,6 +144,7 @@
                 <div class="modal-footer">
                     <button onclick="buy()" type="button" class="btn btn-success">بله</button>
                     <button type="button" id="closeSendModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                    <div id="alertText" class="alertText acceptAlertText"></div>
                 </div>
             </div>
         </div>
@@ -191,6 +192,7 @@
                 <div class="modal-footer">
                     <button onclick="getVerificationCode()" type="button" class="btn btn-success">تایید</button>
                     <button id="closeSignUpBtn" type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                    <div id="alertText2" class="alertText acceptAlertText"></div>
                 </div>
             </div>
 
@@ -272,7 +274,18 @@
 
         function getVerificationCode() {
 
-            phone = $("#phone").val();
+            var phone = $("#phone").val();
+            var nid = $("#nid").val();
+            var name = $("#name").val();
+            var lastname = $("#last_name").val();
+
+            if(phone.length === 0 || nid.length === 0 ||
+                name.length === 0 || lastname.length === 0) {
+                $("#alertText2").empty().append("<p>لطفا تمام اطلاعات لازم را وارد نمایید.</p>");
+                return;
+            }
+
+            $("#alertText2").empty().append("<p>در حال بررسی اطلاعات، لطفا شکیبا باشید.</p>");
 
             $.ajax({
                 type: 'post',
@@ -282,9 +295,9 @@
                 url: '{{route('getVerificationCode')}}',
                 data: {
                     phone: phone,
-                    nid: $("#nid").val(),
-                    name: $("#name").val(),
-                    last_name: $("#last_name").val()
+                    nid: nid,
+                    name: name,
+                    last_name: lastname
                 },
                 success: function (res) {
 
@@ -295,11 +308,10 @@
                         checkTime();
                         $("#closeSignUpBtn").click();
                         $("#verificationModalBtn").click();
+                        $("#alertText2").empty();
                     }
-                    else {
-                        alert(res.msg);
-                    }
-
+                    else
+                        $("#alertText2").empty().append("<p>" + res.msg + "</p>");
                 }
             });
         }
@@ -373,6 +385,12 @@
             }
 
             var addr = $("#address").val();
+            if(addr.length === 0) {
+                $("#alertText").empty().append("<p>لطفا آدرس پستی را وارد نمایید.</p>");
+                return;
+            }
+
+            $("#alertText").empty().append("<p>در حال اتصال به درگاه پرداخت، لطفا شکیبا باشید.</p>");
 
             $.ajax({
                 type: 'post',
@@ -387,13 +405,13 @@
                 success: function (res) {
 
                     if(res === "nok1")
-                        $("#alertText").empty().append("<div>زمان شروع خرید محصول مورد نظر هنوز فرا نرسیده است.</div>");
+                        $("#alertText").empty().append("<p>زمان شروع خرید محصول مورد نظر هنوز فرا نرسیده است.</p>");
                     else if(res === "nok2")
-                        $("#alertText").empty().append("<div>این محصول قبلا به فروش رسیده است و شما اجازه خرید مجدد آن را ندارد.</div>");
+                        $("#alertText").empty().append("<p>این محصول قبلا به فروش رسیده است و شما اجازه خرید مجدد آن را ندارد.</p>");
                     else if(res === "nok3")
-                        $("#alertText").empty().append("<div>عملیات مورد نظر غیرمجاز است</div>");
-                    // else
-                    //     document.location.href = res.url;
+                        $("#alertText").empty().append("<p>عملیات مورد نظر غیرمجاز است</p>");
+                    else
+                        window.location.href = res;
                 }
             });
         }

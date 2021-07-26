@@ -2092,4 +2092,12 @@ class HomeController extends Controller {
 
         return "nok1";
     }
+
+    public function failTransaction() {
+        return view('fail');
+    }
+
+    public function successTransaction($ref) {
+        return view('successTrans', ['ref' => $ref]);
+    }
 }

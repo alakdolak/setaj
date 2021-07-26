@@ -331,12 +331,13 @@ function findDiffWithSiteStart() {
 
 function sendSMS($destNum, $text, $templateId, $text2 = "", $text3 = "") {
 
+    $templateId = "karestoonVerify";
     if($destNum[0] == "0" && $destNum[1] == "9") {
 
         require __DIR__ . '/../../../vendor/autoload.php';
 
         try {
-            $api = new \Kavenegar\KavenegarApi("");
+            $api = new \Kavenegar\KavenegarApi("703146316B34466B616364612B616C786B692F3155775432312F67344B434144424E63752B306431464B633D");
 //        $sender = "10000008008080";
 //        $result = $api->Send("30006703323323","09214915905","خدمات پیام کوتاه کاوه نگار");
             $result = $api->VerifyLookup($destNum, $text, $text2, $text3, $templateId);
