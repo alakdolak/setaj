@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\models\ConfigModel;
 use App\models\Grade;
+use App\models\PayPingTransaction;
 use App\models\ProjectBuyers;
 use App\models\Service;
 use App\models\ServiceBuyer;
@@ -999,4 +1000,21 @@ class ReportController extends Controller {
         return view('report.serviceBuyers', ['buyers' => $tmp, 'gradeId' => $gradeId,
             "uniques" => $uniques]);
     }
+
+    public function goodReport() {
+
+        $transactions = DB::select("select concat(u1.first_name, ' ', u1.last_name) as seller, g.name as grade, " .
+        "concat(u2.first_name, ' ', u2.last_name) as buyer, p.ref_id, p.created_at, p.post, p.address, " .
+        "gd.name, gd.owner, p.pay, u2.phone, gd.code" .
+        " from pay_ping_transactions p, good gd, grade g, users u1, users u2 where p.status = 1 and " .
+        "p.good_id = gd.id and gd.user_id = u1.id and p.user_id = u2.id and u1.grade_id = g.id");
+
+        foreach ($transactions as $transaction) {
+            $transaction->date = MiladyToShamsi('', explode('-', explode(' ', $transaction->created_at)[0]));
+            $transaction->time = explode(' ', $transaction->created_at)[1];
+        }
+
+        return view('report.transactions', ['transactions' => $transactions]);
+    }
+
 }

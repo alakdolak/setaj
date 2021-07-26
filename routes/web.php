@@ -198,6 +198,9 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
     Route::post('addOperators', ['as' => 'addOperators', 'uses' => 'AdminController@addOperators']);
 
 
+    Route::get('goodReport', ['as' => 'goodReport', 'uses' => 'ReportController@goodReport']);
+
+
 });
 
 Route::group(['middleware' => ['auth', 'adminLevel']], function () {

@@ -48,7 +48,12 @@ class TransactionController extends Controller {
             $t = new PayPingTransaction();
             $t->user_id = $userId;
             $t->good_id = $goodId;
-            $t->address = $address;
+
+            if($sendMethod == "post")
+                $t->address = $address;
+            else
+                $t->address = "";
+
             $t->post = ($sendMethod == "post");
             $t->pay = $good->price;
             $t->save();
@@ -85,12 +90,13 @@ class TransactionController extends Controller {
 
             try {
                 if ($payment->verify($_GET['refid'], $t->pay)) {
-                    $t->refId = makeValidInput($_GET["refid"]);
+                    $t->ref_id = makeValidInput($_GET["refid"]);
                     $t->status = 1;
                     $t->save();
-                    return Redirect::route('successTransaction', ['ref' => $t->refId]);
+                    return Redirect::route('successTransaction', ['ref' => $t->ref_id]);
                 }
-            } catch (PayPingException $e) {
+            } catch (\Exception $e) {
+                dd($e->getMessage());
 //                foreach (json_decode($e->getMessage(), true) as $msg) {
 //                    echo $msg;
 //                }
