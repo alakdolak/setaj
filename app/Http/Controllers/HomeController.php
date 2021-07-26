@@ -535,7 +535,9 @@ class HomeController extends Controller {
         $date = $today["date"];
         $time = (int)$today["time"];
 
-        $goods = DB::select('select good.id, good.name, price, tag, owner, start_date_buy, start_time_buy from good, users where ' .
+        $grades = DB::select("select g.* from grade g, good gd, users u where gd.user_id = u.id and g.id = u.grade_id group by (g.id)");
+
+        $goods = DB::select('select good.id, good.name, code, price, tag, owner, start_date_buy, start_time_buy from good, users where ' .
             ' grade_id = ' . $grade . ' and users.id = user_id' .
             ' and (start_show < ' . $date . ' or (start_show = ' . $date . ' and start_time <= ' . $time . '))' .
             ' and hide = false order by id desc');
@@ -565,23 +567,28 @@ class HomeController extends Controller {
             else
                 $good->canBuy = true;
 
-            $good->tags = explode('-', $good->tag);
-            foreach ($good->tags as $tag) {
-                $distinct = true;
-                foreach ($distinctTags as $distinctTag) {
-                    if($tag == $distinctTag) {
-                        $distinct = false;
-                        break;
+            if(!empty($good->tag)) {
+                $good->tags = explode('-', $good->tag);
+                foreach ($good->tags as $tag) {
+                    $distinct = true;
+                    foreach ($distinctTags as $distinctTag) {
+                        if ($tag == $distinctTag) {
+                            $distinct = false;
+                            break;
+                        }
                     }
-                }
 
-                if($distinct)
-                    $distinctTags[count($distinctTags)] = $tag;
+                    if ($distinct)
+                        $distinctTags[count($distinctTags)] = $tag;
+                }
             }
+            else
+                $good->tags = [];
 
         }
 
-        return view('goods', ['goods' => $goods, 'tags' => $distinctTags, 'grade' => $grade]);
+        return view('goods', ['goods' => $goods, 'grades' => $grades,
+            'tags' => $distinctTags, 'grade' => $grade]);
     }
 
     public function showGood($id) {
@@ -1956,6 +1963,12 @@ class HomeController extends Controller {
 
         if(isset($_POST["nid"]) && isset($_POST["phone"]) &&
             isset($_POST["name"]) && isset($_POST["last_name"])) {
+
+            $name = makeValidInput($_POST["name"]);
+            $lasName = makeValidInput($_POST["last_name"]);
+
+            if(empty($name) || empty($lasName))
+                return json_encode(["status" => "nok", "msg" => "لطفا نام و نام خانوادگی خود را وارد نمایید."]);
 
             $nid = translatePersian(makeValidInput($_POST["nid"]));
 

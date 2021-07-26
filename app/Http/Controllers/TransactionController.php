@@ -14,10 +14,14 @@ class TransactionController extends Controller {
 
     public function buy($goodId) {
 
-        if(isset($_POST["sendMethod"])) {
+        if(isset($_POST["sendMethod"]) && isset($_POST["address"])) {
 
             $sendMethod = makeValidInput($_POST["sendMethod"]);
             if ($sendMethod != "come" && $sendMethod != "post")
+                return "nok3";
+
+            $address = makeValidInput($_POST["address"]);
+            if(empty($address))
                 return "nok3";
 
             $userId = Auth::user()->id;
@@ -43,6 +47,7 @@ class TransactionController extends Controller {
             $t = new PayPingTransaction();
             $t->user_id = $userId;
             $t->good_id = $goodId;
+            $t->address = $address;
             $t->post = ($sendMethod == "post");
             $t->pay = $good->price;
             $t->save();

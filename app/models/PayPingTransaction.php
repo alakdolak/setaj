@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $status
  * @property boolean $post
  * @property string $ref_id
+ * @property string $address
  * @method static \Illuminate\Database\Query\Builder|\App\models\PayPingTransaction whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\PayPingTransaction whereGoodId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\models\PayPingTransaction whereStatus($value)

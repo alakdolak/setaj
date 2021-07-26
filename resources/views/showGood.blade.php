@@ -16,6 +16,10 @@
                 <div class="pr_icons coinIcon"></div>
                 <div>قیمت: {{$good->price}} تومان</div>
             </div>
+            <div class="pr_descriptRow pr_iconesBox">
+                <div class="pr_icons folderIcon"></div>
+                <div>کد محصول: {{$good->code}} </div>
+            </div>
             @if(!empty($good->description))
                 <div class="pr_descriptRow">
                     <div class="pr_iconesBox">
@@ -88,7 +92,11 @@
             </div>
 
             @if($canBuy)
-                <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
+                @if(\Illuminate\Support\Facades\Auth::check())
+                    <div data-toggle="modal" data-target="#confirmationModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
+                @else
+                    <div data-toggle="modal" data-target="#loginModal" class="shopBtn shopDownloadBtn">خرید و دریافت محصول</div>
+                @endif
             @else
                 <div class="shopBtn doneBtn">شما امکان خرید ندارید</div>
             @endif
@@ -102,7 +110,7 @@
     <div data-toggle="modal" id="signUpModalBtn" data-target="#signUpModal" class="hidden"></div>
     <div data-toggle="modal" id="verificationModalBtn" data-target="#verificationModal" class="hidden"></div>
 
-    <div id="confirmationModal" class="modal fade" role="dialog">
+    <div id="confirmationModal" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
         <div class="modal-dialog">
             <div id="confirmationModalDialog" class="modal-content">
                 <div class="modal-header">
@@ -118,16 +126,20 @@
         </div>
     </div>
 
-    <div id="sendModal" class="modal fade" role="dialog">
+    <div id="sendModal" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
         <div class="modal-dialog">
             <div id="confirmationModalDialog" class="modal-content">
                 <div class="modal-header">
                     <button id="closeConfirmationModalBtn" type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">لطفا نحوه ارسال مرسوله را مشخص نمایید.</h4>
                     <label for="post">از طریق پست ارسال شود.</label>
-                    <input type="radio" checked id="post" value="post" name="sendMethod">
+                    <input type="radio" id="post" value="post" name="sendMethod">
                     <label for="come">به طور حضوری روز شنبه به مدرسه میام و میگیرم.</label>
-                    <input type="radio" id="come" value="come" name="sendMethod">
+                    <input type="radio" checked id="come" value="come" name="sendMethod">
+                    <div id="addressDiv" class="hidden">
+                        <label for="address">آدرس پستی</label>
+                        <textarea id="address"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button onclick="buy()" type="button" class="btn btn-success">بله</button>
@@ -137,7 +149,7 @@
         </div>
     </div>
 
-    <div id="loginModal" class="modal fade" role="dialog">
+    <div id="loginModal" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
         <div class="modal-dialog">
             <center class="modal-content">
                 <div class="modal-header">
@@ -160,7 +172,7 @@
         </div>
     </div>
 
-    <div id="signUpModal" class="modal fade" role="dialog">
+    <div id="signUpModal" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
         <div class="modal-dialog">
 
             <div class="modal-content">
@@ -185,7 +197,7 @@
         </div>
     </div>
 
-    <div id="verificationModal" class="modal fade" role="dialog">
+    <div id="verificationModal" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
         <div class="modal-dialog">
 
             <div class="modal-content">
@@ -284,6 +296,9 @@
                         $("#closeSignUpBtn").click();
                         $("#verificationModalBtn").click();
                     }
+                    else {
+                        alert(res.msg);
+                    }
 
                 }
             });
@@ -341,6 +356,9 @@
                         $("#closeVerifyModalBtn").click();
                         document.location.reload();
                     }
+                    else {
+                        alert("کد وارد شده صحیح نیست.");
+                    }
 
                 }
             });
@@ -354,6 +372,8 @@
                 return;
             }
 
+            var addr = $("#address").val();
+
             $.ajax({
                 type: 'post',
                 headers: {
@@ -361,7 +381,8 @@
                 },
                 url: '{{route('buyGood', ['goodId' => $good->id])}}',
                 data: {
-                    sendMethod: $("input[name='sendMethod']:checked").val()
+                    sendMethod: $("input[name='sendMethod']:checked").val(),
+                    address: addr
                 },
                 success: function (res) {
 
@@ -383,6 +404,13 @@
 
                 $("#pr_mainPic").css("background-image", "url('" + $(this).attr('data-url') + "')");
 
+            });
+
+            $("input[name='sendMethod']").on("change", function () {
+                if($("input[name='sendMethod']:checked").val() === "post")
+                    $("#addressDiv").removeClass('hidden');
+                else
+                    $("#addressDiv").addClass('hidden');
             });
 
         });

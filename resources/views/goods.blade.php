@@ -36,31 +36,38 @@
                                     <div class="priceText">قیمت: رایگان</div>
                                 @endif
                             </div>
+                            @if(count($good->tags) > 0)
+                                <div class="sh_descriptRow sh_priceBox">
+                                    <div class="priceIcons categoryIcon"></div>
+                                    <div class="priceText">دسته:
+                                        <?php $k = 0; ?>
+                                        @foreach($good->tags as $tag)
+                                            @if($k == count($good->tags) - 1)
+                                                {{$tag}}
+                                            @else
+                                                {{$tag}} و
+                                            @endif
+                                        <?php $k++; ?>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
                             <div class="sh_descriptRow sh_priceBox">
                                 <div class="priceIcons categoryIcon"></div>
-                                <div class="priceText">دسته:
-                                    <?php $k = 0; ?>
-                                    @foreach($good->tags as $tag)
-                                        @if($k == count($good->tags) - 1)
-                                            {{$tag}}
-                                        @else
-                                            {{$tag}} و
-                                        @endif
-                                    <?php $k++; ?>
-                                    @endforeach
+                                <div class="priceText">کد محصول:
+                                    {{$good->code}}
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
                     @if($good->canBuy)
                         <div class="sh_ownerBox">
-                            <div style="font-size: 0.9em">{{$good->owner}}</div>
+                            <div style="font-size: 0.9em"><span>تولید کننده: </span><span>{{$good->owner}}</span></div>
                         </div>
                     @else
                         <div class="sh_ownerBox_finish">
-                            <div style="font-size: 0.9em">{{$good->owner}}</div>
+                            <div style="font-size: 0.9em"><span>تولید کننده: </span><span>{{$good->owner}}</span></div>
                         </div>
                     @endif
                 </div>
