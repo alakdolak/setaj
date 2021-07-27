@@ -7,7 +7,6 @@ use App\models\PayPingTransaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use PayPing\Payment;
-use PayPing\PayPingException;
 
 class TransactionController extends Controller {
 
@@ -93,7 +92,7 @@ class TransactionController extends Controller {
                     $t->ref_id = makeValidInput($_GET["refid"]);
                     $t->status = 1;
                     $t->save();
-                    return Redirect::route('successTransaction', ['ref' => $t->ref_id]);
+                    return Redirect::route('successTransaction', ['id' => $t->id]);
                 }
             } catch (\Exception $e) {
                 dd($e->getMessage());

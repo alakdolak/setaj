@@ -10,8 +10,6 @@ use App\models\GoodPic;
 use App\models\Grade;
 use App\models\PayPingTransaction;
 use App\models\ProjectBuyers;
-use App\models\ServiceAttach;
-use App\models\ServicePic;
 use App\models\Tag;
 use App\models\Tutorial;
 use App\models\User;
@@ -691,6 +689,140 @@ class AdminController extends Controller {
         }
 
         return view('operator.goods', ['goods' => $goods, 'grades' => Grade::all()]);
+    }
+
+    public function addBatchGood() {
+
+        if(isset($_FILES["excel"]) && !empty($_FILES["excel"]["name"])) {
+
+            $file = Input::file('excel');
+            $Image = time() . '_' . $file->getClientOriginalName();
+            $destenationpath = public_path() . '/tmp';
+            $file->move($destenationpath, $Image);
+
+            $path = __DIR__ . '/../../../public/tmp/' . $Image;
+            $excelReader = PHPExcel_IOFactory::createReaderForFile($path);
+            $excelObj = $excelReader->load($path);
+            $workSheet = $excelObj->getSheet(0);
+            $lastRow = $workSheet->getHighestRow();
+            $cols = $workSheet->getHighestColumn();
+
+            unlink($path);
+
+            if ($cols < 'L') {
+                unlink($path);
+                dd("تعداد ستون های فایل شما معتبر نمی باشد");
+            }
+            else {
+                $goods = [];
+
+                for ($row = 2; $row <= $lastRow; $row++) {
+
+                    if($workSheet->getCell('A' . $row)->getValue() == "")
+                        break;
+
+                    $goods[$row - 2][0] = $workSheet->getCell('A' . $row)->getValue();
+                    $goods[$row - 2][1] = $workSheet->getCell('B' . $row)->getValue();
+                    $goods[$row - 2][2] = $workSheet->getCell('C' . $row)->getValue();
+                    $goods[$row - 2][3] = $workSheet->getCell('D' . $row)->getValue();
+                    $goods[$row - 2][4] = $workSheet->getCell('E' . $row)->getValue();
+                    $goods[$row - 2][5] = $workSheet->getCell('F' . $row)->getValue();
+                    $goods[$row - 2][6] = $workSheet->getCell('G' . $row)->getValue();
+                    $goods[$row - 2][7] = $workSheet->getCell('H' . $row)->getValue();
+                    $goods[$row - 2][8] = $workSheet->getCell('I' . $row)->getValue();
+                    $goods[$row - 2][9] = $workSheet->getCell('J' . $row)->getValue();
+                    $goods[$row - 2][10] = $workSheet->getCell('K' . $row)->getValue();
+                    $goods[$row - 2][11] = $workSheet->getCell('L' . $row)->getValue();
+                }
+
+                $err = $this->doAddGoods($goods);
+                if(empty($err))
+                    return Redirect::route('goods');
+                else {
+                    echo "بجز ردیف های زیر سایر محصولات اضافه شدند." . "<br/>";
+                    dd($err);
+                }
+            }
+
+        }
+
+        return Redirect::route('home');
+    }
+
+    public function doAddGoods($goods) {
+
+        $errs = [];
+        $counter = 0;
+        $i = 0;
+
+        foreach($goods as $good) {
+
+            $i++;
+
+            if(count($good) != 12) {
+                $errs[$counter++] = $i;
+                continue;
+            }
+
+            if(!preg_match("/^[0-9]{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])$/", $good[8]) ||
+                !preg_match("/^[0-9]{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[1-2][0-9]|3[0-1])$/", $good[10])
+            ) {
+                $errs[$counter++] = $i;
+                continue;
+            }
+
+            if(!preg_match("/^([01][0-9]|2[0-3]):([0-5][0-9])$/", $good[7]) ||
+                !preg_match("/^([01][0-9]|2[0-3]):([0-5][0-9])$/", $good[9])
+            ) {
+                $errs[$counter++] = $i;
+                continue;
+            }
+
+            $username = $good[0];
+            $user = User::whereUsername($username)->orWhere('nid', '=', $username)->first();
+
+            if($user == null) {
+                $errs[$counter++] = $i;
+                continue;
+            }
+
+            $g = new Good();
+            $g->name = $good[1];
+            $g->owner = $good[2];
+
+            if(!empty($good[3]))
+                $g->description = $good[3];
+            if(!empty($good[4]))
+                $g->tag = $good[4];
+
+            $g->code = $good[5];
+            $g->price = $good[6];
+            $g->user_id = $user->id;
+
+            $g->start_time = convertTimeToString($good[7]);
+            $g->start_show = convertDateToString($good[8]);
+
+            $g->start_time_buy = convertTimeToString($good[9]);
+            $g->start_date_buy = convertDateToString($good[10]);
+
+            try {
+                $g->save();
+
+                if (!empty($good[11])) {
+                    $goodPic = new GoodPic();
+                    $goodPic->good_id = $g->id;
+                    $goodPic->name = $good[11];
+                    $goodPic->save();
+                }
+            }
+            catch (\Exception $x) {
+                $errs[$counter++] = $i;
+                continue;
+            }
+
+        }
+
+        return $errs;
     }
 
     public function addGood() {

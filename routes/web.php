@@ -247,6 +247,8 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
 
     Route::post('addGood', ['as' => 'addGood', 'uses' => 'AdminController@addGood']);
 
+    Route::post('addBatchGood', ['as' => 'addBatchGood', 'uses' => 'AdminController@addBatchGood']);
+
     Route::get('editGood/{id}', ['as' => 'editGood', 'uses' => 'AdminController@editGood']);
 
     Route::post('doEditGood/{id}', ['as' => 'doEditGood', 'uses' => 'AdminController@doEditGood']);

@@ -147,6 +147,7 @@
 
                 <center>
                     <button class="btn btn-primary" onclick="CKEDITOR.replace('editor1'); document.getElementById('myAddModal').style.display = 'block'">تعریف محصول جدید</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('myAddBatchModal').style.display = 'block'">افزودن دسته ای با اکسل</button>
                 </center>
 
                 @if(count($goods) == 0)
@@ -366,6 +367,28 @@
                 <div style="margin-top: 20px">
                     <input type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
                     <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('myAddModal').style.display = 'none'">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="myAddBatchModal" class="modal">
+
+        <form action="{{route('addBatchGood')}}" method="post" enctype="multipart/form-data">
+
+            {{ csrf_field() }}
+
+            <div class="modal-content" style="width: 75% !important;">
+
+                <center>
+                    <h5>فایل اکسل</h5>
+                    <input type="file" name="excel" accept="application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+
+                </center>
+
+                <div style="margin-top: 20px">
+                    <input type="submit" value="افزودن" class="btn green"  style="margin-right: 5%; margin-bottom: 3%">
+                    <input type="button" value="انصراف" class="btn green"  style="float: left; margin-bottom: 3%; margin-left: 5%;" onclick="document.getElementById('myAddBatchModal').style.display = 'none'">
                 </div>
             </div>
         </form>

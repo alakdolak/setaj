@@ -528,14 +528,16 @@ class HomeController extends Controller {
 
         DB::delete("delete from pay_ping_transactions where status = 0 and created_at < date_sub(CURRENT_TIMESTAMP, interval 15 minute)");
 
-        if($grade == -1)
-            $grade = Grade::first()->id;
-
         $today = getToday();
         $date = $today["date"];
         $time = (int)$today["time"];
 
         $grades = DB::select("select g.* from grade g, good gd, users u where gd.user_id = u.id and g.id = u.grade_id group by (g.id)");
+        if(count($grades) == 0)
+            return Redirect::route('home');
+
+        if($grade == -1)
+            $grade = $grades[0]->id;
 
         $goods = DB::select('select good.id, good.name, code, price, tag, owner, start_date_buy, start_time_buy from good, users where ' .
             ' grade_id = ' . $grade . ' and users.id = user_id' .
