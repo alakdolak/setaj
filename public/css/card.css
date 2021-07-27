@@ -141,6 +141,10 @@
     background-image: url(../images/week5.jpg);
 }
 
+.goodsTitleBanner {
+    background-image: url(../images/goodsTitleBanner.jpg);
+}
+
 .shopOneBox {
     cursor: pointer;
     margin: 0 0 30px;

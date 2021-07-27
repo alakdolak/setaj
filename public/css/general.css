@@ -104,6 +104,9 @@ body{
 .calenderIcon {
     background-image: url(../images/calender.png);
 }
+.capacityIcon {
+    background-image: url(../images/capacity.png);
+}
 
 /*the css of modals*/
 .modal-footer {

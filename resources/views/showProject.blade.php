@@ -13,6 +13,7 @@
 @section("content")
 
     <div class="eachProduct row">
+
         <div class="pr_descript col-sm-7 col-xs-12">
             <div class="pr_descriptRow pr_title">{{$project->title}}</div>
 
