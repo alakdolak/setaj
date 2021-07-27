@@ -526,7 +526,7 @@ class HomeController extends Controller {
 
     public function showAllGoods($grade = -1) {
 
-        DB::delete("delete from pay_ping_transactions where status = 0 and created_at < date_sub(CURRENT_TIMESTAMP, interval 10 MINute)");
+        DB::delete("delete from pay_ping_transactions where status = 0 and created_at < date_sub(CURRENT_TIMESTAMP, interval 15 minute)");
 
         if($grade == -1)
             $grade = Grade::first()->id;
@@ -593,7 +593,7 @@ class HomeController extends Controller {
 
     public function showGood($id) {
 
-        DB::delete("delete from pay_ping_transactions where status = 0 and created_at < date_sub(CURRENT_TIMESTAMP, interval 10 MINute)");
+        DB::delete("delete from pay_ping_transactions where status = 0 and created_at < date_sub(CURRENT_TIMESTAMP, interval 15 minute)");
 
         $today = getToday();
         $date = $today["date"];
@@ -2091,5 +2091,13 @@ class HomeController extends Controller {
         }
 
         return "nok1";
+    }
+
+    public function failTransaction() {
+        return view('fail');
+    }
+
+    public function successTransaction($ref) {
+        return view('successTrans', ['ref' => $ref]);
     }
 }

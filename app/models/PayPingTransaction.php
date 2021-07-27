@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 class PayPingTransaction extends Model {
 
     public $table = 'pay_ping_transactions';
+    public $timestamps = false;
 
     public static function whereId($value) {
         return PayPingTransaction::find($value);

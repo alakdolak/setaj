@@ -348,6 +348,12 @@
                             </li>
 
                             <li class="nav-item  ">
+                                <a href="{{route('goodReport')}}" class="nav-link">
+                                    <span class="title">فروشگاه</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item  ">
                                 <a href="{{route('productsReport')}}" class="nav-link">
                                     <span class="title">رصد بازار خرید و فروش</span>
                                 </a>

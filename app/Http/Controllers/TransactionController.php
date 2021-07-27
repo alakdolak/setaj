@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\models\Good;
 use App\models\PayPingTransaction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use PayPing\Payment;
 use PayPing\PayPingException;
 
@@ -47,7 +48,12 @@ class TransactionController extends Controller {
             $t = new PayPingTransaction();
             $t->user_id = $userId;
             $t->good_id = $goodId;
-            $t->address = $address;
+
+            if($sendMethod == "post")
+                $t->address = $address;
+            else
+                $t->address = "";
+
             $t->post = ($sendMethod == "post");
             $t->pay = $good->price;
             $t->save();
@@ -78,26 +84,25 @@ class TransactionController extends Controller {
 
             $t = PayPingTransaction::whereId(makeValidInput($_GET["clientrefid"]));
             if($t == null)
-                return view('fail');
+                return Redirect::route('failTransaction');
 
             $payment = new Payment(self::$token);
 
             try {
                 if ($payment->verify($_GET['refid'], $t->pay)) {
-                    $t->refId = makeValidInput($_GET["refid"]);
+                    $t->ref_id = makeValidInput($_GET["refid"]);
                     $t->status = 1;
                     $t->save();
-                    return view('success');
-                } else
-                    return view('fail');
-
-            } catch (PayPingException $e) {
-                foreach (json_decode($e->getMessage(), true) as $msg) {
-                    echo $msg;
+                    return Redirect::route('successTransaction', ['ref' => $t->ref_id]);
                 }
-
-                return view('fail');
+            } catch (\Exception $e) {
+                dd($e->getMessage());
+//                foreach (json_decode($e->getMessage(), true) as $msg) {
+//                    echo $msg;
+//                }
             }
+
+            return Redirect::route('failTransaction');
         }
 
         return view('home');

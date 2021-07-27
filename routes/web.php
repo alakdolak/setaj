@@ -73,6 +73,9 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
 
     Route::get('logout', ['as' => 'logout', 'uses' => 'HomeController@logout']);
 
+    Route::get('successTransaction/{ref}', ['as' => 'successTransaction', 'uses' => 'HomeController@successTransaction']);
+
+    Route::get('failTransaction', ['as' => 'failTransaction', 'uses' => 'HomeController@failTransaction']);
 });
 
 Route::group(['middleware' => ['auth', 'siteTime']], function () {
@@ -193,6 +196,9 @@ Route::group(['middleware' => ['auth', 'adminLevel']], function () {
     Route::post('addUsers/{gradeId}', ['as' => 'addUsers', 'uses' => 'AdminController@addUsers']);
 
     Route::post('addOperators', ['as' => 'addOperators', 'uses' => 'AdminController@addOperators']);
+
+
+    Route::get('goodReport', ['as' => 'goodReport', 'uses' => 'ReportController@goodReport']);
 
 
 });
