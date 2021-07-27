@@ -8,9 +8,15 @@
 
 @section("content")
 
-    <div class="row contactUsBody">
-        <p style="color: black">عملیات مورد نظر با موفقیت انجام شد.</p>
-        <p style="color: black">کد پیگیری شما {{$ref}} می باشد.</p>
-    </div>
+    <center class="row contactUsBody">
+        <img width="150px" src="{{\Illuminate\Support\Facades\URL::asset('images/correct2.png')}}">
+        <h3 style="color: black">عملیات مورد نظر با موفقیت انجام شد.</h3>
+        <h3 style="color: black">کد پیگیری شما {{$ref}} می باشد.</h3>
+        <h3 style="color: black">مشخصات محصول شما:</h3>
+        <p style="color: black">نام محصول: {{$name}}</p>
+        <p style="color: black">کد محصول: {{$code}}</p>
+        <p style="color: black">فروشنده: {{$owner}}</p>
+        <p style="color: black">تاریخ انجام تراکنش: {{$date}}</p>
+    </center>
 
 @stop

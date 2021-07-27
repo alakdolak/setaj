@@ -2097,7 +2097,22 @@ class HomeController extends Controller {
         return view('fail');
     }
 
-    public function successTransaction($ref) {
-        return view('successTrans', ['ref' => $ref]);
+    public function successTransaction($id) {
+
+        $transaction = DB::select('select gd.name, gd.owner, gd.code, p.ref_id, p.created_at ' .
+            'from pay_ping_transactions p, good gd where p.good_id = gd.id and ' .
+            'p.user_id = ' . Auth::user()->id . ' and p.id = ' . $id
+        );
+
+        if($transaction == null || count($transaction) == 0)
+            return Redirect::route('home');
+
+        $transaction = $transaction[0];
+        $date = MiladyToShamsi('', explode('-', explode(' ', $transaction->created_at)[0]));
+
+        return view('successTrans', ['ref' => $transaction->ref_id,
+            "name" => $transaction->name, 'owner' => $transaction->owner,
+            'code' => $transaction->code, 'date' => $date]
+        );
     }
 }
