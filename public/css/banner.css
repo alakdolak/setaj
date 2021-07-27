@@ -19,6 +19,9 @@
     top: 30px;
     z-index: 10;
 }
+.bannerLightGreenBox {
+    background-color: #9FEDBD;
+}
 .bannerLightBrownBox {
     background-color: #f6dbb8;
 }
@@ -39,6 +42,9 @@
     z-index: 20;
     background-size: contain;
     background-repeat: no-repeat;
+}
+.goodsBanner {
+    background-image: url(../images/goodsBanner.jpg);
 }
 .citizenBanner {
     background-image: url(../images/citizenBanner.png);

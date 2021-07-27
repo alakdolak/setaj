@@ -3,6 +3,22 @@
 @section('header')
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.5")}}">
+
+    <style>
+        .checkBoxes {
+            margin: 10px 0;
+            display: flex;
+        }
+        #addressDiv {
+            display: flex;
+            flex-direction: column;
+        }
+        #address {
+            padding: 7px;
+            border-radius: 7px;
+            min-height: 70px;
+        }
+    </style>
 @stop
 
 @section("content")
@@ -17,7 +33,7 @@
                 <div>قیمت: {{$good->price}} تومان</div>
             </div>
             <div class="pr_descriptRow pr_iconesBox">
-                <div class="pr_icons folderIcon"></div>
+                <div class="pr_icons capacityIcon"></div>
                 <div>کد محصول: {{$good->code}} </div>
             </div>
             @if(!empty($good->description))
@@ -132,12 +148,16 @@
                 <div class="modal-header">
                     <button id="closeConfirmationModalBtn" type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">لطفا نحوه ارسال مرسوله را مشخص نمایید.</h4>
-                    <label for="post">از طریق پست ارسال شود.</label>
-                    <input type="radio" id="post" value="post" name="sendMethod">
-                    <label for="come">به طور حضوری روز شنبه به مدرسه میام و میگیرم.</label>
-                    <input type="radio" checked id="come" value="come" name="sendMethod">
+                    <div class="checkBoxes">
+                        <label for="come" style="margin-left: 7px;">به طور حضوری از مدرسه تحویل خواهم گرفت.</label>
+                        <input type="radio" checked id="come" value="come" name="sendMethod">
+                    </div>
+                    <div class="checkBoxes">
+                        <label for="post" style="margin-left: 7px;">از طریق پیک ارسال شود.</label>
+                        <input type="radio" id="post" value="post" name="sendMethod">
+                    </div>
                     <div id="addressDiv" class="hidden">
-                        <label for="address">آدرس پستی</label>
+                        <label for="address">آدرس پستی:</label>
                         <textarea id="address"></textarea>
                     </div>
                 </div>
