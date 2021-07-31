@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $star
  * @property boolean $hide
  * @property boolean $physical
+ * @property boolean $extra
  * @property string $name
  * @property string $description
  * @property integer $price

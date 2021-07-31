@@ -341,6 +341,8 @@
 
     <script>
 
+        var extra = '{{$project->extra}}';
+
         Dropzone.options.myAwesomeDropzone = {
             paramName: "file", // The name that will be used to transfer the file
             maxFilesize: 100, // MB
@@ -408,7 +410,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 },
-                url: '{{route('buyProject')}}',
+                url: (extra == 0) ? '{{route('buyProject')}}' : '{{route('buyExtraProject')}}',
                 data: {
                     id: '{{$project->id}}'
                 },
@@ -433,6 +435,8 @@
                             // $("#alertText").empty().append("<div>برای دریافت پروژه دوم می بایست از ساعت 10:05 و برای دریافت پروژه سوم از ساعت 10:10 اقدام فرمایید</div>");
                             $("#alertText").empty().append("<div>برای دریافت پروژه دوم می بایست از ساعت 10:05 و برای دریافت پروژه سوم از ساعت 10:10 اقدام فرمایید</div>");
                         }
+                        else if(res === "nok11")
+                            $("#alertText").empty().append("<div>شما واجد شرایط انتخاب پروژه از بازار آزاد نمی باشید.</div>");
                         else if(res === "nok3") {
                             $("#alertText").empty().append("<div>متاسفانه سکه کافی برای خریداری این پروژه را ندارید</div>");
                         }

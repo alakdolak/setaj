@@ -45,13 +45,31 @@
                     <h3>پروژه ای تعریف نشده است</h3>
                 @else
 
-                    <div>
+                    <div class="col-md-4 col-xs-12">
                         <span>پایه تحصیلی مورد نظر</span>
-                        <select onchange="filter(this.value)">
+                        <select id="grade" onchange="filter()">
                             <option value="-1">همه</option>
                             @foreach($grades as $grade)
                                 <option value="{{$grade->name}}">{{$grade->name}}</option>
                             @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 col-xs-12">
+                        <span>آزاد/عادی</span>
+                        <select id="extra" onchange="filter()">
+                            <option value="-1">همه</option>
+                            <option value="1">آزاد</option>
+                            <option value="0">عادی</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 col-xs-12">
+                        <span>عینی/غیرعینی</span>
+                        <select id="physical" onchange="filter()">
+                            <option value="-1">همه</option>
+                            <option value="1">عینی</option>
+                            <option value="0">غیرعینی</option>
                         </select>
                     </div>
 
@@ -64,6 +82,7 @@
                                 <th scope="col">ردیف</th>
                                 <th scope="col">عملیات</th>
                                 <th scope="col">نام</th>
+                                <th scope="col">مربوط به بازار آزاد؟</th>
                                 <th scope="col">پایه تحصیلی</th>
                                 <th scope="col">ظرفیت</th>
                                 <th scope="col">تاریخ شروع نمایش</th>
@@ -91,7 +110,7 @@
                                     <?php $str .= $grade->name . '-'; ?>
                                 @endforeach
 
-                                <tr class="myTr" data-grades="{{$str}}" id="tr_{{$itr->id}}">
+                                <tr class="myTr physical_{{(($itr->physical) ? 1 : 0)}} extra_{{(($itr->extra) ? 1 : 0)}}" data-grades="{{$str}}" id="tr_{{$itr->id}}">
                                     <td>{{$i}}</td>
                                     <td>
                                         <button onclick="removeProject('{{$itr->id}}')" class="btn btn-danger" data-toggle="tooltip" title="حذف">
@@ -107,7 +126,11 @@
                                     </td>
 
                                     <td>{{$itr->title}}</td>
-
+                                    @if($itr->extra)
+                                        <td>بله</td>
+                                    @else
+                                        <td>خیر</td>
+                                    @endif
                                     <td>
                                         @foreach($itr->grades as $grade)
                                             <button id="grade_{{$grade->id}}" onclick="removeGrade('{{$grade->id}}')" style="margin: 4px" class="btn btn-info">
@@ -174,6 +197,9 @@
 
                     <h5 style="padding-right: 5%;">آیا پروژه عینی است؟</h5>
                     <input type="checkbox" name="physical" maxlength="100">
+
+                    <h5 style="padding-right: 5%;">آیا پروژه برای بازار آزاد است؟</h5>
+                    <input type="checkbox" name="extra">
 
                     <h5 style="padding-right: 5%;">هزینه پروژه</h5>
                     <input type="number" name="price" required min="0">
@@ -405,20 +431,28 @@
 
         }
 
-        function filter(id) {
+        function filter() {
 
-            if(id == -1) {
+            var grade = $("#grade").val();
+            var physical = $("#physical").val();
+            var extra = $("#extra").val();
+
+            if(grade == -1 && physical == -1 && extra == -1) {
                 $(".myTr").removeClass('hidden');
+                return;
             }
-            else {
-                $(".myTr").addClass('hidden').each(function () {
 
-                    if($(this).attr("data-grades").includes('-' +  id + '-'))
-                        $(this).removeClass("hidden");
+            $(".myTr").addClass('hidden').each(function () {
 
-                });
+                if(
+                    (grade == -1 || $(this).attr("data-grades").includes('-' +  grade + '-')) &&
+                    (extra == -1 || $(this).hasClass("extra_" + extra)) &&
+                    (physical == -1 || $(this).hasClass("physical_" + physical))
+                )
+                    $(this).removeClass("hidden");
 
-            }
+            });
+
 
         }
 

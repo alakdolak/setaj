@@ -41,6 +41,20 @@
             <h5 style="padding-right: 5%;">هزینه پروژه</h5>
             <input value="{{$project->price}}" type="number" name="price" required min="0">
 
+            <h5 style="padding-right: 5%;">آیا پروژه عینی است؟</h5>
+            @if($project->physical)
+                <input type="checkbox" checked name="physical">
+            @else
+                <input type="checkbox" name="physical">
+            @endif
+
+            <h5 style="padding-right: 5%;">آیا پروژه برای بازار آزاد است؟</h5>
+            @if($project->extra)
+                <input checked type="checkbox" name="extra">
+            @else
+                <input type="checkbox" name="extra">
+            @endif
+
             <h5 style="padding-right: 5%;">ظرفیت</h5>
             <input value="{{$project->capacity}}" type="number" name="capacity" required>
             <p>اگر می خواهید ظرفیت این پروژه بی نهایت باشد، 1- را وارد نمایید.</p>

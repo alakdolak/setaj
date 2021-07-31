@@ -17,7 +17,7 @@
 
         <link rel="icon" href="{{\Illuminate\Support\Facades\URL::asset("images/logo.png")}}" sizes="16x16" type="image/png">
 
-        <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.4")}}">
+        <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.5")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/banner.css?v=1.3")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/header.css?v=1.3")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/footer.css?v=1.4")}}">
@@ -38,147 +38,147 @@
 
 <body style="font-family: IRANSans; direction: rtl">
 
-    @include("layouts.header")
-    @yield("banner")
+@include("layouts.header")
+@yield("banner")
 
-    <center>
+<center>
 
-        @if(!\Illuminate\Support\Facades\Auth::check() || \Illuminate\Support\Facades\Auth::user()->level != 1)
+    @if(!\Illuminate\Support\Facades\Auth::check() || \Illuminate\Support\Facades\Auth::user()->level != 1)
 
-            @if($grade != 9)
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default">اول</button>
-            @else
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">اول</button>
-            @endif
-
-            @if($grade != 4)
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default">دوم</button>
-            @else
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">دوم</button>
-            @endif
-
-            @if($grade != 5)
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default">سوم</button>
-            @else
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">سوم</button>
-            @endif
-
-            @if($grade != 6)
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default">چهارم</button>
-            @else
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">چهارم</button>
-            @endif
-
-            @if($grade != 7)
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default">پنجم</button>
-            @else
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">پنجم</button>
-            @endif
-
-            @if($grade != 8)
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default">ششم</button>
-            @else
-                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">ششم</button>
-            @endif
-
-{{--            @if($grade != 3)--}}
-{{--                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default">هفتم</button>--}}
-{{--            @else--}}
-{{--                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">هفتم</button>--}}
-{{--            @endif--}}
-
+        @if($grade != 9)
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default">اول</button>
+        @else
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">اول</button>
         @endif
-    </center>
 
-    @if(isset($tags))
-        <div class="filterBorder">
-            <div class="filterBox">
-                <div id="allTags" class="tagFilter filterTag selectedTag" data-status="1" data-filter="-1">همه موارد</div>
-                @foreach($tags as $tag)
-                    <div data-status="0" class="tagFilter filterTag" data-filter="{{$tag->id}}">{{$tag->name}}</div>
-                @endforeach
-            </div>
+        @if($grade != 4)
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default">دوم</button>
+        @else
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">دوم</button>
+        @endif
+
+        @if($grade != 5)
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default">سوم</button>
+        @else
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">سوم</button>
+        @endif
+
+        @if($grade != 6)
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default">چهارم</button>
+        @else
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">چهارم</button>
+        @endif
+
+        @if($grade != 7)
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default">پنجم</button>
+        @else
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">پنجم</button>
+        @endif
+
+        @if($grade != 8)
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default">ششم</button>
+        @else
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">ششم</button>
+        @endif
+
+        {{--            @if($grade != 3)--}}
+        {{--                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default">هفتم</button>--}}
+        {{--            @else--}}
+        {{--                <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 3}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">هفتم</button>--}}
+        {{--            @endif--}}
+
+    @endif
+</center>
+
+@if(isset($tags))
+    <div class="filterBorder">
+        <div class="filterBox">
+            <div id="allTags" class="tagFilter filterTag selectedTag" data-status="1" data-filter="-1">همه موارد</div>
+            @foreach($tags as $tag)
+                <div data-status="0" class="tagFilter filterTag" data-filter="{{$tag->id}}">{{$tag->name}}</div>
+            @endforeach
         </div>
+    </div>
 
-    @endif
+@endif
 
 
-    @yield("content")
+@yield("content")
 
-    @include("layouts.footer")
+@include("layouts.footer")
 
-    @if(\Illuminate\Support\Facades\Auth::check())
-        @include("layouts.support")
-    @endif
+@if(\Illuminate\Support\Facades\Auth::check())
+    @include("layouts.support")
+@endif
 
-    <script>
+<script>
 
-        function checkBanners() {
+    function checkBanners() {
 
-            $(".weekContainer").removeClass("hidden").each(function () {
+        $(".weekContainer").removeClass("hidden").each(function () {
 
-                var allow = false;
+            var allow = false;
 
-                $(this).find(".myItem").each(function () {
+            $(this).find(".myItem").each(function () {
 
-                    if(allow)
-                        return;
+                if(allow)
+                    return;
 
-                    if(!$(this).hasClass("hidden"))
-                        allow = true;
+                if(!$(this).hasClass("hidden"))
+                    allow = true;
 
-                });
-
-                if(!allow)
-                    $(this).addClass("hidden");
             });
 
-        }
+            if(!allow)
+                $(this).addClass("hidden");
+        });
 
-        $(document).ready(function () {
+    }
 
-            $(".tagFilter").on('click', function () {
+    $(document).ready(function () {
 
-                var status = $(this).attr("data-status");
-                $(".tagFilter").attr("data-status", "0").removeClass("selectedTag");
+        $(".tagFilter").on('click', function () {
 
-                var selectedTag;
+            var status = $(this).attr("data-status");
+            $(".tagFilter").attr("data-status", "0").removeClass("selectedTag");
+
+            var selectedTag;
+
+            if(status == "0") {
+                $(this).attr("data-status", "1").addClass("selectedTag");
+                selectedTag = $(this).attr("data-filter");
+            }
+            else {
+                $(this).attr("data-status", "0").removeClass("selectedTag");
+                selectedTag = -2;
+            }
+
+            if(selectedTag == "-1") {
 
                 if(status == "0") {
-                    $(this).attr("data-status", "1").addClass("selectedTag");
-                    selectedTag = $(this).attr("data-filter");
+                    $(".myItem").removeClass("hidden");
                 }
                 else {
-                    $(this).attr("data-status", "0").removeClass("selectedTag");
-                    selectedTag = -2;
+                    $(".myItem").addClass("hidden");
                 }
+                return checkBanners();
+            }
 
-                if(selectedTag == "-1") {
+            $(".myItem").addClass("hidden").each(function () {
 
-                    if(status == "0") {
-                        $(".myItem").removeClass("hidden");
-                    }
-                    else {
-                        $(".myItem").addClass("hidden");
-                    }
-                    return checkBanners();
+                if($(this).attr("data-tag").includes("-" + selectedTag + "-")) {
+                    $(this).removeClass("hidden");
                 }
-
-                $(".myItem").addClass("hidden").each(function () {
-
-                    if($(this).attr("data-tag").includes("-" + selectedTag + "-")) {
-                        $(this).removeClass("hidden");
-                    }
-
-                });
-
-                checkBanners();
 
             });
 
+            checkBanners();
 
         });
 
-    </script>
+
+    });
+
+</script>
 
 </body>

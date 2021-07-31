@@ -1,6 +1,8 @@
 <?php
 
 use App\models\ConfigModel;
+use App\models\Tag;
+use Illuminate\Support\Facades\DB;
 
 function translatePersian($str) {
 
@@ -143,6 +145,40 @@ function getProjectLimit($gradeId) {
             return $config->project_limit_1;
     }
 
+}
+
+function getExtraProjectLimit($user) {
+
+    $config = ConfigModel::first();
+
+    if($config->min_health > 0 ||
+        $config->min_think > 0 ||
+        $config->min_behavior > 0
+    ) {
+
+        $points = [];
+        $counter = 0;
+
+        $tags = Tag::whereType("CITIZEN")->orderBy("id", "asc")->get();
+
+        foreach ($tags as $tag) {
+            $query = DB::select('select sum(cb.point) as sum_ from citizen c, citizen_buyers cb where ' .
+                'c.id = cb.project_id and c.tag_id = ' . $tag->id . ' and cb.user_id = ' . $user->id);
+            $points[$tag->id] = ($query[0]->sum_ == null) ? 0 : $query[0]->sum_;
+            $counter++;
+        }
+
+        if($points["8"] < $config->min_health ||
+            $points["9"] < $config->min_think ||
+            $points["10"] < $config->min_behavior) {
+            return -1;
+        }
+    }
+
+    if($user->money < $config->min_money || $user->stars < $config->min_star)
+        return -1;
+
+    return $config->extra_limit;
 }
 
 function getToday() {

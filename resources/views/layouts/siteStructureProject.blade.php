@@ -18,7 +18,7 @@
         <link rel="icon" href="{{\Illuminate\Support\Facades\URL::asset("images/logo.png")}}" sizes="16x16" type="image/png">
 
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.5")}}">
-        <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/banner.css?v=1.3")}}">
+        <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/banner.css?v=1.4")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/header.css?v=1.3")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/footer.css?v=1.4")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/general.css?v=1.3")}}">
@@ -45,11 +45,15 @@
 
         @if(count($grades) > 1)
             @foreach($grades as $itr)
-
-                @if($itr->id != $grade)
-                    <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . $itr->id}}'" class="btn btn-default">{{$itr->name}}</button>
-                @else
-                    <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . $itr->id}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">{{$itr->name}}</button>
+                @if($itr->id == 3)
+                    @continue
+                @endif
+                @if(!\Illuminate\Support\Facades\Auth::check() || \Illuminate\Support\Facades\Auth::user()->level != 1)
+                    @if($grade == $itr->id)
+                        <button onclick="document.location.href = '{{route(Route::current()->getName(), ['extra' => $extra, 'gradeId' => $itr->id])}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">{{$itr->name}}</button>
+                    @else
+                        <button onclick="document.location.href = '{{route(Route::current()->getName(), ['extra' => $extra, 'gradeId' => $itr->id])}}'" class="btn btn-default">{{$itr->name}}</button>
+                    @endif
                 @endif
             @endforeach
         @endif
@@ -61,7 +65,7 @@
             <div class="filterBox">
                 <div id="allTags" class="tagFilter filterTag selectedTag" data-status="1" data-filter="-1">همه موارد</div>
                 @foreach($tags as $tag)
-                    <div data-status="0" class="tagFilter filterTag" data-filter="{{$tag}}">{{$tag}}</div>
+                    <div data-status="0" class="tagFilter filterTag" data-filter="{{$tag->id}}">{{$tag->name}}</div>
                 @endforeach
             </div>
         </div>

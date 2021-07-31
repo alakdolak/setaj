@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $id
  * @property string $title
  * @property boolean $hide
+ * @property boolean $extra
  * @property boolean $physical
  * @property string $description
  * @property string $start_reg

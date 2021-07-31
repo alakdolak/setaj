@@ -49,14 +49,27 @@
 .citizenBanner {
     background-image: url(../images/citizenBanner.png);
 }
+
 .projectsBanner {
     background-image: url(../images/projectsBanner.jpg);
+}
+
+.extraProjectsBanner {
+    background-image: url(../images/extra.jpg);
+}
+
+.extraBanner {
+    background-image: url(../images/bazar.jpg);
 }
 .servicesBanner {
     background-image: url(../images/servicesBanner.jpg);
 }
 .productsBanner {
     background-image: url(../images/productsBanner.jpg);
+}
+
+.extraProductsBanner {
+    background-image: url(../images/sell_extra.jpg);
 }
 
 

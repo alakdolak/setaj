@@ -404,10 +404,15 @@
                 return;
             }
 
-            var addr = $("#address").val();
-            if(addr.length === 0) {
-                $("#alertText").empty().append("<p>لطفا آدرس پستی را وارد نمایید.</p>");
-                return;
+            var sendMethod = $("input[name='sendMethod']:checked").val();
+            var addr = "none";
+
+            if(sendMethod === "post") {
+                addr = $("#address").val();
+                if(addr.length === 0) {
+                    $("#alertText").empty().append("<p>لطفا آدرس پستی را وارد نمایید.</p>");
+                    return;
+                }
             }
 
             $("#alertText").empty().append("<p>در حال اتصال به درگاه پرداخت، لطفا شکیبا باشید.</p>");
@@ -419,7 +424,7 @@
                 },
                 url: '{{route('buyGood', ['goodId' => $good->id])}}',
                 data: {
-                    sendMethod: $("input[name='sendMethod']:checked").val(),
+                    sendMethod: sendMethod,
                     address: addr
                 },
                 success: function (res) {

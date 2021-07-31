@@ -153,15 +153,34 @@
                     <h3>محصولی تعریف نشده است</h3>
                 @else
 
-                    <center>
+                    <div class="col-md-4 col-xs-12">
                         <span>پایه تحصیلی مورد نظر</span>
-                        <select id="gradeFilter" onchange="doFilter()">
+                        <select id="grades" onchange="doFilter()">
                             <option value="-1">همه</option>
                             @foreach($grades as $grade)
                                 <option value="{{$grade->id}}">{{$grade->name}}</option>
                             @endforeach
                         </select>
-                    </center>
+
+                    </div>
+
+                    <div class="col-md-4 col-xs-12">
+                        <span>آزاد/عادی</span>
+                        <select id="extra" onchange="doFilter()">
+                            <option value="-1">همه</option>
+                            <option value="1">آزاد</option>
+                            <option value="0">عادی</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 col-xs-12">
+                        <span>عینی/غیرعینی</span>
+                        <select id="physical" onchange="doFilter()">
+                            <option value="-1">همه</option>
+                            <option value="1">عینی</option>
+                            <option value="0">غیرعینی</option>
+                        </select>
+                    </div>
 
                     <center>
 
@@ -223,6 +242,8 @@
                                 <th scope="col">نام</th>
                                 <th scope="col">آی دی کالا</th>
                                 <th scope="col">صاحب محصول</th>
+                                <th scope="col">عینی/غیرعینی</th>
+                                <th scope="col">آزاد/عادی</th>
                                 <th scope="col">پایه تحصیلی</th>
                                 <th scope="col">تاریخ شروع نمایش</th>
                                 <th scope="col">زمان شروع نمایش</th>
@@ -242,11 +263,24 @@
                             <tbody>
                             <?php $i = 1; ?>
                             @foreach($products as $itr)
-                                <tr class="tr grade_{{$itr->grade_id}}" id="myTr_{{$itr->id}}">
+                                <tr class="tr extra_{{(($itr->extra) ? 1 : 0)}} physical_{{(($itr->physical) ? 1 : 0)}} grade_{{$itr->grade_id}}" id="myTr_{{$itr->id}}">
                                     <td>{{$i}}</td>
                                     <td>{{$itr->name}}</td>
                                     <td>{{$itr->id}}</td>
                                     <td>{{$itr->owner}}</td>
+
+                                    @if($itr->physical)
+                                        <td>عینی</td>
+                                    @else
+                                        <td>غیرعینی</td>
+                                    @endif
+
+                                    @if($itr->extra)
+                                        <td>آزاد</td>
+                                    @else
+                                        <td>عادی</td>
+                                    @endif
+
                                     <td>{{$itr->grade}}</td>
                                     <td>{{$itr->start_show}}</td>
                                     <td>{{$itr->start_time}}</td>
@@ -288,14 +322,24 @@
 
         function doFilter() {
 
-            var id = $("#gradeFilter").val();
+            var id = $("#grades").val();
+            var physical = $("#physical").val();
+            var extra = $("#extra").val();
 
-            $(".tr").addClass("hidden").each(function () {
+            if(id == -1 && physical == -1 && extra == -1) {
+                $(".tr").removeClass('hidden');
+            }
+            else {
+                $(".tr").addClass("hidden").each(function () {
 
-                if(id == -1 || $(this).hasClass("grade_" + id))
-                    $(this).removeClass("hidden");
-
-            });
+                    if(
+                        (id == -1 || $(this).hasClass("grade_" + id)) &&
+                        (extra == -1 || $(this).hasClass("extra_" + extra)) &&
+                        (physical == -1 || $(this).hasClass("physical_" + physical))
+                    )
+                        $(this).removeClass("hidden");
+                });
+            }
 
             doChangeDateFilter();
         }

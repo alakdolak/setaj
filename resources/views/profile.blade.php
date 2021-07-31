@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{URL::asset('css/usersActivities.css?v=1.3')}}">
     <link rel="stylesheet" href="{{URL::asset('css/abbreviations.css?v=1.3')}}">
     <link rel="stylesheet" href="{{URL::asset('css/profile.css?v=1.4')}}">
-    <link rel="stylesheet" href="{{URL::asset('css/card.css?v=1.4')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/card.css?v=1.5')}}">
 
     <style>
         .userActivitiesPhotos {

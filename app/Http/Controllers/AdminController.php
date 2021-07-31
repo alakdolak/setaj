@@ -49,6 +49,21 @@ class AdminController extends Controller {
             $tmp->project_limit_2 = makeValidInput($_POST["project_limit_2"]);
             $tmp->project_limit_1 = makeValidInput($_POST["project_limit_1"]);
             $tmp->rev_change_rate = makeValidInput($_POST["rev_change_rate"]);
+            $tmp->min_health = makeValidInput($_POST["min_health"]);
+            $tmp->min_think = makeValidInput($_POST["min_think"]);
+            $tmp->min_behavior = makeValidInput($_POST["min_behavior"]);
+            $tmp->min_money = makeValidInput($_POST["min_money"]);
+            $tmp->min_star = makeValidInput($_POST["min_star"]);
+            $tmp->extra_limit = makeValidInput($_POST["extra_limit"]);
+
+            $tmp->show_project = (isset($_POST["show_project"]));
+            $tmp->show_product = (isset($_POST["show_product"]));
+            $tmp->show_extra = (isset($_POST["show_extra"]));
+            $tmp->show_sell_extra = (isset($_POST["show_sell_extra"]));
+            $tmp->show_shop = (isset($_POST["show_shop"]));
+            $tmp->show_citizen = (isset($_POST["show_citizen"]));
+            $tmp->show_service = (isset($_POST["show_service"]));
+
             $tmp->service_limit = makeValidInput($_POST["service_limit"]);
             $tmp->save();
         }

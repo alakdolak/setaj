@@ -41,13 +41,31 @@
                 <a href="{{route('unDoneProjectsReportExcel', ['gradeId' => $gradeId])}}">دریافت فایل اکسل</a>
             </h3>
 
-            <div>
+            <div class="col-md-4 col-xs-12">
                 <span>پروژه مورد نظر</span>
-                <select id="mySelect" onchange="filter(this.value)">
+                <select id="mySelect" onchange="filter()">
                     <option value="-1">همه</option>
                     @foreach($allTitles as $title)
                         <option value="{{$title}}">{{$title}}</option>
                     @endforeach
+                </select>
+            </div>
+
+            <div  class="col-md-4 col-xs-12">
+                <span>آزاد/عادی</span>
+                <select id="extra" onchange="filter()">
+                    <option value="-1">همه</option>
+                    <option value="1">آزاد</option>
+                    <option value="0">عادی</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 col-xs-12">
+                <span>عینی/غیرعینی</span>
+                <select id="physical" onchange="filter()">
+                    <option value="-1">همه</option>
+                    <option value="1">عینی</option>
+                    <option value="0">غیرعینی</option>
                 </select>
             </div>
 
@@ -102,6 +120,7 @@
                     <td>ردیف</td>
                     <td>نام کاربر</td>
                     <td>نام پروژه</td>
+                    <td>پروژه برای بازار آزاد است؟</td>
                     <td>فایل تبلیغ</td>
                     <td>وضعیت تایید تبلیغ</td>
                     <td>محتوا غیرعینی</td>
@@ -112,10 +131,17 @@
 
                 <?php $i = 1; ?>
                 @foreach($projects as $project)
-                    <tr class="myTr" data-value="{{$project->title}}" id="myTr_{{$project->id}}">
+                    <tr class="myTr extra_{{(($project->extra) ? 1 : 0)}} physical_{{(($project->physical) ? 1 : 0)}}" data-value="{{$project->title}}" id="myTr_{{$project->id}}">
                         <td>{{$i}}</td>
                         <td>{{$project->name}}</td>
                         <td>{{$project->title}}</td>
+
+                        @if($project->extra)
+                            <td>بله</td>
+                        @else
+                            <td>خیر</td>
+                        @endif
+
                         @if($project->adv == null)
                             <td>فایلی بارگذاری نشده</td>
                         @else
@@ -349,19 +375,24 @@
 
         }
 
-        function filter(id) {
+        function filter() {
 
-            if(id == -1) {
+            var mySelect = $("#mySelect").val();
+            var physical = $("#physical").val();
+            var extra = $("#extra").val();
+
+            if(mySelect == -1 && physical == -1 && extra == -1) {
                 $(".myTr").removeClass('hidden');
             }
             else {
                 $(".myTr").addClass('hidden').each(function () {
-
-                    if($(this).attr("data-value") == id)
+                    if(
+                        (mySelect == -1 || $(this).attr("data-value") == mySelect) &&
+                        (extra == -1 || $(this).hasClass("extra_" + extra)) &&
+                        (physical == -1 || $(this).hasClass("physical_" + physical))
+                    )
                         $(this).removeClass("hidden");
-
                 });
-
             }
 
             doChange();

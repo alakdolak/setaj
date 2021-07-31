@@ -1,4 +1,4 @@
-@extends("layouts.siteStructure3")
+@extends("layouts.siteStructureProject")
 
 
 @section("header")
@@ -7,11 +7,19 @@
 
 @section("banner")
 
-    <div class="banner">
-        <div class="bannerGrayBox"></div>
-        <div class="bannerBorderBox bannerLightRedBox"></div>
-        <div class="bannerMainBox projectsBanner"></div>
-    </div>
+    @if($extra)
+        <div class="banner">
+            <div class="bannerGrayBox"></div>
+            <div class="bannerBorderBox bannerLightRedBox"></div>
+            <div class="bannerMainBox extraProjectsBanner"></div>
+        </div>
+    @else
+        <div class="banner">
+            <div class="bannerGrayBox"></div>
+            <div class="bannerBorderBox bannerLightRedBox"></div>
+            <div class="bannerMainBox projectsBanner"></div>
+        </div>
+    @endif
 
 @stop
 
@@ -22,6 +30,8 @@
     ?>
 
     <div class="shopBox row">
+
+        <?php $showBanner = false; ?>
 
         @for($i = 9; $i >= 0; $i--)
 
@@ -38,7 +48,13 @@
             @if($allow)
                 <div class="weekContainer shopEachRow col-xs-12">
 
-                    <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-xs-12"></div>
+                    @if($extra && !$showBanner)
+                        <?php $showBanner = true; ?>
+                        <div class="shopEachRow shopEachRowTitle extraBanner col-xs-12"></div>
+                    @elseif(!$extra)
+                        <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-xs-12"></div>
+                    @endif
+
 
                     <div class="shopEachRow col-xs-12">
 

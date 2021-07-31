@@ -26,15 +26,15 @@ Route::get('rules', ['as' => 'rules', 'uses' => 'HomeController@rules']);
 
 Route::get('choosePlan', ['as' => 'choosePlan', 'uses' => 'HomeController@choosePlan']);
 
-Route::get('showAllGoods/{grade?}', ['as' => 'showAllGoods', 'uses' => 'HomeController@showAllGoods']);
+Route::get('showAllGoods{grade?}', ['as' => 'showAllGoods', 'uses' => 'HomeController@showAllGoods']);
 
 Route::get('showAllServices/{grade?}', ['as' => 'showAllServices', 'uses' => 'HomeController@showAllServices']);
 
-Route::get('showAllProjects/{grade?}', ['as' => 'showAllProjects', 'uses' => 'HomeController@showAllProjects']);
+Route::get('showAllProjects/{extra}/{grade?}', ['as' => 'showAllProjects', 'uses' => 'HomeController@showAllProjects']);
 
 Route::get('showAllCitizens/{grade?}', ['as' => 'showAllCitizens', 'uses' => 'HomeController@showAllCitizens']);
 
-Route::get('showAllProducts/{grade?}', ['as' => 'showAllProducts', 'uses' => 'HomeController@showAllProducts']);
+Route::get('showAllProducts/{extra}/{grade?}', ['as' => 'showAllProducts', 'uses' => 'HomeController@showAllProducts']);
 
 Route::get('showAllProductsInner/{projectId}/{gradeId}', ['as' => 'showAllProductsInner', 'uses' => 'HomeController@showAllProductsInner']);
 
@@ -107,6 +107,8 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
     Route::post('buyUnPhysicalProduct', ['as' => 'buyUnPhysicalProduct', 'uses' => 'HomeController@buyUnPhysicalProduct']);
 
     Route::post('buyProject', ['as' => 'buyProject', 'uses' => 'HomeController@buyProject']);
+
+    Route::post('buyExtraProject', ['as' => 'buyExtraProject', 'uses' => 'HomeController@buyExtraProject']);
 
     Route::post('buyCitizen', ['as' => 'buyCitizen', 'uses' => 'HomeController@buyCitizen']);
 

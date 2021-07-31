@@ -3,7 +3,7 @@
 @section('header')
     @parent
     <link href="{{URL::asset('pages/css/faq-rtl.min.css')}}" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.4")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.5")}}">
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/faq.css?v=1")}}">
 @stop
 

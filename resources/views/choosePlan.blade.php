@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="col-sm-4 col-xs-12">
-                <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="planes products">
+                <div onclick="document.location.href = '{{route('showAllProducts', ['extra' => 0])}}'" class="planes products">
                     <div class="planeTextBox planeText">خرید محصولات</div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="col-sm-4 col-xs-12">
-                <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="planes projects">
+                <div onclick="document.location.href = '{{route('showAllProjects', ['extra' => 0])}}'" class="planes projects">
                     <div class="planeTextBox planeText">انتخاب پروژه‌ها</div>
                 </div>
             </div>

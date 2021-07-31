@@ -818,6 +818,7 @@ class OperatorController extends Controller {
             $project->capacity = makeValidInput($_POST["capacity"]);
             $project->price = makeValidInput($_POST["price"]);
             $project->physical = (isset($_POST["physical"]));
+            $project->extra = (isset($_POST["extra"]));
             $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
 
@@ -983,6 +984,7 @@ class OperatorController extends Controller {
             $product->user_id = $user->id;
             $product->project_id = $project->id;
             $product->physical = $project->physical;
+            $product->extra = $project->extra;
             $product->grade_id = $user->grade_id;
 
             $product->start_time = convertTimeToString(makeValidInput($_POST["start_time"]));
@@ -1487,6 +1489,8 @@ class OperatorController extends Controller {
             $project->description = $_POST["description"];
             $project->capacity = makeValidInput($_POST["capacity"]);
             $project->price = makeValidInput($_POST["price"]);
+            $project->physical = (isset($_POST["physical"]));
+            $project->extra = (isset($_POST["extra"]));
             $project->start_reg = convertDateToString(makeValidInput($_POST["start_reg"]));
             $project->end_reg = convertDateToString(makeValidInput($_POST["end_reg"]));
             $project->start_show = convertDateToString(makeValidInput($_POST["start_show"]));
@@ -1496,6 +1500,9 @@ class OperatorController extends Controller {
             try {
 
                 $project->save();
+
+                DB::update("update product set extra = " . (($project->extra) ? 1 : 0) .
+                    ", physical = " . (($project->physical) ? 1 : 0) . " where project_id = " . $project->id);
 
                 if(isset($_FILES["file"]) && !empty($_FILES["file"]["name"])) {
 

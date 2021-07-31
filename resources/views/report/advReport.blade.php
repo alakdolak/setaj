@@ -30,13 +30,22 @@
 
         <center>
 
-            <div>
+            <div  class="col-md-6 col-xs-12">
                 <span>پروژه مورد نظر</span>
-                <select id="mySelect" onchange="filter(this.value)">
+                <select id="mySelect" onchange="filter()">
                     <option value="-1">همه</option>
                     @foreach($allTitles as $title)
                         <option value="{{$title}}">{{$title}}</option>
                     @endforeach
+                </select>
+            </div>
+
+            <div  class="col-md-6 col-xs-12">
+                <span>آزاد/عادی</span>
+                <select id="extra" onchange="filter()">
+                    <option value="-1">همه</option>
+                    <option value="1">آزاد</option>
+                    <option value="0">عادی</option>
                 </select>
             </div>
 
@@ -50,7 +59,7 @@
                                id="date_btn_Start">
                     </label>
                     <input type="text" style="max-width: 200px" class="form-detail"
-                           id="date_input_start" onchange="start(); filter($('#mySelect').val());" readonly>
+                           id="date_input_start" onchange="start(); filter();" readonly>
 
                     <script>
                         Calendar.setup({
@@ -70,7 +79,7 @@
                                id="date_btn_end">
                     </label>
                     <input type="text" style="max-width: 200px" class="form-detail"
-                           id="date_input_end" onchange="end(); filter($('#mySelect').val());" readonly>
+                           id="date_input_end" onchange="end(); filter();" readonly>
 
                     <script>
                         Calendar.setup({
@@ -99,7 +108,7 @@
 
                 <?php $i = 1; ?>
                 @foreach($projects as $project)
-                    <tr class="myTr" data-value="{{$project->title}}" id="myTr_{{$project->id}}">
+                    <tr class="myTr extra_{{(($project->extra) ? 1 : 0)}}" data-value="{{$project->title}}" id="myTr_{{$project->id}}">
                         <td>{{$i}}</td>
                         <td>{{$project->name}}</td>
                         <td>{{$project->title}}</td>
@@ -172,19 +181,22 @@
 
         }
 
-        function filter(id) {
+        function filter() {
 
-            if(id == -1) {
+            var mySelect = $("#mySelect").val();
+            var extra = $("#extra").val();
+
+            if(mySelect == -1 && extra == -1) {
                 $(".myTr").removeClass('hidden');
             }
             else {
                 $(".myTr").addClass('hidden').each(function () {
-
-                    if($(this).attr("data-value") == id)
+                    if(
+                        (mySelect == -1 || $(this).attr("data-value") == mySelect) &&
+                        (extra == -1 || $(this).hasClass("extra_" + extra))
+                    )
                         $(this).removeClass("hidden");
-
                 });
-
             }
 
             doChangeDateFilter();

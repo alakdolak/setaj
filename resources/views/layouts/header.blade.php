@@ -7,11 +7,36 @@
     </div>
 
     <div class="headerNav">
-        <div onclick="document.location.href = '{{route('showAllCitizens')}}'" class="headerNavbar">شهروندی</div>
-        <div onclick="document.location.href = '{{route('showAllProjects')}}'" class="headerNavbar">انتخاب پروژه‌ها</div>
-        <div onclick="document.location.href = '{{route('showAllServices')}}'" class="headerNavbar">پروژه‌های همیاری</div>
-        <div onclick="document.location.href = '{{route('showAllProducts')}}'" class="headerNavbar">خرید محصولات</div>
-{{--        <div onclick="document.location.href = '{{route('showAllGoods')}}'" class="headerNavbar">فروشگاه</div>--}}
+
+        <?php $config = \App\models\ConfigModel::first(); ?>
+
+        @if($config->show_project)
+            <div onclick="document.location.href = '{{route('showAllProjects', ['extra' => 0])}}'" class="headerNavbar">انتخاب پروژه‌ها</div>
+        @endif
+
+        @if($config->show_extra)
+            <div onclick="document.location.href = '{{route('showAllProjects', ['extra' => 1])}}'" class="headerNavbar">انتخاب پروژه های بازار آزاد</div>
+        @endif
+
+        @if($config->show_citizen)
+            <div onclick="document.location.href = '{{route('showAllCitizens')}}'" class="headerNavbar">شهروندی</div>
+        @endif
+
+        @if($config->show_service)
+            <div onclick="document.location.href = '{{route('showAllServices')}}'" class="headerNavbar">همیاری</div>
+        @endif
+
+        @if($config->show_product)
+            <div onclick="document.location.href = '{{route('showAllProducts', ['extra' => 0])}}'" class="headerNavbar">خرید محصولات</div>
+        @endif
+
+        @if($config->show_sell_extra)
+            <div onclick="document.location.href = '{{route('showAllProducts', ['extra' => 1])}}'" class="headerNavbar">بازار آزاد</div>
+        @endif
+
+        @if($config->show_shop)
+            <div onclick="document.location.href = '{{route('showAllGoods')}}'" class="headerNavbar">فروشگاه</div>
+        @endif
 
         @if(\Illuminate\Support\Facades\Auth::check())
             <div class="headerNavbar">

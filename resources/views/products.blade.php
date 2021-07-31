@@ -1,4 +1,4 @@
-@extends("layouts.siteStructure3")
+@extends("layouts.siteStructureProject")
 
 
 @section("header")
@@ -8,11 +8,19 @@
 
 @section("banner")
 
-    <div class="banner">
-        <div class="bannerGrayBox"></div>
-        <div class="bannerBorderBox bannerLightBlueBox"></div>
-        <div class="bannerMainBox productsBanner"></div>
-    </div>
+    @if(!$extra)
+        <div class="banner">
+            <div class="bannerGrayBox"></div>
+            <div class="bannerBorderBox bannerLightBlueBox"></div>
+            <div class="bannerMainBox productsBanner"></div>
+        </div>
+    @else
+        <div class="banner">
+            <div class="bannerGrayBox"></div>
+            <div class="bannerBorderBox bannerLightBlueBox"></div>
+            <div class="bannerMainBox extraProductsBanner"></div>
+        </div>
+    @endif
 
 @stop
 
@@ -26,26 +34,37 @@
 
         @for($i = 9; $i >= 0; $i--)
 
-            <?php $allow = false; ?>
+            <?php $allow = $extra; ?>
 
-            @foreach($products as $product)
+            @if($extra && $i != 9)
+                @continue
+            @endif
 
-                @if($product->week == $i)
-                    <?php $allow = true; ?>
-                @endif
+            @if(!$extra)
 
-            @endforeach
+                @foreach($products as $product)
+
+                    @if($product->week == $i)
+                        <?php $allow = true; ?>
+                    @endif
+
+                @endforeach
+            @endif
 
             @if($allow)
                 <div class="weekContainer shopEachRow col-xs-12">
 
-                    <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-xs-12"></div>
+                    @if(!$extra)
+                        <div class="shopEachRow shopEachRowTitle week{{($i + 1)}} col-xs-12"></div>
+                    @else
+                        <div class="shopEachRow shopEachRowTitle extraBanner col-xs-12"></div>
+                    @endif
 
                     <div class="shopEachRow col-xs-12">
 
                         @foreach($products as $product)
 
-                            @if($product->week != $i)
+                            @if(!$extra && $product->week != $i)
                                 @continue
                             @endif
 

@@ -272,7 +272,7 @@ class ReportController extends Controller {
             DB::update("update project_buyers set adv = null, start_uploading_adv = null, adv_status = 0 where id = " . $itr->id);
         }
 
-        $projects = DB::select("select p.physical, pb.complete_upload_adv, pb.complete_upload_file,".
+        $projects = DB::select("select p.physical, p.extra, pb.complete_upload_adv, pb.complete_upload_file,".
             " p.id as projectId, p.title, concat(u.first_name, ' ', u.last_name) as name, u.id as user_id, " .
             "pb.id, pb.created_at, pb.adv, pb.file, pb.adv_status, pb.file_status " .
             "from project_buyers pb, project p, users u where p.id = pb.project_id" .
@@ -439,7 +439,7 @@ class ReportController extends Controller {
             return view('report.usersReport', ['grades' => Grade::all(),
                 "path" => route("advReport")]);
 
-        $projects = DB::select('select pb.created_at, pb.id, p.title, concat(u.first_name, " ", u.last_name) as name, ' .
+        $projects = DB::select('select p.extra, pb.created_at, pb.id, p.title, concat(u.first_name, " ", u.last_name) as name, ' .
             'pb.adv_status, pb.adv from project_buyers pb, project p, users u where p.id = pb.project_id and ' .
             'pb.user_id = u.id and u.grade_id = ' . $gradeId . ' and pb.adv is not null'
         );
