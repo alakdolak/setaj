@@ -151,9 +151,55 @@ function getExtraProjectLimit($user) {
 
     $config = ConfigModel::first();
 
-    if($config->min_health > 0 ||
-        $config->min_think > 0 ||
-        $config->min_behavior > 0
+    switch ($user->grade_id) {
+        case 4:
+            $minHealth = $config->min_health_2;
+            $minThink = $config->min_think_2;
+            $minBehavior = $config->min_behavior_2;
+            $minMoney = $config->min_money_2;
+            $minStar = $config->min_star_2;
+            break;
+        case 5:
+            $minHealth = $config->min_health_3;
+            $minThink = $config->min_think_3;
+            $minBehavior = $config->min_behavior_3;
+            $minMoney = $config->min_money_3;
+            $minStar = $config->min_star_3;
+            break;
+        case 6:
+            $minHealth = $config->min_health_4;
+            $minThink = $config->min_think_4;
+            $minBehavior = $config->min_behavior_4;
+            $minMoney = $config->min_money_4;
+            $minStar = $config->min_star_4;
+            break;
+        case 7:
+            $minHealth = $config->min_health_5;
+            $minThink = $config->min_think_5;
+            $minBehavior = $config->min_behavior_5;
+            $minMoney = $config->min_money_5;
+            $minStar = $config->min_star_5;
+            break;
+        case 8:
+            $minHealth = $config->min_health_6;
+            $minThink = $config->min_think_6;
+            $minBehavior = $config->min_behavior_6;
+            $minMoney = $config->min_money_6;
+            $minStar = $config->min_star_6;
+            break;
+        case 9:
+        default:
+            $minHealth = $config->min_health;
+            $minThink = $config->min_think;
+            $minBehavior = $config->min_behavior;
+            $minMoney = $config->min_money;
+            $minStar = $config->min_star;
+            break;
+    }
+
+    if($minHealth > 0 ||
+        $minThink > 0 ||
+        $minBehavior > 0
     ) {
 
         $points = [];
@@ -168,14 +214,14 @@ function getExtraProjectLimit($user) {
             $counter++;
         }
 
-        if($points["8"] < $config->min_health ||
-            $points["9"] < $config->min_think ||
-            $points["10"] < $config->min_behavior) {
+        if($points["8"] < $minHealth ||
+            $points["9"] < $minThink ||
+            $points["10"] < $minBehavior) {
             return -1;
         }
     }
 
-    if($user->money < $config->min_money || $user->stars < $config->min_star)
+    if($user->money < $minMoney || $user->stars < $minStar)
         return -1;
 
     return $config->extra_limit;

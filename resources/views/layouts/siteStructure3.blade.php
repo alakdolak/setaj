@@ -17,7 +17,7 @@
 
         <link rel="icon" href="{{\Illuminate\Support\Facades\URL::asset("images/logo.png")}}" sizes="16x16" type="image/png">
 
-        <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.5")}}">
+        <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/card.css?v=1.6")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/banner.css?v=1.3")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/header.css?v=1.3")}}">
         <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/footer.css?v=1.4")}}">
@@ -46,39 +46,39 @@
     @if(!\Illuminate\Support\Facades\Auth::check() || \Illuminate\Support\Facades\Auth::user()->level != 1)
 
         @if($grade != 9)
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default">اول</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default">اول دبستان</button>
         @else
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">اول</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 9}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">اول دبستان</button>
         @endif
 
         @if($grade != 4)
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default">دوم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default">دوم دبستان</button>
         @else
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">دوم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 4}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">دوم دبستان</button>
         @endif
 
         @if($grade != 5)
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default">سوم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default">سوم دبستان</button>
         @else
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">سوم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 5}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">سوم دبستان</button>
         @endif
 
         @if($grade != 6)
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default">چهارم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default">چهارم دبستان</button>
         @else
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">چهارم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 6}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">چهارم دبستان</button>
         @endif
 
         @if($grade != 7)
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default">پنجم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default">پنجم دبستان</button>
         @else
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">پنجم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 7}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">پنجم دبستان</button>
         @endif
 
         @if($grade != 8)
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default">ششم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default">ششم دبستان</button>
         @else
-            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">ششم</button>
+            <button onclick="document.location.href = '{{route(Route::current()->getName()) . '/' . 8}}'" class="btn btn-default" style="background-color: #0b4d3f; color: white">ششم دبستان</button>
         @endif
 
         {{--            @if($grade != 3)--}}

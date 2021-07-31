@@ -49,13 +49,49 @@ class AdminController extends Controller {
             $tmp->project_limit_2 = makeValidInput($_POST["project_limit_2"]);
             $tmp->project_limit_1 = makeValidInput($_POST["project_limit_1"]);
             $tmp->rev_change_rate = makeValidInput($_POST["rev_change_rate"]);
+
             $tmp->min_health = makeValidInput($_POST["min_health"]);
             $tmp->min_think = makeValidInput($_POST["min_think"]);
             $tmp->min_behavior = makeValidInput($_POST["min_behavior"]);
             $tmp->min_money = makeValidInput($_POST["min_money"]);
             $tmp->min_star = makeValidInput($_POST["min_star"]);
-            $tmp->extra_limit = makeValidInput($_POST["extra_limit"]);
 
+
+            $tmp->min_health_2 = makeValidInput($_POST["min_health_2"]);
+            $tmp->min_think_2 = makeValidInput($_POST["min_think_2"]);
+            $tmp->min_behavior_2 = makeValidInput($_POST["min_behavior_2"]);
+            $tmp->min_money_2 = makeValidInput($_POST["min_money_2"]);
+            $tmp->min_star_2 = makeValidInput($_POST["min_star_2"]);
+
+            $tmp->min_health_3 = makeValidInput($_POST["min_health_3"]);
+            $tmp->min_think_3 = makeValidInput($_POST["min_think_3"]);
+            $tmp->min_behavior_3 = makeValidInput($_POST["min_behavior_3"]);
+            $tmp->min_money_3 = makeValidInput($_POST["min_money_3"]);
+            $tmp->min_star_3 = makeValidInput($_POST["min_star_3"]);
+
+
+            $tmp->min_health_4 = makeValidInput($_POST["min_health_4"]);
+            $tmp->min_think_4 = makeValidInput($_POST["min_think_4"]);
+            $tmp->min_behavior_4 = makeValidInput($_POST["min_behavior_4"]);
+            $tmp->min_money_4 = makeValidInput($_POST["min_money_4"]);
+            $tmp->min_star_4 = makeValidInput($_POST["min_star_4"]);
+
+
+            $tmp->min_health_5 = makeValidInput($_POST["min_health_5"]);
+            $tmp->min_think_5 = makeValidInput($_POST["min_think_5"]);
+            $tmp->min_behavior_5 = makeValidInput($_POST["min_behavior_5"]);
+            $tmp->min_money_5 = makeValidInput($_POST["min_money_5"]);
+            $tmp->min_star_5 = makeValidInput($_POST["min_star_5"]);
+
+
+            $tmp->min_health_6 = makeValidInput($_POST["min_health_6"]);
+            $tmp->min_think_6 = makeValidInput($_POST["min_think_6"]);
+            $tmp->min_behavior_6 = makeValidInput($_POST["min_behavior_6"]);
+            $tmp->min_money_6 = makeValidInput($_POST["min_money_6"]);
+            $tmp->min_star_6 = makeValidInput($_POST["min_star_6"]);
+
+
+            $tmp->extra_limit = makeValidInput($_POST["extra_limit"]);
             $tmp->show_project = (isset($_POST["show_project"]));
             $tmp->show_product = (isset($_POST["show_product"]));
             $tmp->show_extra = (isset($_POST["show_extra"]));

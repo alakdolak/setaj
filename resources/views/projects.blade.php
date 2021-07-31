@@ -66,6 +66,11 @@
 
                             <div data-tag="{{$project->tagStr}}" onclick="document.location.href = '{{route('showProject', ['id' => $project->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
                                 <div class="sh_mainBox">
+
+                                    @if($extra)
+                                        <div class="sh_extraPic2"></div>
+                                    @endif
+
                                     <div style="background-image: url('{{$project->pic}}')" class="sh_mainPic"></div>
                                     <div class="sh_descript">
                                         <div class="sh_descriptRow sh_title">{{$project->title}}</div>

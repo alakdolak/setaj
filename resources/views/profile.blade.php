@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{URL::asset('css/usersActivities.css?v=1.3')}}">
     <link rel="stylesheet" href="{{URL::asset('css/abbreviations.css?v=1.3')}}">
     <link rel="stylesheet" href="{{URL::asset('css/profile.css?v=1.4')}}">
-    <link rel="stylesheet" href="{{URL::asset('css/card.css?v=1.5')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/card.css?v=1.6')}}">
 
     <style>
         .userActivitiesPhotos {
@@ -188,6 +188,11 @@
                                 @foreach($myProjects as $buy)
                                     <div class="shopOneBox col-lg-4 col-xs-6">
                                         <div onclick="document.location.href = '{{route('showProject', ['id' => $buy->id])}}'" class="sh_mainBox">
+
+                                            @if($buy->extra)
+                                                <div class="sh_extraPic2"></div>
+                                            @endif
+
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
                                             <div class="sh_descript">
                                                 <div class="sh_descriptRow sh_title">{{$buy->title}}</div>
@@ -218,6 +223,7 @@
                                         </div>
                                     </div>
                                 @endforeach
+
                                 @foreach($myCitizens as $buy)
                                     <div class="shopOneBox col-lg-4 col-xs-6">
                                         <div onclick="document.location.href = '{{route('showCitizen', ['id' => $buy->id])}}'" class="sh_mainBox">
@@ -254,6 +260,11 @@
 
                                     <div onclick="document.location.href = '{{route("showProduct", ["id" => $buy->id])}}'" class="shopOneBox col-lg-4 col-xs-6">
                                         <div class="sh_mainBox">
+
+                                            @if($buy->extra)
+                                                <div class="sh_extraPic"></div>
+                                            @endif
+
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
                                             <div class="sh_descript">
                                                 <div class="sh_descriptRow sh_title">{{$buy->name}}</div>
@@ -343,6 +354,11 @@
                                     @endif
 
                                         <div class="sh_mainBox">
+
+                                            @if($buy->extra)
+                                                <div class="sh_extraPic"></div>
+                                            @endif
+
                                             <div style="background-image: url('{{$buy->pic}}')" class="sh_mainPic"></div>
                                             <div class="sh_descript">
 

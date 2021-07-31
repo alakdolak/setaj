@@ -15,7 +15,7 @@
         @endif
 
         @if($config->show_extra)
-            <div onclick="document.location.href = '{{route('showAllProjects', ['extra' => 1])}}'" class="headerNavbar">انتخاب پروژه های بازار آزاد</div>
+            <div onclick="document.location.href = '{{route('showAllProjects', ['extra' => 1])}}'" class="headerNavbar">انتخاب پروژه‌های بازار آزاد</div>
         @endif
 
         @if($config->show_citizen)

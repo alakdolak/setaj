@@ -171,6 +171,28 @@
     background-repeat: no-repeat;
 }
 
+.sh_extraPic {
+    width: 80px;
+    height: -webkit-fill-available;
+    position: absolute;
+    top: -3px;
+    right: 0;
+    background-image: url("../images/extra.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.sh_extraPic2 {
+    width: 80px;
+    height: -webkit-fill-available;
+    position: absolute;
+    top: -3px;
+    left: 0;
+    background-image: url("../images/extra.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
 .sh_mainPic {
     padding-top: 100%;
     border-bottom: 2px solid #d7d7d7;

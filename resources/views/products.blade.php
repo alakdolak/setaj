@@ -75,6 +75,10 @@
                                         <div class="sh_advPic"></div>
                                     @endif
 
+                                    @if($extra)
+                                        <div class="sh_extraPic"></div>
+                                    @endif
+
                                     <div style="background-image: url('{{$product->pic}}')" class="sh_mainPic"></div>
                                     <div class="sh_descript">
                                         <div class="sh_descriptRow sh_title">{{$product->name}}</div>

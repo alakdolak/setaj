@@ -73,7 +73,7 @@ class HomeController extends Controller {
 
         $uId = Auth::user()->id;
 
-        $myBuys = DB::select("select p.id, p.grade_id, p.physical, ".
+        $myBuys = DB::select("select p.id, p.extra, p.grade_id, p.physical, ".
             "t.status, p.name, concat(u.first_name, ' ', u.last_name) as seller, " .
             "pb.project_id, p.price, p.star, t.follow_code, t.created_at from transactions t, product p, project_buyers pb, users u where " .
             " u.id = pb.user_id and pb.project_id = p.project_id and p.user_id = u.id and " .
@@ -913,8 +913,12 @@ class HomeController extends Controller {
                 $canBuy = (ProjectBuyers::whereProjectId($project->id)->count() < $project->capacity);
             }
 
-            $capacity = getProjectLimit(Auth::user()->grade_id);
-            $nums = DB::select("select count(*) as countNum from project_buyers where status = false and user_id = " . Auth::user()->id)[0]->countNum;
+            if($project->extra)
+                $capacity = getExtraProjectLimit(Auth::user());
+            else
+                $capacity = getProjectLimit(Auth::user()->grade_id);
+
+            $nums = DB::select("select count(*) as countNum from project_buyers pb, project p where pb.project_id = p.id and pb.status = false and p.extra = " . (($project->extra) ? 1 : 0) . " and pb.user_id = " . Auth::user()->id)[0]->countNum;
 
             $reminder = $capacity - $nums;
             if ($reminder <= 0 && $canBuy)
@@ -1272,7 +1276,7 @@ class HomeController extends Controller {
         }
 
         return view('products', ['products' => array_merge($unVisualProducts, $visualProducts),
-            'tags' => Tag::whereType("PROJECT")->get(), 'extra' => $extra,
+            'tags' => Tag::whereType("PROJECT")->get(), 'extra' => ($extra) ? 1 : 0,
             'grade' => $grade, 'grades' => Grade::orderBy('priority', 'asc')->get()]);
 
     }
@@ -1809,7 +1813,7 @@ class HomeController extends Controller {
             if($capacity == -1)
                 return "nok11";
 
-            $openProjects = DB::select("select pb.id from project_buyers pb, project p where pb.status = false and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
+            $openProjects = DB::select("select pb.id from project_buyers pb, project p where pb.status = false and p.extra = true and pb.project_id = p.id and pb.user_id = " . Auth::user()->id);
 
             if($capacity - count($openProjects) <= 0)
                 return "nok6";

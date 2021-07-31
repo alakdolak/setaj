@@ -14,3 +14,8 @@ UPDATE `grade` SET `priority` = '5' WHERE `grade`.`id` = 7;
 UPDATE `grade` SET `priority` = '6' WHERE `grade`.`id` = 8;
 UPDATE `grade` SET `priority` = '7' WHERE `grade`.`id` = 3;
 
+ALTER TABLE `config` ADD `min_star_2` INT(3) NOT NULL, ADD `min_money_2` INT(4) NOT NULL, ADD `min_health_2` INT(3) NOT NULL, ADD `min_think_2` INT(3) NOT NULL, ADD `min_behavior_2` INT(3) NOT NULL;
+ALTER TABLE `config` ADD `min_star_3` INT(3) NOT NULL, ADD `min_money_3` INT(4) NOT NULL, ADD `min_health_3` INT(3) NOT NULL, ADD `min_think_3` INT(3) NOT NULL, ADD `min_behavior_3` INT(3) NOT NULL;
+ALTER TABLE `config` ADD `min_star_4` INT(3) NOT NULL, ADD `min_money_4` INT(4) NOT NULL, ADD `min_health_4` INT(3) NOT NULL, ADD `min_think_4` INT(3) NOT NULL, ADD `min_behavior_4` INT(3) NOT NULL;
+ALTER TABLE `config` ADD `min_star_5` INT(3) NOT NULL, ADD `min_money_5` INT(4) NOT NULL, ADD `min_health_5` INT(3) NOT NULL, ADD `min_think_5` INT(3) NOT NULL, ADD `min_behavior_5` INT(3) NOT NULL;
+ALTER TABLE `config` ADD `min_star_6` INT(3) NOT NULL, ADD `min_money_6` INT(4) NOT NULL, ADD `min_health_6` INT(3) NOT NULL, ADD `min_think_6` INT(3) NOT NULL, ADD `min_behavior_6` INT(3) NOT NULL;
