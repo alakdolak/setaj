@@ -30,7 +30,7 @@
             <div class="pr_descriptRow pr_salesman">فروشنده: {{$good->owner}}</div>
             <div class="pr_descriptRow pr_iconesBox">
                 <div class="pr_icons coinIcon"></div>
-                <div>قیمت: {{$good->price}} تومان</div>
+                <div>قیمت: {{$good->price}} هزار تومان</div>
             </div>
             <div class="pr_descriptRow pr_iconesBox">
                 <div class="pr_icons capacityIcon"></div>

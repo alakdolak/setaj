@@ -132,7 +132,7 @@
 
                 $(".myItem").addClass("hidden").each(function () {
 
-                    if($(this).attr("data-tag").includes("-" + selectedTag + "-")) {
+                    if($(this).attr("data-tag").includes(selectedTag)) {
                         $(this).removeClass("hidden");
                     }
 

@@ -54,11 +54,11 @@ class TransactionController extends Controller {
                 $t->address = "";
 
             $t->post = ($sendMethod == "post");
-            $t->pay = $good->price;
+            $t->pay = $good->price * 1000;
             $t->save();
 
             $args = [
-                "amount" => $good->price,
+                "amount" => $good->price * 1000,
                 "payerIdentity" => $userId,
                 "returnUrl" => route('verifyPayment'),
                 "clientRefId" => $t->id

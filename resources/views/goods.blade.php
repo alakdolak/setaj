@@ -29,7 +29,7 @@
                                 <div class="sh_descriptRow sh_priceBox">
                                     <div class="priceIcons coinIcon"></div>
                                     @if($good->price != "رایگان")
-                                        <div class="priceText">قیمت: {{$good->price}} تومان</div>
+                                        <div class="priceText">قیمت: {{$good->price}} هزار تومان</div>
                                     @else
                                         <div class="priceText">قیمت: رایگان</div>
                                     @endif
