@@ -40,6 +40,16 @@
             font-weight: 800;
             cursor: pointer
         }
+        .resendDiv {
+            text-align: center;
+            font-weight: 800;
+            color: #afafaf;
+            margin-top: -50px;
+            cursor: pointer;
+        }
+        .resendDiv:hover {
+            border-bottom: 2px solid #afafaf;
+        }
         .reminderTimeDiv {
             display: flex;
             flex-direction: column;
@@ -289,8 +299,8 @@
                     <div>زمان باقی مانده برای ارسال مجدد کد:</div>
                     <div id="reminder_time" style="margin: 10px 0"></div>
                 </div>
-                <div id="resendDiv" style="text-align: center"></div>
-                <div class="loginBtnDiv" style="margin-bottom: 12px !important;">
+                <div id="resendDiv" class="resendDiv"></div>
+                <div class="loginBtnDiv" style="margin: 12px 0 20px !important;">
                     <div class="loginBtn" style="height: 40px !important;">ارسال</div>
                 </div>
             </form>
