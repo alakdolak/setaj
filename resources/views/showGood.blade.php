@@ -19,6 +19,9 @@
             border-radius: 7px;
             min-height: 70px;
         }
+        ::placeholder {
+            font-size: 1.15em !important;
+        }
     </style>
 
     <style>
@@ -36,6 +39,16 @@
             margin-right: 5px;
             font-weight: 800;
             cursor: pointer
+        }
+        .resendDiv {
+            text-align: center;
+            font-weight: 800;
+            color: #afafaf;
+            margin-top: -50px;
+            cursor: pointer;
+        }
+        .resendDiv:hover {
+            border-bottom: 2px solid #afafaf;
         }
         .reminderTimeDiv {
             display: flex;
@@ -292,10 +305,10 @@
                     <div id="reminder_time" style="margin: 10px 0"></div>
                 </div>
                 <div id="resendDiv" style="text-align: center"></div>
-                <div class="loginBtnDiv" style="margin-bottom: 12px !important;">
-                    <div onclick="verify()" class="loginBtn" style="height: 40px !important;">ارسال</div>
-                    <button type="button" id="closeVerifyModalBtn" class="hidden" data-dismiss="modal">انصراف</button>
+                <div onclick="verify()" class="loginBtnDiv" style="margin-bottom: 12px !important;">
+                    <div class="loginBtn" style="height: 40px !important;">ارسال</div>
                 </div>
+                <button type="button" id="closeVerifyModalBtn" class="hidden" data-dismiss="modal">انصراف</button>
             </form>
         </div>
     </div>
