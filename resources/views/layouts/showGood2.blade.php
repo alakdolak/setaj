@@ -3,7 +3,6 @@
 @section('header')
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.5")}}">
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/login.css")}}">
 
     <style>
         .checkBoxes {
@@ -18,24 +17,6 @@
             padding: 7px;
             border-radius: 7px;
             min-height: 70px;
-        }
-    </style>
-
-    <style>
-        .shop_loginInputDiv {
-            display: flex;
-            align-items: center;
-            height: 45px;
-        }
-        .shop_registerTextBox {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .shop_registerText {
-            margin-right: 5px;
-            font-weight: 800;
-            cursor: pointer
         }
     </style>
 @stop
@@ -76,9 +57,9 @@
                     <div class="pr_advertise col-xs-12" style="margin-right: 0 !important;">
 
                         <?php
-                            $pic["path"] = $good->adv;
-                            $tmp = explode(".", $good->adv);
-                            $pic["type"] = $tmp[count($tmp) - 1];
+                        $pic["path"] = $good->adv;
+                        $tmp = explode(".", $good->adv);
+                        $pic["type"] = $tmp[count($tmp) - 1];
                         ?>
                         @if($pic["type"] == "png" || $pic["type"] == "jpg" || $pic["type"] == "gif" || $pic["type"] == "bmp" || $pic["type"] == "jpeg")
                             <div class="eachAdvType col-xs-12">
@@ -190,105 +171,76 @@
     </div>
 
     <div id="loginModal" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
-        <div class="loginBody" style="width: 330px !important;">
-            <div class="loginTitle">
-                <div class="loginTitleImg"></div>
-            </div>
-            <form id="loginForm" action="http://localhost:8080/seraj/public/doLogin" method="post">
-                <input type="hidden" name="_token" value="p7VGYPMe4zYOCTOXhL6Q86KgZ0VxdJKEpsZhNtHa">
-                <div>
-                    <div class="loginInputDiv shop_loginInputDiv">
-                        <div class="loginIconDiv">
-                            <i class="fa fa-user loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
-                        </div>
-                        <input class="loginInput" id="username" name="username" type="text" placeholder="نام کاربری یا شماره همراه" required>
-                    </div>
-                    <div class="loginInputDiv shop_loginInputDiv">
-                        <div class="loginIconDiv">
-                            <i class="fa fa-lock loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
-                        </div>
-                        <input onkeypress="validate(event)" class="loginInput" id="password" name="password" type="password" placeholder="رمز عبور(کدملی)" required>
-                    </div>
+        <div class="modal-dialog">
+            <center class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">وارد شوید</h4>
+                    <p style="margin-top: 10px">نام کاربری/شماره همراه</p>
+                    <input type="text" required id="username" name="username">
+                    <p>کدملی</p>
+                    <input onkeypress="validate(event)" id="password" type="text" required name="password">
                 </div>
-                <div onclick="login()" class="loginBtnDiv" style="margin-bottom: 15px !important;">
-                    <div class="loginBtn" style="height: 40px !important;">ورود</div>
+                <div class="modal-footer">
+                    <center>
+                        <p>حساب کاربری ندارد؟</p>
+                        <p style="cursor: pointer" onclick="$('#closeLoginModalBtn').click(); $('#signUpModalBtn').click()">ثبت نام کنید</p>
+                    </center>
+                    <button onclick="login()" class="btn btn-success">تایید</button>
+                    <button id="closeLoginModalBtn" type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
                 </div>
-                <div class="loginErr">
-                    <p id="loginErr"></p>
-                </div>
-                <div class="relative shop_registerTextBox">
-                    <div>اگر ثبت‌نام نکرده اید؛</div>
-                    <div class="shop_registerText" onclick="$('#closeLoginModalBtn').click(); $('#signUpModalBtn').click()">ثبت‌نام کنید</div>
-                </div>
-            </form>
+            </center>
         </div>
     </div>
 
     <div id="signUpModal" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
-        <div class="loginBody" style="width: 330px !important;">
-            <div class="loginTitle">
-                <div class="loginTitleImg"></div>
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <center class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">ثبت نام کنید</h4>
+                    <p style="margin-top: 10px">کد ملی</p>
+                    <input onkeypress="validate(event)" type="tel" name="nid" id="nid">
+                    <p>نام</p>
+                    <input type="text" name="name" id="name">
+                    <p>نام خانوادگی</p>
+                    <input type="text" name="last_name" id="last_name">
+                    <p>شماره همراه</p>
+                    <input onkeypress="validate(event)" type="tel" name="phone" id="phone">
+                </center>
+                <div class="modal-footer">
+                    <button onclick="getVerificationCode()" type="button" class="btn btn-success">تایید</button>
+                    <button id="closeSignUpBtn" type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                    <div id="alertText2" class="alertText acceptAlertText"></div>
+                </div>
             </div>
-            <form id="signUpForm" action="http://localhost:8080/seraj/public/doLogin" method="post">
-                <input type="hidden" name="_token" value="p7VGYPMe4zYOCTOXhL6Q86KgZ0VxdJKEpsZhNtHa">
-                <div>
-                    <div class="loginInputDiv shop_loginInputDiv">
-                        <div class="loginIconDiv">
-                            <i class="fa fa-user-o loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
-                        </div>
-                        <input class="loginInput" id="name" name="name" type="text" placeholder="نام" required>
-                    </div>
-                    <div class="loginInputDiv shop_loginInputDiv">
-                        <div class="loginIconDiv">
-                            <i class="fa fa-user loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
-                        </div>
-                        <input class="loginInput" id="last_name" name="last_name" type="text" placeholder="نام خانوادگی" required>
-                    </div>
-                    <div class="loginInputDiv shop_loginInputDiv">
-                        <div class="loginIconDiv">
-                            <i class="fa fa-phone loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
-                        </div>
-                        <input onkeypress="validate(event)" class="loginInput" id="phone" name="phone" type="tel" placeholder="شماره همراه" required>
-                    </div>
-                    <div class="loginInputDiv shop_loginInputDiv">
-                        <div class="loginIconDiv">
-                            <i class="fa fa-lock loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
-                        </div>
-                        <input onkeypress="validate(event)" class="loginInput" id="nid" name="nid" type="tel" placeholder="رمز عبور(کدملی)" required>
-                    </div>
-                </div>
-                <div onclick="getVerificationCode()" class="loginBtnDiv" style="margin-bottom: 15px !important;">
-                    <div class="loginBtn" style="height: 40px !important;">ثبت نام</div>
-                </div>
-                <div class="loginErr">
-                    <p id="loginErr"></p>
-                </div>
-            </form>
+
         </div>
     </div>
 
     <div id="verificationModal" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
-        <div class="loginBody" style="width: 330px !important;">
-            <div class="loginTitle">
-                <div class="loginTitleImg"></div>
-            </div>
-            <form id="verificationForm" action="http://localhost:8080/seraj/public/doLogin" method="post">
-                <input type="hidden" name="_token" value="p7VGYPMe4zYOCTOXhL6Q86KgZ0VxdJKEpsZhNtHa">
-                <div>
-                    <div class="loginInputDiv shop_loginInputDiv">
-                        <div class="loginIconDiv">
-                            <i class="fa fa-envelope loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
-                        </div>
-                        <input onkeypress="validate(event)" class="loginInput" id="code" name="code" type="tel" placeholder="کد ارسال شده را وارد نمایید" required>
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <center class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">کد ارسال شده را وارد نمایید</h4>
+                    <input onkeypress="validate(event)" type="tel" name="code" id="code">
+
+                    <div id="reminderTimeDiv">
+                        <p style="margin-top: 10px">زمان باقی مانده برای ارسال مجدد کد</p><div style="margin-top: 10px" id="reminder_time"></div>
                     </div>
-                </div>
 
-                <div id="reminderTimeDiv">
-                    <p style="margin-top: 10px">زمان باقی مانده برای ارسال مجدد کد</p><div style="margin-top: 10px" id="reminder_time"></div>
-                </div>
+                    <div id="resendDiv" style="margin-top: 20px"></div>
 
-                <div id="resendDiv" style="margin-top: 20px"></div>
-            </form>
+                </center>
+                <div class="modal-footer">
+                    <button onclick="verify()" type="button" class="btn btn-success">تایید</button>
+                    <button type="button" id="closeVerifyModalBtn" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
