@@ -1143,6 +1143,9 @@ class HomeController extends Controller {
 
                 if ($product->week == 2 && $product->end_reg == 14000428)
                     $product->week = 3;
+
+                if ($product->end_reg == 14000507)
+                    $product->week = 5;
             }
 
             $product->name = $product->name . ' ها';
@@ -1250,6 +1253,9 @@ class HomeController extends Controller {
 
                 if ($product->week == 2 && $product->start_date_buy >= 14000428)
                     $product->week = 3;
+
+                if ($product->start_date_buy == 14000512)
+                    $product->week = 5;
             }
 
             $tmpPic = ProductPic::whereProductId($product->id)->first();
@@ -2182,7 +2188,7 @@ class HomeController extends Controller {
                 return json_encode(["status" => "ok", "token" => $activation->token]);
             }
 
-            if(time() - $activation->send_time < 300)
+            if(time() - $activation->send_time < 180)
                 return json_encode(["status" => "ok", "token" => $activation->token]);
 
             $token = str_random(100);
@@ -2206,13 +2212,13 @@ class HomeController extends Controller {
             $phone = translatePersian(makeValidInput($_POST["phone"]));
             $a = Activation::wherePhone($phone)->first();
             if ($a == null)
-                return "nok";
+                return "nok1";
 
             if ($a->token != makeValidInput($_POST["token"]))
-                return "nok";
+                return "nok2";
 
-            if(time() - $a->send_time < 300)
-                return "nok";
+            if(time() - $a->send_time < 180)
+                return "nok3";
 
             $token = str_random(100);
             $code = rand(10000, 99999);

@@ -176,8 +176,8 @@
     height: -webkit-fill-available;
     position: absolute;
     top: -3px;
-    right: 0;
-    background-image: url("../images/extra.png");
+    right: -3px;
+    background-image: url("../images/extra2.png");
     background-size: 100%;
     background-repeat: no-repeat;
 }

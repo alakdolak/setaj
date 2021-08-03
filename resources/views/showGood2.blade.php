@@ -357,7 +357,7 @@
 
                     $("#reminderTimeDiv").css("visibility", "visible");
                     token = res;
-                    total_time = 300;
+                    total_time = 180;
                     c_minutes = parseInt(total_time / 60);
                     c_seconds = parseInt(total_time % 60);
                     $("#resendDiv").empty();
@@ -469,7 +469,7 @@
             }
         }
 
-        var total_time = 300;
+        var total_time = 180;
         var c_minutes = parseInt(total_time / 60);
         var c_seconds = parseInt(total_time % 60);
 

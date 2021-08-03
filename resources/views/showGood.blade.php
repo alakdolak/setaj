@@ -260,9 +260,14 @@
                         <input onkeypress="validate(event)" class="loginInput" id="nid" name="nid" type="tel" placeholder="رمز عبور(کدملی)" required>
                     </div>
                 </div>
+
                 <div onclick="getVerificationCode()" class="loginBtnDiv" style="margin-bottom: 15px !important;">
                     <div class="loginBtn" style="height: 40px !important;">ثبت نام</div>
                 </div>
+
+                <div id="alertText2" class="alertText acceptAlertText"></div>
+                <button id="closeSignUpBtn" type="button" class="hidden" data-dismiss="modal">انصراف</button>
+
                 <div class="loginErr">
                     <p id="loginErr"></p>
                 </div>
@@ -288,7 +293,8 @@
                 </div>
                 <div id="resendDiv" style="text-align: center"></div>
                 <div class="loginBtnDiv" style="margin-bottom: 12px !important;">
-                    <div class="loginBtn" style="height: 40px !important;">ارسال</div>
+                    <div onclick="verify()" class="loginBtn" style="height: 40px !important;">ارسال</div>
+                    <button type="button" id="closeVerifyModalBtn" class="hidden" data-dismiss="modal">انصراف</button>
                 </div>
             </form>
         </div>
@@ -306,8 +312,6 @@
 
         var token = "";
         var phone = "";
-
-        $("#verificationModalBtn").click();
 
         function chooseSendMethod() {
             $("#closeConfirmationModalBtn").click();
@@ -346,7 +350,7 @@
 
         function getVerificationCode() {
 
-            var phone = $("#phone").val();
+            phone = $("#phone").val();
             var nid = $("#nid").val();
             var name = $("#name").val();
             var lastname = $("#last_name").val();
@@ -402,14 +406,15 @@
                 },
                 success: function (res) {
 
-                    if(res === "nok") {
+                    if(res === "nok" || res === "nok2" ||
+                        res === "nok1" || res === "nok3") {
                         alert("عملیات مورد نظر غیرمجاز است.");
                         return;
                     }
 
                     $("#reminderTimeDiv").css("visibility", "visible");
                     token = res;
-                    total_time = 300;
+                    total_time = 180;
                     c_minutes = parseInt(total_time / 60);
                     c_seconds = parseInt(total_time % 60);
                     $("#resendDiv").empty();
@@ -521,7 +526,7 @@
             }
         }
 
-        var total_time = 300;
+        var total_time = 180;
         var c_minutes = parseInt(total_time / 60);
         var c_seconds = parseInt(total_time % 60);
 
@@ -541,8 +546,8 @@
 
         function showResendBtn() {
 
-            var newElement = "<center>";
-            newElement += "<input onclick='resend()' type='submit' value='ارسال مجدد کد فعال سازی'>";
+            var newElement = "<center onclick='resend()'>";
+            newElement += "<input style='width: 100%; height: 60px;' class='loginBtn' type='submit' value='ارسال مجدد کد فعال سازی'>";
             newElement += "</center>";
 
             $("#reminderTimeDiv").css("visibility", "hidden");
