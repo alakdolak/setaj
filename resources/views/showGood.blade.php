@@ -559,8 +559,7 @@
 
         function showResendBtn() {
 
-            var newElement = "<center onclick='resend()'>";
-            newElement += "<input style='width: 100%; height: 60px;' class='loginBtn' type='submit' value='ارسال مجدد کد فعال سازی'>";
+            var newElement = "<center class='resendDiv' onclick='resend()'>ارسال مجدد کد فعال سازی";
             newElement += "</center>";
 
             $("#reminderTimeDiv").css("visibility", "hidden");
