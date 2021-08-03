@@ -302,6 +302,8 @@
         var token = "";
         var phone = "";
 
+        $("#verificationModalBtn").click();
+
         function chooseSendMethod() {
             $("#closeConfirmationModalBtn").click();
             $("#sendModalBtn").click();
