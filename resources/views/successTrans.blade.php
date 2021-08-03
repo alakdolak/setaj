@@ -16,7 +16,7 @@
         <p style="color: black">نام محصول: {{$name}}</p>
         <p style="color: black">کد محصول: {{$code}}</p>
         <p style="color: black">فروشنده: {{$owner}}</p>
-        <p style="color: black">تاریخ انجام تراکنش: {{$date}}</p>
+        <p style="color: black">تاریخ انجام تراکنش: {{$date[0] . '/' . $date[1] . '/' . $date[2]}}</p>
     </center>
 
 @stop

@@ -2291,6 +2291,7 @@ class HomeController extends Controller {
 
         $transaction = $transaction[0];
         $date = MiladyToShamsi('', explode('-', explode(' ', $transaction->created_at)[0]));
+        $date = explode("-", $date);
 
         return view('successTrans', ['ref' => $transaction->ref_id,
             "name" => $transaction->name, 'owner' => $transaction->owner,
