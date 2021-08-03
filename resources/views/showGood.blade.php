@@ -299,7 +299,7 @@
                     <div>زمان باقی مانده برای ارسال مجدد کد:</div>
                     <div id="reminder_time" style="margin: 10px 0"></div>
                 </div>
-                <div id="resendDiv" class="resendDiv"></div>
+                <div id="resendDiv" class="resendDiv">ارسال مجدد کد فعالسازی</div>
                 <div class="loginBtnDiv" style="margin: 12px 0 20px !important;">
                     <div class="loginBtn" style="height: 40px !important;">ارسال</div>
                 </div>
