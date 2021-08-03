@@ -2269,6 +2269,10 @@ class HomeController extends Controller {
         return view('fail');
     }
 
+    public function failTransaction2() {
+        return view('fail2');
+    }
+
     public function successTransaction($id) {
 
         $transaction = DB::select('select gd.name, gd.owner, gd.code, p.ref_id, p.created_at ' .

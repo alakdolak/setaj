@@ -194,8 +194,7 @@
             <div class="loginTitle">
                 <div class="loginTitleImg"></div>
             </div>
-            <form id="loginForm" action="http://localhost:8080/seraj/public/doLogin" method="post">
-                <input type="hidden" name="_token" value="p7VGYPMe4zYOCTOXhL6Q86KgZ0VxdJKEpsZhNtHa">
+            <form id="loginForm">
                 <div>
                     <div class="loginInputDiv shop_loginInputDiv">
                         <div class="loginIconDiv">
@@ -229,8 +228,7 @@
             <div class="loginTitle">
                 <div class="loginTitleImg"></div>
             </div>
-            <form id="signUpForm" action="http://localhost:8080/seraj/public/doLogin" method="post">
-                <input type="hidden" name="_token" value="p7VGYPMe4zYOCTOXhL6Q86KgZ0VxdJKEpsZhNtHa">
+            <form id="signUpForm">
                 <div>
                     <div class="loginInputDiv shop_loginInputDiv">
                         <div class="loginIconDiv">
@@ -272,8 +270,7 @@
             <div class="loginTitle">
                 <div class="loginTitleImg"></div>
             </div>
-            <form id="verificationForm" action="http://localhost:8080/seraj/public/doLogin" method="post">
-                <input type="hidden" name="_token" value="p7VGYPMe4zYOCTOXhL6Q86KgZ0VxdJKEpsZhNtHa">
+            <form id="verificationForm">
                 <div>
                     <div class="loginInputDiv shop_loginInputDiv">
                         <div class="loginIconDiv">

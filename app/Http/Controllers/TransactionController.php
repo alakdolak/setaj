@@ -95,7 +95,14 @@ class TransactionController extends Controller {
                     return Redirect::route('successTransaction', ['id' => $t->id]);
                 }
             } catch (\Exception $e) {
-                dd($e->getMessage());
+
+                try {
+                    $t->delete();
+                }
+                catch (\Exception $xx) {}
+
+//                return Redirect::route('failTransaction2');
+//                dd($e->getMessage());
 //                foreach (json_decode($e->getMessage(), true) as $msg) {
 //                    echo $msg;
 //                }

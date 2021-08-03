@@ -76,6 +76,8 @@ Route::group(['middleware' => ['auth', 'siteTime']], function () {
     Route::get('successTransaction/{id}', ['as' => 'successTransaction', 'uses' => 'HomeController@successTransaction']);
 
     Route::get('failTransaction', ['as' => 'failTransaction', 'uses' => 'HomeController@failTransaction']);
+
+    Route::get('failTransaction2', ['as' => 'failTransaction2', 'uses' => 'HomeController@failTransaction2']);
 });
 
 Route::group(['middleware' => ['auth', 'siteTime']], function () {
