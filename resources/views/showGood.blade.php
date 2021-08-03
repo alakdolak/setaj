@@ -37,6 +37,11 @@
             font-weight: 800;
             cursor: pointer
         }
+        .reminderTimeDiv {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
     </style>
 @stop
 
@@ -271,20 +276,20 @@
                 <div class="loginTitleImg"></div>
             </div>
             <form id="verificationForm">
-                <div>
-                    <div class="loginInputDiv shop_loginInputDiv">
-                        <div class="loginIconDiv">
-                            <i class="fa fa-envelope loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
-                        </div>
-                        <input onkeypress="validate(event)" class="loginInput" id="code" name="code" type="tel" placeholder="کد ارسال شده را وارد نمایید" required>
+                <div class="loginInputDiv shop_loginInputDiv">
+                    <div class="loginIconDiv">
+                        <i class="fa fa-envelope loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
                     </div>
+                    <input onkeypress="validate(event)" class="loginInput" id="code" name="code" type="tel" placeholder="کد ارسال شده را وارد نمایید" required>
                 </div>
-
-                <div id="reminderTimeDiv">
-                    <p style="margin-top: 10px">زمان باقی مانده برای ارسال مجدد کد</p><div style="margin-top: 10px" id="reminder_time"></div>
+                <div id="reminderTimeDiv" class="reminderTimeDiv">
+                    <div>زمان باقی مانده برای ارسال مجدد کد:</div>
+                    <div id="reminder_time" style="margin: 10px 0"></div>
                 </div>
-
-                <div id="resendDiv" style="margin-top: 20px"></div>
+                <div id="resendDiv" style="text-align: center"></div>
+                <div class="loginBtnDiv" style="margin-bottom: 12px !important;">
+                    <div class="loginBtn" style="height: 40px !important;">ارسال</div>
+                </div>
             </form>
         </div>
     </div>
