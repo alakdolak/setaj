@@ -17,7 +17,7 @@
     @else
         <div class="banner">
             <div class="bannerGrayBox"></div>
-            <div class="bannerBorderBox bannerLightBlueBox"></div>
+            <div class="bannerBorderBox bannerLightPurpleBox"></div>
             <div class="bannerMainBox extraProductsBanner"></div>
         </div>
     @endif

@@ -19,6 +19,9 @@
     top: 30px;
     z-index: 10;
 }
+.bannerLightPurpleBox {
+    background-color: #D4B0FF;
+}
 .bannerLightGreenBox {
     background-color: #9FEDBD;
 }

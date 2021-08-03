@@ -19,6 +19,9 @@
             border-radius: 7px;
             min-height: 70px;
         }
+        ::placeholder {
+            font-size: 1.15em !important;
+        }
     </style>
 
     <style>
