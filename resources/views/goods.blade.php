@@ -23,7 +23,7 @@
                 @foreach($goods as $good)
                     <div data-tag="{{$good->tag}}" onclick="document.location.href = '{{route('showGood', ['id' => $good->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
                         <div class="sh_mainBox">
-                            <div style="background-image: url('{{$good->pic}}')" class="sh_mainPic"></div>
+                            <div style="background-image: url('{{$good->pic}}'); background-size: cover !important; background-position: center !important;" class="sh_mainPic"></div>
                             <div class="sh_descript">
                                 <div class="sh_descriptRow sh_title">{{$good->name}}</div>
                                 <div class="sh_descriptRow sh_priceBox">
