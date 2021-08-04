@@ -48,7 +48,8 @@
             cursor: pointer;
         }
         .resendDiv:hover {
-            border-bottom: 2px solid #afafaf;
+            font-size: 1.1em;
+            color: #04C582;
         }
         .reminderTimeDiv {
             display: flex;
