@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/general.css?v=2.2")}}">
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/myFont.css?v=1.3")}}">
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/home.css?v=2.2")}}">
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/login.css?v=1.4")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/login.css?v=1.5")}}">
 
 </head>
 <body>
@@ -62,13 +62,13 @@
             <div>
                 <div class="loginInputDiv">
                     <div class="loginIconDiv">
-                        <i class="fa fa-user loginIcon" aria-hidden="true"></i>
+                        <i class="fa fa-user loginIconInLoginCSS" aria-hidden="true"></i>
                     </div>
                     <input class="loginInput" name="username" type="text" placeholder="نام کاربری">
                 </div>
                 <div class="loginInputDiv">
                     <div class="loginIconDiv">
-                        <i class="fa fa-lock loginIcon" aria-hidden="true"></i>
+                        <i class="fa fa-lock loginIconInLoginCSS" aria-hidden="true"></i>
                     </div>
                     <input onkeyup="handleEnter(event)" class="loginInput" name="password" type="password" placeholder="رمز عبور">
                 </div>

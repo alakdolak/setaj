@@ -401,7 +401,7 @@ class ReportController extends Controller {
         $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, " .
             "concat(u1.first_name, ' ', u1.last_name) as buyer, p.name, p.physical, " .
             "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
-            "t.product_id = p.id and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
+            "t.product_id = p.id and p.extra = false and pb.project_id = p.project_id and u2.id = pb.user_id and p.user_id = u2.id and " .
             "t.user_id = u1.id and u1.grade_id = " . $gradeId . " order by t.id desc"
         );
 
@@ -416,6 +416,32 @@ class ReportController extends Controller {
 
         return view("report.productsReport", ["products" => $products,
             'gradeId' => $gradeId, 'distinctProducts' => $distinctProducts]);
+    }
+
+    public function extraProductsReport() {
+
+        $products = DB::select("select t.id as tId, concat(u2.first_name, ' ', u2.last_name) as seller, " .
+            "(select name from grade where id = u2.grade_id) as seller_grade, " .
+            "concat(u1.first_name, ' ', u1.last_name) as buyer, " .
+            "(select name from grade where id = u1.grade_id) as buyer_grade, " .
+            "p.name, p.physical, " .
+            "t.created_at from users u1, users u2, transactions t, product p, project_buyers pb where " .
+            "t.product_id = p.id and pb.project_id = p.project_id and p.extra = true and " .
+            "u2.id = pb.user_id and p.user_id = u2.id and " .
+            "t.user_id = u1.id order by t.id desc"
+        );
+
+        $distinctProducts = [];
+
+        foreach ($products as $product) {
+            $product->date = MiladyToShamsi('', explode('-', explode(' ', $product->created_at)[0]));
+            $product->time = explode(' ', $product->created_at)[1];
+            if(!in_array($product->name, $distinctProducts))
+                $distinctProducts[count($distinctProducts)] = $product->name;
+        }
+
+        return view("report.extraProductsReport", ["products" => $products,
+            'distinctProducts' => $distinctProducts]);
     }
 
     public function reminderProducts($gradeId = -1) {

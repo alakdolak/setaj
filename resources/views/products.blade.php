@@ -68,7 +68,11 @@
                                 @continue
                             @endif
 
-                            <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{($product->physical) ? route('showProduct', ['id' => $product->id]) : route('showAllProductsInner', ['projectId' => $product->id, 'gradeId' => $grade])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
+                            @if(!$extra)
+                                <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{($product->physical) ? route('showProduct', ['id' => $product->id]) : route('showAllProductsInner', ['projectId' => $product->id, 'gradeId' => $grade])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
+                            @else
+                                <div data-tag="{{$product->tagStr}}" onclick="document.location.href = '{{($product->physical) ? route('showProduct', ['id' => $product->id]) : route('showAllExtraProductsInner', ['projectId' => $product->id])}}'" class="myItem shopOneBox col-md-3 col-sm-4 col-xs-6">
+                            @endif
                                 <div class="sh_mainBox">
 
                                     @if($product->adv_status)

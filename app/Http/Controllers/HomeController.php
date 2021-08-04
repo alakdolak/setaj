@@ -1103,17 +1103,30 @@ class HomeController extends Controller {
         $today = $today["date"];
 
         if(Auth::check() && Auth::user()->level != 1) {
-            $unVisualProducts = DB::select('select (select count(*) from product where project_id = project.id and extra = ' . (($extra) ? 1 : 0) . ' and hide = false and grade_id = ' . $grade . ') as total, title as name, end_reg, created_at, id' .
-                ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
-                ' and extra = ' . (($extra) ? 1 : 0) . ' and hide = false group by(id) having total > 0');
+            if($extra)
+                $unVisualProducts = DB::select('select (select count(*) from product where project_id = project.id and extra = true and hide = false) as total, title as name, end_reg, created_at, id' .
+                    ' from project where physical = 0' .
+                    ' and extra = true and hide = false group by(id) having total > 0');
+            else
+                $unVisualProducts = DB::select('select (select count(*) from product where project_id = project.id and extra = ' . (($extra) ? 1 : 0) . ' and hide = false and grade_id = ' . $grade . ') as total, title as name, end_reg, created_at, id' .
+                    ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
+                    ' and extra = ' . (($extra) ? 1 : 0) . ' and hide = false group by(id) having total > 0');
         }
         else {
-            $unVisualProducts = DB::select('select (select count(*) from product where (start_show < ' . $today .
-                ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
-                'project_id = project.id and extra = ' . (($extra) ? 1 : 0) . ' and hide = false and grade_id = ' .
-                $grade . ') as total, title as name, end_reg, created_at, id' .
-                ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
-                ' and extra = ' . (($extra) ? 1 : 0) . ' and hide = false group by(id) having total > 0');
+            if($extra)
+                $unVisualProducts = DB::select('select (select count(*) from product where (start_show < ' . $today .
+                    ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
+                    'project_id = project.id and extra = true and hide = false) as total, ' .
+                    'title as name, end_reg, created_at, id' .
+                    ' from project where physical = 0' .
+                    ' and extra = true and hide = false group by(id) having total > 0');
+            else
+                $unVisualProducts = DB::select('select (select count(*) from product where (start_show < ' . $today .
+                    ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
+                    'project_id = project.id and extra = false and hide = false and grade_id = ' .
+                    $grade . ') as total, title as name, end_reg, created_at, id' .
+                    ' from project where physical = 0 and ' . $grade . ' in (select grade_id from project_grade where project_id = project.id)' .
+                    ' and extra = false and hide = false group by(id) having total > 0');
         }
 
         $mainDiff = findDiffWithSiteStart();
@@ -1163,9 +1176,14 @@ class HomeController extends Controller {
             foreach ($product->tags as $tag)
                 $str .= $tag->id . '-';
 
-            $tmp = DB::select("select count(*) as count_, max(price) as maxPrice, max(star) as maxStar from product where " .
-                "id not in (select product_id from transactions where 1) and grade_id = " .
-                $grade . " and project_id = " . $product->id . " and extra = " . (($extra) ? 1 : 0) . " and hide = false group by(project_id)");
+            if($extra)
+                $tmp = DB::select("select count(*) as count_, max(price) as maxPrice, max(star) as maxStar from product where " .
+                    "id not in (select product_id from transactions where 1) " .
+                    "and project_id = " . $product->id . " and extra = true and hide = false group by(project_id)");
+            else
+                $tmp = DB::select("select count(*) as count_, max(price) as maxPrice, max(star) as maxStar from product where " .
+                    "id not in (select product_id from transactions where 1) and grade_id = " .
+                    $grade . " and project_id = " . $product->id . " and extra = " . (($extra) ? 1 : 0) . " and hide = false group by(project_id)");
 
             $product->tagStr = $str;
 
@@ -1179,8 +1197,12 @@ class HomeController extends Controller {
             }
             else {
 
-                $tmp = DB::select("select min(price) as minPrice, min(star) as minStar from product where " .
-                    "grade_id = " . $grade . " and project_id = " . $product->id . " and extra = " . (($extra) ? 1 : 0) . " and hide = false group by(project_id)")[0];
+                if($extra)
+                    $tmp = DB::select("select min(price) as minPrice, min(star) as minStar from product where " .
+                        " project_id = " . $product->id . " and extra = true and hide = false group by(project_id)")[0];
+                else
+                    $tmp = DB::select("select min(price) as minPrice, min(star) as minStar from product where " .
+                        "grade_id = " . $grade . " and project_id = " . $product->id . " and extra = false and hide = false group by(project_id)")[0];
 
                 $product->star = $tmp->minStar;
                 $product->price = $tmp->minPrice;
@@ -1193,23 +1215,42 @@ class HomeController extends Controller {
         }
 
         if(Auth::check() && Auth::user()->level != 1) {
-            $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
-                'p.id, name, description, p.physical, price, star, p.project_id, ' .
-                'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
-                ' from product p, users u, project_buyers pb where p.physical = 1 ' .
-                'and p.extra = ' . (($extra) ? 1 : 0) . ' and p.project_id = pb.project_id ' .
-                'and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade .
-                ' and hide = false order by p.id desc');
+            if($extra)
+                $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
+                    'p.id, name, description, p.physical, price, star, p.project_id, ' .
+                    'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                    ' from product p, users u, project_buyers pb where p.physical = 1 ' .
+                    'and p.extra = true and p.project_id = pb.project_id ' .
+                    'and pb.user_id = p.user_id and p.user_id = u.id' .
+                    ' and hide = false order by p.id desc');
+            else
+                $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
+                    'p.id, name, description, p.physical, price, star, p.project_id, ' .
+                    'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                    ' from product p, users u, project_buyers pb where p.physical = 1 ' .
+                    'and p.extra = false and p.project_id = pb.project_id ' .
+                    'and pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade .
+                    ' and hide = false order by p.id desc');
         }
         else {
-            $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
-                'p.id, name, description, p.physical, price, star, p.project_id, ' .
-                'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
-                ' from product p, users u, project_buyers pb where p.physical = 1 and ' .
-                '(start_show < ' . $today . ' or (start_show = ' . $today .
-                ' and start_time <= ' . $time . ')) and p.project_id = pb.project_id and ' .
-                'pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade .
-                ' and p.extra = ' . (($extra) ? 1 : 0) . ' and hide = false order by p.id desc');
+            if($extra)
+                $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
+                    'p.id, name, description, p.physical, price, star, p.project_id, ' .
+                    'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                    ' from product p, users u, project_buyers pb where p.physical = 1 and ' .
+                    '(start_show < ' . $today . ' or (start_show = ' . $today .
+                    ' and start_time <= ' . $time . ')) and p.project_id = pb.project_id and ' .
+                    'pb.user_id = p.user_id and p.user_id = u.id' .
+                    ' and p.extra = true and hide = false order by p.id desc');
+            else
+                $visualProducts = DB::select('select pb.adv_status, p.start_date_buy, ' .
+                    'p.id, name, description, p.physical, price, star, p.project_id, ' .
+                    'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                    ' from product p, users u, project_buyers pb where p.physical = 1 and ' .
+                    '(start_show < ' . $today . ' or (start_show = ' . $today .
+                    ' and start_time <= ' . $time . ')) and p.project_id = pb.project_id and ' .
+                    'pb.user_id = p.user_id and p.user_id = u.id and u.grade_id = ' . $grade .
+                    ' and p.extra = false and hide = false order by p.id desc');
         }
 
         foreach ($visualProducts as $product) {
@@ -1283,7 +1324,7 @@ class HomeController extends Controller {
 
         return view('products', ['products' => array_merge($unVisualProducts, $visualProducts),
             'tags' => Tag::whereType("PROJECT")->get(), 'extra' => ($extra) ? 1 : 0,
-            'grade' => $grade, 'grades' => Grade::orderBy('priority', 'asc')->get()]);
+            'grade' => $grade, 'grades' => ($extra) ? Grade::take(1)->get() : Grade::orderBy('priority', 'asc')->get()]);
 
     }
 
@@ -1356,6 +1397,75 @@ class HomeController extends Controller {
             'projectId' => $projectId, 'grade' => $gradeId, 'myReminder' => $myReminder]);
     }
 
+    public function showAllExtraProductsInner($projectId) {
+
+        $today = getToday();
+        $time = $today["time"];
+        $today = $today["date"];
+
+        if(Auth::check() && Auth::user()->level != 1) {
+            $products = DB::select('select pb.adv_status, ' .
+                'p.id, name, description, price, star, p.project_id, p.start_date_buy, p.start_time_buy, ' .
+                '(select count(*) from transactions where product_id = p.id) > 0 as sold, ' .
+                'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId . ' and' .
+                ' p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and hide = false order by p.price desc');
+        }
+        else {
+            $products = DB::select('select pb.adv_status, ' .
+                'p.id, name, description, price, star, p.project_id, p.start_date_buy, p.start_time_buy, ' .
+                '(select count(*) from transactions where product_id = p.id) > 0 as sold, ' .
+                'concat(u.first_name, " ", u.last_name) as owner, p.created_at' .
+                ' from product p, users u, project_buyers pb where p.physical = 0 and p.project_id = ' . $projectId .
+                ' and (start_show < ' . $today . ' or (start_show = ' . $today . ' and start_time <= ' . $time . ')) and ' .
+                ' p.project_id = pb.project_id and pb.user_id = p.user_id and p.user_id = u.id and hide = false order by p.price desc');
+        }
+
+        if($products == null || count($products) == 0)
+            return Redirect::route("showAllProducts", ['extra' => true]);
+
+        foreach ($products as $product) {
+
+            $tmpPic = ProductPic::whereProductId($product->id)->first();
+
+            if($tmpPic == null || !file_exists(__DIR__ . '/../../../public/productPic/' . $tmpPic->name))
+                $product->pic = URL::asset('productPic/defaultPic.png');
+            else
+                $product->pic = URL::asset('productPic/' . $tmpPic->name);
+
+            if($product->price == 0)
+                $product->price = "رایگان";
+            else
+                $product->price = number_format($product->price);
+        }
+
+        $reminder = DB::select("select count(*) as count_ from product where " .
+            "id not in (select product_id from transactions where 1) " .
+            " and project_id = " . $projectId . " and hide = false group by(project_id)");
+
+        if($reminder != null && count($reminder) > 0)
+            $reminder = $reminder[0]->count_;
+        else
+            $reminder = 0;
+
+        $canBuy = (Auth::check()) ? ($reminder > 0) : false;
+        $myReminder = 0;
+
+        if($canBuy) {
+            $uId = Auth::user()->id;
+            if($products[0]->start_date_buy > $today || $products[0]->start_time_buy > $time)
+                $canBuy = false;
+            else {
+                $myReminder = ProjectBuyers::whereUserId($uId)->whereStatus(true)->count() - Transaction::whereUserId($uId)->count() - 1;
+                if ($myReminder < 0)
+                    $canBuy = false;
+            }
+        }
+
+        return view('productsInner', ['products' => $products, 'canBuy' => $canBuy,
+            'projectId' => $projectId, 'grade' => Grade::first()->id, 'myReminder' => $myReminder]);
+    }
+
     public function buyUnPhysicalProduct() {
 
         if(isset($_POST["projectId"]) && isset($_POST["gradeId"])) {
@@ -1363,15 +1473,27 @@ class HomeController extends Controller {
             $projectId = makeValidInput($_POST["projectId"]);
             $gradeId = makeValidInput($_POST["gradeId"]);
 
+            $proj = Project::whereId($projectId);
+            if($proj == null)
+                return "nok2";
+
             $user = Auth::user();
 
-            if($gradeId != $user->grade_id)
-                return "nok4";
+            if(!$proj->extra) {
+                if ($gradeId != $user->grade_id)
+                    return "nok4";
 
-            $product = DB::select(
-                ' select * from product where physical = 0 and project_id = ' . $projectId .
-                ' and grade_id = ' . $gradeId . ' and hide = false ' .
-                'and id not in (select product_id from transactions) order by price desc limit 0, 1');
+                $product = DB::select(
+                    ' select * from product where physical = 0 and project_id = ' . $projectId .
+                    ' and grade_id = ' . $gradeId . ' and hide = false ' .
+                    'and id not in (select product_id from transactions) order by price desc limit 0, 1');
+            }
+            else {
+                $product = DB::select(
+                    ' select * from product where physical = 0 and project_id = ' . $projectId .
+                    ' and hide = false ' .
+                    'and id not in (select product_id from transactions) order by price desc limit 0, 1');
+            }
 
             if($product == null || count($product) == 0)
                 return "nok2";
@@ -1862,10 +1984,12 @@ class HomeController extends Controller {
                 return "nok1";
 
             $user = Auth::user();
-            $product->grade_id = User::whereId($product->user_id)->grade_id;
+            if(!$product->extra) {
+                $product->grade_id = User::whereId($product->user_id)->grade_id;
 
-            if($product->grade_id != $user->grade_id)
-                return "nok1";
+                if ($product->grade_id != $user->grade_id)
+                    return "nok1";
+            }
 
             if($product->price > $user->money)
                 return "nok3";

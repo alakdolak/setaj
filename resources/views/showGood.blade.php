@@ -3,7 +3,7 @@
 @section('header')
     @parent
     <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/product.css?v=1.5")}}">
-    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/login.css")}}">
+    <link rel="stylesheet" href="{{\Illuminate\Support\Facades\URL::asset("css/login.css?v=1.5")}}">
 
     <style>
         .checkBoxes {
@@ -216,13 +216,13 @@
                 <div>
                     <div class="loginInputDiv shop_loginInputDiv">
                         <div class="loginIconDiv">
-                            <i class="fa fa-user loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
+                            <i class="fa fa-user loginIconInLoginCSS" aria-hidden="true" style="transform: rotate(360deg);"></i>
                         </div>
                         <input class="loginInput" id="username" name="username" type="text" placeholder="نام کاربری یا شماره همراه" required>
                     </div>
                     <div class="loginInputDiv shop_loginInputDiv">
                         <div class="loginIconDiv">
-                            <i class="fa fa-lock loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
+                            <i class="fa fa-lock loginIconInLoginCSS" aria-hidden="true" style="transform: rotate(360deg);"></i>
                         </div>
                         <input onkeypress="validate(event)" class="loginInput" id="password" name="password" type="password" placeholder="رمز عبور(کدملی)" required>
                     </div>
@@ -250,25 +250,25 @@
                 <div>
                     <div class="loginInputDiv shop_loginInputDiv">
                         <div class="loginIconDiv">
-                            <i class="fa fa-user-o loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
+                            <i class="fa fa-user-o loginIconInLoginCSS" aria-hidden="true" style="transform: rotate(360deg);"></i>
                         </div>
                         <input class="loginInput" id="name" name="name" type="text" placeholder="نام" required>
                     </div>
                     <div class="loginInputDiv shop_loginInputDiv">
                         <div class="loginIconDiv">
-                            <i class="fa fa-user loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
+                            <i class="fa fa-user loginIconInLoginCSS" aria-hidden="true" style="transform: rotate(360deg);"></i>
                         </div>
                         <input class="loginInput" id="last_name" name="last_name" type="text" placeholder="نام خانوادگی" required>
                     </div>
                     <div class="loginInputDiv shop_loginInputDiv">
                         <div class="loginIconDiv">
-                            <i class="fa fa-phone loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
+                            <i class="fa fa-phone loginIconInLoginCSS" aria-hidden="true" style="transform: rotate(360deg);"></i>
                         </div>
                         <input onkeypress="validate(event)" class="loginInput" id="phone" name="phone" type="tel" placeholder="شماره همراه" required>
                     </div>
                     <div class="loginInputDiv shop_loginInputDiv">
                         <div class="loginIconDiv">
-                            <i class="fa fa-lock loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
+                            <i class="fa fa-lock loginIconInLoginCSS" aria-hidden="true" style="transform: rotate(360deg);"></i>
                         </div>
                         <input onkeypress="validate(event)" class="loginInput" id="nid" name="nid" type="tel" placeholder="رمز عبور(کدملی)" required>
                     </div>
@@ -296,7 +296,7 @@
             <form id="verificationForm">
                 <div class="loginInputDiv shop_loginInputDiv">
                     <div class="loginIconDiv">
-                        <i class="fa fa-envelope loginIcon" aria-hidden="true" style="transform: rotate(360deg);"></i>
+                        <i class="fa fa-envelope loginIconInLoginCSS" aria-hidden="true" style="transform: rotate(360deg);"></i>
                     </div>
                     <input onkeypress="validate(event)" class="loginInput" id="code" name="code" type="tel" placeholder="کد ارسال شده را وارد نمایید" required>
                 </div>

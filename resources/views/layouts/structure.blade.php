@@ -360,6 +360,12 @@
                             </li>
 
                             <li class="nav-item  ">
+                                <a href="{{route('extraProductsReport')}}" class="nav-link">
+                                    <span class="title">رصد بازار آزاد</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item  ">
                                 <a href="{{route('productProjectReport')}}" class="nav-link">
                                     <span class="title">پروژه/کالا/همیاری گزارش</span>
                                 </a>

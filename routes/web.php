@@ -38,6 +38,8 @@ Route::get('showAllProducts/{extra}/{grade?}', ['as' => 'showAllProducts', 'uses
 
 Route::get('showAllProductsInner/{projectId}/{gradeId}', ['as' => 'showAllProductsInner', 'uses' => 'HomeController@showAllProductsInner']);
 
+Route::get('showAllExtraProductsInner/{projectId}', ['as' => 'showAllExtraProductsInner', 'uses' => 'HomeController@showAllExtraProductsInner']);
+
 Route::get('showService/{id}', ['as' => 'showService', 'uses' => 'HomeController@showService']);
 
 Route::get('showGood/{id}', ['as' => 'showGood', 'uses' => 'HomeController@showGood']);
@@ -459,6 +461,7 @@ Route::group(['middleware' => ['auth', 'operatorLevel']], function () {
 
     Route::get("productProjectReportExcel/{gradeId}", ["as" => "productProjectReportExcel", "uses" => "ReportController@productProjectReportExcel"]);
 
+    Route::get("extraProductsReport", ["as" => "extraProductsReport", "uses" => "ReportController@extraProductsReport"]);
 
     Route::get("productsReport/{gradeId?}", ["as" => "productsReport", "uses" => "ReportController@productsReport"]);
 
